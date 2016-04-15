@@ -1,0 +1,284 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${rootView}"/>
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+  <x:desktop-panel coid = "${z:vid(v, 'my-links-root')}"
+    position = "#{rootView.extjsPosition}"
+    webLink = "false" desktopHistory = "none">
+
+    <f:facet name = "extjs-props">
+      title: 'Мои ссылки'
+    </f:facet>
+
+    <!-- [area for the tiles] -->
+    <x:html coid = "${z:vid(v, 'my-links-html-content')}"
+      table = "false" boxClass = "retrade-tiles-links-area-out">
+
+      <div id = "${z:vid(v, 'my-links-area')}"
+        class = "retrade-tiles-links-area">
+
+        <div class = 'retrade-tiles-links-scroll-right-outer'>
+          <div class = 'retrade-tiles-scroll-right'></div>
+        </div>
+        <div class = 'retrade-tiles-links-scroll-left-outer'>
+          <div class = 'retrade-tiles-scroll-left'></div>
+        </div>
+        <div class = 'retrade-tiles-links-scroll-up-outer'>
+          <div class = 'retrade-tiles-scroll-up'></div>
+        </div>
+        <div class = 'retrade-tiles-links-scroll-down-outer'>
+          <div class = 'retrade-tiles-scroll-down'></div>
+        </div>
+      </div>>
+    </x:html>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+   //~: shared strategy to access data from the server
+   ZeT.singleInstance('ReTrade.getUserWebLinks', ReTrade.RepeatedTask, {
+
+     reload : function(txn)
+     {
+       var self = this
+
+       //?: {tx-number is the same} do nothing
+       if(self.txn === txn) return
+       self.txn = txn
+
+       //~: access the records
+       jQuery.get("${z:url('/go/userlinks')}", function(x)
+       {
+         //?: {this request is actual}
+         if(ZeT.isa(x) && (ZeT.isu(self.txn) || (self.txn === txn)))
+           self.result(x)
+       })
+     }
+   }, 30000, function()
+   {
+     var self = this
+     jQuery.get("${z:url('/go/userlinks')}", { task : 'txn' }, function(txn)
+     {
+       if(ZeTS.ises(txn)) return
+
+       //~: parse server result
+       txn = parseInt(txn)
+       ZeT.assert(ZeT.isn(txn))
+
+       //!: reload data
+       self.reload(txn)
+     })
+   })
+
+   //~: build the tiles interface
+   extjsf.bind("${z:vid(v, 'my-links-html-content')}", '${extDom}').
+     on('afterrender', function()
+   {
+     var areaid = '#' + "${z:vid(v, 'my-links-area')}"
+     var tileItem, tiles
+
+     function sc(dir)
+     {
+       return $(areaid + ' .retrade-tiles-links-scroll-' + dir + '-outer')
+     }
+
+     var scflags
+     function sctoggle()
+     {
+       //Hint: actually, we need to hide the arrows with a small delay...
+
+       scflags = ZeT.a(arguments)
+       ZeT.timeout(100, function()
+       {
+         ZeT.each(['left', 'right', 'up', 'down'], function(dir, i)
+         {
+           sc(dir).toggle(!!scflags[i])
+         })
+       })
+     }
+
+     function updateAreaInsets()
+     {
+       var C = 'retrade-tiles-links-column'
+       var B = 'retrade-tiles-links-box'
+
+       var w, h, single, same = function()
+       {
+         if((w != tiles.columns()) || (h != tiles.rows()))
+         {
+           w = tiles.columns(); h = tiles.rows()
+           single = (w == 1); return false
+         }
+
+         return true
+       }
+
+       //~: turn off area scroll classes
+       ZeTD.classes($(areaid)[0], [ '-' + C, '-' + B ])
+       sctoggle(false, false, false, false)
+       tiles.tiles.updateLayout()
+       same() //<-- remember grid size
+
+       //?: {scroll is not needed}
+       var none; if(none = tiles.isScollNone())
+       {
+         tiles.tiles.updateLayout()
+         if(same()) return
+       }
+
+       function updateArrows()
+       {
+         var left  = tiles.isScrollLeft()
+         var right = tiles.isScrollRight()
+
+         ZeTD.classes($(areaid)[0], [ ((single)?'+':'-') + C, ((single)?'-':'+') + B ])
+         sctoggle(!single && left, !single && right, single && left, single && right)
+       }
+
+       updateArrows()
+       tiles.tiles.updateLayout()
+
+       if(!same()) updateArrows()
+     }
+
+     function calcRows(r, R)
+     {
+       return (tiles.columns() == 1)?(R):(r)
+     }
+
+     tileItem = new ReTrade.TilesItemExt({
+       shadow: 'retrade-boshadow-N-XYZ retrade-boshadow-XYZ',
+       wrapClass: 'retrade-tile-links-wrap', selectedClass: 'selected',
+       data: { array: [], goto: openWebLink, onupdate: updateColor,
+         onremove: removeItem, onmove: moveItems
+     }})
+
+     tiles = new ReTrade.TilesControl({
+       content : tileItem,
+       beforejustify: updateAreaInsets,
+       scrollInterval: 150,
+       tiles : { area: "${z:vid(v, 'my-links-area')}",
+         absolute: true, cellClass: 'retrade-tile-cell',
+         rows: calcRows, columns: 'min',
+         min: [ 180, 90, 100.0, 100.0 ],
+         max: [ 245, 160, 100.0, 90.0 ]
+       }
+     })
+
+     function scbind(dir, left)
+     {
+       if(ReTrade.isTouch) sc(dir).
+         mousedown(ZeT.fbind(tiles.scrollStart, tiles, left, true)).
+         mouseup(ZeT.fbind(tiles.scrollStart, tiles, left, false))
+       else sc(dir).
+         mouseenter(ZeT.fbind(tiles.scrollStart, tiles, left, true)).
+         mouseleave(ZeT.fbind(tiles.scrollStart, tiles, left, false))
+     }
+
+     scbind('right', false)
+     scbind('left', true)
+     scbind('up', true)
+     scbind('down', false)
+
+     //~: update them on area resize
+     extjsf.bind("${z:vid(v, 'my-links-html-content')}", '${extDom}').
+       on('resize', function(html, width, height)
+       {
+         if(width && height)
+           tiles.update()
+       })
+
+     //~: link open procedure
+     function openWebLink(m)
+     {
+       if(!m.open) return
+
+       //?: {has no link}
+       ZeT.asserts(m.open.link)
+
+       //~: temporary domain
+       var domain = m.open.domain
+       if(ZeTS.ises(domain)) domain = 'open-user-link'
+       domain = extjsf.nameDomain(domain)
+
+       //?: {open it in panel}
+       if(!ZeTS.ises(m.open.panel))
+       {
+         ReTrade.desktop.loadPanel(
+           retrade_go_url(m.open.link), {
+           domain: domain, position: m.open.panel,
+           params: m.open.params
+         })
+       }
+       //!: open it in window
+       else
+       {
+         retrade_open_window({ url: retrade_go_url(m.open.link),
+           box: m.open.box, record: m.open.recordId,
+           domain: domain, params: m.open.params
+         })
+       }
+     }
+
+     function updateRequest(req)
+     {
+       function updateTxn(txn)
+       {
+         ZeT.asserts(txn)
+         txn = parseInt(txn)
+         ZeT.assert(ZeT.isn(txn))
+         ZeT.singleInstance('ReTrade.getUserWebLinks').txn = txn
+       }
+
+       jQuery.get("${z:url('/go/userlinks')}", req, updateTxn)
+     }
+
+     function updateColor(m)
+     {
+       updateRequest({ task: 'color', item: m.id, color: m.color })
+     }
+
+     function removeItem(m)
+     {
+       updateRequest({ task: 'remove', item: m.id })
+     }
+
+     function moveItems(where, items)
+     {
+       ZeT.each(items, function(x, i){ items[i] = x.id })
+       updateRequest({ task: 'move', item: where.id, moved: items.join(';') })
+     }
+
+     //~: start loading the links
+     ZeT.defined('ReTrade.getUserWebLinks').start().on(true, function(data)
+     {
+       tileItem._data._array = data
+       tiles.update()
+     })
+
+     //~: stop the strategy
+     extjsf.bind("${z:vid(v, 'my-links-html-content')}", '${extDom}').
+       on('destroy', function()
+       {
+         ZeT.defined('ReTrade.getUserWebLinks').stop()
+       })
+   })
+
+    //]]>
+    </script>
+  </x:desktop-panel>
+</ui:define>
+</ui:decorate>
+</ui:component>

@@ -1,0 +1,1332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="ReTrade RSync @64.14" />
+    </artifacts-to-build>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/desktop.ext.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/desktop.ext.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/desktop.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/desktop.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/history-menu.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/history-menu.xhtml" />
+    </list>
+    <ignored path="bakery.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <ignored path="$PROJECT_DIR$/auth/target/" />
+    <ignored path="$PROJECT_DIR$/retrade/src/main/webapp/extjs/locale/" />
+    <ignored path="$PROJECT_DIR$/retrade/src/main/webapp/extjs/resources/themes/" />
+    <ignored path="$PROJECT_DIR$/retrade/target/" />
+    <ignored path="$PROJECT_DIR$/xroot/target/classes/" />
+    <ignored path="$PROJECT_DIR$/xroot/target/test-classes/" />
+    <ignored path=".idea/dataSources.local.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CommittedChangesCache">
+    <option name="initialCount" value="128" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="DatabaseView">
+    <option name="FLATTEN" value="false" />
+    <option name="GROUP_BY_TYPE" value="true" />
+    <option name="SORT_CHILDREN" value="false" />
+    <option name="SHOW_TABLE_CONSTRAINTS" value="true" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="bakery" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="desktop.ext.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/desktop.ext.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.7298938">
+              <caret line="536" column="6" selection-start-line="536" selection-start-column="6" selection-end-line="536" selection-end-column="6" />
+              <folding>
+                <element signature="e#12005#12053#0" expanded="true" />
+                <element signature="e#12645#13032#0" expanded="true" />
+                <element signature="e#17547#17583#0" expanded="true" />
+                <marker date="1460641375000" expanded="true" signature="63297:63309" placeholder="..." />
+                <marker date="1460641375000" expanded="true" signature="64815:64827" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="AnnotationType" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="true" />
+    </FindUsagesManager>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/component.xhtml" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/winmain.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/desktop.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/uievents.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/borders.css" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/borders.html" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/user-menu.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/clocks.css" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/scripts.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/extjsf.js" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/price-lists/info.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/.goods-tree.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/retrade.js" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/SU.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/history-menu.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/desktop.js" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/desktop.ext.js" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBowerSettings">
+    <exe-path />
+    <config-path />
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Bundled (Maven 3)" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState />
+  </component>
+  <component name="NamedScopeManager">
+    <order />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="431" />
+    <option name="y" value="40" />
+    <option name="width" value="1117" />
+    <option name="height" value="972" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Code style issuesJavaScript</id>
+          </State>
+          <State>
+            <id>JavaScript</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>UnterminatedStatementJS</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="2" id="Add" />
+    <ConfirmationsSetting value="2" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectStructureProblems">
+    <ignored-problems>
+      <problem id="library-invalid-source-javadoc-path(library:project:compile-auth)" />
+    </ignored-problems>
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tverts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tverts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="faces" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value=".items" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value=".tests" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="recentsLimit" value="5" />
+    <property name="restartRequiresConfirmation" value="true" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="dynamic.classpath" value="false" />
+    <property name="OverrideImplement.combined" value="true" />
+    <property name="OverrideImplement.overriding.sorted" value="false" />
+    <property name="options.lastSelected" value="editor.preferences.completion" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../extjsf/build/setup.ivy" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="52" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="66" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="69" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="31" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth4" value="103" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder4" value="4" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth5" value="724" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder5" value="5" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth0" value="105" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth1" value="101" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth2" value="106" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth3" value="101" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder3" value="3" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth4" value="109" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder4" value="4" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth5" value="523" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder5" value="5" />
+    <property name="GenerateAntBuildDialog.generateSingleFile" value="false" />
+    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
+    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
+    <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
+    <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="false" />
+    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="bakery" />
+    <property name="FullScreen" value="false" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/xroot/src/main/java" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.General" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://D:/Anton/Sources/bakery/retrade/src/main/webapp/resources/bootstrap/animate.css" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.tverts.servlet.listeners" />
+      <recent name="com.tverts.secure" />
+      <recent name="com.tverts.retrade.web.views.invoices" />
+      <recent name="com.tverts.retrade.domain.prices" />
+      <recent name="com.tverts.support.streams" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items" />
+      <recent name="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/selset" />
+      <recent name="D:\Anton\Sources\bakery\retrade\src\main\webapp\resources\.tests" />
+      <recent name="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods" />
+      <recent name="D:\Anton\Sources\bakery\xroot\src\main\java\com\tverts\jsx\zet" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/retrade/src/main/webapp/retrade" />
+      <recent name="$PROJECT_DIR$/retrade/src/main/webapp/resources" />
+      <recent name="D:\Anton\Sources\bakery\retrade\src\main\webapp\resources" />
+      <recent name="$PROJECT_DIR$/retrade/src/main/webapp/bootstrap/.tests" />
+      <recent name="$PROJECT_DIR$/retrade/src/main/webapp" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.tverts.support" />
+      <recent name="com.tverts.endure.core" />
+      <recent name="com.tverts.endure" />
+      <recent name="com.tverts.hibery" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Remote.Omicron @64.14">
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="JarApplication" factoryName="JAR Application">
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="192.168.0.34" />
+      <option name="PORT" value="5000" />
+      <method />
+    </configuration>
+    <configuration default="true" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <pass-parent-envs>true</pass-parent-envs>
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="TestJsX" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+      <module name="xroot" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="com.tverts.jsx" />
+      <option name="MAIN_CLASS_NAME" value="com.tverts.jsx.TestJsX" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Omicron @64.14" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="192.168.64.14" />
+      <option name="PORT" value="5000" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="5000" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="false" />
+      </RunnerSettings>
+      <ConfigurationWrapper RunnerId="Debug" />
+      <method />
+    </configuration>
+    <list size="2">
+      <item index="0" class="java.lang.String" itemvalue="JUnit.TestJsX" />
+      <item index="1" class="java.lang.String" itemvalue="Remote.Omicron @64.14" />
+    </list>
+    <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
+      <Host>localhost</Host>
+      <Port>5050</Port>
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="StructureViewFactory">
+    <option name="ACTIVE_ACTIONS" value=",SHOW_PROPERTIES" />
+  </component>
+  <component name="SvnConfiguration" maxAnnotateRevisions="256" cleanupOnStartRun="true">
+    <configuration>$USER_HOME$/.subversion</configuration>
+    <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/auth" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/auth" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/retrade" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/retrade" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/xroot/src" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/xroot/src" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/auth" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/auth" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/xroot/src" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/xroot/src" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="431" y="40" width="1117" height="972" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34199584" sideWeight="0.5057851" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293023" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24899599" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32983795" sideWeight="0.50441504" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Spring" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33222958" sideWeight="0.57086223" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37306842" sideWeight="0.4281467" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="JSF" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32983795" sideWeight="0.495585" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27262694" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.307947" sideWeight="0.5422794" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2937853" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3289183" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24186046" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3748837" sideWeight="0.49421486" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44260487" sideWeight="0.5735294" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32735962" sideWeight="0.56618357" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24012475" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.49950346" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.307947" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <option name="SHOW_DIRTY_RECURSIVELY" value="true" />
+    <option name="MAXIMUM_HISTORY_ROWS" value="256" />
+    <MESSAGE value="ui-101 [stable]: tuned auto-calculation of a grid rows number." />
+    <MESSAGE value="ui-102 [stable]: fixed paging of the Selection Set window." />
+    <MESSAGE value="ui-102 [stable]: fixed dangling of Selection Set menu?" />
+    <MESSAGE value="ui-102 [stable]: provided proper defaults of Selection Set window when displaying it for the first time by pressing Properties in the menu (not pressing the Basket item before that)." />
+    <MESSAGE value="ui-102 [stable]: refactored Measure Unit edit form layout." />
+    <MESSAGE value="ui-102 [stable]: added basic support for Measure Unit class code JSON catalogue." />
+    <MESSAGE value="ui-102 [beta]: using Measure class codes catalogue in two fields: code and class code. Going to the table..." />
+    <MESSAGE value="ui-101 [stable]: fixed value input referencing from the fields, not formatters and converters are supported." />
+    <MESSAGE value="ui-102 [stable]: displaying table with Measure classes instead of the drop lists." />
+    <MESSAGE value="ui-102 [stable]: auto-paging of the grids by the center row, not top." />
+    <MESSAGE value="ui-103 [alpha]: created desktop history icon and placed it on the top-bar." />
+    <MESSAGE value="ui-102 [stable]: fixed updating default Selection Set window properties when opening in the edit mode." />
+    <MESSAGE value="ui-103 [alpha]: excluded '_dc' parameter of Ext JS requests." />
+    <MESSAGE value="ui-103 [alpha]: do hide Selection Set window instead of destroying it." />
+    <MESSAGE value="ui-103 [alpha]: merged selset-win into selset-ui to reduce loading rounds from 2 to 1 when first opening window." />
+    <MESSAGE value="ui-103 [alpha]: removed obsolete selset-win and selset-ui." />
+    <MESSAGE value="ui-103 [stable]: fixed found errors of Selection Set displaying and editing." />
+    <MESSAGE value="ui-103 [alpha]: introduced Desktop History class and coupled it with the back panels. Going to the windows..." />
+    <MESSAGE value="ui-103 [alpha]: taking history for the windows..." />
+    <MESSAGE value="ui-103 [alpha]: displaying menu of Desktop History." />
+    <MESSAGE value="ui-103 [alpha]: updated look of the user menu and the desktop history border." />
+    <MESSAGE value="ui-103 [beta]: displaying Desktop history grid." />
+    <MESSAGE value="ui-103 [beta]: implemented reopening history windows (not desktop panels, for now). Height og history menu is adaptive up to 10 records." />
+    <MESSAGE value="ui-103 [beta]: proper initial height of Desktop history menu." />
+    <MESSAGE value="ui-103 [beta]: replaced bullet separator with smaller symbol." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-103 [beta]: replaced bullet separator with smaller symbol." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <option name="time" value="799" />
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Remote">
+        <watch expression="request.getValue().toString()" language="JAVA" custom="" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+    <buildFile url="file://$PROJECT_DIR$/xroot/build.xml">
+      <targetFilters>
+        <filter targetName="xroot-all" isVisible="false" />
+      </targetFilters>
+      <expanded value="false" />
+    </buildFile>
+    <buildFile url="file://$PROJECT_DIR$/retrade/build.xml">
+      <targetFilters>
+        <filter targetName="retrade-all" isVisible="false" />
+        <filter targetName="compile" isVisible="false" />
+        <filter targetName="compile-xroot" isVisible="false" />
+        <filter targetName="compile-retrade" isVisible="false" />
+        <filter targetName="compile-tests" isVisible="false" />
+        <filter targetName="compile-tests-xroot" isVisible="false" />
+        <filter targetName="compile-tests-retrade" isVisible="false" />
+        <filter targetName="package" isVisible="false" />
+        <filter targetName="copy-retrade-module" isVisible="false" />
+        <filter targetName="copy-xroot-module" isVisible="false" />
+        <filter targetName="explode-rsync" isVisible="false" />
+        <filter targetName="init-ivy" isVisible="false" />
+        <filter targetName="init-ivy-module" isVisible="false" />
+        <filter targetName="init-ivy-share" isVisible="false" />
+        <filter targetName="init-ivy-base" isVisible="false" />
+        <filter targetName="init-cmp" isVisible="false" />
+        <filter targetName="init-cmp-module" isVisible="false" />
+        <filter targetName="init-cmp-share" isVisible="false" />
+        <filter targetName="init-cmp-base" isVisible="false" />
+        <filter targetName="init-tst" isVisible="false" />
+        <filter targetName="init-tst-module" isVisible="false" />
+        <filter targetName="init-tst-share" isVisible="false" />
+        <filter targetName="init-tst-base" isVisible="false" />
+        <filter targetName="init-run" isVisible="false" />
+        <filter targetName="init-run-module" isVisible="false" />
+        <filter targetName="init-run-share" isVisible="false" />
+        <filter targetName="init-run-base" isVisible="false" />
+        <filter targetName="init-dev" isVisible="false" />
+        <filter targetName="init-dev-retrieve" isVisible="false" />
+        <filter targetName="init-dev-merge-libs-condition" isVisible="false" />
+        <filter targetName="init-dev-merge-libs" isVisible="false" />
+        <filter targetName="init-dev-retrieve-share" isVisible="false" />
+        <filter targetName="clean-all" isVisible="false" />
+        <filter targetName="clean" isVisible="false" />
+        <filter targetName="clean-caches" isVisible="false" />
+        <filter targetName="clean-dev" isVisible="false" />
+        <filter targetName="clean-libs" isVisible="false" />
+        <filter targetName="clean-target" isVisible="false" />
+        <filter targetName="clean-classes" isVisible="false" />
+        <filter targetName="compile-module" isVisible="false" />
+        <filter targetName="compile-tests-module" isVisible="false" />
+        <filter targetName="resources" isVisible="false" />
+        <filter targetName="resources-module" isVisible="false" />
+        <filter targetName="resources-tests" isVisible="false" />
+        <filter targetName="resources-tests-module" isVisible="false" />
+        <filter targetName="package-web-module" isVisible="false" />
+        <filter targetName="copy-web-module" isVisible="false" />
+        <filter targetName="delete-web-dir" isVisible="false" />
+      </targetFilters>
+      <expanded value="true" />
+    </buildFile>
+    <buildFile url="file://$PROJECT_DIR$/auth/build.xml">
+      <targetFilters>
+        <filter targetName="auth-all" isVisible="false" />
+        <filter targetName="init-ivy-module" isVisible="false" />
+        <filter targetName="explode-rsync" isVisible="false" />
+        <filter targetName="explode-rsync-win" isVisible="false" />
+        <filter targetName="explode-rsync-general" isVisible="false" />
+        <filter targetName="init-ivy" isVisible="false" />
+        <filter targetName="init-ivy-share" isVisible="false" />
+        <filter targetName="init-ivy-base" isVisible="false" />
+        <filter targetName="init-cmp" isVisible="false" />
+        <filter targetName="init-cmp-module" isVisible="false" />
+        <filter targetName="init-cmp-share" isVisible="false" />
+        <filter targetName="init-cmp-base" isVisible="false" />
+        <filter targetName="init-tst" isVisible="false" />
+        <filter targetName="init-tst-module" isVisible="false" />
+        <filter targetName="init-tst-share" isVisible="false" />
+        <filter targetName="init-tst-base" isVisible="false" />
+        <filter targetName="init-run" isVisible="false" />
+        <filter targetName="init-run-module" isVisible="false" />
+        <filter targetName="init-run-share" isVisible="false" />
+        <filter targetName="init-run-base" isVisible="false" />
+        <filter targetName="init-dev" isVisible="false" />
+        <filter targetName="init-dev-retrieve" isVisible="false" />
+        <filter targetName="init-dev-merge-libs-condition" isVisible="false" />
+        <filter targetName="init-dev-merge-libs" isVisible="false" />
+        <filter targetName="init-dev-retrieve-share" isVisible="false" />
+        <filter targetName="clean-all" isVisible="false" />
+        <filter targetName="clean" isVisible="false" />
+        <filter targetName="clean-caches" isVisible="false" />
+        <filter targetName="clean-dev" isVisible="false" />
+        <filter targetName="clean-libs" isVisible="false" />
+        <filter targetName="clean-target" isVisible="false" />
+        <filter targetName="clean-classes" isVisible="false" />
+        <filter targetName="compile" isVisible="false" />
+        <filter targetName="compile-module" isVisible="false" />
+        <filter targetName="compile-tests" isVisible="false" />
+        <filter targetName="compile-tests-module" isVisible="false" />
+        <filter targetName="resources" isVisible="false" />
+        <filter targetName="resources-module" isVisible="false" />
+        <filter targetName="resources-tests" isVisible="false" />
+        <filter targetName="resources-tests-module" isVisible="false" />
+        <filter targetName="package" isVisible="false" />
+        <filter targetName="package-web-module" isVisible="false" />
+        <filter targetName="copy-web-module" isVisible="false" />
+        <filter targetName="delete-web-dir" isVisible="false" />
+      </targetFilters>
+      <expanded value="false" />
+    </buildFile>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetbor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5644916">
+          <caret line="202" column="29" selection-start-line="202" selection-start-column="29" selection-end-line="202" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/user-menu.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7693523">
+          <caret line="123" column="20" selection-start-line="123" selection-start-column="20" selection-end-line="123" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/clocks.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13134658">
+          <caret line="54" column="48" selection-start-line="54" selection-start-column="41" selection-end-line="54" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/selset-ui.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5465909">
+          <caret line="306" column="18" selection-start-line="296" selection-start-column="4" selection-end-line="306" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.28181818">
+          <caret line="348" column="65" selection-start-line="348" selection-start-column="65" selection-end-line="348" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/extux.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2982456">
+          <caret line="388" column="0" selection-start-line="388" selection-start-column="0" selection-end-line="388" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/datas/my-reports.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2375">
+          <caret line="137" column="58" selection-start-line="137" selection-start-column="6" selection-end-line="137" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/scripts.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36704546">
+          <caret line="230" column="2" selection-start-line="230" selection-start-column="2" selection-end-line="230" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/extjsf.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.103186645">
+          <caret line="435" column="18" selection-start-line="435" selection-start-column="6" selection-end-line="435" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/price-lists/info.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.37603992">
+          <caret line="197" column="39" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/extjs/ext-all-debug.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334">
+          <caret line="111123" column="33" selection-start-line="111123" selection-start-column="33" selection-end-line="111123" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/.goods-tree.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3327787">
+          <caret line="1058" column="59" selection-start-line="1058" selection-start-column="59" selection-end-line="1058" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/SU.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.0584989">
+          <caret line="524" column="29" selection-start-line="524" selection-start-column="6" selection-end-line="524" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/retrade.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.8532009">
+          <caret line="1575" column="45" selection-start-line="1575" selection-start-column="45" selection-end-line="1575" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/history-menu.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7227273">
+          <caret line="123" column="82" selection-start-line="123" selection-start-column="82" selection-end-line="123" selection-end-column="82" />
+          <folding>
+            <marker date="1460640671000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1460640671000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1460640671000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1460640671000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1460640671000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1460640671000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1460640671000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1460640671000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1460640671000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1460640671000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1460640671000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640671000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640671000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640671000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640671000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640671000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640671000" expanded="true" signature="-1:-1" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/desktop.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6192053">
+          <caret line="1272" column="9" selection-start-line="1272" selection-start-column="9" selection-end-line="1272" selection-end-column="9" />
+          <folding>
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/*...*/" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Desktop is a root controller of the entire page built ...*/" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{&quot;className&quot;: 'extjsf.Desktop'...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Loads content of ExtJSF generated Binds ...*/" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Swaps the content of the panels given. ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Returns the controller of the panel defined ...*/" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/*...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Registers panel Bind in the desktop. Leading ...*/" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/*...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Activates the desktop after installing ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Registers or returns the controller of desktop panel ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Ready point is an extension point added to the desktop ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Adds Desktop callback waiting all ready ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Strategy that handles collapsing of a Desktop panels. ...*/" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{&quot;className&quot;: 'extjsf.Desktop.Collapsing'...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Controller of a Desktop region panel. Instances ...*/" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{&quot;className&quot;: 'extjsf.Desktop.Region'...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Returns or alters the position of the panel. ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Assigns or returns Bind of the panel. ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Assigns or returns Bind of the extension ...*/" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/*...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Binds processor of inserting-removing the main ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Extension point to add root panel controls ...*/" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/*...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** The panel to insert the content components ...*/" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/*...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** If set, void panel is displayed when ...*/" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/*...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Tells whether to show void panel: else panels ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Checks whether the panel is void and ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="[...]" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Each root panel' Bind has has an instance of this class ...*/" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{&quot;className&quot;: 'extjsf.Desktop.Panel'...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Required configuration options are: ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Returns name of ExtJSF Domain. ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Returns Bind of the panel this ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Assigns or returns the name of the desktop ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Returns controller of the related Desktop ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Takes two forms. First, when the first argument ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Inserts the controls of this panel into the Desktop. ...*/" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Removes the panel from the region panel of the Desktop ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Before close callback just the registration of ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Override this method to add tool to create ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{&quot;left&quot;: 'Передвинуть панель в левую область'...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{&quot;xtype&quot;: 'tool'...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Private. Inserts the components of panel. ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Private. Docks component (of the bind) ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Private. Each ExtJSF component generates ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Private. Removes nodes from the content panel ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Inserts or removes menu items to the top-bar ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Strategy that extends component loader to load ...*/" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Returns domain string from the options. ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Returns desktop region position from the options ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Component to load to is content panel of ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Override this method to add URL infix specific ...*/" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="/** Create Desktop instance only after all extended ...*/" />
+            <marker date="1460640932000" expanded="true" signature="-1:-1" placeholder="//..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/desktop.ext.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7298938">
+          <caret line="536" column="6" selection-start-line="536" selection-start-column="6" selection-end-line="536" selection-end-column="6" />
+          <folding>
+            <element signature="e#12005#12053#0" expanded="true" />
+            <element signature="e#12645#13032#0" expanded="true" />
+            <element signature="e#17547#17583#0" expanded="true" />
+            <marker date="1460641375000" expanded="true" signature="63297:63309" placeholder="..." />
+            <marker date="1460641375000" expanded="true" signature="64815:64827" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>ReTrade RSync @64.14</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Hibernate</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>Node.js</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>retrade</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>runtime-xroot</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

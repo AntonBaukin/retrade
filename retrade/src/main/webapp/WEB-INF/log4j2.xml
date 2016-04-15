@@ -1,0 +1,229 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<Configuration packages = 'com.tverts.support.log4j'>
+
+  <Appenders>
+
+    <File name = 'hibernate' append = 'false' bufferSize = '512'
+      fileName = '${sys:catalina.base}/logs/retrade_hbm.log'>
+
+      <PatternLayout pattern = '%-5p %d{HH:mm:ss.SSS} %c{1}: %m%n'/>
+      <filters>
+        <ThresholdFilter level = 'INFO'/>
+      </filters>
+    </File>
+
+    <File name = 'spring' append = 'false' bufferSize = '512'
+      fileName = '${sys:catalina.base}/logs/retrade_spring.log'>
+
+      <PatternLayout pattern = '%-5p %d{HH:mm:ss.SSS} %c{1}: %m%n'/>
+      <filters>
+        <ThresholdFilter level = 'INFO'/>
+      </filters>
+    </File>
+
+    <File name = 'services' append = 'false' bufferSize = '512'
+      fileName = '${sys:catalina.base}/logs/retrade_services.log'>
+
+      <PatternLayout pattern = '%-5p %d{HH:mm:ss.SSS} %c{1}: %m%n'/>
+      <filters>
+        <ThresholdFilter level = 'INFO'/>
+      </filters>
+    </File>
+
+    <File name = 'shunts' append = 'false' bufferSize = '1024'
+      fileName = '${sys:catalina.base}/logs/retrade_shunts.log'>
+
+      <PatternLayout pattern = '%-5p %d{HH:mm:ss.SSS} %c{1}: %m%n'/>
+    </File>
+
+    <File name = 'genesis' append = 'false' bufferSize = '1024'
+      fileName = '${sys:catalina.base}/logs/retrade_genesis.log'>
+
+      <PatternLayout pattern = '%-5p %d{HH:mm:ss.SSS} %c{1}: %m%n'/>
+    </File>
+
+    <File name = 'genesis.json' append = 'false' bufferSize = '1024'
+      fileName = '${sys:catalina.base}/logs/retrade_genesis.json'>
+
+      <FastJSONLayout/>
+    </File>
+
+    <File name = 'debug' append = 'false' bufferSize = '2048'
+      fileName = '${sys:catalina.base}/logs/retrade_debug.log'>
+
+      <PatternLayout pattern = '%-5p %d{HH:mm:ss.SSS} %c{1}: %m%n'/>
+    </File>
+
+    <File name = 'debug.json' append = 'false' bufferSize = '2048'
+      fileName = '${sys:catalina.base}/logs/retrade_debug.json'>
+
+      <FastJSONLayout/>
+    </File>
+
+    <File name = 'other' append = 'false' bufferSize = '512'
+      fileName = '${sys:catalina.base}/logs/retrade_other.log'>
+
+      <PatternLayout pattern = '%-5p %d{HH:mm:ss.SSS} %c{1}: %m%n'/>
+      <filters>
+        <ThresholdFilter level = 'INFO'/>
+      </filters>
+    </File>
+  </Appenders>
+
+  <Loggers>
+
+    <!-- Spring -->
+
+    <Logger name = 'org.springframework'
+      level = 'INFO' additivity = 'false'>
+
+      <AppenderRef ref = 'spring'/>
+    </Logger>
+
+
+    <!-- Hibernate and Hibery -->
+
+    <Logger name = 'org.hibernate'
+      level = 'INFO' additivity = 'false'>
+
+      <AppenderRef ref = 'hibernate'/>
+    </Logger>
+
+    <Logger name = 'com.tverts.hibery'
+      level = 'INFO' additivity = 'false'>
+
+      <AppenderRef ref = 'hibernate'/>
+    </Logger>
+
+    <Logger name = 'com.tverts.hibery.sql'
+      level = 'INFO' additivity = 'false'>
+
+      <AppenderRef ref = 'hibernate'/>
+    </Logger>
+
+    <Logger name = 'org.hibernate.SQL'
+      level = 'OFF' additivity = 'false'>
+
+      <AppenderRef ref = 'hibernate'/>
+    </Logger>
+
+    <Logger name = 'com.tverts.endure.keys.KeysGenerator'
+      level = 'OFF' additivity = 'false'>
+
+      <AppenderRef ref = 'genesis'/>
+      <AppenderRef ref = 'genesis.json'/>
+    </Logger>
+
+
+    <!-- Genesis and Self-Shunts -->
+
+    <Logger name = 'com.tverts.genesis'
+      level = 'INFO' additivity = 'false'>
+
+      <AppenderRef ref = 'genesis'/>
+      <AppenderRef ref = 'genesis.json'/>
+    </Logger>
+
+    <Logger name = 'com.tverts.shunts'
+      level = 'INFO' additivity = 'false'>
+
+      <AppenderRef ref = 'shunts'/>
+    </Logger>
+
+
+    <!-- Services -->
+
+    <Logger name = 'com.tverts.system.services'
+      level = 'INFO' additivity = 'false'>
+
+      <AppenderRef ref = 'services'/>
+      <AppenderRef ref = 'debug'/>
+      <AppenderRef ref = 'debug.json'/>
+    </Logger>
+
+    <Logger name = 'com.tverts.exec.service.ExecRunService'
+      level = 'DEGUG' additivity = 'false'>
+
+      <AppenderRef ref = 'services'/>
+      <AppenderRef ref = 'debug'/>
+      <AppenderRef ref = 'debug.json'/>
+    </Logger>
+
+    <Logger name = 'com.tverts.genesis.GenesisService'
+      level = 'INFO' additivity = 'false'>
+
+      <AppenderRef ref = 'services'/>
+      <AppenderRef ref = 'genesis'/>
+      <AppenderRef ref = 'genesis.json'/>
+      <AppenderRef ref = 'debug'/>
+      <AppenderRef ref = 'debug.json'/>
+    </Logger>
+
+    <Logger name = 'com.tverts.system.services.SelfShuntService'
+      level = 'INFO' additivity = 'false'>
+
+      <AppenderRef ref = 'services'/>
+      <AppenderRef ref = 'shunts'/>
+    </Logger>
+
+
+    <!-- Actions and Execution -->
+
+    <Logger name = 'com.tverts.retrade.exec.api'
+      level = 'DEBUG' additivity = 'false'>
+
+      <AppenderRef ref = 'debug'/>
+      <AppenderRef ref = 'debug.json'/>
+      <AppenderRef ref = 'other'/>
+    </Logger>
+
+
+    <!-- Events and Secure -->
+
+    <Logger name = 'com.tverts.event'
+      level = 'DEBUG' additivity = 'false'>
+
+      <AppenderRef ref = 'debug'/>
+      <AppenderRef ref = 'debug.json'/>
+    </Logger>
+
+    <Logger name = 'com.tverts.secure'
+      level = 'DEBUG' additivity = 'false'>
+
+      <AppenderRef ref = 'debug'/>
+      <AppenderRef ref = 'debug.json'/>
+      <AppenderRef ref = 'other'/>
+    </Logger>
+
+
+    <!-- Debugging -->
+
+    <Logger name = 'com.tverts.debug'
+      level = 'DEBUG' additivity = 'false'>
+
+      <AppenderRef ref = 'debug'/>
+      <AppenderRef ref = 'debug.json'/>
+    </Logger>
+
+    <Logger name = 'com.tverts.timing'
+      level = 'DEBUG' additivity = 'false'>
+
+      <AppenderRef ref = 'debug'/>
+      <AppenderRef ref = 'debug.json'/>
+    </Logger>
+
+
+    <!-- Other -->
+
+    <Logger name = 'com.tverts'
+      level = 'INFO' additivity = 'false'>
+
+      <AppenderRef ref = 'other'/>
+    </Logger>
+
+    <Root level = 'INFO'>
+      <AppenderRef ref = 'other'/>
+    </Root>
+  </Loggers>
+</Configuration>

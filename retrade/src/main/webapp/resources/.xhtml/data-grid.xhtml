@@ -1,0 +1,61 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:fragment xmlns = 'http://www.w3.org/1999/xhtml'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'
+   xmlns:co = 'http://java.sun.com/jsf/composite'
+   xmlns:z  = 'uri:tverts.com'>
+
+  <co:interface>
+
+    <co:attribute name = 'coid' required = 'true'
+       type = 'java.lang.String'/>
+
+    <!--
+         Name of the Store Bind this grid it attached to.
+    -->
+    <co:attribute name = 'storeId' required = 'true'
+      type = 'java.lang.String'/>
+
+    <co:attribute name = 'selset' default = 'false'
+      type = 'java.lang.Boolean'/>
+
+    <co:facet name = 'grid-props'/>
+
+    <!--
+         Additional properties of the pager sub-component.
+         Effective only when grid's 'pager' is true.
+    -->
+    <co:facet name = 'pager-props'/>
+
+  </co:interface>
+
+  <co:implementation>
+
+    <div id = "#{cc.clientId}-#{cc.attrs.coid}-props" style = "display:none">
+      <co:renderFacet name = "grid-props"/>
+    </div>
+
+    <div id = "#{cc.clientId}-#{cc.attrs.coid}-pager-props" style = "display:none">
+      <co:renderFacet name = "pager-props"/>
+    </div>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+    extjsf.domain('${extDom}').
+      bind('#{cc.attrs.coid}', new extjsf.GridBind()).
+      ids('#{cc.clientId}').parent('#{cc.parent.attrs.coid}').
+      props({ margin: 0 }).readPropsNode().
+      props({ xtype: 'grid', store: "#{cc.attrs.storeId}" }).
+      scope(function(grid) {
+        grid.$raw().viewConfig = ZeT.extend(
+          { preserveScrollOnRefresh: true }, grid.$raw().viewConfig)
+
+        if('true' == "#{cc.attrs.selset}")
+          ReTrade.selset.grid('#{cc.attrs.coid}', '${extDom}')
+      }).install()
+
+    //]]>
+    </script>
+  </co:implementation>
+</ui:fragment>

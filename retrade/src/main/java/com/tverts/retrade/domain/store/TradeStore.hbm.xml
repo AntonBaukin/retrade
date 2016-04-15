@@ -1,0 +1,57 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.store'>
+
+  <union-subclass name = 'TradeStore' extends = 'com.tverts.endure.core.Entity'
+    table = 'retrade_trade_store' lazy = 'false'>
+
+
+    <!-- Domain -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_trade_store_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_trade_store_code'>
+
+        <comment>Domain where the Trade store is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code'>
+
+      <column name = 'ux_code' not-null = 'true' length = '64'
+        unique-key = 'ux_trade_store_code'>
+
+        <comment>Unique (within the Domain) code of the Trade store</comment>
+      </column>
+    </property>
+
+
+    <!-- Name -->
+
+    <property name = 'name'>
+
+      <column name = 'store_name' not-null = 'true' length = '512'>
+
+        <comment>The name of the Trade store</comment>
+      </column>
+    </property>
+
+
+    <!-- Remarks -->
+
+    <property name = 'remarks' type = 'text'>
+
+      <column name = 'remarks'>
+        <comment>Remarks on the Trade Store</comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>

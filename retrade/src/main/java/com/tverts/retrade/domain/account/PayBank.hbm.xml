@@ -1,0 +1,86 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.account'>
+
+  <joined-subclass name = 'PayBank' extends = 'PayWay' lazy = 'true'
+    table = 'retrade_pay_bank'>
+
+    <!-- Join Key -->
+
+    <key column = 'pk_pay_bank' foreign-key = 'fk_pay_bank'/>
+
+
+    <!-- Bank ID -->
+
+    <property name = 'bankId'>
+
+      <column name = 'bank_id' not-null = 'true' length = '32'>
+        <comment>Bank ID</comment>
+      </column>
+    </property>
+
+
+    <!-- Bank Name -->
+
+    <property name = 'bankName'>
+
+      <column name = 'bank_name' not-null = 'true' length = '1024'>
+        <comment>Bank Name</comment>
+      </column>
+    </property>
+
+
+    <!-- Bank Account -->
+
+    <property name = 'bankAccount'>
+
+      <column name = 'bank_account' not-null = 'true' length = '64'>
+        <comment>Correspondent account of the bank</comment>
+      </column>
+    </property>
+
+
+    <!-- Remittee Account -->
+
+    <property name = 'remitteeAccount'>
+
+      <column name = 'remittee_account' not-null = 'true' length = '64'>
+        <comment>Account of the remittee in the bank</comment>
+      </column>
+    </property>
+
+
+    <!-- Remittee Name -->
+
+    <property name = 'remitteeName'>
+
+      <column name = 'remittee_name' not-null = 'true' length = '2048'>
+        <comment>Name of the remittee</comment>
+      </column>
+    </property>
+
+
+    <!-- Remittee Tax ID -->
+
+    <property name = 'remitteeTaxId'>
+
+      <column name = 'remittee_taxid' length = '64'>
+        <comment>Tax ID of the remittee (optional)</comment>
+      </column>
+    </property>
+
+
+    <!-- Remittee Tax Code -->
+
+    <property name = 'remitteeTaxCode'>
+
+      <column name = 'remittee_taxcode' length = '64'>
+        <comment>Tax registration classification code of the remittee (optional)</comment>
+      </column>
+    </property>
+
+  </joined-subclass>
+</hibernate-mapping>

@@ -1,0 +1,144 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.payment'>
+
+  <class name = 'PayOrder' abstract = 'true' table = 'retrade_pay_order'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_pay_order'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_pay_order_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Unity -->
+
+    <many-to-one name = 'unity' cascade = 'save-update'
+      foreign-key = 'fk_pay_order_mirror'>
+
+      <column name = 'fk_unity' unique-key = 'ux_pay_order_unity'>
+
+        <comment>The (unique) Unified Mirror of the Payment Order</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Domain -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_pay_order_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        index = 'ix_pay_order_date, ix_pay_order_code'>
+
+        <comment>The Domain of Unity owning this Payment Order</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Timestamp -->
+
+    <property name = 'time' type = 'timestamp'>
+
+      <column name = 'pay_order_time' not-null = 'true'
+        index = 'ix_pay_order_time'>
+
+        <comment>Timestamp of the Payment Order</comment>
+      </column>
+    </property>
+
+
+    <!-- Code -->
+
+    <property name = 'code'>
+
+      <column name = 'pay_order_code' not-null = 'true'
+        index = 'ix_pay_order_code'>
+
+        <comment>
+          Code of the Payment Order.
+          (Not forced to be Domain unique.)
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Total Income -->
+
+    <property name = 'totalIncome' type = 'big_decimal'>
+
+      <column name = 'total_income' precision = '22' scale = '10'>
+
+        <comment>
+          Total (expected) amount of money the Domain
+          would get to its accounts
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Total Expense -->
+
+    <property name = 'totalExpense' type = 'big_decimal'>
+
+      <column name = 'total_expense' precision = '22' scale = '10'>
+
+        <comment>
+          Total (expected) amount of money the Domain
+          would pay from its accounts
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Actual Income -->
+
+    <property name = 'actualIncome' type = 'big_decimal'>
+
+      <column name = 'actual_income' precision = '14' scale = '2'>
+
+        <comment>
+          Actual amount of money the Domain
+          got to its accounts
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Actual Expense -->
+
+    <property name = 'actualExpense' type = 'big_decimal'>
+
+      <column name = 'actual_expense' precision = '14' scale = '2'>
+
+        <comment>
+          Actual amount of money the Domain
+          payed from its accounts
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Remarks -->
+
+    <property name = 'remarks' type = 'text'>
+
+      <column name = 'pay_order_remarks'>
+        <comment>Comments on this Payment Order</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

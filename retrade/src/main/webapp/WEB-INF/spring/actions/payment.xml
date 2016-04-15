@@ -1,0 +1,102 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Action Bulders for Invoice Bill                =
+    +================================================-->
+
+  <bean name  = 'retradeInvoiceBillBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.payment.InvoiceBill'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.payment.ActInvoiceBill'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Action Bulders for Firm Payment Order          =
+    +================================================-->
+
+  <bean name  = 'retradeFirmOrderBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.payment.FirmOrder'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.payment.ActFirmOrder'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Action Bulders for Accounts                    =
+    +================================================-->
+
+  <bean name  = 'retradeAccountBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.account.Account'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.account.ActAccount'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Action Bulders for Payment Destinations        =
+    +================================================-->
+
+  <bean name  = 'retradePayWayBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.account.PayWay'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.account.ActPayWay'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Action Bulders for Payment Links               =
+    +================================================-->
+
+  <bean name  = 'retradePayItBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.account.PayIt'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.account.ActPayIt'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Action Bulders for Settling (Payment)          =
+    +================================================-->
+
+  <bean name  = 'retradeSettlingBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.payment.Settling'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.payment.ActSettling'/>
+    </property>
+  </bean>
+
+</beans>

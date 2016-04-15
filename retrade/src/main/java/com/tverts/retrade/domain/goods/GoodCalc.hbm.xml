@@ -1,0 +1,102 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.goods'>
+
+  <union-subclass name = 'GoodCalc' table = 'retrade_good_calc'
+    extends = 'com.tverts.endure.OxNumericTxBase'>
+
+
+    <!-- Good Unit -->
+
+    <many-to-one name = 'goodUnit' foreign-key = 'fk_good_calc_unit'>
+
+      <column name = 'fk_good_unit' not-null = 'true'
+        unique-key = 'ux_good_calc_unit'>
+
+        <comment>The Good Unit this Calculation is for</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Super Good Unit -->
+
+    <many-to-one name = 'superGood' foreign-key = 'fk_good_calc_super'>
+
+      <column name = 'fk_super_good' index = 'ix_good_calc_super'>
+
+        <comment>The Good Unit originating this Good Calculation</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Open Timestamp -->
+
+    <property name = 'openTime' type = 'timestamp'>
+
+      <column name = 'open_time' not-null = 'true'>
+        <comment>The timestamp this Calculation was made effective</comment>
+      </column>
+    </property>
+
+
+    <!-- Close Timestamp -->
+
+    <property name = 'closeTime' type = 'timestamp'>
+
+      <column name = 'close_time' unique-key = 'ux_good_calc_unit'>
+
+        <comment>
+          The timestamp this Calculation was closed. Only one Calculation
+          for a Good Unit may be opened at the same time (is being null),
+          and it is referred by the Good owning it.
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Semi-Ready Flag -->
+
+    <property name = 'semiReady'>
+
+      <column name = 'semi_ready' not-null = 'true'>
+        <comment>
+          This flag tells that the Good Unit is a product and
+          the source for other products at the same time.
+          Such a Goods have special meaning in the system.
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Calculation Parts [bi, list, master] -->
+
+    <list name = 'parts' cascade = 'save-update' lazy = 'true'>
+
+      <key column = 'fk_good_calc' not-null = 'true'/>
+
+      <list-index>
+        <column name = 'part_index'>
+          <comment>The index of the Part in the Calculation list</comment>
+        </column>
+      </list-index>
+
+      <one-to-many class = 'CalcPart'/>
+    </list>
+
+  </union-subclass>
+</hibernate-mapping>
+
+<!--
+
+select gu.pk_entity, gu.ux_code, count(gc.pk_good_calc) from
+  retrade_good_unit gu
+    join
+  retrade_good_calc gc
+    on (gc.fk_good_unit = gu.pk_entity)
+group by gu.pk_entity, gu.ux_code
+having (count(gc.pk_good_calc) > 1)
+
+-->

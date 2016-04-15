@@ -1,0 +1,111 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+
+  <!--=================================================
+    =  Action Bulders for MeasureUnit                 =
+    +================================================-->
+
+  <bean name  = 'retradeMeasureUnitBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.goods.MeasureUnit'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.goods.ActMeasureUnit'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Action Bulders for PriceList                   =
+    +================================================-->
+
+  <bean name  = 'retradePriceListBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.prices.PriceListEntity'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.prices.ActPriceList'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Action Bulders for Good Unit                   =
+    +================================================-->
+
+  <bean name  = 'retradeGoodUnitBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.goods.GoodUnit'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.goods.ActGoodUnit'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Unified Attr Type Action Bulders               =
+    +================================================-->
+
+  <bean name  = 'retradeGoodAttrTypesBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.core.AttrType'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.goods.ActGoodAttrType'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Action Bulders for Good Calculaions            =
+    +================================================-->
+
+  <bean name  = 'retradeGoodCalcBuilders'
+        class = 'com.tverts.retrade.domain.goods.ActGoodCalc'/>
+
+
+  <!--=================================================
+    =  Action Bulders for TradeStore                  =
+    +================================================-->
+
+  <bean name  = 'retradeTradeStoreBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.store.TradeStore'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.store.ActTradeStore'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Action Bulders for RepriceDoc                  =
+    +================================================-->
+
+  <bean name  = 'retradeRepriceBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.prices.RepriceDoc'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.prices.ActReprice'/>
+    </property>
+  </bean>
+
+</beans>

@@ -1,0 +1,469 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesMeasuresView}"/>
+
+${v.forceSecure('edit: goods')}
+${v.checkModelRequested}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+    extjsf.co('window', '${extDom}').
+      setTitle("#{z:jss(v.editWindowTitle)}")
+
+  //]]>
+  </script>
+
+  <f:facet name = "extjs-props">
+    layout: { type: 'vbox', align: 'stretch' },
+    bodyCls: 'retrade-back-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: { type: 'hbox', align: 'middle' },
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar">
+
+    <!-- [cancel edit button] -->
+
+    <x:action-button coid = "${z:vid(v, 'cancel')}"
+      action = "#{v.gotoCancelEdit}" modelView = "#{v}">
+
+      <f:facet name = "extjs-props">
+        cls: 'ux-btn-red', text: 'Отмена'
+      </f:facet>
+    </x:action-button>
+
+
+   <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+     <f:facet name = "extjs-props">
+       xtype: 'panel', flex: 1, border: false,
+       bodyCls: 'retrade-toolbar-inline-panel'
+     </f:facet>
+   </x:component>
+
+
+   <!-- [submit button] -->
+
+   <x:component coid = "${z:vid(v, 'submit')}">
+    <f:facet name = "extjs-props">
+      xtype:'button', text: 'Сохранить',
+      cls: 'ux-btn-green'
+    </f:facet>
+   </x:component>
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [measure edit form -->
+
+  <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'measure-form')}">
+
+    <f:facet name = "extjs-props">
+      border: false, bodyPadding: extjsf.pt(4),
+      bodyCls: 'retrade-content-panel',
+      layout: { type: 'table', columns: 2 }
+    </f:facet>
+
+
+    <!-- [measure code] -->
+    <x:text-field coid = "${z:vid(v, 'code')}"
+      value = "#{v.measureView.code}">
+
+      <f:facet name = "extjs-props">
+        cellCls: 'retrade-form-value-cell retrade-width-50pc',
+        width: '50%', allowBlank: false, validator: function()
+        {
+          return extjsf.bind("${z:vid(v, 'code')}", '${extDom}').validityStatus || true
+        }
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Наименование',
+        cellCls: 'retrade-form-label-cell',
+        margin: extjsf.pts(0, 4, 0, 0)
+      </f:facet>
+    </x:text-field>
+
+
+    <!-- [measure name] -->
+    <x:text-field coid = "${z:vid(v, 'name')}"
+      value = "#{v.measureView.name}">
+
+      <f:facet name = "extjs-props">
+        allowBlank: false, width: '100%',
+        cellCls: 'retrade-form-value-cell retrade-width-100pc'
+      </f:facet>
+
+      <f:facet name = "label-props">
+        html: 'Полное&lt;br/&gt;наименование',
+        cellCls: 'retrade-form-label-cell',
+        margin: extjsf.pts(0, 4, 0, 0)
+      </f:facet>
+    </x:text-field>
+
+
+    <!-- [class code, unit + is fractional -->
+
+    <!-- [class code detached label] -->
+    <x:component coid = "${z:vid(v, 'class-unit-xlabel')}">
+      <f:facet name = "extjs-props">
+        xtype: 'label', text: 'Код ОКЕИ', cellCls: 'retrade-form-label-cell',
+        margin: extjsf.pts(0, 4, 0, 0), forId: ZeT.delay(function()
+        {
+          return extjsf.bind("${z:vid(v, 'class-code')}", '${extDom}').$node_id()
+        })
+      </f:facet>
+    </x:component>
+
+
+    <x:component coid = "${z:vid(v, '_class_code_unit_fractional')}">
+      <f:facet name = "extjs-props">
+        border: false, margin: extjsf.pts(4, 0, 0, 0),
+        bodyCls: 'retrade-transparent-panel',
+        layout: { type: 'hbox', align: 'middle' }
+      </f:facet>
+
+      <!-- [class code] -->
+      <x:text-field coid = "${z:vid(v, 'class-code')}"
+       value = "#{v.measureView.classCode}">
+
+        <f:facet name = "extjs-props">
+          flex: 1, maskRe: retrade.rinteger,
+          cls: 'retrade-info-title-label'
+        </f:facet>
+      </x:text-field>
+
+
+      <!-- [class unit] -->
+      <x:text-field coid = "${z:vid(v, 'class-unit')}"
+        value = "#{v.measureView.classUnit}">
+
+        <f:facet name = "extjs-props">
+          flex: 1, cls: 'retrade-info-title-label',
+          maskRe: retrade.#{(v.measureView.fractional)?('rdecimal'):('rinteger')},
+          validator: ZeT.fbind(retrade.#{(v.measureView.fractional)?('vvolume'):('vivolume')}, retrade, { blank: false })
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'коэфф.', cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 4, 0, 6)
+        </f:facet>
+
+        <f:converter for = "valueInput"
+          converterId = "com.tverts:fmt:decimal"/>
+      </x:text-field>
+
+
+      <!-- [is fractional] -->
+      <x:checkbox-field coid = "${z:vid(v, 'fractional')}"
+        value = "#{v.measureView.fractional}">
+
+        <f:facet name = "extjs-props">
+          margin: extjsf.pts(0, 0, 0, 6)
+        </f:facet>
+
+        <f:facet name = "label-props">
+          cls: 'retrade-info-title-label',
+          html: "&lt;span title = 'Десятичное значение позволяет задавать объём " +
+          "товара с точностью до тысячных долей. (Изменение значения не затронет " +
+          "существующие объёмы товаров.)'&gt;десятичное&lt;/span&gt;"
+        </f:facet>
+      </x:checkbox-field>
+    </x:component>
+
+    <!-- class code, unit + is fractional] -->
+
+
+    <!-- [special: submit action] -->
+
+    <h:commandButton id = "submit" value = "submit" style = "display: none;"
+      action = "#{v.doCommitEdit}"/>
+
+  </x:form-panel>
+
+
+  <x:action-call coid = "${z:vid(v, 'check-code-exists-script')}"
+    action = "#{v.doCheckCodeExists}" modelView = "${v}"/>
+
+
+  <!-- [class codes store + grid -->
+
+  <x:data-store storeId = "${z:vid(v, 'okei')}">
+    <f:facet name = "store-props">
+      model: 'retrade.model.OKEI',
+      sorters: [{ property: 'c', direction: 'ASC' }]
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      type: 'ajax', reader: { type: 'json' },
+      url: "${z:url('/retrade/okei.json')}"
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'grid')}"
+    storeId = "${z:vid(v, 'okei')}">
+
+    <f:facet name = "grid-props">
+      flex: 1, columns: ZeT.defined('retrade.columns.OKEI'), sortableColumns: true,
+      selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'})
+    </f:facet>
+  </x:data-grid>
+
+  <!-- class codes store + grid] -->
+
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  ZeT.scope(
+
+    extjsf.bind("${z:vid(v, 'measure-form')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'code')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'name')}", '${extDom}'),
+    extjsf.handler("${z:vid(v, 'check-code-exists-script')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'submit')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'cancel')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'fractional')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'class-code')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'class-unit')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'okei')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'grid')}", '${extDom}'),
+
+  function(form, code, name, codecheck, submit, cancel, fractional, cc, cu, okei, grid)
+  {
+    //~: validate code on change
+    code.on('change', function(f, v)
+    {
+      code.retradeCodeCheck = v; code.validityStatus = true;
+
+      if(ZeTS.trim(v) != v)
+        code.validityStatus = 'Код не может начинаться или оканчиваться пробелами!'
+      if(f.validate() !== true) return
+
+      ZeT.timeout(1000, function()
+      {
+        if(code.retradeCodeCheck != v) return
+        codecheck({params: { code : code.retradeCodeCheck }, failure: function()
+        {
+          code.validityStatus = ZeT.a(f.getActiveErrors())[0]
+          if(ZeTS.ises(code.validityStatus)) code.validityStatus = true
+          f.validate()
+        }})
+      })
+    })
+
+
+    //~: submit the form
+    extjsf.handler(submit, function()
+    {
+      if(!form.co().isValid()) return
+      form.submit({ command: 'submit', success: function()
+      {
+        extjsf.handler(cancel)()
+      }})
+    })
+
+
+    //<: filter the class codes grid
+
+    var filters = []
+    nullFilters()
+
+    function xValue(x)
+    {
+      x = x.toLocaleLowerCase()
+      return Lo.replace(x, /[^a-zа-я]+/, '')
+    }
+
+    function xModel(m, p)
+    {
+      var x = m.get('x' + p); if(x) return x
+      x = m.get(p); if(!x) return
+
+      m.set('x' + p, x = xValue(x))
+      return x
+    }
+
+    function nullFilters()
+    {
+      filters[0] = ZeT.fbindu(filterByClassCode, 0, null)
+      filters[1] = ZeT.fbindu(filterByCode, 0, null)
+      filters[2] = ZeT.fbindu(filterByName, 0, null)
+    }
+
+    function setFilters(f, i, s)
+    {
+      nullFilters()
+      filters[i] = ZeT.fbindu(f, 0, s)
+      okei.co().clearFilter()
+      okei.co().setFilters(filters)
+    }
+
+    function filterByClassCode(s, m)
+    {
+      if(!s) return true
+      return ZeTS.starts(m.get('c'), s)
+    }
+
+    function doFilterByClassCode()
+    {
+      var s = ZeTS.trim(cc.value())
+      if(ZeT.ises(s)) s = null
+      setFilters(filterByClassCode, 0, s)
+    }
+
+    function filterByCode(s, m)
+    {
+      if(!s) return true
+      var x = xModel(m, 'na')
+      return !!x && (x.indexOf(s) != -1)
+    }
+
+    function doFilterByCode()
+    {
+      var s = xValue(code.value())
+      if(ZeT.ises(s)) s = null
+      setFilters(filterByCode, 1, s)
+    }
+
+    function filterByName(s, m)
+    {
+      if(!s) return true
+      var x = xModel(m, 'n')
+      return !!x && (x.indexOf(s) != -1)
+    }
+
+    function doFilterByName()
+    {
+      var s = xValue(name.value())
+      if(ZeT.ises(s)) s = null
+      setFilters(filterByName, 2, s)
+    }
+
+    cc.on('focus',  doFilterByClassCode)
+    cc.on('change', doFilterByClassCode)
+
+    code.on('focus',  doFilterByCode)
+    code.on('change', doFilterByCode)
+
+    name.on('focus',  doFilterByName)
+    name.on('change', doFilterByName)
+
+    //>: filter the class codes grid
+
+
+    //~: assign fields by the grid
+    grid.on('select', function(g, m)
+    {
+      code.value(m.get('na'))
+      name.value(m.get('n'))
+      cc.value(m.get('c'))
+      if(ZeT.ises(cu.value()))
+        cu.value(fractional.value()?('1.00'):('1'))
+    })
+
+
+    function coerceClassUnit()
+    {
+      if(fractional.value())
+      {
+        //?: {value is integer}
+        if(!ZeT.ises(cu.value()) && ZeT.isi(parseFloat(cu.value())))
+          cu.value(retrade.round2str(2, parseFloat(cu.value())))
+      }
+      else
+      {
+        //?: {value is integer}
+        if(!ZeT.ises(cu.value()) && ZeT.isi(parseFloat(cu.value())))
+          cu.value(retrade.round2str(0, parseFloat(cu.value())))
+      }
+    }
+
+
+    //~: toggle fractional checkbox
+    fractional.on('change', function(f, v)
+    {
+      if(v) //?: {is fractional}
+      {
+        cu.co().validator = ZeT.fbind(retrade.vvolume, retrade, { blank: false })
+        cu.co().maskRe = retrade.rdecimal
+      }
+      else //~: is integer
+      {
+        cu.co().validator = ZeT.fbind(retrade.vivolume, retrade, { blank: false })
+        cu.co().maskRe = retrade.rinteger
+      }
+
+      coerceClassUnit()
+      cu.co().validate()
+    })
+
+
+    //~: optimization: process class codes in the background
+    okei.on('load', function(store)
+    {
+      var xind = 0, all = store.getRange()
+      var xint = setInterval(xModelNext, 0)
+
+      function xModelNext()
+      {
+        if(xind >= all.length)
+          return clearInterval(xint)
+
+        var m = all[xind++]
+
+        xModel(m, 'na')
+        xModel(m, 'n')
+      }
+    })
+  })
+
+  //]]>
+  </script>
+
+  <!-- measure edit form] -->
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "#{v.formValid}">
+
+      <ui:fragment rendered = "#{v.codeExists}">
+        <field target = "${z:vid(v, 'code')}">
+          <error>Указанный код уже используется в другой единице измерения!</error>
+        </field>
+      </ui:fragment>
+
+    </validation>
+  </ui:define>
+</ui:decorate>
+</ui:component>

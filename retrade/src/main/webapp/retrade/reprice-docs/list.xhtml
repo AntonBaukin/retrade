@@ -1,0 +1,194 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesRepricesView}"/>
+
+${v.forceSecure('view: price change documents')}
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+  <ui:define name = 'page_body'>
+
+  <x:desktop-panel coid = "${z:vid(v, 'reprices_root')}" position = "#{rootView.extjsPosition}">
+
+    <f:facet name = "extjs-props">
+      title: 'Документы изменения цен'
+    </f:facet>
+
+
+    <!-- [toolbar (filtering) -->
+
+    <f:facet name = "toolbar-props">
+      xtype: 'panel', bodyPadding: extjsf.pt(2),
+      layout: { type: 'hbox', align: 'middle' },
+      bodyCls: 'retrade-toolbar-inline-panel'
+    </f:facet>
+
+    <f:facet name = "toolbar">
+
+      <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', flex: 1, frame: false, border: false,
+          bodyCls: 'retrade-toolbar-inline-panel'
+        </f:facet>
+      </x:component>
+
+
+      <!-- [filter dates form -->
+
+      <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'filter-form-dates')}">
+
+        <f:facet name = "extjs-props">
+          frame: false, border: false,
+          bodyCls: 'retrade-transparent-panel',
+          layout: { type: 'hbox', align: 'middle' }
+        </f:facet>
+
+
+        <!-- [fixed documents checkbox -->
+
+        <x:checkbox-field coid = "${z:vid(v, 'fixed_only')}" value = "#{v.model.fixedOnly}">
+
+          <f:facet name = "label-props">
+            text: 'Проведённые', labelAlign: 'left',
+            margin: extjsf.pts(0, 4, 0, 0),
+            cls: 'retrade-info-title-label'
+          </f:facet>
+        </x:checkbox-field>
+
+        <!-- fixed documents checkbox] -->
+
+
+        <x:date-field coid = "${z:vid(v, 'min_date')}" value = "#{v.model.minDate}">
+
+          <f:facet name = "extjs-props">
+            width: extjsf.ex(15)
+          </f:facet>
+
+          <f:facet name = "label-props">
+            text: 'от', cls: 'retrade-info-title-label',
+            margin: extjsf.pts(0, 4, 0, 6)
+          </f:facet>
+        </x:date-field>
+
+        <x:date-field coid = "${z:vid(v, 'max_date')}" value = "#{v.model.maxDate}">
+
+          <f:facet name = "extjs-props">
+            width: extjsf.ex(15)
+          </f:facet>
+
+          <f:facet name = "label-props">
+            text: 'до', cls: 'retrade-info-title-label',
+            margin: extjsf.pts(0, 4, 0, 6)
+          </f:facet>
+        </x:date-field>
+
+        <script type = "text/javascript">
+        //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${extDom}').success(function()
+  {
+    Ext.data.StoreManager.lookup("${z:vid(v, 'repriceDocs')}").loadPage(1)
+  })
+
+  //~: on min date change -> post the form
+  extjsf.bind("${z:vid(v, 'min_date')}", '${extDom}').on('change',
+    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${extDom}').submitBound())
+
+  //~: on max date change -> post the form
+  extjsf.bind("${z:vid(v, 'max_date')}", '${extDom}').on('change',
+    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${extDom}').submitBound())
+
+  extjsf.bind("${z:vid(v, 'fixed_only')}", '${extDom}').on('change', function(f, value)
+  {
+    var min_date = extjsf.bind("${z:vid(v, 'min_date')}", '${extDom}').co();
+    var max_date = extjsf.bind("${z:vid(v, 'max_date')}", '${extDom}').co();
+
+    min_date.setDisabled(!value)
+    max_date.setDisabled(!value)
+
+    //~: refresh the table
+    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${extDom}').submit()
+
+    //~: show/hide timestamp column
+    extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').co().
+      headerCt.getGridColumns()[0].setVisible(value)
+  })
+
+        //]]>
+        </script>
+
+      </x:form-panel>
+
+      <!-- filter dates form] -->
+
+    </f:facet>
+
+    <!-- toolbar (filtering)] -->
+
+
+    <!-- [price change documents table -->
+
+    <x:data-store storeId = "${z:vid(v, 'repriceDocs')}"
+      modelView = "${v}">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.RepriceDoc'
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.RepriceDoc')
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+      storeId = "${z:vid(v, 'repriceDocs')}">
+
+      <f:facet name = "grid-props">
+        region: 'center', pager: true, sortableColumns: false,
+        columns: ZeT.defined('retrade.columns.RepriceDoc'),
+        selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'})
+      </f:facet>
+    </x:data-grid>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
+    on('itemdblclick', function(comp, record, node, row, e)
+  {
+    retrade_open_window({ url: '/reprice-docs/info',
+      box: { event: e, widthpt: 780, heightpt: 420 },
+      domain: 'view:reprice-doc',
+      collapsible: true, record: record.getId()
+    })
+  })
+
+    //]]>
+    </script>
+
+    <!-- price change documents table] -->
+
+  </x:desktop-panel>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+
+    <validation success = "true" target = "${z:vid(v, 'filter-form-dates')}"/>
+
+  </ui:define>
+</ui:decorate>
+</ui:component>

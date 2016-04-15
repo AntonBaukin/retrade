@@ -1,0 +1,131 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+  xmlns:z  = 'uri:tverts.com'>
+
+
+  <!-- [desktop history store] -->
+  <x:data-store storeId = "${z:vid(desktopView, 'desktopHistory')}">
+    <f:facet name = "store-props">
+      model: 'retrade.model.KeyValue'
+    </f:facet>
+  </x:data-store>
+
+
+  <!-- [desktop history menu -->
+
+  <x:menu coid = "${z:vid(localView, 'desktop-history-menu')}">
+
+    <f:facet name = "extjs-props">
+      showSeparator: false, constrain: false, layout: 'fit',
+      shadow: false, border: false, bodyPadding: '20 0 0 0',
+      width: extjsf.pt(280), height: extjsf.pt(125),
+      bodyCls: 'retrade-transparent-panel',
+      cls: 'retrade-user-menu-frame'
+    </f:facet>
+
+    <x:component coid = "${z:vid(localView, 'desktop-history-host')}">
+      <f:facet name = "extjs-props">
+        border: false, bodyPadding: '5 10 10 5', margin: 0, indent: false,
+        bodyCls: 'retrade-transparent-panel', layout: 'fit'
+      </f:facet>
+
+      <x:data-grid coid = "${z:vid(desktopView, 'desktop-history-grid')}"
+        storeId = "${z:vid(desktopView, 'desktopHistory')}">
+
+        <f:facet name = "grid-props">
+          selModel: extjsf.delayCreate('Ext.ux.selection.No'),
+          viewConfig: { scrollable: false }, pager: false,
+          hideHeaders: true, columns: [{
+            dataIndex: 'title', sortable: false, flex: 1,
+            renderer: function(v, meta)
+            {
+              meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"'
+              return v
+            }
+          }]
+      </f:facet>
+    </x:data-grid>
+    </x:component>
+  </x:menu>
+
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+    //~: bind the history store
+    ReTrade.desktop.history.storeId("${z:vid(desktopView, 'desktopHistory')}")
+    ReTrade.desktop.history.grid("${z:vid(desktopView, 'desktop-history-grid')}", '${extDom}')
+
+
+    //~: hide menu with small delay
+    extjsf.bind("${z:vid(localView, 'desktop-history-menu')}", '${extDom}').when(function(menu)
+    {
+      var showTime = 0
+
+      extjsf.u.wrap(menu.co(), 'show', function()
+      {
+        showTime++
+        return this.$applySuper(arguments)
+      })
+
+      extjsf.u.wrap(menu.co(), 'hide', function()
+      {
+        var $as = this.$applySuper, a = arguments, st = showTime
+
+        ZeT.timeout(10, function()
+        {
+          if(showTime == st) $as(a)
+        })
+      })
+    })
+
+
+    //~: accommodate the grid height (up to 10 rows)
+    extjsf.bind("${z:vid(localView, 'desktop-history-menu')}", '${extDom}').on('show', function(menu)
+    {
+      var  g = extjsf.bind("${z:vid(localView, 'desktop-history-grid')}", '${extDom}')
+      var rh = g.$rows_height(true); if(!rh) return
+      var  n = g.co().getStore().getCount()
+      if(n < 4) n = 4; if(n > 10) n = 10
+
+      menu.setHeight(menu.getHeight() + Math.ceil(n * rh) - g.co().getView().getHeight())
+    })
+  
+
+    //~: wrap user main menu with special border
+    extjsf.bind("${z:vid(localView, 'desktop-history-host')}", '${extDom}').on('render', function(xmenu)
+    {
+      var n = ZeTD.n("${z:vid(localView, 'desktop-history-host-body')}")
+
+      //!: invoke the border processing pipe
+      ZeT.Layout.procPipeCall(
+
+        //~: take the menu content component
+        ZeT.Layout.Proc.Node, n,
+
+        //~: wrap it with the border
+        ZeT.Border.Shadow, ZeT.Border.shadow('retrade-boshadow-user-menu-XYZ'),
+
+        //~: replace the content wrapped
+        ZeT.Layout.Proc.Append, { parent: n.parentNode }
+      )
+    })
+
+
+    //~: restore history model on grid click
+    extjsf.bind("${z:vid(localView, 'desktop-history-grid')}", '${extDom}').
+      on('itemclick', function(grid, m)
+    {
+      ReTrade.desktop.history.restore(m)
+      extjsf.co("${z:vid(localView, 'desktop-history-menu')}", '${extDom}').hide()
+    })
+
+  //]]>
+  </script>
+
+  <!-- desktop history menu] -->
+</ui:component>

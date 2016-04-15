@@ -1,0 +1,33 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+  xmlns:z  = 'uri:tverts.com'>
+
+  <!-- [goods controls] -->
+  <ui:decorate template = '.add-goods.xhtml'
+    xmlns = 'http://www.w3.org/1999/xhtml'>
+
+    <ui:param name = "treeTableLayout" value = "tree-table-layout"/>
+    <ui:param name = "tree" value = "tree-layout"/>
+    <ui:param name = "goodsTreeSplitter" value = "goods-tree-splitter"/>
+  </ui:decorate>
+
+
+  <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+    <f:facet name = "extjs-props">
+      xtype: 'panel', flex: 1, frame: false, border: false,
+      bodyCls: 'retrade-toolbar-inline-panel'
+    </f:facet>
+  </x:component>
+
+
+  <!-- [search goods controls block] -->
+  <ui:decorate template = '.search.xhtml'
+    xmlns = 'http://www.w3.org/1999/xhtml'>
+
+    <ui:param name = "storeId" value = "${z:vid(v, 'goodUnits')}"/>
+  </ui:decorate>
+</ui:component>

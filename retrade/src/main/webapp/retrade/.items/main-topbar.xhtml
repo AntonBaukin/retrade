@@ -1,0 +1,651 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+  xmlns:z  = 'uri:tverts.com'>
+
+  <!-- [application main topbar -->
+
+  <x:html coid = "${z:vid(localView, 'main-topbar')}" table = "false">
+
+    <f:facet name = "extjs-props">
+      region: 'north', frame: false, border:false,
+      height: retrade_default('main-topbar').height,
+      margin: extjsf.pts(0, 2, 0, 2),
+      bodyCls: 'retrade-transparent-panel',
+      layout: { type: 'hbox', align: 'middle' }
+    </f:facet>
+
+    <ul class = "sm sm-retrade" style = "z-index:20000"></ul>
+  </x:html>
+
+  <!-- application main topbar] -->
+
+
+  <!-- [topbar scripts -->
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: attach top bar panel to the desktop
+  ReTrade.desktop.controller('center').mainTopbar(
+    "${z:vid(localView, 'main-topbar')}", '${extDom}')
+
+  Ext.onReady(function()
+  {
+    var menuNode = $("\#${z:vid(localView, 'main-topbar-html')} ul.sm.sm-retrade")
+
+    createMenu(menuNode, null,
+    [
+      {
+        title: 'РеТрейд', icon: 'retrade-main-icon'
+      },
+
+      [
+        {
+          title: 'Основные документы', icon: 'retrade-document-icon', handler: function()
+          {
+            ReTrade.desktop.loadPanel( '/docs/documents', {
+              domain: 'main-menu:docs'
+            })
+          }
+        },
+
+        {
+          title: 'Документы изменения цен', icon: 'retrade-price-delta-icon', handler: function()
+          {
+            ReTrade.desktop.loadPanel( '/reprice-docs/list', {
+              domain: 'main-menu:reprice-docs'
+            })
+          }
+        },
+
+        {
+          title: 'Платёжные документы', icon: 'retrade-payment-icon',
+          disabled: true, handler: function()
+          {
+            ReTrade.desktop.loadPanel( '/payments/list', {
+              domain: 'main-menu:payments'
+            })
+          }
+        },
+
+        {
+          title: 'Мои отчёты', icon: 'retrade-payment-icon', handler: function()
+          {
+            retrade_open_window({ url: '/datas/my-reports',
+              domain: 'main-menu:my-reports',
+              box: { widthpt: 560, heightpt: 260 }
+            })
+          }
+        },
+
+        {
+          title: 'Настройки', icon: 'retrade-settings-icon'
+        },
+
+        [
+          {
+            title: 'Атрибуты товаров', icon: 'retrade-good-attrs-icon', handler: function()
+            {
+              retrade_open_window({ url: '/goods/attrs',
+                domain: 'main-menu:good-attrs',
+                box: { widthpt: 460, heightpt: 380 }
+              })
+            }
+          },
+
+          {
+            title: 'Данные и отчёты', icon: 'retrade-reports-icon', handler: function()
+            {
+              ReTrade.desktop.loadPanel( '/datas/list', {
+                domain: 'main-menu:datas'
+              })
+            }
+          },
+
+          {
+            title: 'Пользователи', icon: 'retrade-user-icon', handler: function()
+            {
+              ReTrade.desktop.loadPanel( '/settings/users', {
+                domain: 'main-menu:settings:users'
+              })
+            }
+          },
+
+          {
+            title: 'Правила доступа', icon: 'retrade-secrule-icon', handler: function()
+            {
+              ReTrade.desktop.loadPanel( '/settings/secure-rules', {
+                domain: 'main-menu:settings:secure-rules'
+              })
+            }
+          },
+
+          {
+            title: 'Множества правил', icon: 'retrade-secset-icon', handler: function()
+            {
+              ReTrade.desktop.loadPanel( '/settings/secure-sets', {
+                domain: 'main-menu:settings:secure-sets'
+              })
+            }
+          }
+        ]
+      ],
+
+      {
+        title: 'Справочники', icon: 'retrade-catalogues-icon'
+      },
+
+      [
+        {
+          title: 'Товары и услуги', icon: 'retrade-goods-icon', handler: function()
+          {
+            ReTrade.desktop.loadPanel( '/goods/list-nav', {
+              domain: 'main-menu:goods-nav'
+            })
+          }
+        },
+
+        {
+          title: 'Товары, склады, цены', icon: 'retrade-good-store-icon', handler: function()
+          {
+            ReTrade.desktop.loadPanel( '/goods/goods-stores-prices', {
+              domain: 'main-menu:goods-stores-prices'
+            })
+          }
+        },
+
+        {
+          title: 'Категории товаров', icon: 'retrade-goods-tree-icon', handler: function()
+          {
+            ReTrade.desktop.loadPanel( '/goods/goods-tree', {
+              domain: 'main-menu:goods-tree'
+            })
+          }
+        },
+
+        {
+          title: 'Единицы измерения', icon: 'retrade-measure-icon', handler: function()
+          {
+            retrade_open_window({ url: '/goods/list-measures',
+              domain: 'main-menu:measures',
+              box: { widthpt: 400, heightpt: 320 }
+            })
+          }
+        },
+
+        {
+          title: 'Склады', icon: 'retrade-trade-store-icon', handler: function()
+          {
+            retrade_open_window({ url: '/stores/list-win',
+              domain: 'main-menu:stores',
+              box: { widthpt: 360, heightpt: 240 }
+            })
+          }
+        },
+
+        {
+          title: 'Контрагенты', icon: 'retrade-contractor-icon', handler: function()
+          {
+            ReTrade.desktop.loadPanel( '/firms/list', {
+              domain: 'main-menu:firms'
+            })
+          }
+        },
+
+        {
+          title: 'Прайс-листы', icon: 'retrade-prices-icon', handler: function()
+          {
+            retrade_open_window({ url: '/price-lists/list-win',
+              domain: 'main-menu:price-lists',
+              box: { widthpt: 360, heightpt: 240 }
+            })
+          }
+        },
+
+        {
+          title: 'Прайс-листы контрагентов', icon: 'retrade-prices-icon', handler: function()
+          {
+            ReTrade.desktop.loadPanel( '/firms/list-lists', {
+              domain: 'main-menu:firms-price-lists'
+            })
+          }
+        },
+
+        {
+          title: 'Учётные счета', icon: 'retrade-accounts-sum-icon',
+          disabled: true, handler: function()
+          {
+            ReTrade.desktop.loadPanel( '/accounts/list', {
+              domain: 'main-menu:accounts'
+            })
+          }
+        },
+
+        {
+          title: 'Платёжные счета', icon: 'retrade-accounts-pay-icon',
+          disabled: true, handler: function()
+          {
+            ReTrade.desktop.loadPanel( '/accounts/list-ways', {
+              domain: 'main-menu:pay-ways'
+            })
+          }
+        }
+      ],
+
+      {
+        title: 'Создать', icon: 'retrade-issue-plus-icon'
+      },
+
+      [
+        {
+          title: 'Накладную закупки', icon: 'retrade-listpad-plus-icon', handler: function()
+          {
+            retrade_open_window({ url: '/invoices/create-buy',
+              domain: 'create:document:invoice-buy',
+              box: { widthpt: 600, heightpt: 440 }
+            })
+          }
+        },
+
+        {
+          title: 'Накладную продажи', icon: 'retrade-listpad-minus-icon', handler: function()
+          {
+            retrade_open_window({ url: '/invoices/create-sell',
+              domain: 'create:document:invoice-sell',
+              box: { widthpt: 680, heightpt: 440 }
+            })
+          }
+        },
+
+        {
+          title: 'Накладную перемещения', icon: 'retrade-listpad-arrow-icon', handler: function()
+          {
+            retrade_open_window({ url: '/invoices/create-move',
+              domain: 'create:document:invoice-move',
+              box: { widthpt: 540, heightpt: 440 }
+            })
+          }
+        },
+
+        {
+          title: 'Накладную авто-производства', icon: 'retrade-listpad-bottle-red-icon', handler: function()
+          {
+            retrade_open_window({ url: '/invoices/create-move',
+              domain: 'create:document:invoice-move-auto',
+              box: { widthpt: 540, heightpt: 440 }, params: { 'invoice-type': 'auto' }
+            })
+          }
+        },
+
+        {
+          title: 'Накладную производства', icon: 'retrade-listpad-bottle-blue-icon', handler: function()
+          {
+            retrade_open_window({ url: '/invoices/create-move',
+              domain: 'create:document:invoice-move-free',
+              box: { widthpt: 540, heightpt: 440 }, params: { 'invoice-type': 'free' }
+            })
+          }
+        },
+
+        {
+          title: 'Инвентаризацию остатков', icon: 'retrade-listpad-exclaim', handler: function()
+          {
+            retrade_open_window({ url: '/invoices/create-volume-check',
+              domain: 'create:document:price-change',
+              box: { widthpt: 580, heightpt: 420 }
+            })
+          }
+        },
+
+        {
+          title: 'Накладную корректировки', icon: 'retrade-listpad-delta-icon', handler: function()
+          {
+            retrade_open_window({ url: '/invoices/create-move',
+              domain: 'create:document:invoice-move-correct',
+              box: { widthpt: 540, heightpt: 440 }, params: { 'invoice-type': 'correct' }
+            })
+          }
+        },
+
+        {
+          title: 'Документ изменения цен', icon: 'retrade-listpad-bottle-red-icon', handler: function()
+          {
+            retrade_open_window({ url: '/reprice-docs/edit',
+              domain: 'create:document:price-change',
+              box: {widthpt: 780, heightpt: 420}, params: { create: true }
+            })
+          }
+        }
+      ],
+
+      {
+        title: 'Ссылки', icon: 'retrade-my-links', handler: function()
+        {
+          ReTrade.desktop.loadPanel( '/ui/my-links', {
+            domain: 'main-menu:my-links'
+          })
+        }
+      },
+
+      {
+        icon: 'retrade-main-man-icon', class: 'pull-right last-child', handler: function()
+        {
+          var menu = extjsf.co("${z:vid(localView, 'retrade-main-user-menu')}", '${extDom}')
+          var xy   = menuNode.offset()
+
+          menu.show().setXY([
+            xy.left + menuNode.outerWidth() - menu.getWidth() + 3,
+            xy.top + menuNode.outerHeight()
+          ])
+        }
+      },
+
+      {
+        icon: 'retrade-windows-icon retrade-icon-nav-24x16',
+        class: 'pull-right', tooltip: 'История просмотра объектов',
+        onenter: true, handler: function(a, e)
+        {
+          var menu = extjsf.bind("${z:vid(localView, 'desktop-history-menu')}", '${extDom}')
+
+          if(e.type == 'click' || e.type == 'mouseenter')
+          {
+            ReTrade.desktop.uievents.toggle(false)
+
+            var xy = a.offset()
+            menu.co().show().setXY([
+              xy.left + a.outerWidth() - menu.co().getWidth() + 3,
+              xy.top + menuNode.outerHeight()
+            ])
+
+            menu.shownWithEnter = (e.type == 'mouseenter')
+
+            if(menu.shownWithEnter && !menu.setElMouseOver)
+            {
+              menu.setElMouseOver = true
+              menu.co().getEl().on('mouseenter', function()
+              {
+                var n = menu.mouseEnterCount
+                menu.mouseEnterCount = n?(n + 1):(1)
+              })
+            }
+          }
+
+          if(e.type == 'mouseleave')
+          {
+            if(!menu.shownWithEnter) return
+
+            var mec = menu.mouseEnterCount
+            ZeT.timeout(200, function()
+            {
+              if(menu.mouseEnterCount == mec)
+                menu.co().hide()
+            })
+          }
+        }
+      },
+
+      {
+        icon: 'retrade-selset-button-icon retrade-icon-nav-24x16',
+        class: 'pull-right', tooltip: 'Режим выборки данных',
+        id: "${z:vid(localView, 'retrade-selset-toggle')}"
+      },
+
+      {
+        icon: 'retrade-button-menu-arrow retrade-icon-nav-6x16',
+        class: 'pull-right', aclass: 'icon-only align-menu-middle',
+        ulid: "${z:vid(localView, 'retrade-selset-menu')}"
+      },
+
+      [
+        {
+          title: 'Свойства', icon: 'retrade-selset-menu-edit',
+          id: "${z:vid(localView, 'retrade-selset-edit')}",
+          tooltip: 'Свойства текущей выборки'
+        },
+
+        {
+          title: 'Добавить', icon: 'retrade-selset-menu-plus',
+          id: "${z:vid(localView, 'retrade-selset-add')}",
+          tooltip: 'Добавить новую выборку'
+        },
+
+        {
+          title: 'Удалить', icon: 'retrade-selset-menu-minus',
+          id: "${z:vid(localView, 'retrade-selset-delete')}",
+          tooltip: 'Удалить текущую выборку'
+        },
+
+        {
+          title: 'Очистить', icon: 'retrade-selset-menu-clear',
+          id: "${z:vid(localView, 'retrade-selset-clear')}",
+          tooltip: 'Очистить текущую выборку'
+        }
+      ],
+
+      {
+        div: true, class: 'pull-right', style: 'border-left: none; border-right: none;',
+        dclass: 'retrade-desktop-clocks-area'
+      },
+
+      {
+        div: true, class: 'pull-right', style: 'border-left: none; border-right: none;',
+        dclass: 'retrade-desktop-eventsnum-area'
+      }
+    ])
+
+
+    function createMenu(node, m, subs, level)
+    {
+      if(m && !m.div)
+      {
+        var  a = $('<a/>', { href: '#' })
+        var li = $('<li/>').append(a)
+        node.append(li); node = li
+
+        //?: {li class}
+        if(ZeT.iss(m.class))
+          li.addClass(m.class)
+
+        //?: {a class}
+        if(ZeT.iss(m.aclass))
+          a.addClass(m.aclass)
+
+        //?: {has icon}
+        if(ZeT.iss(m.icon))
+        {
+          var ico = $('<span/>').addClass(m.icon)
+          a.append(ico)
+
+          if(m.icon.indexOf('retrade-icon-nav-') == -1)
+            ico.addClass((level == 1)?('retrade-icon-nav-20'):('retrade-icon-nav-16'))
+        }
+
+        //~: menu item text
+        if(!ZeTS.ises(m.title))
+          a.append($('<span/>').text(ZeT.asserts(m.title)))
+
+        //?: {disabled}
+        if((m.disabled === true) || (m.disabled === 'true'))
+          a.addClass('disabled')
+
+        //~: a-id
+        if(ZeT.iss(m.id)) a.attr('id', m.id)
+
+        //~: tooltip
+        if(ZeT.iss(m.tooltip)) a.attr('title', m.tooltip)
+
+        function handler(e)
+        {
+          if(!m.disabled && ZeT.isf(m.handler))
+          {
+            jQuery.SmartMenus.hideAll()
+            m.handler(a, e)
+          }
+        }
+
+        //?: {mouse over handler}
+        if(m.onenter === true)
+        {
+          a.mouseenter(handler)
+          a.mouseleave(handler)
+        }
+
+        //~: click handler
+        a.click(function(e)
+        {
+          e.preventDefault()
+          handler(e)
+        })
+      }
+
+      if(m && m.div)
+      {
+        var div = $('<div/>')
+        var  li = $('<li/>').append(div)
+        node.append(li); node = li
+
+        //?: {li class}
+        if(ZeT.iss(m.class))
+          li.addClass(m.class)
+
+        //?: {li style}
+        if(ZeT.iss(m.style))
+          li.attr('style', m.style)
+
+        //?: {div class}
+        if(ZeT.iss(m.dclass))
+          div.addClass(m.dclass)
+
+        //?: {div style}
+        if(ZeT.iss(m.dstyle))
+          div.attr('style', m.dstyle)
+      }
+
+      //?: {has no sub-items}
+      if(!ZeT.isa(subs)) return node
+
+      if(level)
+      {
+        var ul = $('<ul/>')
+        node.append(ul)
+        node = ul
+
+        //~: a-id
+        if(ZeT.iss(m.ulid)) ul.attr('id', m.ulid)
+      }
+
+      var result = []
+      for(var i = 0;(i < subs.length);i++)
+      {
+        var sub = subs[i]
+        ZeT.assert(ZeT.iso(sub))
+
+        var next = subs[i+1]
+        if(ZeT.isa(next)) i++
+
+        result.push(createMenu(node, sub, next, (level)?(level+1):(1)))
+      }
+
+      return result
+    }
+
+
+    //~: menu extension point processing
+    ReTrade.desktop.controller('center').mainMenuProc(function(inserting, f, rc)
+    {
+      //?: {not a center panel}
+      if(rc.position() != 'center') return false
+
+      ZeT.assert(ZeT.isf(f))
+      return f(menuNode) //<-- invoke
+    })
+
+
+    //~: hide overlapped menu items
+    function show_hide()
+    {
+      menuNode.find('>li').each(function()
+      {
+        $(this).toggle($(this).position().top == 0)
+      })
+    }
+
+
+    //~: bind resize listener
+    extjsf.bind("${z:vid(localView, 'main-topbar')}", '${extDom}').
+      on('resize', show_hide)
+
+
+    //~: initialize Smart Menus
+    menuNode.smartmenus({ subMenusMinWidth: null,
+      showFunction: function($ul, complete)
+      {
+        ReTrade.desktop.uievents.toggle(false)
+        extjsf.co("${z:vid(localView, 'desktop-history-menu')}", '${extDom}').hide()
+
+        var menu = extjsf.co("${z:vid(localView, 'retrade-main-user-menu')}", '${extDom}')
+        if(menu) menu.hide()
+
+        $ul.fadeIn(200, complete)
+      }
+    })
+
+   /**
+    * Global function that inserts the menu in proper position
+    * of the desktop and returns jQuery selector object, or an
+    * array of selectors of the root li-nodes inserted.
+    *
+    * Menu argument may be a single object, or an array in the
+    * same format as the main system menu (see above).
+    */
+    window.retrade_topbar_menu_insert = function(menu)
+    {
+      var result
+
+      if(ZeT.iso(menu))
+        result = createMenu(menuNode, menu, null, 1)
+      else
+      {
+        ZeT.assert(ZeT.isa(menu))
+        result = createMenu(menuNode, null, menu)
+      }
+
+      show_hide()
+      return result
+    }
+  })
+
+  //]]>
+  </script>
+
+  <!-- topbar scripts] -->
+
+
+  <!-- [user interface events] -->
+  <ui:decorate template = "uievents.xhtml">
+    <ui:param name = "localView"  value = "${localView}"/>
+    <ui:param name = "mainTopbar" value = "${z:vid(localView, 'main-topbar')}"/>
+  </ui:decorate>
+
+
+  <!-- [desktop history] -->
+  <ui:decorate template = "history-menu.xhtml">
+    <ui:param name = "localView"  value = "${localView}"/>
+  </ui:decorate>
+
+
+  <!-- [user menu] -->
+  <ui:decorate template = "user-menu.xhtml">
+    <ui:param name = "localView"  value = "${localView}"/>
+  </ui:decorate>
+
+
+  <!-- [selection set button] -->
+  <ui:decorate template = "selset.xhtml">
+    <ui:param name = "localView" value = "#{localView}"/>
+  </ui:decorate>
+</ui:component>

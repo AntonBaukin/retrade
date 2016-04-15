@@ -1,0 +1,210 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesSellsSessionView}"/>
+
+${v.checkModelRequestedWithRedirect}
+${v.checkEntityRequested}
+${v.forceSecureModelEntity('view')}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+
+    extjsf.bind('window', '${extDom}').
+      co().setTitle('${z:jss(v.windowTitleInfo)}')
+
+  </script>
+
+
+  <!-- [session toolbar -->
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar">
+
+    <!-- [close window button] -->
+
+    <x:component coid = "${z:vid(v, 'close_window')}"
+      rendered = "#{not v.fromInvoice}">
+
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Закрыть',
+
+        handler : function()
+        {
+          extjsf.bind('window', '${extDom}').
+            co().close()
+        }
+
+      </f:facet>
+    </x:component>
+
+
+    <!-- [goto sells session button] -->
+
+    <x:action-button coid = "${z:vid(v, 'back_to_invoice')}"
+      rendered = "#{v.fromInvoice}" modelView = "#{v}"
+      action = "#{v.gotoSellsInvoice}">
+
+      <f:facet name = "extjs-props">
+        text: 'Назад'
+      </f:facet>
+    </x:action-button>
+
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [goto session originated invoices button] -->
+
+    <x:action-button coid = "${z:vid(v, 'session_invoices')}"
+      action = "#{v.gotoSessionInvoices}" modelView = "#{v}">
+
+      <f:facet name = "extjs-props">
+        text: 'Документы', margin: extjsf.pts(0, 0, 0, 4), tooltipType: 'title',
+        tooltip: 'Просмотреть документы, созданные на основе данной сессии продаж'
+      </f:facet>
+
+    </x:action-button>
+  </f:facet>
+
+  <!-- session toolbar] -->
+
+
+  <!-- [session fields view -->
+
+  <x:html coid = "${z:vid(v, 'session_info')}">
+    <f:facet name = "extjs-props">
+
+      xtype: 'panel', frame: true, region: 'north',
+      margin: extjsf.pts(1, 1, 0, 1)
+
+    </f:facet>
+
+    <table class = "retrade-info-table retrade-info-table-short retrade-info-table-sells-session-code"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-sells-session-code">
+          <div>Код</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-sells-session-code">
+          <div>#{v.entity.code}</div>
+        </td>
+
+        <td class = "retrade-info-title retrade-info-title-sells-session-sells-desk">
+          <div>POS-касса</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-sells-session-sells-desk">
+          <div>#{v.entity.sellsDesk.code}</div>
+        </td>
+      </tr>
+    </table>
+
+    <table class = "retrade-info-table retrade-info-table-short retrade-info-table-sells-session-time"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-sells-session-time-open">
+          <div>Открыта</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-sells-session-time-open">
+          <div>
+            <h:outputText value = "#{v.entity.time}">
+              <f:converter converterId = "com.tverts:fmt:datetime2str"/>
+            </h:outputText>
+          </div>
+        </td>
+
+        <td class = "retrade-info-title retrade-info-title-sells-session-time-open">
+          <div>Закрыта</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-sells-session-time-open">
+          <div>
+            <h:outputText value = "#{v.entity.closeTime}">
+              <f:converter converterId = "com.tverts:fmt:datetime2str"/>
+            </h:outputText>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+  </x:html>
+
+  <!-- session fields view] -->
+
+
+  <!-- [session receipts table -->
+
+  <x:data-store storeId = "${z:vid(v, 'sessionReceipts')}"
+    modelView = "${v}">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.SellReceiptView', pageSize: 5
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.SellReceiptView')
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'grid')}"
+    storeId = "${z:vid(v, 'sessionReceipts')}">
+
+    <f:facet name = "grid-props">
+
+      region: 'center', title: 'Чеки сессии продаж',
+      margin: extjsf.pts(2, 1, 1, 1),
+      columns: ZeT.defined('retrade.columns.SellReceiptView'),
+      sortableColumns: false, pager: true
+
+    </f:facet>
+  </x:data-grid>
+
+  <x:action-delegate coid = "${z:vid(v, 'view-receipt')}"
+    action = "#{v.gotoSellReceipt}" modelView = "#{v}">
+
+    <f:facet name = "action-params">
+      method: 'GET'
+    </f:facet>
+  </x:action-delegate>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: go to edit measure on double click row
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').on('itemdblclick', function(grid, rec)
+  {
+    extjsf.handler("${z:vid(v, 'view-receipt')}", '${extDom}')({
+      params: { entity: rec.getId() }
+    })
+  })
+
+  //]]>
+  </script>
+
+  <!-- session receipts table] -->
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+</ui:component>

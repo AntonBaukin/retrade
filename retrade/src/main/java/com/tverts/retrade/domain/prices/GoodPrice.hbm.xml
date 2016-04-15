@@ -1,0 +1,63 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.prices'>
+
+  <class name = 'GoodPrice' table = 'retrade_good_price' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_good_price'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_good_price_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Price List [bi, master] -->
+
+    <many-to-one name = 'priceList' foreign-key = 'fk_price_list'>
+
+      <column name = 'fk_price_list' not-null = 'true'
+        unique-key = 'ux_good_price'>
+
+        <comment>The Price List this object is in</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Good Unit reference -->
+
+    <many-to-one name = 'goodUnit' foreign-key = 'fk_good_unit'>
+
+      <column name = 'fk_good_unit' not-null = 'true'
+        unique-key = 'ux_good_price' index = 'ix_price_good'>
+
+        <comment>The Good Unit the price is for</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Price -->
+
+    <property name = 'price' type = 'big_decimal' lazy = 'false'>
+
+      <column name = 'price' not-null = 'true'
+        precision = '12' scale = '2'>
+
+        <comment>The the cost of the one unit of the Good</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

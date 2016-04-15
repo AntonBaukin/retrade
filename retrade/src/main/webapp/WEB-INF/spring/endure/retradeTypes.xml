@@ -1,0 +1,701 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+  <!--=================================================
+    =  Unity Types of ReTrade Module                  =
+    +==================================================
+    |
+    |  Format of System Unity Types encoding:
+    |
+    |    class-name type-name;
+    |
+    +================================================-->
+
+  <bean name  = 'retradeUnityTypes'
+        class = 'com.tverts.objects.StringBean'>
+    <property name = 'string'>
+      <value>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Order type of Buy and Sell Invoices                       ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.retrade.domain.invoice.Invoice   ReTrade: Order Type: Invoice Buy-Sell;
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Good Units Tree                                           ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.tree.TreeDomain   ReTrade: Goods: Tree;
+
+      </value>
+    </property>
+  </bean>
+
+  <bean name  = 'retradeUnityTypeStructs'
+        class = 'com.tverts.endure.types.UnityTypeStructsList'>
+    <property name = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Contractor                                                ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.firm.Contractor'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Contractor'/>
+
+          <property name  = 'title'
+                    value = 'Contractor'/>
+
+          <property name  = 'titleLo'
+                    value = 'Контрагент'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Good Unit                                                 ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.goods.GoodUnit'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Goods: Good Unit'/>
+
+          <property name  = 'title'
+                    value = 'Good'/>
+
+          <property name  = 'titleLo'
+                    value = 'Товар'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Good Tree Folder
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.endure.tree.TreeFolder'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Goods: Tree Folder'/>
+
+          <property name  = 'title'
+                    value = 'Goods Folder'/>
+
+          <property name  = 'titleLo'
+                    value = 'Каталог товаров'/>
+
+        </bean>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Price List                                                ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.prices.PriceListEntity'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Prices: Price List'/>
+
+          <property name  = 'title'
+                    value = 'Price List'/>
+
+          <property name  = 'titleLo'
+                    value = 'Прайс-лист'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Trade Store                                               ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.store.TradeStore'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Stores: Trade Store'/>
+
+          <property name  = 'title'
+                    value = 'Store'/>
+
+          <property name  = 'titleLo'
+                    value = 'Склад'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · State of Invoice that is edited                           ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.invoice.InvoiceState'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice State: Edit'/>
+
+          <property name  = 'title'
+                    value = 'Edited'/>
+
+          <property name  = 'titleLo'
+                    value = 'Редактируется'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · State of Invoice that is fixed and affects the system     ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.invoice.InvoiceStateFixed'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice State: Fixed'/>
+
+          <property name  = 'title'
+                    value = 'Fixed'/>
+
+          <property name  = 'titleLo'
+                    value = 'Проведена'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Invoice of buying goods to a store         ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.invoice.Invoice'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Buy'/>
+
+          <property name  = 'title'
+                    value = 'Buy Invoice'/>
+
+          <property name  = 'titleLo'
+                    value = 'Накладная закупки'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Invoice of selling goods from a store      ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.invoice.Invoice'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Sell'/>
+
+          <property name  = 'title'
+                    value = 'Sell Invoice'/>
+
+          <property name  = 'titleLo'
+                    value = 'Накладная продажи'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Sell Invoices are being altered            ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.invoice.Invoice'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Sell Altered'/>
+
+          <property name  = 'title'
+                    value = 'Sell Invoice auto-production'/>
+
+          <property name  = 'titleLo'
+                    value = 'Накладная продажи авто-производство'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Invoice of moving goods between stores     ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.invoice.Invoice'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Move'/>
+
+          <property name  = 'title'
+                    value = 'Move Invoice'/>
+
+          <property name  = 'titleLo'
+                    value = 'Накладная перемещения'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for altered Move Invoice: Auto Production      ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.invoice.Invoice'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Auto Produce'/>
+
+          <property name  = 'title'
+                    value = 'Auto Produce Invoice'/>
+
+          <property name  = 'titleLo'
+                    value = 'Накладная авто-производства'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for altered Move Invoice: Free Production      ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.invoice.Invoice'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Free Produce'/>
+
+          <property name  = 'title'
+                    value = 'Free Produce Invoice'/>
+
+          <property name  = 'titleLo'
+                    value = 'Накладная производства'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for altered Move Invoice: Correction           ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.invoice.Invoice'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Volume Correction'/>
+
+          <property name  = 'title'
+                    value = 'Volume Correction Invoice'/>
+
+          <property name  = 'titleLo'
+                    value = 'Накладная корректировки остатков'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Invoice of check the goods volumes         ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.invoice.Invoice'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Volume Check'/>
+
+          <property name  = 'title'
+                    value = 'Volume Check'/>
+
+          <property name  = 'titleLo'
+                    value = 'Инвентаризация остатков'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Price Change Document                      ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.prices.RepriceDoc'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Goods: Price Change Document'/>
+
+          <property name  = 'title'
+                    value = 'Prices Change Document'/>
+
+          <property name  = 'titleLo'
+                    value = 'Документ изменения цен'/>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Firm Price Change Document                 ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.prices.RepriceDoc'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Goods: Firm Price Change Document'/>
+
+          <property name  = 'title'
+                    value = 'Firm Prices Change'/>
+
+          <property name  = 'titleLo'
+                    value = 'Документ изменения цен контрагента'/>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Account Own                                ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.account.Account'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Account: Own'/>
+
+          <property name  = 'title'
+                    value = 'Account Own'/>
+
+          <property name  = 'titleLo'
+                    value = 'Счёт собственный'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Account Contractor                         ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.account.Account'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Account: Contractor'/>
+
+          <property name  = 'title'
+                    value = 'Account Contractor'/>
+
+          <property name  = 'titleLo'
+                    value = 'Счёт контрагента'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Self Pay It                                ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.account.PaySelf'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Account: Self Pay It'/>
+
+          <property name  = 'title'
+                    value = 'Pay Self Account'/>
+
+          <property name  = 'titleLo'
+                    value = 'Платёжно-учётный счёт собственный'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Contractor Pay It                          ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.account.PayFirm'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Account: Firm Pay It'/>
+
+          <property name  = 'title'
+                    value = 'Pay Self Account'/>
+
+          <property name  = 'titleLo'
+                    value = 'Платёжно-учётный счёт контрагента'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Payment Way (Bank)                         ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.account.PayBank'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Pay Way: Bank Account'/>
+
+          <property name  = 'title'
+                    value = 'Bank Payment Account'/>
+
+          <property name  = 'titleLo'
+                    value = 'Банковский платёжный счёт'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Payment Way (Cash)                         ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.account.PayCash'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Pay Way: Cash'/>
+
+          <property name  = 'title'
+                    value = 'Cash Payment Account'/>
+
+          <property name  = 'titleLo'
+                    value = 'Наличный платёжный счёт'/>
+
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Firm Payment Order (Income)                ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.payment.FirmOrder'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Payment Order: Firm: Income'/>
+
+          <property name  = 'title'
+                    value = 'Income Order'/>
+
+          <property name  = 'titleLo'
+                    value = 'Приходный ордер'/>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Firm Payment Order (Expense)               ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.payment.FirmOrder'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Payment Order: Firm: Expense'/>
+
+          <property name  = 'title'
+                    value = 'Expense Order'/>
+
+          <property name  = 'titleLo'
+                    value = 'Расходный ордер'/>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Settling (Firm Payment)                    ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.payment.Settling'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Payment: Settling'/>
+
+          <property name  = 'title'
+                    value = 'Contractor Payment'/>
+
+          <property name  = 'titleLo'
+                    value = 'Платёж контрагенту'/>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Payment Desks                              ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.sells.PayDesk'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Sells: Payment Desk'/>
+
+          <property name  = 'title'
+                    value = 'Payment Desk'/>
+
+          <property name  = 'titleLo'
+                    value = 'Терминал платежей'/>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Sells Desks                                ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.sells.SellsDesk'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Sells: Sells Desk'/>
+
+          <property name  = 'title'
+                    value = 'Sells Desk'/>
+
+          <property name  = 'titleLo'
+                    value = 'Терминал продаж'/>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Sells Sessions                             ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.sells.SellsSession'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Sells: Sells Session'/>
+
+          <property name  = 'title'
+                    value = 'POS Sells Session'/>
+
+          <property name  = 'titleLo'
+                    value = 'Сессия POS-продаж'/>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Sells Invoices                             ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.invoice.Invoice'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Sells: Invoice'/>
+
+          <property name  = 'title'
+                    value = 'POS Sells Invoice'/>
+
+          <property name  = 'titleLo'
+                    value = 'Накладная POS-продаж'/>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Sells Payments                             ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.sells.SellsPay'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Sells: Payment'/>
+
+          <property name  = 'title'
+                    value = 'POS Sells Payment'/>
+
+          <property name  = 'titleLo'
+                    value = 'Платёж POS-продаж'/>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Aggregated Values Types of ReTrade Module      =
+    +================================================-->
+
+  <bean name  = 'retradeAggrTypes'
+        class = 'com.tverts.objects.StringBean'>
+    <property name = 'string'>
+      <value>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Rest Cost of a Good (Unit)                                ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.aggr.AggrValue   ReTrade: Aggr Value: Good Rest Cost;
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Good (Unit) Volume in Trade Store                         ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.aggr.AggrValue   ReTrade: Aggr Value: Good Volume in Trade Store;
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Calculation for Volume Check Document
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.aggr.calc.AggrCalc   Aggr Calc: Volume: Volume Check;
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Summary Contractor Debt                                   ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.aggr.AggrValue   ReTrade: Aggr Value: Contractor Debt;
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Summary Debts of all the Contractors                      ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.aggr.AggrValue   ReTrade: Aggr Value: Contractors Debt Balance;
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Account Balance                                           ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.aggr.AggrValue   ReTrade: Aggr Value: Account Balance;
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Payment Link Balance                                      ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.aggr.AggrValue   ReTrade: Aggr Value: Pay It Balance;
+
+      </value>
+    </property>
+  </bean>
+
+</beans>

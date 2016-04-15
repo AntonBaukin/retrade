@@ -1,0 +1,64 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<tasks>
+
+  <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+   · External storage for ox-object column
+   · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+  <task class   = 'com.tverts.hibery.sql.SQLTaskBase'
+        dialect = 'PostgreSQLDialect'>
+    <query>
+
+      alter table retrade_sel_item alter column oxbytes set storage external
+
+    </query>
+  </task>
+
+
+  <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+   · Create index (ix_retrade_sel_item_object)
+   · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+  <task class   = 'com.tverts.hibery.sql.QueryIf'
+        dialect = 'PostgreSQLDialect'>
+
+    <if empty = 'true'>
+
+      select true from pg_indexes where
+        (tablename = 'retrade_sel_item') and
+        (indexname = 'ix_retrade_sel_item_object')
+
+    </if>
+
+    <query>
+
+      create index ix_retrade_sel_item_object on
+        retrade_sel_item ( fk_sel_set, object_key )
+      where (object_key is not null)
+
+    </query>
+  </task>
+
+
+  <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+   · Create index (ix_retrade_sel_item_oxclass)
+   · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+  <task class   = 'com.tverts.hibery.sql.QueryIf'
+        dialect = 'PostgreSQLDialect'>
+
+    <if empty = 'true'>
+
+      select true from pg_indexes where
+        (tablename = 'retrade_sel_item') and
+        (indexname = 'ix_retrade_sel_item_oxclass')
+
+    </if>
+
+    <query>
+
+      create index ix_retrade_sel_item_oxclass on
+        retrade_sel_item ( fk_sel_set, oxclass )
+      where (oxclass is not null)
+
+    </query>
+  </task>
+</tasks>

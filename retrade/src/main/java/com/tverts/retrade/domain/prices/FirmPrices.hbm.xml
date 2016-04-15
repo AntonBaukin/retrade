@@ -1,0 +1,53 @@
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.prices'>
+
+  <class name = 'FirmPrices' table = 'retrade_firm_prices' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_firm_prices'/>
+
+
+    <!-- Price List -->
+
+    <many-to-one name = 'priceList' foreign-key = 'fk_firm_prices_list'>
+
+      <column name = 'fk_price_list' not-null = 'true'
+        unique-key = 'ux_firm_prices_list'>
+
+        <comment>Price List assigned to the Contractor</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Contractor -->
+
+    <many-to-one name = 'contractor' foreign-key = 'fk_firm_prices_contractor'>
+
+      <column name = 'fk_contractor' not-null = 'true'
+        unique-key = 'ux_firm_prices_list, ux_firm_prices_index'>
+
+        <comment>Contractor having the Price List assigned</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Priority -->
+
+    <property name = 'priority'>
+
+      <column name = 'priority' not-null = 'true'
+        unique-key = 'ux_firm_prices_index'>
+
+        <comment>
+          The priority of the related Price Lists within the
+          lists assigned to the Contractor. The Good Unit price
+          is selected by the highest priority value
+        </comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

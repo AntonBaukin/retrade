@@ -1,0 +1,25 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  ReTrade XML Data Providers                     =
+    +================================================-->
+
+  <bean name  = 'retradeDataProvidersList'
+        class = 'com.tverts.exec.ExecutorsList'>
+
+    <property name = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Invoices of various types
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.exec.datas.invoices.DatasInvoiceGeneral'/>
+
+      </list>
+    </property>
+  </bean>
+</beans>

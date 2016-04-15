@@ -1,0 +1,42 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Data Sources for the Goods                     =
+    +================================================-->
+
+  <bean name  = 'goodsDatasList'
+        class = 'com.tverts.data.DataSourcesList'>
+
+    <property name = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Goods Volumes and Rest Costs
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.exec.datas.goods.DatasGoodsVolumesRestCosts'>
+
+          <property name  = 'did'
+                    value = 'goods: volumes + costs'/>
+
+          <property name  = 'name'
+                    value = 'Goods volumes and rest costs'/>
+
+          <property name  = 'nameLo'
+                    value = 'Товары, объёмы и себестоимости'/>
+
+          <property name  = 'descrLo'>
+            <value>
+              Предоставляет общие данные о товарах: суммарные объёмы и
+              остаточные себестоимости.
+            </value>
+          </property>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+</beans>

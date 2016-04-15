@@ -1,0 +1,39 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.invoice'>
+
+  <union-subclass name = 'ResGood' extends = 'InvGood' lazy = 'true'
+    table = 'retrade_invoice_good_res'>
+
+
+    <!-- Invoice Data [bi, list, slave] -->
+
+    <many-to-one name = 'data' foreign-key = 'fk_invoice_good_data_res'
+      insert = 'false' update = 'false' not-null = 'true'>
+
+      <column name = 'fk_invoice_data' not-null = 'true'
+        index = 'ix_invoice_good_data_res'>
+
+        <comment>Resulting Goods of an altered Invoice</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Good Calc reference -->
+
+    <many-to-one name = 'goodCalc' foreign-key = 'fk_invoice_good_res_calc'>
+
+      <column name = 'fk_good_calc' index = 'ix_invoice_good_res_calc'>
+
+        <comment>
+          Calculation used to produce this transitive
+          (if defined) Invoice Good position
+        </comment>
+      </column>
+    </many-to-one>
+
+  </union-subclass>
+</hibernate-mapping>

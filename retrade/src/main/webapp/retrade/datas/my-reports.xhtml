@@ -1,0 +1,204 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesMyReports}"/>
+
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+
+    extjsf.bind('window', '${extDom}').
+      co().setTitle('Мои отчёты')
+
+  </script>
+
+  <f:facet name = "extjs-props">
+    layout: 'fit', bodyCls: 'retrade-back-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar">
+
+    <!-- [close window button] -->
+
+    <x:component coid = "${z:vid(v, 'close_window')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Закрыть',
+
+        handler : function()
+        {
+          extjsf.bind('window', '${extDom}').
+            co().close()
+        }
+
+      </f:facet>
+    </x:component>
+
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-inline-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [filter reports field -->
+
+    <x:text-field coid = "${z:vid(v, 'search-reports')}"
+      value = "#{v.model.searchNames}">
+
+      <f:facet name = "extjs-props">
+        margin: extjsf.pts(1, 0, 1, 4),
+        width:  extjsf.ex(24)
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Поиск', margin: extjsf.pts(1, 0, 1, 0)
+      </f:facet>
+    </x:text-field>
+
+    <x:action-call coid = "${z:vid(v, 'search-reports-script')}"
+      action = "#{v.doSearchReports}" modelView = "${v}"/>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'search-reports')}", '${extDom}').on('change', function(f)
+    {
+      var sv = ZeTS.trim(f.getValue());
+      if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
+
+      var fn = function()
+      {
+        //?: {search string was changed} discard
+        if(f.extjsfBind.searchValue != sv) return;
+
+        extjsf.handler("${z:vid(v, 'search-reports-script')}", '${extDom}')({
+          params: { searchWords: sv }, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'reportRequests')}").loadPage(1)
+        }})
+      }
+
+      setTimeout(fn, 1000)
+    })
+
+    //]]>
+    </script>
+
+    <!-- filter reports field] -->
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [report requests table -->
+
+  <x:data-store storeId = "${z:vid(v, 'reportRequests')}"
+    modelView = "${v}">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.ReportRequestView',
+      sorters: [{ property: 'time', direction: 'DESC' }],
+      remoteSort: true, pageSize: 10
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.ReportRequestView')
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'grid')}"
+    storeId = "${z:vid(v, 'reportRequests')}">
+
+    <f:facet name = "grid-props">
+
+      pager: true, sortableColumns: true,
+      selModel: extjsf.delayCreate('Ext.ux.selection.No'),
+
+      columns: (function()
+      {
+        var c = ZeT.defined('retrade.columns.ReportRequestView')();
+
+        var r = function()
+        {
+          var m = arguments[2];
+
+          if(m.get('ready'))
+            this.items[0].icon = "${z:url('/resources/icons/download_16.png')}";
+          else
+            this.items[0].icon = "${z:url('/resources/icons/null_set_16.png')}";
+        };
+
+        var d = function()
+        {
+          return !arguments[4].get('ready');
+        }
+
+        var h = function()
+        {
+          var m = arguments[5];
+          ZeT.assert(m.get('ready'), 'Report is not ready!')
+
+          var f = m.get('format').toLowerCase();
+          if(f == 'error') f = 'txt';
+
+          var n = m.get('templateName').replace(/[:\/]/g, '-');
+          var t = Ext.util.Format.dateRenderer('d.m.Y H:i')(m.get('time'));
+          t = t.replace(/[:\/]/g, '-');
+
+          var u = ZeTS.cat( "${z:url('/download/')}",
+            'Отчёт ', n, ' от ', t, '.', f,
+            '?model=', "#{v.modelKey}",
+            '&amp;reportRequest=', m.getId()
+          );
+
+          ZeT.timeout(200, function()
+          {
+            window.open(u, '_self')
+          })
+        };
+
+        c.push({ xtype: 'actioncolumn',
+          hideable: false, draggable: false,
+          resizable: false, menuDisabled: true,
+          width: 28, flex:0, align: 'center',
+          items: [{ handler: h, isDisabled: d,
+            iconCls: 'retrade-icon-not-disable' }],
+          renderer: r
+        })
+
+        return c;
+      })()
+
+    </f:facet>
+  </x:data-grid>
+
+  <!-- report requests table] -->
+
+  </x:winmain>
+
+</ui:define>
+</ui:decorate>
+</ui:component>

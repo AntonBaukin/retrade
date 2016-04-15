@@ -1,0 +1,343 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesSettingsEditPersonView}"/>
+
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+
+    extjsf.bind('window', '${extDom}').
+      co().setTitle("Свойства персоны '${v.authLogin.code}'")
+
+  </script>
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar">
+
+    <!-- [cancel edit button -->
+
+    <x:component coid = "${z:vid(v, 'close_window')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Отмена',
+        cls: 'ux-btn-red',
+
+        handler : function()
+        {
+          var window = extjsf.bind('window', '${extDom}');
+
+          window.personEdit = { cancelled: true };
+          window.co().close()
+        }
+
+      </f:facet>
+    </x:component>
+
+    <!-- cancel edit button] -->
+
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [commit button -->
+
+    <x:component coid = "${z:vid(v, 'submit')}">
+      <f:facet name = "extjs-props">
+        xtype:'button', text: 'Сохранить',
+        cls: 'ux-btn-green'
+      </f:facet>
+    </x:component>
+
+    <!-- commit button] -->
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [login and password form -->
+
+  <x:form-panel coid = "${z:vid(v, 'form')}" modelView = "${v}">
+    <f:facet name = "extjs-props">
+      xtype: 'panel', border: false, frame: false,
+      layout: { type: 'table', columns: 2},
+      bodyCls: 'retrade-back-panel', bodyPadding: extjsf.pt(2)
+    </f:facet>
+
+    <x:text-field coid = "${z:vid(v, 'lastName')}"
+      value = "#{v.model.person.lastName}">
+
+      <f:facet name = "label-props">
+        text: 'Фамилия',
+        margin: extjsf.pts(2, 6, 2, 0),
+        cls: 'retrade-form-label-cell'
+      </f:facet>
+
+      <f:facet name = "extjs-props">
+        margin: extjsf.pts(2, 0, 2, 0),
+        cellCls: 'retrade-width-100pc',
+        fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+      </f:facet>
+    </x:text-field>
+
+    <x:text-field coid = "${z:vid(v, 'firstName')}"
+      value = "#{v.model.person.firstName}">
+
+      <f:facet name = "label-props">
+        text: 'Имя',
+        margin: extjsf.pts(2, 6, 2, 0),
+        cls: 'retrade-form-label-cell'
+      </f:facet>
+
+      <f:facet name = "extjs-props">
+        margin: extjsf.pts(2, 0, 2, 0),
+        cellCls: 'retrade-width-100pc',
+        fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+      </f:facet>
+    </x:text-field>
+
+    <x:text-field coid = "${z:vid(v, 'middleName')}"
+      value = "#{v.model.person.middleName}">
+
+      <f:facet name = "label-props">
+        text: 'Отчество',
+        margin: extjsf.pts(2, 6, 2, 0),
+        cls: 'retrade-form-label-cell'
+      </f:facet>
+
+      <f:facet name = "extjs-props">
+        margin: extjsf.pts(2, 0, 2, 0),
+        cellCls: 'retrade-width-100pc',
+        fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+      </f:facet>
+    </x:text-field>
+
+    <!-- [gender -->
+
+    <x:html coid = "${z:vid(v, 'gender_label')}">
+      <f:facet name = "extjs-props">
+        margin: extjsf.pts(2, 6, 2, 0),
+        cls: 'retrade-form-label-cell'
+      </f:facet>
+      <div>Пол</div>
+    </x:html>
+
+    <x:component coid = "${z:vid(v, 'gender_layout')}">
+      <f:facet name = "extjs-props">
+        border: false, bodyCls: 'retrade-transparent-panel',
+        layout: { type: 'hbox', layout: 'middle'}
+      </f:facet>
+
+      <x:component coid = "${z:vid(v, 'gender_male')}">
+        <f:facet name = "extjs-props">
+          xtype: 'checkboxfield',
+          boxLabel: 'муж', boxLabelAlign: 'before',
+          margin: extjsf.pts(2, 12, 2, 0),
+          checked: #{not empty v.model.male and v.model.male}
+        </f:facet>
+      </x:component>
+
+      <x:component coid = "${z:vid(v, 'gender_female')}">
+        <f:facet name = "extjs-props">
+          xtype: 'checkboxfield',
+          boxLabel: 'жен', boxLabelAlign: 'before',
+          margin: extjsf.pts(2, 0, 2, 0),
+          checked: #{not empty v.model.male and not v.model.male}
+        </f:facet>
+      </x:component>
+
+      <x:hidden-field coid = "${z:vid(v, 'ismale')}" value = "#{v.model.maleStr}"/>
+
+    </x:component>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+  extjsf.handler("${z:vid(v, 'gender_male')}", '${extDom}', function(f, v)
+  {
+    var other  = extjsf.co("${z:vid(v, 'gender_female')}", '${extDom}');
+    var ismale = extjsf.co("${z:vid(v, 'ismale')}", '${extDom}');
+
+    if(v)
+    {
+      if(other.getValue()) other.setValue(false);
+      ismale.setValue('true')
+    }
+
+    if(!v && !other.getValue()) ismale.setValue('')
+  })
+
+  extjsf.handler("${z:vid(v, 'gender_female')}", '${extDom}', function(f, v)
+  {
+    var other  = extjsf.co("${z:vid(v, 'gender_male')}", '${extDom}');
+    var ismale = extjsf.co("${z:vid(v, 'ismale')}", '${extDom}');
+
+    if(v)
+    {
+      if(other.getValue()) other.setValue(false);
+      ismale.setValue('false')
+    }
+
+    if(!v && !other.getValue()) ismale.setValue('')
+  })
+
+    //]]>
+    </script>
+
+    <!-- gender] -->
+
+    <x:text-field coid = "${z:vid(v, 'email')}"
+      value = "#{v.model.person.email}">
+
+      <f:facet name = "label-props">
+        text: 'e-mail',
+        margin: extjsf.pts(2, 6, 2, 0),
+        cls: 'retrade-form-label-cell'
+      </f:facet>
+
+      <f:facet name = "extjs-props">
+        margin: extjsf.pts(2, 0, 2, 0),
+        cellCls: 'retrade-width-100pc',
+        fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+      </f:facet>
+    </x:text-field>
+
+    <x:text-field coid = "${z:vid(v, 'phoneMob')}"
+      value = "#{v.model.person.phoneMobile}">
+
+      <f:facet name = "label-props">
+        text: 'Тел. моб.',
+        margin: extjsf.pts(2, 6, 2, 0),
+        cls: 'retrade-form-label-cell'
+      </f:facet>
+
+      <f:facet name = "extjs-props">
+        margin: extjsf.pts(2, 0, 2, 0),
+        cellCls: 'retrade-width-100pc',
+        fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+      </f:facet>
+    </x:text-field>
+
+    <x:text-field coid = "${z:vid(v, 'phoneWork')}"
+      value = "#{v.model.person.phoneWork}">
+
+      <f:facet name = "label-props">
+        text: 'Тел. раб.',
+        margin: extjsf.pts(2, 6, 2, 0),
+        cls: 'retrade-form-label-cell'
+      </f:facet>
+
+      <f:facet name = "extjs-props">
+        margin: extjsf.pts(2, 0, 2, 0),
+        cellCls: 'retrade-width-100pc',
+        fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+      </f:facet>
+    </x:text-field>
+
+    <!-- [submit action] -->
+    <h:commandButton id = "submit_action" value = "submit" style = "display: none;"
+      action = "#{v.doEditPerson}"/>
+
+  </x:form-panel>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', function()
+  {
+     extjsf.bind("${z:vid(v, 'form')}", '${extDom}').submit({
+       command: 'submit_action', success: function()
+       {
+         extjsf.co('window', '${extDom}').close()
+       }})
+  })
+
+  //~: adjust window height
+  extjsf.bind("${z:vid(v, 'form')}", '${extDom}').on('afterrender', function()
+  {
+     var win = extjsf.bind('window', '${extDom}').co();
+     var wht = win.body.getHeight();
+     var frm = extjsf.bind("${z:vid(v, 'form')}", '${extDom}').co();
+     var fht = frm.getBox().height;
+
+     win.setHeight(win.getHeight() - (wht - fht))
+  })
+
+  //~: submit on enter for text fields
+  Ext.Array.forEach(['phoneWork', 'phoneMob', 'email', 'middleName', 'firstName', 'lastName'],
+    function(id)
+    {
+       extjsf.bind("${z:vid(v, 'XYZ')}".replace('XYZ', id), '${extDom}').on('specialkey', function(f, e)
+       {
+         if(e.getKey() == e.ENTER)
+           extjsf.handler("${z:vid(v, 'submit')}", '${extDom}')()
+         else if(e.getKey() == e.ESC)
+           extjsf.handler("${z:vid(v, 'close_window')}", '${extDom}')()
+       })
+    })
+
+
+  //]]>
+  </script>
+
+  <!-- login and password form] -->
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "true"/>
+  </ui:define>
+
+  <ui:define name = 'scripts'>
+
+  <ui:fragment rendered = "#{v.personUpdated}">
+  <script>
+  //<![CDATA[
+
+    extjsf.bind('window', '${extDom}').personEdit = {
+      authLogin: '#{z:jss(v.model.primaryKey)}',
+      lastName: '#{z:jss(v.model.person.lastName)}',
+      firstName: '#{z:jss(v.model.person.firstName)}',
+      middleName: '#{z:jss(v.model.person.middleName)}',
+      genderMale: '#{v.model.male}',
+      email: '#{z:jss(v.model.person.email)}',
+      phoneMob: '#{z:jss(v.model.person.phoneMobile)}',
+      phoneWork: '#{z:jss(v.model.person.phoneWork)}'
+    }
+
+  //]]>
+  </script>
+  </ui:fragment>
+
+  </ui:define>
+</ui:decorate>
+</ui:component>

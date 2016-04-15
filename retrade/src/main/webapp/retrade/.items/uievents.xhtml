@@ -1,0 +1,66 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+  xmlns:z  = 'uri:tverts.com'>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  extjsf.bind("${mainTopbar}", '${extDom}').on('afterrender', function(tbar)
+  {
+    //?: {have no clocks now}
+    ZeT.assert(!ReTrade.desktop.clocks)
+
+    //~: create the desktop clocks
+    ReTrade.desktop.clocks = new ReTrade.Clocks({
+      start: true, node: "${z:vid(localView, 'desktop-clocks')}",
+      parent: tbar.getEl().down('.retrade-desktop-clocks-area', true)
+    })
+
+
+    //<: setup the desktop events menu
+
+    ZeT.assert(!ReTrade.desktop.uievents)
+
+    //~: request function
+    function doRequest(task, query)
+    {
+      var p = {}; if(task) p.task = task; if(query) p.query = query
+      jQuery.get("${z:url('/go/uievents')}", p)
+    }
+
+    //~: create the desktop user events control
+    ReTrade.desktop.uievents = new ReTrade.EventsControl({
+
+      //~: numbering component
+      number: { defcolor: 'N',
+        parent : tbar.getEl().down('.retrade-desktop-eventsnum-area', true),
+        node   : "${z:vid(localView, 'desktop-eventsnum')}"
+      },
+
+      //~: events menu
+      menu: { length: parseInt("${systemConfig.userEventsPage}"),
+        parent : document.body,
+        node   : "${z:vid(localView, 'desktop-events-menu')}"
+      },
+
+      //~: data access proxy
+      proxy: ZeT.hiddenInstance('ReTrade.EventsDataProxy', { request: doRequest }),
+
+      //~: menu show callback
+      onshow: function() {
+        jQuery.SmartMenus.hideAll()
+      }
+    })
+
+    //!: issue initial empty request
+    doRequest()
+
+    //>: setup the desktop events menu
+  })
+
+  //]]>
+  </script>
+</ui:component>

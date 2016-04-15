@@ -1,0 +1,773 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+  <c:set var = "v" scope = "request" value = "${facesSettingsUsersView}"/>
+
+  ${v.forceSecure('secure: view: auth logins')}
+  ${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:desktop-panel coid = "${z:vid(v, 'settings_users_root')}">
+
+  <f:facet name = "extjs-props">
+    title: 'Список пользователей-персон',
+    layout: {type: 'vbox', align: 'stretch'}
+  </f:facet>
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-inline-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar">
+
+    <!-- [add new user -->
+
+    <x:component coid = "${z:vid(v, 'add-user')}">
+      <f:facet name = "extjs-props">
+
+       xtype: 'button', text: 'Добавить',
+       margin: extjsf.pts(1, 0, 1, 0),
+       tooltipType: 'title', tooltip: 'Добавить нового пользователя',
+       disabled: ${not v.isSecure('secure: create: person login')}
+
+     </f:facet>
+    </x:component>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+  extjsf.handler("${z:vid(v, 'add-user')}", '${extDom}', function(btn, event)
+  {
+    var domain  = 'window:' + "${z:vid(v, 'add-user')}";
+    var window = extjsf.bind('window', domain);
+
+    var box     = ReTrade.desktop.calcWindowBox({
+      event: event, widthpt: 240, heightpt: 180, '+xpt': 30, '-ypt': 40
+    })
+
+    if(window)
+    {
+      window.co().toFront()
+      window.co().setPagePosition(box.x, box.y)
+      window.co().expand()
+      return;
+    }
+
+    window = extjsf.domain(domain).bind('window', new extjsf.RootBind()).props({
+
+      xtype: 'window', title: 'Загрузка...',
+      x: box.x, y: box.y, width: box.width, height: box.height,
+      layout: 'fit', autoShow: true,
+
+      loader: {
+        url: "${z:url('/go/retrade/settings/password')}",
+        ajaxOptions: {method: 'GET'},
+        autoLoad: true, scripts: true,
+
+        params: {
+          '${v.viewModeParam}': 'body',
+          '${rootView.extjsDomainParam}': domain,
+          creating: true
+        }
+      }
+    })
+
+    window.on('close', function()
+    {
+      var lc = window.loginCreated; if(!lc) return;
+
+      //~: reload the logins table
+      Ext.data.StoreManager.lookup("${z:vid(v, 'loginsStore')}").reload()
+
+      //~: clear current selection
+      var gr = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
+      gr.co().getSelectionModel().deselectAll()
+
+      //~: create model instance
+      var m = Ext.create('retrade.model.AuthLoginView', {
+        objectKey: lc.authLogin, code: lc.loginCode, descr: lc.descr
+      });
+
+      //~: show the login created
+      gr.showUserInfo(m)
+
+      //~: update the comment
+      extjsf.co("${z:vid(v, 'user-data-edit-comment')}", '${extDom}').toggle(false)
+    })
+
+    window.co(Ext.create('Ext.window.Window', window.buildProps()))
+  })
+
+    //]]>
+    </script>
+
+    <!-- add new user] -->
+
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-inline-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [filter logins field -->
+
+    <x:action-call coid = "${z:vid(v, 'search_logins_script')}"
+      action = "#{v.doSearchLogins}" modelView = "${v}"/>
+
+    <x:text-field coid = "${z:vid(v, 'search_logins')}"
+      value = "#{v.searchNames}">
+
+      <f:facet name = "extjs-props">
+        margin: extjsf.pts(1, 0, 1, 4),
+        width:  extjsf.ex(24)
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Поиск'
+      </f:facet>
+    </x:text-field>
+
+    <!-- filter logins field] -->
+
+
+    <!-- [restrict to selection set -->
+
+    <x:component coid = "${z:vid(v, 'search-logins-selset')}">
+      <f:facet name = "extjs-props">
+
+       xtype: 'button', enableToggle: true,
+       width: retrade_default('button-selset').width,
+       height: retrade_default('button-selset').height,
+       componentCls: 'retrade-icon-24',
+       margin: extjsf.pts(1, 0, 1, 6),
+       iconCls: 'retrade-selset-button-icon',
+       tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
+
+     </f:facet>
+    </x:component>
+
+    <!-- restrict to selection set] -->
+
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'search_logins')}", '${extDom}').on('change', function(f)
+    {
+      var sv = ZeTS.trim(f.getValue());
+      if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
+
+      ZeT.timeout(1000, function()
+      {
+        //?: {search string was changed} discard
+        if(f.extjsfBind.searchValue != sv) return;
+
+        var params = { searchLogins: sv };
+        var selchk = extjsf.bind("${z:vid(v, 'search-logins-selset')}", '${extDom}').co();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.handler("${z:vid(v, 'search_logins_script')}", '${extDom}')({
+          params: params, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'loginsStore')}").load()
+        }})
+      })
+    })
+
+    extjsf.bind("${z:vid(v, 'search-logins-selset')}", '${extDom}').on('click', function()
+    {
+        var names  = extjsf.bind("${z:vid(v, 'search_logins')}", '${extDom}').value();
+        var params = { searchLogins: names };
+
+        var selchk = extjsf.bind("${z:vid(v, 'search-logins-selset')}", '${extDom}').co();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.handler("${z:vid(v, 'search_logins_script')}", '${extDom}')({
+          params: params, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'loginsStore')}").load()
+        }})
+    })
+
+    //]]>
+    </script>
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [users table -->
+
+  <x:data-store storeId = "${z:vid(v, 'loginsStore')}"
+    modelView = "${v}">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.AuthLoginView', pageSize: 5
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.AuthLoginView')
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+    storeId = "${z:vid(v, 'loginsStore')}">
+
+    <f:facet name = "grid-props">
+
+      preventHeader: true, flex: 1,
+      pager: true, sortableColumns: false,
+      columns: ZeT.defined('retrade.columns.UsersView'),
+      selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'})
+
+    </f:facet>
+  </x:data-grid>
+
+  <x:action-call coid = "${z:vid(v, 'change-current-login-script')}"
+    action = "#{v.doSetCurrentLogin}" modelView = "${v}"/>
+
+  <script type = "text/javascript">
+
+  extjsf.bind("${z:vid(v, 'search_logins_script')}", '${extDom}').success(function()
+  {
+    Ext.data.StoreManager.lookup("${z:vid(v, 'loginsStore')}").loadPage(1)
+  })
+
+  </script>
+
+  <!-- users table] -->
+
+
+  <!-- [user panel -->
+
+  <x:component coid = "${z:vid(v, '_user_data_spliter')}">
+    <f:facet name = "extjs-props">
+      xtype: 'splitter', collapsible: false
+    </f:facet>
+  </x:component>
+
+  <x:component coid = "${z:vid(v, 'user_data')}">
+
+    <f:facet name = "extjs-props">
+
+      xtype: 'panel', frame: false, border: false,
+      layout: { type: 'vbox', align: 'stretch' },
+      height: extjsf.pt(240), bodyCls: 'retrade-back-panel',
+      title: 'Выберете пользователя'
+
+    </f:facet>
+
+
+    <!-- [user panel toolbar -->
+
+    <x:toolbar coid = "${z:vid(v, 'user-data-toolbar')}">
+
+      <f:facet name = "extjs-props">
+       xtype: 'panel', bodyPadding: extjsf.pt(2),
+       layout: { type: 'hbox', align: 'middle' },
+       bodyCls: 'retrade-toolbar-inline-panel',
+       hidden: true
+      </f:facet>
+
+
+      <!-- [edit user comment] -->
+
+      <x:component coid = "${z:vid(v, 'user-data-edit-comment')}">
+        <f:facet name = "extjs-props">
+         xtype: 'button', enableToggle: true,
+         text: 'Комментарий', margin: extjsf.pts(1, 0, 1, 0),
+         tooltipType: 'title', tooltip: 'Изменить комментарий о пользователе'
+       </f:facet>
+      </x:component>
+
+
+      <!-- [edit person -->
+
+      <x:component coid = "${z:vid(v, 'edit-person')}">
+        <f:facet name = "extjs-props">
+         xtype: 'button', text: 'Изменить',
+         margin: extjsf.pts(1, 0, 1, 6),
+         tooltipType: 'title', tooltip: 'Изменить свойства персоны'
+       </f:facet>
+      </x:component>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+  extjsf.handler("${z:vid(v, 'edit-person')}", '${extDom}', function(btn, event)
+  {
+    var m = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').retradeLoginModel; if(!m) return;
+
+    var domain  = 'window:' + "${z:vid(v, 'edit-person')}:" + m.getId();
+    var window = extjsf.bind('window', domain);
+
+    var box     = ReTrade.desktop.calcWindowBox({
+      event: event, widthpt: 260, heightpt: 220, '+xpt': 30, '-ypt': 80
+    })
+
+    if(window)
+    {
+      window.co().toFront()
+      window.co().setPagePosition(box.x, box.y)
+      window.co().expand()
+      return;
+    }
+
+    window = extjsf.domain(domain).bind('window', new extjsf.RootBind()).props({
+
+      xtype: 'window', title: 'Загрузка...',
+      x: box.x, y: box.y, width: box.width, height: box.height,
+      layout: 'fit', autoShow: true,
+
+      loader: {
+        url: "${z:url('/go/retrade/settings/person')}",
+        ajaxOptions: {method: 'GET'},
+        autoLoad: true, scripts: true,
+
+        params: {
+          '${v.viewModeParam}': 'body',
+          '${rootView.extjsDomainParam}': domain,
+          entity: m.getId()
+        }
+      }
+    })
+
+    window.on('close', function()
+    {
+      var pe = window.personEdit; if(!pe || pe.cancelled) return;
+      var gr = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
+      var m  = gr.retradeLoginModel;
+
+      //~: update the model if
+      if((m != null) && (m.getId() == pe.authLogin))
+      {
+        //~: update the model & info
+        m.set('lastName', pe.lastName)
+        m.set('firstName', pe.firstName)
+        m.set('middleName', pe.middleName)
+        m.set('genderMale', pe.genderMale)
+        m.set('email', pe.email)
+        m.set('phoneMob', pe.phoneMob)
+        m.set('phoneWork', pe.phoneWork)
+
+        gr.showUserInfo(m)
+      }
+
+      //~: refresh the table
+      gr.co().getStore().reload()
+    })
+
+    window.co(Ext.create('Ext.window.Window', window.buildProps()))
+  })
+
+      //]]>
+      </script>
+
+      <!-- edit person] -->
+
+
+      <!-- [ toolbar fill to set secure buttons on the right ] -->
+      <x:component coid = "${z:vid(v, '_tb_person_fill_secure_on_right')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', flex: 1, frame: false, border: false,
+          bodyCls: 'retrade-toolbar-panel'
+        </f:facet>
+      </x:component>
+
+
+      <!-- [change login and password -->
+
+      <x:component coid = "${z:vid(v, 'update-user-password')}">
+        <f:facet name = "extjs-props">
+
+         xtype: 'button', text: 'Логин &amp; пароль',
+         margin: extjsf.pts(1, 0, 1, 6), disabled: true,
+         tooltipType: 'title', tooltip: 'Изменить логин и пароль пользователя'
+
+       </f:facet>
+      </x:component>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+  extjsf.handler("${z:vid(v, 'update-user-password')}", '${extDom}', function(btn, event)
+  {
+    var m = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').retradeLoginModel; if(!m) return;
+
+    var domain  = 'window:' + "${z:vid(v, 'update-user-password')}:" + m.getId();
+    var window = extjsf.bind('window', domain);
+
+    var box     = ReTrade.desktop.calcWindowBox({
+      event: event, widthpt: 240, heightpt: 180, '+xpt': -280, '-ypt': 40
+    })
+
+    if(window)
+    {
+      window.co().toFront()
+      window.co().setPagePosition(box.x, box.y)
+      window.co().expand()
+      return;
+    }
+
+    window = extjsf.domain(domain).bind('window', new extjsf.RootBind()).props({
+
+      xtype: 'window', title: 'Загрузка...',
+      x: box.x, y: box.y, width: box.width, height: box.height,
+      layout: 'fit', autoShow: true,
+
+      loader: {
+        url: "${z:url('/go/retrade/settings/password')}",
+        ajaxOptions: {method: 'GET'},
+        autoLoad: true, scripts: true,
+
+        params: {
+          '${v.viewModeParam}': 'body',
+          '${rootView.extjsDomainParam}': domain,
+          entity: m.getId()
+        }
+      }
+    })
+
+    window.on('close', function()
+    {
+      var pe = window.passwordEdit; if(!pe || pe.cancelled) return;
+      var gr = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
+      var m  = gr.retradeLoginModel;
+
+      //~: update the model if
+      if((m != null) && (m.getId() == pe.authLogin))
+      {
+        //~: update the model & info
+        m.set('code', pe.loginCode)
+        gr.showUserInfo(m)
+      }
+
+      //~: refresh the table
+      gr.co().getStore().reload()
+    })
+
+    window.co(Ext.create('Ext.window.Window', window.buildProps()))
+  })
+
+      //]]>
+      </script>
+
+      <!-- change login and password] -->
+
+
+      <!-- [person secure ables window -->
+
+      <x:component coid = "${z:vid(v, 'person-secure-ables')}">
+        <f:facet name = "extjs-props">
+         xtype: 'button', text: 'Правила',
+         margin: extjsf.pts(1, 0, 1, 6),
+         tooltipType: 'title', tooltip: 'Отобразить правила доступа, назначенные персоне'
+       </f:facet>
+      </x:component>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+  extjsf.handler("${z:vid(v, 'person-secure-ables')}", '${extDom}', function(btn, event)
+  {
+    var m = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').retradeLoginModel; if(!m) return;
+
+    var domain  = 'window:' + "${z:vid(v, 'person-secure-ables')}:" + m.getId();
+    var window = extjsf.bind('window', domain);
+
+    var box     = ReTrade.desktop.calcWindowBox({
+      event: event, widthpt: 480, heightpt: 360, '+xpt': -500, '-ypt': 240
+    })
+
+    if(window)
+    {
+      window.co().toFront()
+      window.co().setPagePosition(box.x, box.y)
+      window.co().expand()
+      return;
+    }
+
+    window = extjsf.domain(domain).bind('window', new extjsf.RootBind()).props({
+
+      xtype: 'window', title: 'Загрузка...',
+      x: box.x, y: box.y, width: box.width, height: box.height,
+      autoShow: true, layout: 'fit', collapsible: true,
+
+      loader: {
+        url: "${z:url('/go/retrade/settings/secure-ables')}",
+        ajaxOptions: {method: 'GET'},
+        autoLoad: true, scripts: true,
+
+        params: {
+          '${v.viewModeParam}': 'body',
+          '${rootView.extjsDomainParam}': domain,
+          entity: m.getId()
+        }
+      }
+    })
+
+    window.co(Ext.create('Ext.window.Window', window.buildProps()))
+  })
+
+      //]]>
+      </script>
+
+      <!-- person secure ables window] -->
+
+    </x:toolbar>
+
+    <!-- user panel toolbar] -->
+
+
+    <!-- [user data info -->
+
+    <x:html coid = "${z:vid(v, 'user-data-info')}">
+
+     <f:facet name = "extjs-props">
+        xtype: 'panel', frame: false, border: false,
+        bodyCls: 'retrade-content-panel',
+        margin: extjsf.pt(2), hidden: true
+     </f:facet>
+
+     <div id = "${z:vid(v, 'user-data-info-content')}" class = 'retrade-settings-users-data-info'>
+
+       <table class = 'retrade-info-table'>
+         <tr>
+           <td class = 'retrade-info-title'><div>Фамилия</div></td>
+           <td class = 'retrade-info-value'><div></div></td>
+
+           <td class = 'retrade-info-title'><div>Имя</div></td>
+           <td class = 'retrade-info-value'><div></div></td>
+
+           <td class = 'retrade-info-title'><div>Отчество</div></td>
+           <td class = 'retrade-info-value'><div></div></td>
+
+           <td class = 'retrade-info-title'><div>Пол</div></td>
+           <td class = 'retrade-info-value'><div></div></td>
+         </tr>
+       </table>
+
+       <table class = 'retrade-info-table'>
+         <tr>
+           <td class = 'retrade-info-title'><div>e-mail</div></td>
+           <td class = 'retrade-info-value'><div></div></td>
+
+           <td class = 'retrade-info-title'><div>Тел. моб.</div></td>
+           <td class = 'retrade-info-value'><div></div></td>
+
+           <td class = 'retrade-info-title'><div>Тел. раб.</div></td>
+           <td class = 'retrade-info-value'><div></div></td>
+         </tr>
+       </table>
+
+     </div>
+    </x:html>
+
+    <!-- user data info] -->
+
+
+    <!-- [user comment -->
+
+    <x:html coid = "${z:vid(v, 'user-data-comment')}">
+
+     <f:facet name = "extjs-props">
+        xtype: 'panel', frame: false, border: false, flex: 1, hidden: true,
+        bodyCls: 'retrade-transparent-panel', margin: extjsf.pt(2)
+     </f:facet>
+
+     <div id = "${z:vid(v, 'user-data-nocomment')}" style = "display: none;"
+       class = "retrade-settings-users-data-nocomment">
+
+       Комментарии по данной персоне отсутствуют.
+     </div>
+
+     <div id = "${z:vid(v, 'user-data-comment')}" style = "display: none;"
+       class = "retrade-settings-users-data-comment"></div>
+
+    </x:html>
+
+    <x:component coid = "${z:vid(v, 'user-data-comment-edit')}">
+     <f:facet name = "extjs-props">
+
+        xtype: 'textarea', flex: 1, margin: extjsf.pt(2), hidden: true,
+        overflowX: 'hidden', overflowY: 'auto'
+
+     </f:facet>
+    </x:component>
+
+    <x:action-call coid = "${z:vid(v, 'update_comment_script')}"
+      action = "#{v.doSetLoginComment}" modelView = "${v}"/>
+
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+  //~: grid selection change
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').on('selectionchange', function(grid, selected)
+  {
+    //~: show selected user info
+    var m = (selected.length == 1) && selected[0];
+    extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').showUserInfo(m)
+
+    //~: disable login-password edit and view rules (enabled in set-current-callback)
+    extjsf.co("${z:vid(v, 'update-user-password')}", '${extDom}').setDisabled(true)
+    extjsf.co("${z:vid(v, 'person-secure-ables')}", '${extDom}').setDisabled(true)
+
+    //~: update the current login selection
+    extjsf.handler("${z:vid(v, 'change-current-login-script')}", '${extDom}')({
+      params: { currentLogin: m.getId() }
+    })
+  })
+
+  //~: user info selection display
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').showUserInfo = function(m)
+  {
+    var pn = extjsf.bind("${z:vid(v, 'user_data')}", '${extDom}').co();
+    var tb = extjsf.bind("${z:vid(v, 'user-data-toolbar')}", '${extDom}').co();
+    var ud = extjsf.bind("${z:vid(v, 'user-data-info')}", '${extDom}').co();
+    var uc = extjsf.bind("${z:vid(v, 'user-data-comment')}", '${extDom}').co();
+
+    //~: toggle off comment button
+    extjsf.co("${z:vid(v, 'user-data-edit-comment')}", '${extDom}').toggle(false, true)
+
+    //~: show comment text block
+    extjsf.co("${z:vid(v, 'user-data-comment')}", '${extDom}').show()
+
+    //~: hide comment edit field
+    extjsf.co("${z:vid(v, 'user-data-comment-edit')}", '${extDom}').hide()
+
+    //~: remember the model
+    extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').retradeLoginModel = m;
+
+    //~: show-hide controls
+    if(!m)
+    {
+      tb.hide(); ud.hide(); uc.hide();
+      pn.setTitle('Выберете пользователя');
+      return;
+    }
+
+    tb.show(); ud.show(); uc.show();
+    pn.setTitle("Пользователь '" + m.get('code') + "'");
+
+    //~: set last-first-middle- names
+    var ui = Ext.get("${z:vid(v, 'user-data-info-content')}");
+    var vs = ui.select('.retrade-info-value');
+    vs.item(0).setHtml(Ext.String.htmlEncode(m.get('lastName')))
+    vs.item(1).setHtml(Ext.String.htmlEncode(m.get('firstName')))
+    vs.item(2).setHtml(Ext.String.htmlEncode(m.get('middleName')))
+    var ismale = m.get('genderMale');
+    vs.item(3).setHtml((ismale == 'true')?('Муж'):(ismale == 'false')?('Жен'):(''));
+    vs.item(4).setHtml(Ext.String.htmlEncode(m.get('email')))
+    vs.item(5).setHtml(Ext.String.htmlEncode(m.get('phoneMob')))
+    vs.item(6).setHtml(Ext.String.htmlEncode(m.get('phoneWork')))
+
+    //~: the comment (description)
+    var nc = Ext.get("${z:vid(v, 'user-data-nocomment')}");
+    var co = Ext.get("${z:vid(v, 'user-data-comment')}");
+    var gr = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
+    var ds = ZeTS.trim(m.get('descr'));
+
+    if(!ds.length) { co.hide(); nc.show(); } else
+    {
+      co.show(); nc.hide();
+      co.setHtml(Ext.String.htmlEncode(ds));
+    }
+  }
+
+  //~: toggle edit comment
+  extjsf.bind("${z:vid(v, 'user-data-edit-comment')}", '${extDom}').on('toggle', function(btn)
+  {
+     var gr = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
+     var ct = extjsf.bind("${z:vid(v, 'user-data-comment')}", '${extDom}').co();
+     var ce = extjsf.bind("${z:vid(v, 'user-data-comment-edit')}", '${extDom}').co();
+     var m  = gr.retradeLoginModel; if(!m) return;
+
+     //?: {go to edit mode}
+     if(btn.pressed)
+     {
+       ct.hide(); ce.show();
+       ce.setValue(m.get('descr'))
+     }
+     else
+     {
+       var nc = Ext.get("${z:vid(v, 'user-data-nocomment')}");
+       var co = Ext.get("${z:vid(v, 'user-data-comment')}");
+       var ds = ZeTS.trim(ce.getValue());
+
+       ct.show(); ce.hide();
+
+       if(!ds.length) { co.hide(); nc.show(); } else
+       {
+         co.show(); nc.hide();
+         co.setHtml(Ext.String.htmlEncode(ds));
+       }
+
+       //~: update the login
+       m.set('descr', ds)
+
+       extjsf.handler("${z:vid(v, 'update_comment_script')}", '${extDom}')({
+          params: { entity: m.getId(), comment: ds }
+       })
+     }
+  })
+
+    //]]>
+    </script>
+
+    <!-- user comment] -->
+
+  </x:component>
+
+</x:desktop-panel>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "true"/>
+  </ui:define>
+
+  <ui:define name = 'scripts'>
+
+  <ui:fragment rendered = "#{v.setCurrentLogin}">
+  <script>
+  //<![CDATA[
+
+    ZeT.scope(function()
+    {
+      var login = ('true' == "#{v.secureChangeCurrentLogin}");
+      var pass  = ('true' == "#{v.secureChangeCurrentPassword}");
+      var ables = ('true' == "#{v.secureViewCurrentAbles}");
+
+      extjsf.co("${z:vid(v, 'update-user-password')}", '${extDom}').
+        setDisabled(!login && !pass)
+
+      extjsf.co("${z:vid(v, 'person-secure-ables')}", '${extDom}').
+        setDisabled(!ables)
+    })
+
+  //]]>
+  </script>
+  </ui:fragment>
+
+  </ui:define>
+</ui:decorate>
+</ui:component>

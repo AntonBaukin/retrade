@@ -1,0 +1,705 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+  xmlns:z  = 'uri:tverts.com'>
+
+  <!-- [search goods controls block -->
+
+  <!-- [attribute types store] -->
+  <x:data-store storeId = "${z:vid(v, 'search-goods-attrTypes')}"
+    modelProvider = "facesGoodAttrsView">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.GoodAttrView', autoLoad: true
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.GoodAttrView')
+    </f:facet>
+  </x:data-store>
+
+
+  <!-- attribute groups store -->
+  <x:data-store storeId = "${z:vid(v, 'search-goods-goodAttrGroups')}">
+    <f:facet name = "store-props">
+      model: 'retrade.model.KeyValue'
+    </f:facet>
+  </x:data-store>
+
+
+  <!-- [attribute values store] -->
+  <x:data-store storeId = "${z:vid(v, 'search-goods-attrValues')}">
+    <f:facet name = "store-props">
+      model: 'retrade.model.KeyValue'
+    </f:facet>
+  </x:data-store>
+
+
+  <x:component coid = "${z:vid(v, 'search-goods-layout')}">
+    <f:facet name = "extjs-props">
+      xtype: 'panel', border: false,
+      margin: extjsf.pts(0, 0, 0, 8),
+      layout: { type: 'hbox', align: 'middle' },
+      bodyCls: 'retrade-transparent-panel'
+    </f:facet>
+
+
+    <!-- [goods name] -->
+    <x:text-field coid = "${z:vid(v, 'search-goods')}"
+      value = "#{v.model.searchNames}">
+
+      <f:facet name = "extjs-props">
+        margin: extjsf.pts(0, 0, 0, 4),
+        width: extjsf.ex(12), triggers: {
+          clear: { cls : 'retrade-form-field-text-clear',
+            hidden: true, handler: function(f){ f.setValue('') }
+        }}
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Поиск', cls: 'retrade-info-title-label'
+      </f:facet>
+    </x:text-field>
+
+
+    <!-- [display search by the attributes] -->
+    <x:component coid = "${z:vid(v, 'search-goods-attrs')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'button', arrowVisible: false,
+        width: retrade_default('button-selset').width,
+        height: retrade_default('button-selset').height,
+        margin: extjsf.pts(0, 0, 0, 6),
+        componentCls: 'retrade-icon-24',
+        iconCls: 'retrade-good-attrs-icon retrade-icon-strict-24',
+        tooltipType: 'title', tooltip: 'Фильтр по атрибутам товара'
+
+      </f:facet>
+
+
+      <!-- [attribute search block-menu -->
+
+      <x:menu coid = "${z:vid(v, 'search-goods-attr-menu')}">
+
+        <f:facet name = "extjs-props">
+          showSeparator: false, width: extjsf.pt(250),
+          layout: 'fit',  bodyCls: 'retrade-form-panel',
+          getAlignToXY: function(btn)
+          {
+            var b = btn.getBox(); return [
+              b.x + b.width - this.getWidth(), b.y + b.height + 4 ]
+          }
+        </f:facet>
+
+        <x:component coid = "${z:vid(v, 'search-goods-attrs-menu-layout')}">
+
+          <f:facet name = "extjs-props">
+            border: false, indent: false,
+            bodyPadding: extjsf.pts(8, 4, 4, 6),
+            bodyCls: 'retrade-transparent-panel retrade-table-form-layout',
+            layout: { type: 'table', columns: 2 },
+          </f:facet>
+
+
+          <!-- [attribute groups drop list] -->
+          <x:drop-list coid = "${z:vid(v, 'search-goods-group')}"
+            storeId = "${z:vid(v, 'search-goods-goodAttrGroups')}"
+            value = "#{v.phonyString}">
+
+            <f:facet name = "drop-props">
+              editable: false, valueField: 'value', displayField: 'text',
+              cellCls: 'retrade-width-100pc',
+              fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+            </f:facet>
+
+            <f:facet name = "label-props">
+              text: 'Группа', cls: 'retrade-info-title-label',
+              margin: extjsf.pts(0, 4, 0, 0)
+            </f:facet>
+          </x:drop-list>
+
+
+          <!-- [attribute type drop list] -->
+          <x:drop-list coid = "${z:vid(v, 'search-goods-attr-type')}"
+            storeId = "${z:vid(v, 'search-goods-attrTypes')}"
+            value = "#{v.phonyString}">
+
+            <f:facet name = "drop-props">
+              editable: false, valueField: 'pkey', displayField: 'nameLo',
+              cellCls: 'retrade-width-100pc',
+              fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+            </f:facet>
+
+            <f:facet name = "label-props">
+              text: 'Атрибут', cls: 'retrade-info-title-label',
+              margin: extjsf.pts(0, 4, 0, 0)
+            </f:facet>
+          </x:drop-list>
+
+
+          <!-- [attribute value selection list] -->
+          <x:drop-list coid = "${z:vid(v, 'search-goods-attr-value-list')}"
+            storeId = "${z:vid(v, 'search-goods-attrValues')}"
+            value = "#{v.phonyString}">
+
+            <f:facet name = "drop-props">
+              hidden: true, editable: false, matchFieldWidth: false,
+              valueField: 'value', displayField: 'text',
+              cellCls: 'retrade-width-100pc',
+              fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+            </f:facet>
+
+            <f:facet name = "label-props">
+              hidden: true, text: 'Равен',
+              cls: 'retrade-info-title-label',
+              margin: extjsf.pts(0, 4, 0, 0)
+            </f:facet>
+          </x:drop-list>
+
+
+          <!-- [attribute value text field] -->
+          <x:text-field coid = "${z:vid(v, 'search-goods-attr-value-text')}"
+            value = "#{v.phonyString}">
+
+            <f:facet name = "extjs-props">
+              hidden: true, cellCls: 'retrade-width-100pc',
+              fieldCls: 'x-form-field retrade-width-100pc', width: '100%',
+
+              triggers: { clear: { cls : 'retrade-form-field-text-clear',
+                hidden: true, handler: function(f){ f.setValue('') }
+              }},
+
+              listeners: { change: function(f, v){
+                f.getTrigger('clear').setHidden(ZeTS.ises(v))
+              }}
+            </f:facet>
+
+            <f:facet name = "label-props">
+              hidden: true, text: 'Равен',
+              cls: 'retrade-info-title-label',
+              margin: extjsf.pts(0, 4, 0, 0)
+            </f:facet>
+          </x:text-field>
+
+
+          <!-- [attribute value minimum field] -->
+          <x:text-field coid = "${z:vid(v, 'search-goods-attr-value-min')}"
+            value = "#{v.phonyString}">
+
+            <f:facet name = "extjs-props">
+              hidden: true, cellCls: 'retrade-width-100pc',
+              fieldCls: 'x-form-field retrade-width-100pc', width: '100%',
+
+              triggers: { clear: { cls : 'retrade-form-field-text-clear',
+                hidden: true, handler: function(f){ f.setValue('') }
+              }},
+
+              listeners: { change: function(f, v){
+                f.getTrigger('clear').setHidden(ZeTS.ises(v))
+              }}
+            </f:facet>
+
+            <f:facet name = "label-props">
+              hidden: true, text: 'Больше',
+              cls: 'retrade-info-title-label',
+              margin: extjsf.pts(0, 4, 0, 0)
+            </f:facet>
+          </x:text-field>
+
+
+          <!-- [attribute value maximum field] -->
+          <x:text-field coid = "${z:vid(v, 'search-goods-attr-value-max')}"
+            value = "#{v.phonyString}">
+
+            <f:facet name = "extjs-props">
+              hidden: true, cellCls: 'retrade-width-100pc',
+              fieldCls: 'x-form-field retrade-width-100pc', width: '100%',
+
+              triggers: { clear: { cls : 'retrade-form-field-text-clear',
+                hidden: true, handler: function(f){ f.setValue('') }
+              }},
+
+              listeners: { change: function(f, v){
+                f.getTrigger('clear').setHidden(ZeTS.ises(v))
+              }}
+            </f:facet>
+
+            <f:facet name = "label-props">
+              hidden: true, text: 'Меньше',
+              cls: 'retrade-info-title-label',
+              margin: extjsf.pts(0, 4, 0, 0)
+            </f:facet>
+          </x:text-field>
+
+
+          <!-- [substring checkbox] -->
+          <x:component coid = "${z:vid(v, 'search-goods-attr-substring-layout')}">
+            <f:facet name = "extjs-props">
+              border: false, colspan: 2,
+              bodyCls: 'retrade-transparent-panel',
+              layout: { type: 'hbox', align: 'middle' }
+            </f:facet>
+
+            <x:checkbox-field coid = "${z:vid(v, 'search-goods-substring')}"
+              value = "#{v.phonyBoolTrue}">
+
+              <f:facet name = "extjs-props">
+                hidden: true, value: true
+              </f:facet>
+
+              <f:facet name = "label-props">
+                hidden: true, cls: 'retrade-info-title-label',
+                html: "&lt;span title = 'Производить поиск товаров по подстроке значения атрибута'&gt;подстрока&lt;/span&gt;"
+              </f:facet>
+            </x:checkbox-field>
+          </x:component>
+
+
+          <!-- [OR-AND selector] -->
+          <x:component coid = "${z:vid(v, 'search-goods-attr-or-layout')}">
+            <f:facet name = "extjs-props">
+              border: false, colspan: 2,
+              bodyCls: 'retrade-transparent-panel',
+              layout: { type: 'hbox', align: 'middle' }
+            </f:facet>
+
+            <x:checkbox-field coid = "${z:vid(v, 'search-goods-attr-or')}"
+              value = "#{v.phonyBoolTrue}">
+
+              <f:facet name = "extjs-props">
+                hidden: true
+              </f:facet>
+
+              <f:facet name = "label-props">
+                hidden: true, cls: 'retrade-info-title-label',
+                html: "&lt;span title = 'Добавить фильтр либо как ИЛИ (отмечено), либо как И (не отмечено)'&gt;добавить как ИЛИ&lt;/span&gt;"
+              </f:facet>
+            </x:checkbox-field>
+          </x:component>
+
+
+          <!-- [add filter button] -->
+          <x:component coid = "${z:vid(v, 'search-goods-add-filter-layout')}">
+            <f:facet name = "extjs-props">
+              border: false, colspan: 2,
+              bodyCls: 'retrade-transparent-panel',
+              layout: { type: 'vbox', align: 'center' }
+            </f:facet>
+
+            <x:component coid = "${z:vid(v, 'search-goods-add-filter')}">
+              <f:facet name = "extjs-props">
+                xtype: 'button', hidden: true, cls: 'ux-btn-green', text: 'Добавить',
+                tooltipType: 'title', tooltip: 'Добавить фильтр в текущую выборку'
+              </f:facet>
+            </x:component>
+          </x:component>
+        </x:component>
+      </x:menu>
+    </x:component>
+
+    <!-- attribute search block-menu] -->
+
+
+    <!-- [restrict to selection set] -->
+    <x:component coid = "${z:vid(v, 'search-goods-selset')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'button', enableToggle: true,
+        width: retrade_default('button-selset').width,
+        height: retrade_default('button-selset').height,
+        componentCls: 'retrade-icon-24',
+        margin: extjsf.pts(0, 0, 0, 6),
+        iconCls: 'retrade-selset-button-icon',
+        tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
+
+      </f:facet>
+    </x:component>
+  </x:component>
+
+
+  <!-- [search goods script] -->
+  <x:action-call coid = "${z:vid(v, 'search-goods-script')}"
+    action = "#{v.doSearchGoods}" modelView = "${v}"/>
+
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  ZeT.scope(function()
+  {
+    var name   = extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}')
+    var namel  = extjsf.bind("${z:vid(v, 'search-goods-label')}", '${extDom}')
+    var selset = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}')
+    var script = extjsf.bind("${z:vid(v, 'search-goods-script')}", '${extDom}')
+    var groups = extjsf.bind("${z:vid(v, 'search-goods-goodAttrGroups')}", '${extDom}')
+    var group  = extjsf.bind("${z:vid(v, 'search-goods-group')}", '${extDom}')
+    var attrs  = extjsf.bind("${z:vid(v, 'search-goods-attrs')}", '${extDom}')
+    var attrt  = extjsf.bind("${z:vid(v, 'search-goods-attr-type')}", '${extDom}')
+    var attrl  = extjsf.bind("${z:vid(v, 'search-goods-attr-value-list')}", '${extDom}')
+    var attrll = extjsf.bind("${z:vid(v, 'search-goods-attr-value-list-label')}", '${extDom}')
+    var attrv  = extjsf.bind("${z:vid(v, 'search-goods-attr-value-text')}", '${extDom}')
+    var attrvl = extjsf.bind("${z:vid(v, 'search-goods-attr-value-text-label')}", '${extDom}')
+    var attrm  = extjsf.bind("${z:vid(v, 'search-goods-attr-value-min')}", '${extDom}')
+    var attrml = extjsf.bind("${z:vid(v, 'search-goods-attr-value-min-label')}", '${extDom}')
+    var attrM  = extjsf.bind("${z:vid(v, 'search-goods-attr-value-max')}", '${extDom}')
+    var attrMl = extjsf.bind("${z:vid(v, 'search-goods-attr-value-max-label')}", '${extDom}')
+    var astore = extjsf.bind("${z:vid(v, 'search-goods-attrTypes')}", '${extDom}')
+    var vstore = extjsf.bind("${z:vid(v, 'search-goods-attrValues')}", '${extDom}')
+    var or     = extjsf.bind("${z:vid(v, 'search-goods-attr-or')}", '${extDom}')
+    var orl    = extjsf.bind("${z:vid(v, 'search-goods-attr-or-label')}", '${extDom}')
+    var subs   = extjsf.bind("${z:vid(v, 'search-goods-substring')}", '${extDom}')
+    var subsl  = extjsf.bind("${z:vid(v, 'search-goods-substring-label')}", '${extDom}')
+    var add    = extjsf.bind("${z:vid(v, 'search-goods-add-filter')}", '${extDom}')
+    var searchValue, aox
+
+    function store()
+    {
+      return extjsf.co("${storeId}", '${extDom}')
+    }
+
+    //~: fill the groups on load
+    astore.on('load', function()
+    {
+      //~: clear the groups
+      groups.co().removeAll()
+      groups.co().add({ value: 'All', text: 'Все' })
+
+      var map = {}
+      astore.co().getUnfiltered().each(function(a)
+      {
+        var ox = a.get('ox')
+        if(!ZeT.iso(ox.group)) return
+
+        ZeT.asserts(ox.group.name)
+        if(map[ox.group.name]) return
+        map[ox.group.name] = ox.group
+
+        var gr = { value: ox.group.name, text: ox.group.nameLo }
+        if(ZeTS.ises(gr.text)) gr.text = gr.value
+
+        groups.co().add(gr)
+      })
+
+      //~: set the default no-filter
+      if(ZeTS.ises(group.value()))
+        group.value('All')
+    })
+
+    //~: filter attributes bt the group
+    group.on('change', function(cb, v)
+    {
+      astore.co().clearFilter()
+      if(v == 'All') return
+
+      function f(x)
+      {
+        var ox = x.get('ox')
+        return !ox || !ox.group || (ox.group.name == v)
+      }
+
+      astore.co().filterBy(f)
+    })
+
+    //~: react on name-code change
+    name.on('change', function(f)
+    {
+      var sv = ZeTS.trim(f.getValue())
+      searchValue = sv
+
+      //~: delay the reaction
+      ZeT.timeout(1000, function()
+      {
+        var params = { searchGoods: sv }
+
+        //?: {search string was changed} discard
+        if(searchValue != sv) return
+
+        //?: {selection set pressed}
+        if(selset.co().pressed)
+          params.selset = ReTrade.selset.selset
+
+        //~: issue the request
+        extjsf.handler(script)({
+          params: params, success : function(){ store().loadPage(1) }
+        })
+      })
+    })
+
+    //~: selection set only toggled
+    selset.on('toggle', function()
+    {
+      var names  = name.value()
+      var params = { searchGoods: names }
+
+      //?: {selection set pressed}
+      if(selset.co().pressed)
+        params.selset = ReTrade.selset.selset
+
+      //~: issue the request
+      extjsf.handler(script)({
+        params: params, success : function(){ store().loadPage(1) }
+      })
+    })
+
+    //~: expand name on focus gain
+    name.on('focus', function(f)
+    {
+      f.setWidth(extjsf.ex(22))
+      if(!ZeTS.ises(f.getValue()))
+        f.getTrigger('clear').show()
+    })
+
+    //~: contract name on focus lost
+    name.on('blur', function(f)
+    {
+      if(ZeTS.ises(f.getValue()))
+      {
+        f.setWidth(extjsf.ex(12))
+        f.getTrigger('clear').hide()
+      }
+    })
+
+    //~: display trigger on change
+    name.on('change', function(f, v)
+    {
+      f.getTrigger('clear').setHidden(ZeTS.ises(v))
+    })
+
+    function sh(visible, binds)
+    {
+      ZeT.each(binds,function(b){ b.visible(visible) })
+    }
+
+    function ranged()
+    {
+      return !!aox && ([ 'integer', 'decimal', 'volume' ].indexOf(aox.type) >= 0)
+    }
+
+    function substr()
+    {
+      return !!aox && (aox.type === 'string') && !ZeT.isa(aox.values)
+    }
+
+    //~: toggle attributes view
+    attrs.on('toggle', function(btn)
+    {
+      sh( btn.pressed, [ attrs ])
+      sh(!btn.pressed, [ name, namel ])
+      if(!btn.pressed) sh(false, [ attrl, attrll, attrv, attrvl, or, orl, subs, subsl, add ])
+
+      //?: {display values list or text}
+      if(btn.pressed) {
+        var a = !!vstore.co().getCount()
+        var b =  !vstore.co().getCount() && !ZeTS.ises(attrt.value())
+
+        sh(a, [ attrl, attrll ])
+        sh(b, [ attrv, attrvl ])
+        sh(a || b,   [ or, orl, add ])
+        sh(substr(), [ subs, subsl ])
+      }
+    })
+
+    //~: ranged-single field toggle
+    function rsf(f)
+    {
+      var v = !ZeTS.ises(attrv.value())
+      var m = !ZeTS.ises(attrm.value())
+      var M = !ZeTS.ises(attrM.value())
+
+      if(f == attrv.co())
+      {
+        sh(!v, [ attrm, attrml, attrM, attrMl ])
+        if(v) attrm.value('')
+        if(v) attrM.value('')
+      }
+
+      if((f == attrm.co()) || (f == attrM.co()))
+        if((m || M) && ranged())
+        {
+          sh(false, [ attrv, attrvl ])
+          attrv.value('')
+        }
+        else
+          sh(true, [ attrv, attrvl ])
+    }
+
+    ZeT.each([ attrv, attrm, attrM ], function(x){ x.on('change', rsf) })
+
+    //~: select attribute type
+    attrt.on('change', function(cb, v)
+    {
+      //?: {has nothing selected} clear and hide
+      if(ZeTS.ises(v)) {
+        aox = null; attrl.value(''); attrv.value(''); attrm.value(''); attrM.value('')
+        sh(false, [ attrl, attrll, attrv, attrvl, attrm, attrml, attrM, attrMl, or, orl, add ])
+        return
+      }
+
+      aox = ZeT.assertn(astore.co().getById(v)).get('ox')
+
+      //?: {display substring}
+      sh(substr(), [ subs, subsl ])
+
+      //?: {has fixed list of values}
+      if(ZeT.isa(aox.values))
+      {
+        vstore.co().removeAll()
+        attrl.value('')
+
+        sh(true,  [ attrl, attrll, or, orl, add ])
+        sh(false, [ attrv, attrvl, attrm, attrml, attrM, attrMl ])
+
+        ZeT.each(aox.values, function(xv)
+        {
+          vstore.co().add({value: xv.value, text: ZeTS.ises(xv.text)?(xv.value):(xv.text) })
+        })
+      }
+      //~: has text field
+      else
+      {
+        vstore.co().removeAll()
+        attrv.value(''); attrm.value(''); attrM.value('')
+
+        sh(false,    [ attrl, attrll ])
+        sh(true,     [ attrv, attrvl, or, orl, add ])
+        sh(ranged(), [ attrm, attrml, attrM, attrMl ])
+      }
+
+      attrs.menu.co().updateLayout()
+    })
+
+    function validateValue(v)
+    {
+      var t = ZeT.assertn(aox).type
+
+      if(t == 'volume')  return retrade.vvolume ({ blank: true }, v)
+      if(t == 'decimal') return retrade.vdecimal({ blank: true }, v)
+      if(t == 'integer') return retrade.vinteger({ blank: true }, v)
+
+      ZeT.assert(t == 'string')
+    }
+
+    function formatValue(v, t)
+    {
+      var t = ZeT.assertn(aox).type
+      ZeT.assert(!ZeTS.ises(v))
+
+      if(t == 'volume')  return { decimal: v }
+      if(t == 'decimal') return { decimal: v }
+      if(t == 'integer') {
+        v = parseInt(v)
+        ZeT.assert(ZeT.isi(v))
+        return { integer: v }
+      }
+
+      ZeT.assert(t == 'string')
+      return { text: v }
+    }
+
+    //~: substring label text
+    subs.on('show', function()
+    {
+      attrvl.co().setText(subs.value()?('Подстр.'):('Равен'))
+    })
+
+    subs.on('hide', function()
+    {
+      attrvl.co().setText('Равен')
+    })
+
+    subs.on('change', function()
+    {
+      attrvl.co().setText(subs.value()?('Подстр.'):('Равен'))
+    })
+
+    //~: add the filter
+    extjsf.handler(add, function()
+    {
+      if(ZeTS.ises(attrt.value()))
+        return ReTrade.desktop.error('Выберете атрибут товара!')
+
+      var e, v = attrv.value(), m = attrm.value(), M = attrM.value()
+      var f = { 'good-attr-type': parseInt(attrt.value()), 'is-or': or.value() }
+
+      //~: has fixed list of values
+      if(!ZeT.isa(aox.values))
+      {
+        //?: {ranged value search is allowed}
+        if(ranged())
+        {
+          //?: {has no any value}
+          if(ZeTS.ises(v) && ZeTS.ises(m) && ZeTS.ises(M))
+            return ReTrade.desktop.error('Введите значение атрибута или ' +
+              'хотя бы одну границу диапазона значений!')
+
+          e = validateValue(v)
+          if(ZeTS.ises(e)) e = validateValue(m)
+          if(ZeTS.ises(e)) e = validateValue(M)
+        }
+        else
+        {
+          if(ZeTS.ises(v))
+            return ReTrade.desktop.error('Введите значение атрибута!')
+          e = validateValue(v)
+        }
+
+        //?: {value is invalid}
+        if(!ZeTS.ises(e)) return ReTrade.desktop.error(e)
+      }
+      else if(ZeTS.ises(v = attrl.value()))
+        return ReTrade.desktop.error('Выберете значение атрибута из списка!')
+
+      if(!ZeTS.ises(v)) //?: {has single value}
+      {
+        ZeT.assert(ZeTS.ises(m) && ZeTS.ises(M))
+        f['min-value'] = formatValue(v)
+      }
+      else  //<-- has ranged filter
+      {
+        ZeT.assert(!ZeTS.ises(m) || !ZeTS.ises(M))
+
+        f['min-value'] = ZeTS.ises(m)?{}:formatValue(m)
+        f['max-value'] = ZeTS.ises(M)?{}:formatValue(M)
+      }
+
+      //?: {substring operator}
+      if(substr() && subs.value()) f.op = 'substring'
+
+      var params = { selset:  ReTrade.selset.selset, filter: ZeT.o2s(f) }
+      if(ZeT.isx(params.selset)) params.selset = ''
+
+      //!: post filter to the server
+      jQuery.post("${z:url('/go/web/views/goods/goods-filter')}", params).
+        done(function(x)
+        {
+          x = parseInt(ZeT.asserts(x))
+          ZeT.assert(ZeT.isi(x)) //<-- primary key of the new item
+
+          //~: reload the selection set
+          ReTrade.selset.reloadStore(1)
+
+          //~: clear the form, hide menu
+          attrt.value(''); attrs.menu.visible(false)
+
+          //~: build the message
+          var msg = 'Фильтр добавлен в текущую выборку'
+          if(selset.co().pressed) msg += ' и применён!'
+          else msg += '. Активирован режим фильтрации по выборке.'
+          ReTrade.desktop.event({ color: 'G' }, msg)
+
+          //~: filter by the set
+          selset.co().toggle(true)
+
+          //~: reload the goods grid
+          if(store()) store().loadPage(1)
+        })
+    })
+  })
+  //]]>
+  </script>
+
+  <!-- search goods controls block] -->
+</ui:component>

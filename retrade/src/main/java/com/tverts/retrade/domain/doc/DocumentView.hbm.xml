@@ -1,0 +1,80 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.doc'>
+
+  <joined-subclass name = 'DocumentView' lazy = 'true'
+     extends = 'com.tverts.endure.core.UnityView'
+     table = 'retrade_doc_view'>
+
+    <!-- Join Key -->
+
+    <key column = 'pk_document_view' foreign-key = 'fk_unity_view'/>
+
+
+    <!-- Document (Unity) Type -->
+
+    <many-to-one name = 'docType' foreign-key = 'fk_doc_view_type'
+      outer-join = 'false' lazy = 'false'>
+
+      <column name = 'fk_doc_type' not-null = 'true'>
+        <comment>The altered (Unity) Type of the document</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = "docCode">
+
+      <column name = 'doc_code' length = '255'>
+        <comment>The code of the owning entity (if exists)</comment>
+      </column>
+    </property>
+
+
+    <!-- View Date -->
+
+    <property name = "docDate" type = 'timestamp'>
+
+      <column name = 'doc_date' index = 'ix_retrade_document_view_date'>
+        <comment>The creation time or last update time of the View</comment>
+      </column>
+    </property>
+
+
+    <!-- View Text Comment -->
+
+    <property name = "docText" type = 'text'>
+
+      <column name = 'doc_text'>
+        <comment>The comment on the View</comment>
+      </column>
+    </property>
+
+
+    <!-- Document Cost -->
+
+    <property name = 'docCost' type = 'big_decimal'>
+
+      <column name = 'doc_cost' precision = '20' scale = '8'>
+
+        <comment>The (price) cost of the document</comment>
+      </column>
+    </property>
+
+
+    <!-- Trade Store reference -->
+
+    <many-to-one name = 'store' foreign-key = 'fk_doc_view_store'>
+
+      <column name = 'fk_store' index = 'ix_doc_view_store'>
+
+        <comment>The Trade Store associated with this Document</comment>
+      </column>
+    </many-to-one>
+
+  </joined-subclass>
+</hibernate-mapping>

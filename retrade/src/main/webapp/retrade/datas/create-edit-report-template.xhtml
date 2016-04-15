@@ -1,0 +1,473 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesReportTemplateEdit}"/>
+
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+
+    extjsf.bind('window', '${extDom}').
+      co().setTitle("#{z:jss(v.windowTitle)}")
+
+  </script>
+
+  <f:facet name = "extjs-props">
+    layout: 'fit', bodyCls: 'retrade-back-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar">
+
+   <!-- [close window button] -->
+
+   <x:component coid = "${z:vid(v, 'close-window')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Отмена',
+        cls: 'ux-btn-red',
+
+        handler : function()
+        {
+          extjsf.bind('window', '${extDom}').
+            co().close()
+        }
+      </f:facet>
+   </x:component>
+
+
+    <!-- [download template button] -->
+
+    <x:component coid = "${z:vid(v, 'download-template')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Скачать', tooltipType: 'title',
+        tooltip: 'Скачать файл шаблона',
+        margin: extjsf.pts(0, 0, 0, 4),
+        hidden: #{v.create or not v.view.ready}
+      </f:facet>
+    </x:component>
+
+
+
+   <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+     <f:facet name = "extjs-props">
+       xtype: 'panel', flex: 1, border: false,
+       bodyCls: 'retrade-toolbar-inline-panel'
+     </f:facet>
+   </x:component>
+
+
+    <!-- [file upload form -->
+
+    <x:component coid = "${z:vid(v, 'file-upload-form')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'form',
+        border: false, frame: false,
+        bodyCls: 'retrade-transparent-panel',
+        bodyPadding: extjsf.pts(0, 4, 0, 0)
+
+      </f:facet>
+
+      <x:component coid = "${z:vid(v, 'file-upload')}">
+        <f:facet name = "extjs-props">
+
+          xtype: 'fileuploadfield', buttonText: 'Шаблон',
+          allowBlank: false, blankText: 'Выберете файл шаблона',
+          buttonOnly: true, hideLabel: true, margin: 0,
+
+        </f:facet>
+      </x:component>
+
+    </x:component>
+
+    <!-- file upload form] -->
+
+
+   <!-- [submit button] -->
+
+   <x:component coid = "${z:vid(v, 'submit')}">
+    <f:facet name = "extjs-props">
+      xtype:'button', text: 'Сохранить',
+      cls: 'ux-btn-green'
+    </f:facet>
+   </x:component>
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [report template status bar -->
+
+  <f:facet name = "status-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-status-panel',
+    hidden: #{v.create or v.view.ready}
+  </f:facet>
+
+
+  <f:facet name = "status">
+
+    <!-- [derived] -->
+
+    <x:html coid = "${z:vid(v, 'ready_status')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', frame: false, border: false
+      </f:facet>
+
+      <div class = "retrade-info-value-small-text retrade-info-status-red">
+        Файл шаблона отстутствует!
+      </div>
+    </x:html>
+  </f:facet>
+
+  <!-- report template status bar] -->
+
+
+  <!-- [report template edit form -->
+
+  <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'edit-form')}">
+
+    <f:facet name = "extjs-props">
+
+      border: false, bodyPadding: extjsf.pt(4),
+      bodyCls: 'retrade-content-panel',
+      layout: { type: 'table', columns: 1 },
+
+    </f:facet>
+
+
+    <!-- [first + second lines: code and name -->
+
+    <x:component coid = "${z:vid(v, '_code_and_name_layout')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'panel', border: false,
+        layout: { type: 'table', columns: 2 },
+        bodyCls: 'retrade-transparent-panel',
+        margin: extjsf.pts(8, 0, 0, 0)
+
+      </f:facet>
+
+
+      <!-- [report template code] -->
+
+      <x:text-field coid = "${z:vid(v, 'code')}"
+         value = "#{v.view.code}">
+
+        <f:facet name = "extjs-props">
+          width: extjsf.ex(24),
+          allowBlank: false, validator: function()
+          {
+            return extjsf.bind("${z:vid(v, 'code')}", '${extDom}').validityStatus || true;
+          }
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Код', cellCls: 'retrade-form-label-cell',
+          margin: extjsf.pts(0, 4, 0, 0)
+        </f:facet>
+      </x:text-field>
+
+
+      <x:component coid = "${z:vid(v, '_edit_form_sep0')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', border: false,
+          bodyCls: 'retrade-transparent-panel',
+          height: extjsf.pt(6), colspan: 2
+        </f:facet>
+      </x:component>
+
+
+      <!-- [report template name] -->
+
+      <x:text-field coid = "${z:vid(v, 'name')}"
+         value = "#{v.view.name}">
+
+        <f:facet name = "extjs-props">
+          width: extjsf.ex(12), allowBlank: false,
+          cellCls: 'retrade-width-100pc',
+          fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Имя', cellCls: 'retrade-form-label-cell',
+          margin: extjsf.pts(0, 4, 0, 0)
+        </f:facet>
+      </x:text-field>
+
+    </x:component>
+
+    <!-- first + second lines: code and name] -->
+
+
+    <!-- [second line: report comment -->
+
+    <x:component coid = "${z:vid(v, '_remarks_layout')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'panel', border: false,
+        layout: { type: 'table', columns: 1 },
+        bodyCls: 'retrade-transparent-panel',
+        margin: extjsf.pts(4, 0, 0, 0)
+
+      </f:facet>
+
+
+      <!-- [report template remarks] -->
+
+      <x:text-field coid = "${z:vid(v, 'remarks')}"
+         value = "#{v.view.remarks}">
+
+        <f:facet name = "extjs-props">
+           xtype: 'textarea', heght: extjsf.pt(18),
+           cellCls: 'retrade-width-100pc',
+           fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Комментарий', cellCls: 'retrade-form-label-cell',
+          margin: extjsf.pts(0, 0, 2, 0)
+        </f:facet>
+      </x:text-field>
+
+    </x:component>
+
+    <!-- second line: report comment] -->
+
+
+    <!-- [third line: data source -->
+
+    <x:component coid = "${z:vid(v, '_datasource_layout')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'panel', border: false,
+        layout: { type: 'table', columns: 1 },
+        bodyCls: 'retrade-transparent-panel',
+        margin: extjsf.pts(4, 0, 0, 0)
+
+      </f:facet>
+
+
+      <!-- [report data source id (read-only)] -->
+
+      <x:text-field coid = "${z:vid(v, 'datasource')}"
+         value = "#{v.did}">
+
+        <f:facet name = "extjs-props">
+           heght: extjsf.pt(18), readOnly: true,
+           cellCls: 'retrade-width-100pc', width: '100%',
+           fieldCls: 'x-form-field retrade-width-100pc'
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Источник данных', cellCls: 'retrade-form-label-cell',
+          margin: extjsf.pts(0, 0, 2, 0)
+        </f:facet>
+      </x:text-field>
+
+    </x:component>
+
+    <!-- third line: data source] -->
+
+
+    <x:component coid = "${z:vid(v, '_edit_form_sep1')}">
+      <f:facet name = "extjs-props">
+
+        hidden: #{v.allowDid},
+        xtype: 'panel', border: false,
+        bodyCls: 'retrade-transparent-panel',
+        height: extjsf.pt(8)
+      </f:facet>
+    </x:component>
+
+
+    <!-- [fourth line: change data source -->
+
+    <x:component coid = "${z:vid(v, '_change_data_source')}">
+      <f:facet name = "extjs-props">
+
+        hidden: #{not v.allowDid},
+        xtype: 'panel', border: false,
+        layout: { type: 'table', columns: 2 },
+        bodyCls: 'retrade-transparent-panel',
+        margin: extjsf.pts(4, 0, 8, 0)
+
+      </f:facet>
+
+
+      <!-- [report data source id (read-only)] -->
+
+      <x:checkbox-field coid = "${z:vid(v, 'change-datasource')}"
+        value = "#{v.resource}">
+
+        <f:facet name = "label-props">
+          cellCls: 'retrade-form-label-cell', margin: extjsf.pts(0, 0, 0, 4),
+          html: "&lt;span title = 'Установите, чтобы заменить источник данных на выбранный в таблице источников'&gt;заменить источник данных&lt;/span&gt;"
+        </f:facet>
+      </x:checkbox-field>
+
+    </x:component>
+
+    <!-- fourth line: change data source] -->
+
+
+    <!-- [hidden field with the resulting did]-->
+    <x:hidden-field coid = "${z:vid(v, 'did')}" value = "#{v.did}"/>
+
+    <!-- [special: submit action] -->
+    <h:commandButton id = "${z:vid(v, 'submit-action')}" value = "submit" style = "display: none;"
+      action = "#{v.doCommitEdit}"/>
+
+  </x:form-panel>
+
+  <!-- report template edit form] -->
+
+
+  <x:action-call coid = "${z:vid(v, 'check-code-exists-script')}"
+    action = "#{v.doCheckCodeExists}" modelView = "${v}"/>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: adjust window height
+  extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').on('afterrender', function()
+  {
+     var win = extjsf.bind('window', '${extDom}').co();
+     var wht = win.body.getHeight();
+     var frm = extjsf.co("${z:vid(v, 'edit-form')}", '${extDom}');
+     var fht = frm.getBox().height;
+
+     win.setHeight(win.getHeight() - (wht - fht))
+  })
+
+  //~: validate on code change
+  extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
+  {
+     var fb = f.extjsfBind;
+     fb.retradeCodeCheck = v; fb.validityStatus = true;
+
+     if(ZeTS.trim(v) != v)
+       fb.validityStatus = 'Код не может начинаться или оканчиваться пробелами!';
+     if(f.validate() !== true) return;
+
+     ZeT.timeout(1000, function()
+     {
+       if(fb.retradeCodeCheck != v) return;
+
+       extjsf.handler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
+          params: { code : fb.retradeCodeCheck }, failure: function()
+          {
+            fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
+            if(ZeTS.ises(fb.validityStatus)) fb.validityStatus = true;
+            f.validate()
+          }
+       })
+     })
+  })
+
+  //~: submit the form
+  extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', function()
+  {
+    var form = extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}');
+    if(!form.co().isValid()) return;
+
+    //!: submit the form
+    form.submit({command: "${z:vid(v, 'submit-action')}", success: function()
+    {
+      var window = extjsf.bind('window', '${extDom}');
+      window.retradeEditDone = true;
+      extjsf.handler("${z:vid(v, 'close-window')}", '${extDom}')()
+    }})
+  })
+
+  //~: react on data source change
+  extjsf.bind("${z:vid(v, 'change-datasource')}", '${extDom}').on('change', function(vb, checked)
+  {
+    var v = (checked)?("#{z:jss(v.model.did)}"):("#{z:jss(v.view.did)}");
+
+    extjsf.bind("${z:vid(v, 'did')}", '${extDom}').value(v)
+    extjsf.bind("${z:vid(v, 'datasource')}", '${extDom}').value(v)
+  })
+
+  //~: download template button
+  extjsf.handler("${z:vid(v, 'download-template')}", '${extDom}', function()
+  {
+    ZeT.timeout(500, function()
+    {
+      window.open("#{z:url('/download')}/Шаблон #{v.view.name}.rptdesign?model=#{v.modelKey}", '_self')
+    })
+  })
+
+  //~: template file upload
+  extjsf.bind("${z:vid(v, 'file-upload')}", '${extDom}').on('change', function(f, v)
+  {
+    var form = extjsf.co("${z:vid(v, 'file-upload-form')}", '${extDom}');
+
+    //!: submit the form to the model
+    form.submit({ url: "#{z:url('/upload')}?model=#{v.modelKey}",
+       success: function()
+       {
+         ReTrade.desktop.event('Файл шаблона успешно загружен!')
+       }
+    })
+  })
+
+
+  //]]>
+  </script>
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "#{v.valid}">
+
+      <ui:fragment rendered = "#{v.codeExists}">
+        <field target = "${z:vid(v, 'code')}">
+          <error>Указанный код уже используется в другом шаблоне!</error>
+        </field>
+      </ui:fragment>
+
+    </validation>
+  </ui:define>
+
+  <ui:define name = 'scripts'>
+
+   <ui:fragment rendered = "#{v.valid}">
+   <script>
+   //<![CDATA[
+
+
+
+   //]]>
+   </script>
+   </ui:fragment>
+  </ui:define>
+</ui:decorate>
+</ui:component>

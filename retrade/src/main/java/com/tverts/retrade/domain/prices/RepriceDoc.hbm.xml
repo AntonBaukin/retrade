@@ -1,0 +1,94 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.prices'>
+
+  <union-subclass name = 'RepriceDoc' table = 'retrade_reprice_doc'
+    extends = 'com.tverts.endure.core.Entity'>
+
+
+    <!-- Domain -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_reprice_doc_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_reprice_doc_code'>
+
+        <comment>Domain the price change document affects</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code'>
+
+      <column name = 'ux_code' not-null = 'true' length = '64'
+        unique-key = 'ux_reprice_doc_code'>
+
+        <comment>Unique (within the Domain) code of the price change document</comment>
+      </column>
+    </property>
+
+
+    <!-- Change Time -->
+
+    <property name = 'changeTime' type = 'timestamp'>
+
+      <column name = 'change_time' index = 'ix_reprice_doc_time'>
+        <comment>The price change actual time</comment>
+      </column>
+    </property>
+
+
+    <!-- Price List -->
+
+    <many-to-one name = 'priceList'
+      foreign-key = 'fk_reprice_doc_price_list'>
+
+      <column name = 'fk_price_list' index = 'ix_reprice_doc_price_list'>
+
+        <comment>The Price List which positions are modified</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Changes List [bi, slave, cascade] -->
+
+    <list name = 'changes' inverse = 'true'
+      cascade = 'all-delete-orphan' lazy = 'true'>
+
+      <key column = 'fk_reprice_doc'/>
+      <list-index column = 'doc_index'/>
+
+      <one-to-many class = 'com.tverts.retrade.domain.prices.PriceChange'/>
+    </list>
+
+
+    <!-- Contractors Set -->
+
+    <set name = 'contractors' lazy = 'true'
+         table = 'retrade_reprice_doc_contractors'>
+
+      <key foreign-key = 'fk_retrade_reprice_doc_contractors_doc'>
+        <column name = 'fk_reprice_doc' not-null = 'true'>
+
+          <comment>Price Change Document affected the Contractor</comment>
+        </column>
+      </key>
+
+      <many-to-many class = 'com.tverts.retrade.domain.firm.Contractor'
+        foreign-key = 'fk_retrade_reprice_doc_contractor'>
+
+        <column name = 'fk_contractor' not-null = 'true'
+          index = 'ix_retrade_reprice_doc_contractor'>
+
+          <comment>Contractor affected by the Price Change Document</comment>
+        </column>
+      </many-to-many>
+    </set>
+
+  </union-subclass>
+</hibernate-mapping>

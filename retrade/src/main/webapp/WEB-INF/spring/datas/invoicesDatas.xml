@@ -1,0 +1,140 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Data Sources for the Invoices                  =
+    +================================================-->
+
+  <bean name  = 'invoicesDatasList'
+        class = 'com.tverts.data.DataSourcesList'>
+
+    <property name = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Single Invoice: Buy
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.data.SingleEntityDataSource'>
+
+          <property name  = 'did'
+                    value = 'invoice: buy'/>
+
+          <property name  = 'name'
+                    value = 'Invoice Buy'/>
+
+          <property name  = 'nameLo'
+                    value = 'Накладая Закупки'/>
+
+          <property name  = 'descrLo'>
+            <value>
+              Предоставляет данные об единственной Накладной Закупки,
+              определяемой пользователем в списке накладных данного типа
+              из числа накладных текущей выборки.
+            </value>
+          </property>
+
+          <property name  = 'uiPath'
+                    value = '/go/retrade/datas/invoices/single-buy'/>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.invoice.Invoice'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Buy'/>
+
+          <property name  = 'adapter'>
+            <bean class = 'com.tverts.retrade.domain.invoice.InvoiceViewAdapter'/>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Single Invoice: Sell (not an auto-production)
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.data.SingleEntityDataSource'>
+
+          <property name  = 'did'
+                    value = 'invoice: sell'/>
+
+          <property name  = 'name'
+                    value = 'Invoice Sell'/>
+
+          <property name  = 'nameLo'
+                    value = 'Накладая Продажи'/>
+
+          <property name  = 'descrLo'>
+            <value>
+              Предоставляет данные об единственной Накладной Продажи
+              без авто-производства, определяемой пользователем в списке
+              накладных данного типа из числа накладных текущей выборки.
+            </value>
+          </property>
+
+          <property name  = 'uiPath'
+                    value = '/go/retrade/datas/invoices/single-sell'/>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.invoice.Invoice'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Sell'/>
+
+          <property name  = 'adapter'>
+            <bean class = 'com.tverts.retrade.domain.invoice.InvoiceViewAdapter'/>
+          </property>
+
+          <!-- HINT: with empty sub-type altered sells are not taken -->
+          <property name  = 'query'>
+            <bean class = 'com.tverts.retrade.exec.datas.invoices.SelectInvoiceSubType'/>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Single Invoice: Move (not altered)
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.data.SingleEntityDataSource'>
+
+          <property name  = 'did'
+                    value = 'invoice: move'/>
+
+          <property name  = 'name'
+                    value = 'Invoice Move'/>
+
+          <property name  = 'nameLo'
+                    value = 'Накладая Перемещения'/>
+
+          <property name  = 'descrLo'>
+            <value>
+              Предоставляет данные об единственной Накладной Перемещения,
+              определяемой пользователем в списке накладных данного типа
+              из числа накладных текущей выборки.
+            </value>
+          </property>
+
+          <property name  = 'uiPath'
+                    value = '/go/retrade/datas/invoices/single-move'/>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.invoice.Invoice'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Move'/>
+
+          <property name  = 'adapter'>
+            <bean class = 'com.tverts.retrade.domain.invoice.InvoiceViewAdapter'/>
+          </property>
+
+          <!-- HINT: with empty sub-type altered moves are not taken -->
+          <property name  = 'query'>
+            <bean class = 'com.tverts.retrade.exec.datas.invoices.SelectInvoiceSubType'/>
+          </property>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+</beans>

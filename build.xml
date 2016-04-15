@@ -1,0 +1,93 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<project name = 'retrade-applications'>
+
+  <property name  = 'retrade-api-file'
+            value = 'retrade-api-0.0.zip'/>
+
+
+  <target name = 'clean'>
+
+    <ant dir = 'auth' target = 'clean'
+         inheritAll = 'false'/>
+
+    <ant dir = 'retrade' target = 'clean'
+         inheritAll = 'false'/>
+
+    <ant dir = 'xroot' target = 'clean'
+         inheritAll = 'false'/>
+
+    <delete file = '${tverts-api-term-file}'
+      failonerror = 'false'/>
+
+  </target>
+
+
+  <target name = 'zip' depends = 'clean'>
+
+    <zip destfile = '../tts.zip' basedir = '..'
+         includes = 'tts/**/*' defaultexcludes = 'false'
+         encoding = 'UTF-8'/>
+
+  </target>
+
+
+  <target name = 'init-dev'>
+
+    <ant dir = 'xroot' target = 'init-dev'
+         inheritAll = 'false'/>
+
+    <ant dir = 'auth' target = 'init-dev'
+         inheritAll = 'false'/>
+
+  </target>
+
+
+  <target name = 'api'>
+
+    <zip destfile = '${retrade-api-file}'
+         basedir  = 'xroot/src/main/java/'
+         includes = 'com/tverts/api/**/*'
+         update   = 'false'
+         encoding = 'UTF-8'/>
+
+    <zip destfile = '${retrade-api-file}'
+         basedir  = 'retrade/src/main/java/'
+         includes = 'com/tverts/api/**/*'
+         update   = 'true'
+         encoding = 'UTF-8'/>
+
+  </target>
+  
+  <!--================================================
+   = support: SVN update                             =
+   =================================================-->
+
+  <target name = 'svn-update'>
+
+    <exec executable = 'svn' dir = 'auth'>
+      <arg value = 'update'/>
+      <arg value = '--accept'/>
+      <arg value = 'theirs-conflict'/>
+    </exec>
+
+    <exec executable = 'svn' dir = 'build'>
+      <arg value = 'update'/>
+      <arg value = '--accept'/>
+      <arg value = 'theirs-conflict'/>
+    </exec>
+
+    <exec executable = 'svn' dir = 'xroot'>
+      <arg value = 'update'/>
+      <arg value = '--accept'/>
+      <arg value = 'theirs-conflict'/>
+    </exec>
+
+    <exec executable = 'svn' dir = '.'>
+      <arg value = 'update'/>
+      <arg value = '--accept'/>
+      <arg value = 'theirs-conflict'/>
+    </exec>
+  </target>
+
+</project>

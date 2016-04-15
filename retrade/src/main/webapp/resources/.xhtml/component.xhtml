@@ -1,0 +1,74 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:fragment xmlns = 'http://www.w3.org/1999/xhtml'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'
+   xmlns:co = 'http://java.sun.com/jsf/composite'
+   xmlns:z  = 'uri:tverts.com'>
+
+  <co:interface>
+
+    <!--
+         Domain unique bind name of the component.
+    -->
+    <co:attribute name = 'coid' required = 'true'
+       type = 'java.lang.String'/>
+
+    <!--
+         DOM node id to render the component to.
+         May be followed by 'renderParent' attribute.
+    -->
+    <co:attribute name = 'renderTo' default = ''
+       type = 'java.lang.String'/>
+
+    <!--
+         Works only with renderTo attribute.
+         Defines ExtJSF Bind id to nest the component
+         as a child. Note that the parent component must
+         not actually render (or display) it's children,
+         or be permanently hidden.
+    -->
+    <co:attribute name = 'renderParent' default = ''
+       type = 'java.lang.String'/>
+
+    <!--
+         ExtJSF Bind name of the container to append
+         this to as a child. Conflicts with 'renderTo'!
+         Overwrites the default nesting of the components.
+    -->
+    <co:attribute name = 'parentId' default = ''
+       type = 'java.lang.String'/>
+
+    <co:facet name = 'extjs-props'/>
+
+  </co:interface>
+
+  <co:implementation>
+
+    <div id = "#{cc.clientId}-#{cc.attrs.coid}-props" style = "display:none">
+      <co:renderFacet name = "extjs-props"/>
+    </div>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+      extjsf.domain('${extDom}').
+        bind('#{cc.attrs.coid}', new extjsf.Bind()).ids('#{cc.clientId}').
+        renderTo('#{cc.attrs.renderTo}', '#{cc.attrs.renderParent}').
+        parent('#{cc.parent.attrs.coid}', '#{cc.attrs.parentId}').
+        props({ xtype: 'panel' }).readPropsNode().
+        install()
+
+    //]]>
+    </script>
+
+    <co:insertChildren/>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+      extjsf.bind('#{cc.attrs.coid}', '${extDom}').ready()
+
+    //]]>
+    </script>
+  </co:implementation>
+</ui:fragment>

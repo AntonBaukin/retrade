@@ -1,0 +1,322 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Sphere of ReTrade Documents                    =
+    +================================================-->
+
+  <bean name  = 'retradeTestDocumentsSphere'
+        class = 'com.tverts.genesis.GenesisSphere'>
+
+    <property name = 'name' value = 'ReTrade Test Documents'/>
+
+    <constructor-arg ref = 'retradeDocsDaysGenesis'/>
+  </bean>
+
+
+  <!--=================================================
+    =  Days-Genesis of ReTrade Documents              =
+    +================================================-->
+
+  <bean name  = 'retradeDocsDaysGenesis'
+        class = 'com.tverts.genesis.DaysGenDisp'>
+
+    <property name  = 'name'    value = 'Days'/>
+
+    <property name  = 'objMin'  value = '2'/>
+    <property name  = 'objMax'  value = '4'/>
+    <property name  = 'dayTx'   value = 'true'/>
+
+    <property name  = 'test'>
+      <bean class = 'com.tverts.retrade.domain.invoice.gen.GenTestInvoices'/>
+    </property>
+
+    <property name  = 'entries'>
+      <array>
+
+        <!-- Prices Change Documents -->
+
+        <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
+
+          <property name = 'weight' value = '8'/>
+
+          <property name = 'genesis'>
+            <bean class = 'com.tverts.retrade.domain.prices.GenReprice'>
+
+              <property name = 'name' value = 'Price Changes'/>
+
+              <property name = 'minGoods' value = '5'/>
+              <property name = 'maxGoods' value = '15'/>
+            </bean>
+          </property>
+        </bean>
+
+
+        <!-- Invoices Buy -->
+
+        <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
+
+          <property name = 'weight' value = '15'/>
+
+          <property name = 'genesis'>
+            <bean class = 'com.tverts.retrade.domain.invoice.gen.GenInvoiceBuy'>
+
+              <property name  = 'name'
+                        value = 'Buy Invoice'/>
+
+              <property name  = 'invoiceType'
+                        value = 'ReTrade: Invoice: Buy'/>
+
+              <property name  = 'orderType'
+                        value = 'ReTrade: Order Type: Invoice Buy-Sell'/>
+
+              <property name  = 'goodsMax'
+                        value = '6'/>
+
+              <property name  = 'volumeMin'
+                        value = '150'/>
+
+              <property name  = 'volumeMax'
+                        value = '250'/>
+            </bean>
+          </property>
+        </bean>
+
+
+        <!-- Invoices Sell -->
+
+        <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
+
+          <property name = 'weight' value = '50'/>
+
+          <property name = 'genesis'>
+            <bean class = 'com.tverts.retrade.domain.invoice.gen.GenInvoiceSell'>
+
+              <property name  = 'name'
+                        value = 'Sell Invoice'/>
+
+              <property name  = 'invoiceType'
+                        value = 'ReTrade: Invoice: Sell'/>
+
+              <property name  = 'orderType'
+                        value = 'ReTrade: Order Type: Invoice Buy-Sell'/>
+
+              <property name  = 'goodsMax'
+                        value = '20'/>
+
+              <property name  = 'volumeMin'
+                        value = '1'/>
+
+              <property name  = 'volumeMax'
+                        value = '4'/>
+
+              <!-- percent of the goods sold via price lists -->
+              <property name  = 'pricesPercent'
+                        value = '75'/>
+
+              <!--
+                Percent of the sell positions with products to calculate.
+                Invoices having such a positions are altered: their resulting
+                (store) goods differ from the goods in the list as products
+                are manufactured.
+              -->
+              <property name  = 'calcedPercent'
+                        value = '50'/>
+            </bean>
+          </property>
+        </bean>
+
+
+        <!-- Invoices Move -->
+
+        <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
+
+          <property name = 'weight' value = '20'/>
+
+          <property name = 'genesis'>
+            <bean class = 'com.tverts.retrade.domain.invoice.gen.GenInvoiceMove'>
+
+              <property name  = 'name'
+                        value = 'Move Invoice'/>
+
+              <property name  = 'invoiceType'
+                        value = 'ReTrade: Invoice: Move'/>
+
+              <property name  = 'orderType'
+                        value = 'ReTrade: Order Type: Invoice Buy-Sell'/>
+
+              <property name  = 'goodsMax'
+                        value = '15'/>
+
+              <property name  = 'volumeMin'
+                        value = '5'/>
+
+              <property name  = 'volumeMax'
+                        value = '25'/>
+            </bean>
+          </property>
+        </bean>
+
+
+        <!-- Produce Invoices (Manual and Auto Calculated)-->
+
+        <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
+
+          <property name = 'weight' value = '35'/>
+
+          <property name = 'genesis'>
+            <bean class = 'com.tverts.retrade.domain.invoice.gen.GenInvoiceProduce'>
+
+              <property name  = 'name'
+                        value = 'Produce Invoice'/>
+
+              <property name  = 'invoiceType'
+                        value = 'ReTrade: Invoice: Move'/>
+
+              <property name  = 'orderType'
+                        value = 'ReTrade: Order Type: Invoice Buy-Sell'/>
+
+              <property name  = 'goodsMax'
+                        value = '5'/>
+
+              <property name  = 'volumeMin'
+                        value = '5'/>
+
+              <property name  = 'volumeMax'
+                        value = '25'/>
+
+              <!-- The percent of Invoices with auto-calculated production -->
+              <property name  = 'autoPercent'
+                        value = '75'/>
+            </bean>
+          </property>
+        </bean>
+
+
+        <!-- Volume Correction Invoices -->
+
+        <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
+
+          <property name = 'weight' value = '15'/>
+
+          <property name = 'genesis'>
+            <bean class = 'com.tverts.retrade.domain.invoice.gen.GenCorrectionInvoice'>
+
+              <property name  = 'name'
+                        value = 'Correction Invoice'/>
+
+              <property name  = 'invoiceType'
+                        value = 'ReTrade: Invoice: Move'/>
+
+              <property name  = 'orderType'
+                        value = 'ReTrade: Order Type: Invoice Buy-Sell'/>
+
+              <property name  = 'goodsMax'
+                        value = '5'/>
+
+              <property name  = 'volumeMin'
+                        value = '5'/>
+
+              <property name  = 'volumeMax'
+                        value = '15'/>
+
+            </bean>
+          </property>
+        </bean>
+
+
+        <!-- Volume Check Documents -->
+
+        <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
+
+          <property name = 'weight' value = '10'/>
+
+          <property name = 'genesis'>
+            <bean class = 'com.tverts.retrade.domain.invoice.gen.GenVolumeCheck'>
+
+              <property name  = 'name'
+                        value = 'Volume Check'/>
+
+              <property name  = 'invoiceType'
+                        value = 'ReTrade: Invoice: Volume Check'/>
+
+              <property name  = 'orderType'
+                        value = 'ReTrade: Order Type: Invoice Buy-Sell'/>
+
+              <property name  = 'goodsMax'
+                        value = '10'/>
+
+              <property name  = 'volumeMin'
+                        value = '150'/>
+
+              <property name  = 'volumeMax'
+                        value = '300'/>
+            </bean>
+          </property>
+        </bean>
+
+
+        <!--
+
+        &lt;!&ndash; Sells Sessions &ndash;&gt;
+
+        <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
+
+          <property name = 'weight' value = '30'/>
+
+          <property name = 'genesis'>
+            <bean class = 'com.tverts.retrade.domain.sells.GenSells'>
+
+              <property name  = 'name'
+                        value = 'Sells Session'/>
+
+              <property name  = 'minLengthMins'
+                        value = '30'/>
+
+              <property name  = 'maxLengthMins'
+                        value = '120'/>
+
+              <property name  = 'receiptsMin'
+                        value = '2'/>
+
+              <property name  = 'receiptsMax'
+                        value = '25'/>
+
+              <property name  = 'mixedPayPercent'
+                        value = '25'/>
+
+              <property name  = 'cashPayWeight'
+                        value = '80'/>
+
+              <property name  = 'bankPayWeight'
+                        value = '20'/>
+
+              <property name  = 'goodsMin'
+                        value = '1'/>
+
+              <property name  = 'goodsMax'
+                        value = '10'/>
+
+              <property name  = 'volumeMin'
+                        value = '1'/>
+
+              <property name  = 'volumeMax'
+                        value = '4'/>
+
+              <property name  = 'storesMin'
+                        value = '1'/>
+
+              <property name  = 'storesMax'
+                        value = '3'/>
+            </bean>
+          </property>
+        </bean>
+        -->
+
+      </array>
+    </property>
+  </bean>
+</beans>

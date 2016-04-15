@@ -1,0 +1,232 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "e" scope = "request" value = "${facesInvoiceEditDate}"/>
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(e, 'root_panel')}">
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+    extjsf.co('window', '${extDom}').
+      setTitle('${z:jss(e.windowTitleEditDate)}')
+
+  //]]>
+  </script>
+
+
+  <f:facet name = "extjs-props">
+    layout: { type: 'vbox', align: 'stretch' },
+    bodyPadding: extjsf.pts(1, 3, 3, 1),
+    bodyCls: 'retrade-back-panel'
+  </f:facet>
+
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar">
+
+    <!-- [cancel edit button] -->
+
+    <x:action-button coid = "${z:vid(e, 'cancel-edit')}"
+      action = "#{e.gotoCancelEdit}" modelView = "#{e}">
+
+      <f:facet name = "extjs-props">
+        cls: 'ux-btn-red', text: 'Отмена'
+      </f:facet>
+    </x:action-button>
+
+
+    <x:component coid = "${z:vid(e, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [submit button] -->
+
+    <x:component coid = "${z:vid(e, 'submit')}">
+      <f:facet name = "extjs-props">
+        xtype:'button', text: 'Применить',
+        cls: 'ux-btn-green'
+      </f:facet>
+    </x:component>
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [invoice date edit form -->
+
+  <x:form-panel modelView = "${e}" coid = "${z:vid(e, 'invoice-date-form')}">
+
+    <f:facet name = "extjs-props">
+      frame: false, border:false, bodyPadding: extjsf.pt(2),
+      bodyCls: 'retrade-toolbar-title-panel',
+      layout: {type: 'hbox', align: 'middle'}
+    </f:facet>
+
+
+    <!-- [header-like title] -->
+    <x:component coid = "${z:vid(e, 'firms_toolbar_title')}">
+      <f:facet name = "extjs-props">
+        xtype: 'title', text: 'Порядок накладных',
+        cls: 'retrade-toolbar-inline-title'
+      </f:facet>
+    </x:component>
+
+
+    <x:component coid = "${z:vid(e, '_invoice_date_form_fill')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [invoice date field -->
+
+    <x:date-field coid = "${z:vid(e, 'date')}" value = "#{e.invoiceDatePart}">
+
+      <f:facet name = "extjs-props">
+
+        listeners : { change: ZeT.timeouted(1000, function(){
+          extjsf.handler("${z:vid(e, 'date')}", '${extDom}')()
+        })}
+
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Дата', cls: 'retrade-info-title-label'
+      </f:facet>
+    </x:date-field>
+
+    <!-- invoice date field] -->
+
+
+    <!-- [invoice time field -->
+
+    <x:time-field coid = "${z:vid(e, 'time')}" value = "#{e.invoiceTimePart}">
+
+      <f:facet name = "extjs-props">
+
+        listeners : { change: ZeT.timeouted(1000, function(){
+          extjsf.handler("${z:vid(e, 'date')}", '${extDom}')()
+        })}
+
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'время', cls: 'retrade-info-title-label'
+      </f:facet>
+    </x:time-field>
+
+    <!-- invoice time field] -->
+
+    <!-- [submit action] -->
+
+    <h:commandButton id = "submit_action" value = "submit" style = "display: none;"
+      action = "#{e.doSaveInvoiceDate}"/>
+
+  </x:form-panel>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  extjsf.handler("${z:vid(e, 'submit')}", '${extDom}', function()
+  {
+    var form = extjsf.bind("${z:vid(e, 'invoice-date-form')}", '${extDom}');
+
+    //~: set go-back handler on success
+    form.success(extjsf.handler("${z:vid(e, 'cancel-edit')}", '${extDom}'))
+
+    //!: submit
+    form.submit({ command: 'submit_action' })
+  })
+
+  extjsf.handler("${z:vid(e, 'date')}", '${extDom}', function()
+  {
+    var form = extjsf.bind("${z:vid(e, 'invoice-date-form')}", '${extDom}');
+
+    //~: set reload order-close invoices on success
+    form.success(function()
+    {
+      Ext.data.StoreManager.lookup("${z:vid(e, 'dateCloseInvoices')}").load()
+    })
+
+    //!: submit
+    form.submit()
+  })
+
+  //]]>
+  </script>
+
+  <!-- invoice date edit form] -->
+
+
+  <!-- [invoices order preview panel -->
+
+  <x:data-store storeId = "${z:vid(e, 'dateCloseInvoices')}"
+    modelRequest = "edit-date">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.InvoiceView'
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.DateCloseInvoices'),
+      extraParams : {
+        '${e.modelParam}': '${e.model.modelKey}'
+      }
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(e, 'date-close-invoices')}"
+    storeId = "${z:vid(e, 'dateCloseInvoices')}">
+
+    <f:facet name = "grid-props">
+
+      flex: 1, sortableColumns: false, enableColumnHide: false,
+      selModel: extjsf.delayCreate('Ext.ux.selection.No'),
+      columns: ZeT.defined("retrade.columns.Invoice#{(e.moveInvoice)?('Move'):('')}View"),
+      viewConfig: { getRowClass: function(m) {
+        if(m.getId() == '#{e.invoice.objectKey}') return 'x-grid-item-selected'
+      }}
+    </f:facet>
+  </x:data-grid>
+
+  <!-- invoices order preview panel] -->
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+
+    <validation success = "true" target = "${z:vid(e, 'invoice-date-form')}"/>
+
+  </ui:define>
+</ui:decorate>
+</ui:component>

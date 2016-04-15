@@ -1,0 +1,31 @@
+<ui:component xmlns = 'http://www.w3.org/1999/xhtml'
+  xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesInvoiceMoveCreate}"/>
+
+<ui:decorate template = '.edit-move.xhtml'
+  xmlns    = 'http://www.w3.org/1999/xhtml'>
+
+  <ui:define name = "page_body_ext">
+    <script type="text/javascript">
+
+  //~: replace cancel button's handler
+  extjsf.handler("${z:vid(v, 'cancel-edit')}", '${extDom}', function()
+  {
+    extjsf.co('window', '${extDom}').close()
+  })
+
+  //~: edit done action (close the window)
+  extjsf.handler("${z:vid(v, 'submit-done')}", '${extDom}', function()
+  {
+    extjsf.co('window', '${extDom}').close()
+  })
+
+    </script>
+  </ui:define>
+
+</ui:decorate>
+</ui:component>

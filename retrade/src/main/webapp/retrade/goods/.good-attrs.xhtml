@@ -1,0 +1,790 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns = 'http://www.w3.org/1999/xhtml'
+  xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+  xmlns:z  = 'uri:tverts.com'>
+
+
+  <!-- [store of attribute values] -->
+  <x:data-store storeId = "${z:vid(v, 'goodAttrs')}" modelView = "${v}">
+    <f:facet name = "store-props">
+      model: 'retrade.model.GoodAttrView',
+      sorters: [{ property: 'nameLo', direction: 'ASC' }]
+    </f:facet>
+  </x:data-store>
+
+
+  <!-- [attribute groups filter -->
+
+  <x:data-store storeId = "${z:vid(v, 'goodAttrGroups')}">
+    <f:facet name = "store-props">
+      model: 'retrade.model.KeyValue'
+    </f:facet>
+  </x:data-store>
+
+  <x:component coid = "${z:vid(v, '_filter-attrs-select')}"
+    parentId = "${filterAttrsSelectArea}">
+
+    <f:facet name = "extjs-props">
+      border: false, bodyCls: 'retrade-transparent-panel',
+      layout: {type: 'hbox', align: 'middle'}
+    </f:facet>
+
+    <x:drop-list coid = "${z:vid(v, 'filter-attrs-select')}"
+      storeId = "${z:vid(v, 'goodAttrGroups')}"
+      value = "#{v.phonyString}">
+
+      <f:facet name = "drop-props">
+        editable: false, width: extjsf.ex(22),
+        valueField: 'value', displayField: 'text'
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Группа', cls: 'retrade-info-title-label'
+      </f:facet>
+    </x:drop-list>
+  </x:component>
+
+  <!-- attribute groups filter] -->
+
+
+  <!-- [attributes display table -->
+
+  <x:data-grid coid = "${z:vid(v, 'attrs-view')}"
+    storeId = "${z:vid(v, 'goodAttrs')}">
+
+    <f:facet name = "grid-props">
+      flex: 1, hidden: true, pager: false, sortableColumns: true,
+      selModel: extjsf.delayCreate('Ext.ux.selection.No'),
+      sorters: [{ property: 'nameLo', direction: 'ASC' }],
+      columns:  [
+
+        {
+          text: "Наименование", dataIndex: 'nameLo',
+          flex: 1, sortable: true
+        },
+
+        {
+          text: "Ко.", dataIndex: 'taken', sortable: false, menuDisabled: true,
+          width: extjsf.ex(4), align: 'center', renderer: function(v, meta)
+          {
+            if(v !== true) return ''
+            meta.tdAttr = "title='Значение атрибута скопировано из товара (основной ед. измерения)'"
+            return 'да'
+          }
+        },
+
+        {
+          text: "Значение", dataIndex: 'value', sortable: false, flex: 1,
+          menuDisabled: true, tdCls: 'retrade-selectable-column', renderer: function(v, meta, rec)
+          {
+            var ox = ZeT.assertn(rec.get('ox'))
+
+            function v2s(x)
+            {
+              if(!ZeT.isa(ox.values)) return x
+              for(var i = 0;(i != ox.values.length);i++)
+                if(x == ox.values[i].value)
+                  return ZeTS.ises(ox.values[i].text)?(x):(ox.values[i].text)
+              return x
+            }
+
+            if(!ZeT.isa(v)) return v2s(v)
+
+            var s = ''; ZeT.each(v, function(x)
+            {
+              if(ZeTS.ises(x)) return
+              if(s.length) s += '&lt;br/&gt;'
+              s += v2s(x)
+            })
+
+            return s
+          }
+        }
+      ]
+    </f:facet>
+  </x:data-grid>
+
+  <!-- attributes display table] -->
+
+
+  <!-- [attribute types store] -->
+  <x:data-store storeId = "${z:vid(v, 'attrTypes')}"
+    modelProvider = "facesGoodAttrsView">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.GoodAttrView'
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.GoodAttrView')
+    </f:facet>
+  </x:data-store>
+
+
+  <!-- [attributes edit table -->
+
+  <x:data-grid coid = "${z:vid(v, 'attrs-edit')}"
+    storeId = "${z:vid(v, 'goodAttrs')}">
+
+    <f:facet name = "grid-props">
+      flex: 1, hidden: true, pager: false, sortableColumns: true,
+      selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true }),
+      sorters: [{ property: 'nameLo', direction: 'ASC' }],
+
+      plugins: [{
+        ptype: 'cellediting', pluginId: 'cellediting', clicksToEdit: 1,
+        listeners : {
+          edit: function(ed, event)
+          {
+            var g = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
+            delete g.editEvent
+            g.valueEdited(ed, event)
+          },
+
+          beforeedit : function(ed, event)
+          {
+            var g = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
+            return g.editStarted(ed, g.editEvent = event)
+          }}
+      }],
+
+      columns: ZeT.scope(function()
+      {
+        function renderType(ox)
+        {
+          if(!ox)                  return ''
+          if(ZeT.isa(ox.values))   return 'список'
+          if(ox.type == 'string')  return 'строка'
+          if(ox.type == 'volume')  return 'объём'
+          if(ox.type == 'decimal') return 'десятичное'
+          if(ox.type == 'integer') return 'целое'
+        }
+
+        function renderArray(ox, meta)
+        {
+          if(!ox) return ''
+          meta.tdAttr = (ox.array)?
+            ("title='Атрибут может хранить несколько значений данного типа'"):
+            ("title='Атрибут может хранить только одно значение данного типа'")
+          return (ox.array)?('да'):('нет')
+        }
+
+        function renderValue(v, meta, model)
+        {
+          var ox = model.get('ox')
+          if(ZeT.isx(ox)) return ''
+
+          function v2s(x)
+          {
+            if(!ZeT.isa(ox.values)) return x
+            for(var i = 0;(i != ox.values.length);i++)
+              if(x == ox.values[i].value)
+                return ZeTS.ises(ox.values[i].text)?(x):(ox.values[i].text)
+            return x
+          }
+
+          v = model.get('value')
+          if(!ZeT.isa(v)) return v2s(v)
+
+          var table = $('#' + "${z:vid(v, 'attrs-values-table')}").find('table').clone()
+          var row   = table.find('tr')
+          var body  = row.parent()
+          row.remove()
+
+          ZeT.each(v, function(x)
+          {
+            if(ZeTS.ises(x)) return
+
+            var xyz = row.clone()
+            body.append(xyz)
+
+            //:= array item value
+            xyz.find('td:last-child span').text(v2s(x)).attr('onclick', ZeTS.cat(
+              "extjsf.bind(\"${z:vid(v, 'goodAttrs')}\", '${extDom}').",
+              'retradeEditArrayValue("', model.getId(), '", "', x,
+              '", event || window.event)'
+            ))
+
+            //~: on remove button click
+            xyz.find('.retrade-edit-delete').attr('onclick', ZeTS.cat(
+              "extjsf.bind(\"${z:vid(v, 'goodAttrs')}\", '${extDom}').",
+              'retradeRemoveArrayValue("', model.getId(), '", "', x,
+              '", event || window.event)'
+            ))
+          })
+
+          return table[0].outerHTML
+        }
+
+
+        //~: attribute type select
+        var typeSelect = Ext.create('Ext.form.field.ComboBox', {
+          store: "${z:vid(v, 'attrTypes')}", editable: false,
+          valueField: 'pkey', displayField: 'nameLo'
+        })
+
+
+        function validateTextValue(v)
+        {
+          var  g = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
+          if(!g.editEvent) return false
+          var  m = g.editEvent.record
+          var ox = m.get('ox')
+
+          if(ZeTS.ises(v)) return true
+
+          if(ox.type == 'volume')  return retrade.vvolume(v)
+          if(ox.type == 'decimal') return retrade.vdecimal(v)
+          if(ox.type == 'integer') return retrade.vinteger(v)
+
+          return true
+        }
+
+
+        //~: text value editor
+        var textEditor = Ext.create('Ext.form.field.Text', {
+          validator: validateTextValue
+        })
+
+        //~: store with list values
+        var listStore = Ext.create('Ext.data.Store', {
+          model: 'retrade.model.KeyValue', data: []
+        })
+
+        //~: list value select editor
+        var listEditor = Ext.create('Ext.form.field.ComboBox', {
+          store: listStore, editable: false,
+          valueField: 'value', displayField: 'text'
+        })
+
+        var valueEditor = Ext.create('Ext.ux.field.Multi', {
+          items: [ textEditor, listEditor ]
+        })
+
+        //~: select the value editor
+        function getValueEditor(m)
+        {
+          var vs = m.get('ox').values
+          if(!ZeT.isa(vs))
+            return valueEditor.setActive(textEditor)
+
+          //~: remove all current values
+          listStore.removeAll()
+
+          //~: current values
+          var xs = m.get('value')
+          if(!ZeT.isa(xs)) xs = []
+          ZeTA.remove(xs, m.get('temp'))
+
+          //~: populate the store
+          ZeT.each(vs, function(x)
+          {
+            if(ZeTS.ises(x.value)) return
+            if(xs.indexOf(x.value) != -1) return
+
+            listStore.add({ value: x.value,
+              text: ZeTS.ises(x.text)?(x.value):(x.text)
+            })
+          })
+
+          return valueEditor.setActive(listEditor)
+        }
+
+        return [
+
+          {
+            text: "Наименование", dataIndex: 'nameLo',
+            flex: 1, sortable: true, editor: typeSelect
+          },
+
+          {
+            text: "Массив", dataIndex: 'ox', sortable: false,
+            width: extjsf.ex(9), align: 'center', renderer: renderArray
+          },
+
+          {
+            text: "Тип", dataIndex: 'ox', sortable: false,
+            width: extjsf.ex(12), align: 'right', renderer: renderType
+          },
+
+          {
+            text: "Значение", dataIndex: 'temp', sortable: false, flex: 1,
+            menuDisabled: true, tdCls:'retrade-selectable-column',
+            renderer: renderValue, getEditor: getValueEditor
+          }
+        ]
+      })
+    </f:facet>
+  </x:data-grid>
+
+
+  <!-- [template of array of values table] -->
+  <div style = "display:none" id = "${z:vid(v, 'attrs-values-table')}">
+
+    <table class = "retrade-good-attrs-edit-values-table"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr class = "retrade-good-attrs-edit-values-table-row">
+        <td><div class = "retrade-edit-delete"
+          title = "Удалить значение из массива"></div></td>
+
+        <td><span title = "Изменить значение"/></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- attributes edit table] -->
+
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: value to string
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}').
+    valueToString = function(v)
+  {
+    if(ZeT.iss(v))     return v
+    if(v && v.text)    return v.text
+    if(v && v.integer) return '' + v.integer
+    if(v && v.decimal) return '' + v.decimal
+    return ''
+  }
+
+  //~: assign values from the attributes on good ox
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}').
+    updateGoodOx = function(ox, isReadMode)
+  {
+    var store  = extjsf.co("${z:vid(v, 'goodAttrs')}", '${extDom}')
+    var astore = extjsf.co("${z:vid(v, 'attrTypes')}", '${extDom}')
+    var vgrid  = extjsf.bind("${z:vid(v, 'attrs-view')}", '${extDom}')
+    var egrid  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
+    var groups = extjsf.bind("${z:vid(v, 'goodAttrGroups')}", '${extDom}')
+    var v2s    = store.extjsfBind.valueToString
+
+    //~: show taken column for sub-goods only
+    extjsf.u.columnByDataInd(vgrid, 'taken').
+      setVisible(ox.isub === true)
+
+    //~: clear the store
+    store.removeAll()
+
+    //~: toggle tables
+    vgrid.visible(isReadMode)
+    egrid.visible(!isReadMode)
+
+    //~: connect the store to the model
+    store.extjsfBind.retradeOxModel = ox
+
+    //?: {has nothing}
+    if(!ox || !ZeT.isa(ox.attributes)) return
+
+    //~: add items from the attributes
+    ZeT.each(ox.attributes, function(a)
+    {
+      //?: {this attribute is taken}
+      if(!isReadMode && (a.taken === true)) return
+
+      //?: {has single value}
+      if(!a.array)
+      {
+        ZeT.assert(!ZeT.isa(a.values))
+        a.value = v2s(a.value)
+      }
+      //?: {not processed yet}
+      else if(!ZeT.isa(a.value))
+        //?: {array with single value}
+        if(!ZeT.isa(a.values))
+          a.value = [ v2s(a.value) ]
+        //~: have array of values
+        else ZeT.each(a.values, function(v)
+        {
+          if(!a.value) a.value = []
+          a.value.push(v2s(v))
+        })
+
+      //!: add to the store
+      var m = store.add(a)[0]
+
+      //=: id
+      m.setId('' + a.pkey)
+
+      //=: temporary edit
+      m.set('temp', (a.array)?(''):(a.value))
+
+      //=: self reference
+      m.set('self', a)
+      m.set('selfox', ox)
+
+      m.commit(true)
+    })
+
+    //~: sort the attributes
+    store.sort('nameLo', 'ASC')
+
+    if(isReadMode)
+      groups.retradeCollectAttrGroups(true)
+    else
+    {
+      astore.clearFilter()
+      astore.reload({ callback: function()
+      {
+        groups.retradeCollectAttrGroups(false)
+      }})
+    }
+  }
+
+
+  //~: collect attribute values
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}').
+    collectValues = function(ox)
+  {
+    var store = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}')
+    var v2s   = store.valueToString
+
+    if(ZeT.iso(ox) && ZeT.isa(ox.attributes))
+      ox = ox.attributes
+    ZeT.assert(ZeT.isa(ox))
+
+    var res = []; ZeT.each(ox, function(x)
+    {
+      //?: {this valus is taken}
+      if(ZeT.iso(x) && (x.taken === true)) return
+
+      //~: get the value
+      var v = x.value
+      if(ZeT.isx(v) && ZeT.isa(x.values)) v = x.values
+
+      //?: {not an array}
+      if(!ZeT.isa(v)) v = v2s(v); else
+      {
+        var va = v, v = []; ZeT.each(va, function(xv)
+        {
+          ZeT.assert(!ZeT.isa(xv))
+          if(!ZeTS.ises(xv = v2s(xv))) v.push(xv)
+        })
+      }
+
+      res.push({ pkey: ZeT.asserts('' + x.pkey), value: ZeT.deepClone(v) })
+    })
+
+    //~: sort the results
+    res.sort(function(a, b)
+    {
+      return a.pkey.localeCompare(b.pkey)
+    })
+
+    return res
+  }
+
+
+  //~: callback function to remove value from array
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}').
+    retradeRemoveArrayValue = function(id, v, e)
+  {
+    e = Ext.create('Ext.event.Event', e)
+    e.stopEvent()
+
+    var store = extjsf.co("${z:vid(v, 'goodAttrs')}", '${extDom}')
+    var model = store.getById(id);  if(!model) return
+    var value = model.get('value'); if(!ZeT.isa(value)) return
+
+    ZeTA.remove(value, v)
+    value = ZeTA.copy(value)
+
+    model.set('value', value)
+    model.get('self').values = value
+  }
+
+
+  //~: callback function to edit value in array
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}').
+    retradeEditArrayValue = function(id, v)
+  {
+    var store = extjsf.co("${z:vid(v, 'goodAttrs')}", '${extDom}')
+    var model = store.getById(id);  if(!model) return
+    var value = model.get('value'); if(!ZeT.isa(value)) return
+
+    model.set('temp', v)
+    model.set('temp-edited', v)
+  }
+
+
+  //~: collect groups of attributes
+  extjsf.bind("${z:vid(v, 'goodAttrGroups')}", '${extDom}').
+    retradeCollectAttrGroups = function(isReadMode)
+  {
+    var groups = extjsf.co("${z:vid(v, 'goodAttrGroups')}", '${extDom}')
+    var groupf = extjsf.bind("${z:vid(v, 'filter-attrs-select')}", '${extDom}')
+    var egrid  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
+    var vstore = extjsf.co("${z:vid(v, 'goodAttrs')}", '${extDom}')
+    var astore = extjsf.co("${z:vid(v, 'attrTypes')}", '${extDom}')
+    var src, map = {}
+
+    //?: {not same read-edit mode}
+    if(!isReadMode && !egrid.visible()) return
+
+    //~: clear the groups
+    groups.removeAll()
+    groups.add({ value: 'All', text: 'Все' })
+
+    //?: {is edit mode}
+    if(egrid.visible()) src = astore.getUnfiltered()
+    else src = vstore.getUnfiltered()
+
+    //~: for each attribute type
+    src.each(function(a)
+    {
+      var ox = a.get('ox')
+      if(!ZeT.iso(ox.group)) return
+
+      ZeT.asserts(ox.group.name)
+      if(map[ox.group.name]) return
+      map[ox.group.name] = ox.group
+
+      var gr = { value: ox.group.name, text: ox.group.nameLo }
+      if(ZeTS.ises(gr.text)) gr.text = gr.value
+
+      groups.add(gr)
+    })
+
+    //~: set the default no-filter
+    groupf.value('All')
+  }
+
+
+  //~: filter attribute types
+  extjsf.bind("${z:vid(v, 'attrTypes')}", '${extDom}').
+    filterAttrTypes = function()
+  {
+    var vstore = extjsf.co("${z:vid(v, 'goodAttrs')}", '${extDom}')
+    var astore = extjsf.co("${z:vid(v, 'attrTypes')}", '${extDom}')
+
+    //~: exclude attributes that are already selected
+    astore.filterBy(function(a)
+    {
+      return !vstore.getById(a.getId())
+    })
+
+    return !!astore.getCount()
+  }
+
+
+  //~: value edit start
+  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}').
+    editStarted = function(ed, event)
+  {
+    var astore = extjsf.bind("${z:vid(v, 'attrTypes')}", '${extDom}')
+    var vgrid  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
+
+    //?: {editing attribute type}
+    if(event.field == 'nameLo')
+    {
+      //?: {has type selected}
+      if(!ZeTS.ises(event.value) && !ZeT.isx(event.record.get('value')))
+        return false //<-- forbid to alter it
+
+      vgrid.co().getSelectionModel().select([ event.record ])
+      return
+    }
+
+    //?: {has no type selected}
+    if(ZeTS.ises(event.record.get('nameLo')))
+    {
+      ReTrade.desktop.error('До задания значения выберете атрибут!')
+      return false //<-- forbid to edit value of unknown type
+    }
+
+    vgrid.co().getSelectionModel().select([ event.record ])
+
+    //~: apply filter on the types
+    astore.filterAttrTypes()
+  }
+
+
+  //~: assign attribute type
+  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}').
+    assignAttrType = function(m, attrId)
+  {
+    var s = extjsf.bind("${z:vid(v, 'attrTypes')}", '${extDom}')
+    var a = ZeT.assertn(s.co().getById(attrId))
+    var d = a.getData(), ox = ZeT.assertn(m.get('selfox'))
+
+    if(a.get('ox').array) d.array = true
+    m.set(d); m.setId(a.getId())
+
+    //~: array value
+    m.set('value', d.value = ((d.array)?[]:('')))
+
+    //=: temporary edit
+    m.set('temp', d.value)
+
+    //~: bind to the attributes
+    m.set('self', d)
+    if(!ox.attributes) ox.attributes = []
+    ox.attributes.push(d)
+  }
+
+
+  //~: value edit callback
+  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}').
+    valueEdited = function(ed, event)
+  {
+    var vgrid = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
+
+    //?: {edited attribute type}
+    if(event.field == 'nameLo')
+    {
+      //?: {has value selected}
+      if(!ZeTS.ises(event.value))
+        vgrid.assignAttrType(event.record, event.value)
+
+      return
+    }
+
+    var v = event.record.get('value')
+    var x = event.record.get('temp')
+    var s = event.record.get('self')
+
+    if(ZeT.iss(v)) v = x; else if(ZeT.isa(v))
+    {
+      var te = event.record.get('temp-edited')
+      var  i = ZeTS.ises(te)?(-1):(v.indexOf(te))
+
+      if(v.indexOf(x) == -1)
+        if(i == -1) v.push(x)
+        else v[i] = x
+
+      event.record.set('temp',  '')
+      event.record.set('temp-edited',  '')
+    }
+
+    event.record.set('value', v)
+    if(s.array) s.values = v; else s.value = v
+  }
+
+
+  //~: delete selected attributes
+  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}').
+    deleteSelected = function()
+  {
+    var grid = extjsf.co("${z:vid(v, 'attrs-edit')}", '${extDom}')
+    var sel  = grid.getSelection()
+
+    grid.getSelectionModel().deselectAll()
+
+    ZeT.each(sel, function(m)
+    {
+      var ox = m.get('selfox')
+      var  a = m.get('self')
+
+      ZeTA.remove(ox.attributes, a)
+    })
+
+    grid.getStore().remove(sel)
+  }
+
+
+  //~: add new attribute
+  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}').
+    addAttribute = function()
+  {
+    var astore = extjsf.bind("${z:vid(v, 'attrTypes')}", '${extDom}')
+    var vstore = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}')
+    var vgrid  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
+
+    function startEdit(x)
+    {
+      vgrid.co().getPlugin('cellediting').
+        startEditByPosition({ column: 0, row: vstore.co().indexOf(x) })
+    }
+
+    //~: search for empty attribute
+    var found; vstore.co().each(function(x)
+    {
+      if(ZeTS.ises(x.get('nameLo'))) { found = x; return false }
+    })
+
+    //?: {found existing} start edit it
+    if(found) return startEdit(found)
+
+    //?: {has no more types}
+    if(!astore.filterAttrTypes()) return ReTrade.desktop.
+      error('Атрибуты товаров, для которых не установлены значения, отсутствуют!')
+
+    var ox = ZeT.assertn(vstore.retradeOxModel)
+
+    //~: insert new record
+    var m = vstore.co().add({ selfox: ox })[0]
+
+    //?: {has more than one option}
+    if(astore.co().getCount() > 1)
+      return startEdit(m)
+
+    var attrId = astore.co().getAt(0).getId()
+    vgrid.assignAttrType(m, attrId)
+  }
+
+
+  //~: special sorters of the store
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}').on('beforesort', function(store, sorters)
+  {
+    if(!sorters.length) return
+    ZeT.assert(sorters.length == 1)
+
+    var sorter = sorters[0]
+    ZeT.assert('nameLo' == sorter.getProperty())
+
+    var sfn = sorter.sortFn
+    sorter.sortFn = function(a, b)
+    {
+      var sa = a.get('nameLo'), sb = b.get('nameLo')
+      var xa = ZeT.ises(sa), xb = ZeT.ises(sb)
+
+      if(xa && xb) return 0; else if(xa || xb) {
+        var asc = ('ASC' == sorter.getDirection())?(+1):(-1)
+        return asc * (xa?(-1):(+1))
+      }
+
+      var ab = sa.toLocaleLowerCase().localeCompare(sb.toLocaleLowerCase())
+      var va = a.get('value'), vb = b.get('value')
+      var ya = !ZeT.test(va) && a.dirty
+      var yb = !ZeT.test(vb) && b.dirty
+
+      if(ya && yb) return ab; else if(ya || yb) {
+        var asc = ('ASC' == sorter.getDirection())?(+1):(-1)
+        return asc * (ya?(-1):(+1))
+      }
+
+      return ab
+    }
+  })
+
+
+  //~: filter by the attribute group
+  extjsf.bind("${z:vid(v, 'filter-attrs-select')}", '${extDom}').
+    on('change', function(f, v)
+  {
+    var astore = extjsf.co("${z:vid(v, 'goodAttrs')}", '${extDom}')
+    var tstore = extjsf.co("${z:vid(v, 'attrTypes')}", '${extDom}')
+
+    astore.clearFilter()
+    tstore.clearFilter()
+    if(v == 'All') return
+
+    function f(x)
+    {
+      var ox = x.get('ox')
+      return !ox || !ox.group || (ox.group.name == v)
+    }
+
+    astore.filterBy(f)
+    tstore.filterBy(f)
+  })
+
+  //]]>
+  </script>
+</ui:component>

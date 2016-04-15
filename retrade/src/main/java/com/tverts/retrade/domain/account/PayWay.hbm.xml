@@ -1,0 +1,109 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.account'>
+
+  <class name = 'PayWay' abstract = 'true' lazy = 'true'
+    table = 'retrade_pay_way'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_pay_way'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_pay_way_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Unity reference -->
+
+    <many-to-one name = 'unity' cascade = 'save-update'
+      foreign-key = 'fk_pay_way_mirror'>
+
+      <column name = 'fk_unity' not-null = 'true'
+        unique-key = 'ux_pay_way_unity'>
+
+        <comment>The (unique) Unified Mirror of the Payment Destination</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain'
+      foreign-key = 'fk_pay_way_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        index = 'ix_pay_way'>
+
+        <comment>Domain where the Payment Way is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Name -->
+
+    <property name = 'name'>
+
+      <column name = 'pay_way_name' length = '512'
+        index = 'ix_pay_way'>
+
+        <comment>Name of the Payment Destination</comment>
+      </column>
+    </property>
+
+
+    <!-- Open time -->
+
+    <property name = 'opened' type = 'timestamp'>
+
+      <column name = 'open_date' not-null = 'true'>
+        <comment>The timestamp this Payment Destination was opened</comment>
+      </column>
+    </property>
+
+
+    <!-- Close time -->
+
+    <property name = 'closed' type = 'timestamp'>
+
+      <column name = 'close_date'>
+        <comment>The timestamp this Payment Destination was closed</comment>
+      </column>
+    </property>
+
+
+    <!-- Remarks -->
+
+    <property name = 'remarks' type = 'text'>
+
+      <column name = 'remarks'>
+        <comment>The remarks on this Payment Destination</comment>
+      </column>
+    </property>
+
+
+    <!-- Type Flag -->
+
+    <property name = 'typeFlag'>
+
+      <column name = 'type_flag' not-null = 'true'>
+        <comment>
+          Flag of the Payment Way direction: U (undefined),
+            E (expense-only), I (income-only)
+        </comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,28 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.payment'>
+
+  <joined-subclass name = 'FirmOrder' extends = 'PayOrder'
+     lazy = 'true' table = 'retrade_firm_order'>
+
+    <!-- Join Key -->
+
+    <key column = 'pk_firm_order' foreign-key = 'fk_firm_order'/>
+
+
+    <!-- Contractor -->
+
+    <many-to-one name = 'contractor' foreign-key = 'fk_firm_order_contractor'>
+
+      <column name = 'fk_contractor' not-null = 'true'
+        index = 'ix_firm_order_contractor'>
+
+        <comment>The Contractor (firm) this Payment Order is to or from</comment>
+      </column>
+    </many-to-one>
+
+  </joined-subclass>
+</hibernate-mapping>

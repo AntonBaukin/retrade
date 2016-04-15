@@ -1,0 +1,669 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Forces on Invoices                             =
+    =================================================-->
+
+  <bean name  = 'secForcesOnInvoices' class = 'com.tverts.secure.force.SecForces'>
+    <property name = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · View All Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: view: all invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'view'/>
+
+
+          <property name  = 'title'
+                    value = 'Просмотр всех накладных'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет просматривать накладные всех типов вне зависимости от
+              состояния (редактируется или проведена).
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · View Buy Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: view: buy invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'view'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Buy'/>
+
+
+          <property name  = 'title'
+                    value = 'Просмотр накладных закупки'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет просматривать накладные закупки вне зависимости от
+              состояния (редактируется или проведена).
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · View Sell Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: view: sell invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'view'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Sell'/>
+
+
+          <property name  = 'title'
+                    value = 'Просмотр накладных продажи'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет просматривать накладные продажи вне зависимости от
+              состояния (редактируется или проведена).
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · View Move Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: view: move invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'view'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Move'/>
+
+
+          <property name  = 'title'
+                    value = 'Просмотр накладных перемещения'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет просматривать накладные перемещения вне зависимости от
+              состояния (редактируется или проведена).
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- ======================================================== -->
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Forbid View Buy Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: forbid view: buy invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'view'/>
+
+          <property name  = 'forbid'
+                    value = 'true'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Buy'/>
+
+
+          <property name  = 'title'
+                    value = 'Запрет просмотра накладных закупки'/>
+
+          <property name  = 'descr'>
+            <value>
+              Запрещает просматривать накладные закупки вне зависимости от
+              состояния (редактируется или проведена).
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Forbid View Sell Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: forbid view: sell invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'view'/>
+
+          <property name  = 'forbid'
+                    value = 'true'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Sell'/>
+
+
+          <property name  = 'title'
+                    value = 'Запрет просмотра накладных продажи'/>
+
+          <property name  = 'descr'>
+            <value>
+              Запрещает просматривать накладные продажи вне зависимости от
+              состояния (редактируется или проведена).
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Forbid View Move Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: forbid view: move invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'view'/>
+
+          <property name  = 'forbid'
+                    value = 'true'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Move'/>
+
+
+          <property name  = 'title'
+                    value = 'Запрет просмотра накладных перемещения'/>
+
+          <property name  = 'descr'>
+            <value>
+              Запрещает просматривать накладные перемещения вне зависимости от
+              состояния (редактируется или проведена).
+            </value>
+          </property>
+        </bean>
+
+        
+        <!-- ======================================================== -->
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Edit All Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: edit: all invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'edit'/>
+
+
+          <property name  = 'title'
+                    value = 'Редактирование всех накладных'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет редактировать накладные всех типов вне зависимости от
+              состояния (редактируется или проведена).
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Edit Buy Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: edit: buy invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'edit'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Buy'/>
+
+
+          <property name  = 'title'
+                    value = 'Редактирование накладных закупки'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет редактировать накладные закупки вне зависимости от
+              состояния (редактируется или проведена).
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Edit Sell Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: edit: sell invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'edit'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Sell'/>
+
+
+          <property name  = 'title'
+                    value = 'Редактирование накладных продажи'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет редактировать накладные продажи вне зависимости от
+              состояния (редактируется или проведена).
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Edit Move Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: edit: move invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'edit'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Move'/>
+
+
+          <property name  = 'title'
+                    value = 'Редактирование накладных перемещения'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет редактировать накладные перемещения вне зависимости от
+              состояния (редактируется или проведена).
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- ======================================================== -->
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Forbid Edit Buy Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: forbid edit: buy invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'edit'/>
+
+          <property name  = 'forbid'
+                    value = 'true'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Buy'/>
+
+
+          <property name  = 'title'
+                    value = 'Запрет редактирования накладных закупки'/>
+
+          <property name  = 'descr'>
+            <value>
+              Запрещает редактировать накладные закупки вне зависимости от
+              состояния (редактируется или проведена).
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Forbid Edit Sell Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: forbid edit: sell invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'edit'/>
+
+          <property name  = 'forbid'
+                    value = 'true'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Sell'/>
+
+
+          <property name  = 'title'
+                    value = 'Запрет редактирования накладных продажи'/>
+
+          <property name  = 'descr'>
+            <value>
+              Запрещает редактировать накладные продажи вне зависимости от
+              состояния (редактируется или проведена).
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Forbid Edit Move Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: forbid edit: move invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'edit'/>
+
+          <property name  = 'forbid'
+                    value = 'true'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Move'/>
+
+
+          <property name  = 'title'
+                    value = 'Запрет редактирования накладных перемещения'/>
+
+          <property name  = 'descr'>
+            <value>
+              Запрещает редактировать накладные перемещения вне зависимости от
+              состояния (редактируется или проведена).
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- ======================================================== -->
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Forbid Edit Fixed Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesStateForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: forbid edit: fixed all invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'edit'/>
+
+          <property name  = 'forbid'
+                    value = 'true'/>
+
+          <property name  = 'fixedState'
+                    value = 'true'/>
+
+
+          <property name  = 'title'
+                    value = 'Запрет редактирования проведённых накладных'/>
+
+          <property name  = 'descr'>
+            <value>
+              Запрещает редактировать проведённые накладные
+              всех типов.
+            </value>
+          </property>
+        </bean>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Forbid Edit Fixed Buy Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesStateForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: forbid edit: fixed buy invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'edit'/>
+
+          <property name  = 'forbid'
+                    value = 'true'/>
+
+          <property name  = 'fixedState'
+                    value = 'true'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Buy'/>
+
+
+          <property name  = 'title'
+                    value = 'Запрет редактирования проведённых накладных закупки'/>
+
+          <property name  = 'descr'>
+            <value>
+              Запрещает редактировать проведённые
+              накладные закупки.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Forbid Edit Fixed Sell Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesStateForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: forbid edit: fixed sell invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'edit'/>
+
+          <property name  = 'forbid'
+                    value = 'true'/>
+
+          <property name  = 'fixedState'
+                    value = 'true'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Sell'/>
+
+
+          <property name  = 'title'
+                    value = 'Запрет редактирования проведённых накладных продажи'/>
+
+          <property name  = 'descr'>
+            <value>
+              Запрещает редактировать проведённые
+              накладные продажи.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Forbid Edit Fixed Move Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesStateForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: forbid edit: fixed move invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'edit'/>
+
+          <property name  = 'forbid'
+                    value = 'true'/>
+
+          <property name  = 'fixedState'
+                    value = 'true'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Move'/>
+
+
+          <property name  = 'title'
+                    value = 'Запрет редактирования проведённых накладных перемещения'/>
+
+          <property name  = 'descr'>
+            <value>
+              Запрещает редактировать проведённые
+              накладные перемещения.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- ======================================================== -->
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Fix All Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesStateForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: fix: all invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'document: fix'/>
+
+          <property name  = 'fixedState'
+                    value = 'false'/>
+
+
+          <property name  = 'title'
+                    value = 'Проведение всех накладных'/>
+
+          <property name  = 'descr'>
+            <value>
+              Разрешает перевести накладные всех типов из состояния
+              редактирования в фиксированное состояние.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Fix Buy Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesStateForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: fix: buy invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'document: fix'/>
+
+          <property name  = 'fixedState'
+                    value = 'false'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Buy'/>
+
+
+          <property name  = 'title'
+                    value = 'Проведение накладных закупки'/>
+
+          <property name  = 'descr'>
+            <value>
+              Разрешает перевести накладные закупки из состояния
+              редактирования в фиксированное состояние.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Fix Sell Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesStateForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: fix: sell invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'document: fix'/>
+
+          <property name  = 'fixedState'
+                    value = 'false'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Sell'/>
+
+
+          <property name  = 'title'
+                    value = 'Проведение накладных продажи'/>
+
+          <property name  = 'descr'>
+            <value>
+              Разрешает перевести накладные продажи из состояния
+              редактирования в фиксированное состояние.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Fix Move Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.secure.InvoicesStateForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: fix: move invoices'/>
+
+          <property name  = 'secKey'
+                    value = 'document: fix'/>
+
+          <property name  = 'fixedState'
+                    value = 'false'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Invoice: Move'/>
+
+
+          <property name  = 'title'
+                    value = 'Проведение накладных перемещения'/>
+
+          <property name  = 'descr'>
+            <value>
+              Разрешает перевести накладные перемещения из состояния
+              редактирования в фиксированное состояние.
+            </value>
+          </property>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+</beans>

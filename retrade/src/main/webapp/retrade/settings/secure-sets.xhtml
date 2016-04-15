@@ -1,0 +1,818 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+  <c:set var = "v" scope = "request" value = "${facesSettingsSecSetsView}"/>
+
+  ${v.forceSecure('secure: view: sets')}
+  ${v.checkModelRequestedWithRedirect}
+
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:desktop-panel coid = "${z:vid(v, 'settings_secure_sets')}" position = "#{rootView.extjsPosition}">
+
+  <f:facet name = "extjs-props">
+    title: 'Множества правил доступа к системе',
+    layout: {type: 'vbox', align: 'stretch'}
+  </f:facet>
+
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-inline-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar">
+
+    <!-- [add set, edit set name -->
+
+    <x:action-call coid = "${z:vid(v, 'add-secure-set-script')}"
+      action = "#{v.doAddSet}" modelView = "${v}"/>
+
+    <x:action-call coid = "${z:vid(v, 'delete-secure-set-script')}"
+      action = "#{v.doDeleteSet}" modelView = "${v}"/>
+
+    <x:action-call coid = "${z:vid(v, 'secure-set-edit-name-script')}"
+      action = "#{v.doEditSetName}" modelView = "${v}"/>
+
+    <x:text-field coid = "${z:vid(v, 'secure-set-name')}" value = "">
+
+      <f:facet name = "extjs-props">
+        margin: extjsf.pts(1, 0, 1, 4),
+        width:  extjsf.ex(24)
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Имя'
+      </f:facet>
+    </x:text-field>
+
+    <x:component coid = "${z:vid(v, 'secure-set-edit-name')}">
+      <f:facet name = "extjs-props">
+
+       text: 'Изменить', disabled: true,
+       xtype: 'button', margin: extjsf.pts(1, 6, 1, 6),
+       disabled: ${not v.isSecure('secure: operate: sets')},
+       tooltipType: 'title', tooltip: 'Изменить имя выбранного множества правил'
+
+     </f:facet>
+    </x:component>
+
+    <x:component coid = "${z:vid(v, 'add-secure-set')}">
+      <f:facet name = "extjs-props">
+
+       text: 'Добавить', disabled: true,
+       xtype: 'button', margin: extjsf.pts(1, 6, 1, 0),
+       disabled: ${not v.isSecure('secure: operate: sets')},
+       tooltipType: 'title', tooltip: 'Добавить новое множество правил'
+
+     </f:facet>
+    </x:component>
+
+    <x:component coid = "${z:vid(v, 'delete-secure-set')}">
+      <f:facet name = "extjs-props">
+
+       text: 'Удалить', disabled: true,
+       xtype: 'button', margin: extjsf.pts(1, 6, 1, 0),
+       disabled: ${not v.isSecure('secure: operate: sets')},
+       tooltipType: 'title', tooltip: 'Удалить выбранное множество'
+
+     </f:facet>
+    </x:component>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+    //~: secure set edit-add name field changed
+    extjsf.bind("${z:vid(v, 'secure-set-name')}", '${extDom}').on('change', function(f)
+    {
+      var s = ZeTS.trim(f.getValue());
+      var m = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection();
+      if(!m || !m.length) m = null; else m = m[0];
+
+      var D = ("${v.isSecure('secure: operate: sets')}" == "false");
+
+      extjsf.co("${z:vid(v, 'secure-set-edit-name')}", '${extDom}').
+        setDisabled(D || !s.length || !m)
+
+      extjsf.co("${z:vid(v, 'add-secure-set')}", '${extDom}').
+        setDisabled(D || !s.length)
+    })
+
+    //~: add secure set handler
+    extjsf.handler("${z:vid(v, 'add-secure-set')}", '${extDom}', function()
+    {
+       var field = extjsf.co("${z:vid(v, 'secure-set-name')}", '${extDom}');
+       var name  = ZeTS.trim(field.getValue());
+       if(!name.length) return;
+
+       extjsf.handler("${z:vid(v, 'add-secure-set-script')}", '${extDom}')({
+          params: { setName: name }, success : function() {
+
+            extjsf.co("${z:vid(v, 'grid')}", '${extDom}').
+              getSelectionModel().deselectAll()
+
+            field.setValue('')
+            Ext.data.StoreManager.lookup("${z:vid(v, 'setsStore')}").load()
+        }})
+    })
+
+    //~: delete secure set handler
+    extjsf.handler("${z:vid(v, 'delete-secure-set')}", '${extDom}', function(btn, e)
+    {
+      var m = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection()
+      if(!m || !m.length) return; else m = m[0]
+
+      retrade_yes_no_ask_warning({
+        modal: false,
+        event: e, widthpt: 280, '+xpt': 25, '-ypt': -10,
+        title: 'Удалить множество правил доступа?',
+        message: "Вы решили удалить множество правил доступа '" + m.get('name') +
+          "'? Все назначения в рамках данного множества не будут отозваны, " +
+          "а будут переведены во множество по умолчанию (с устранением дубликатов).",
+
+        yes : function()
+        {
+          //~: invoke the action
+          extjsf.handler("${z:vid(v, 'delete-secure-set-script')}", '${extDom}')({
+          params: { secSet: m.getId() }, success : function() {
+              extjsf.co("${z:vid(v, 'secure-set-name')}", '${extDom}').setValue('')
+              Ext.data.StoreManager.lookup("${z:vid(v, 'setsStore')}").load()
+          }})
+        }
+      })
+    })
+
+    //~: change secure set name button
+    extjsf.handler("${z:vid(v, 'secure-set-edit-name')}", '${extDom}', function()
+    {
+       var field = extjsf.co("${z:vid(v, 'secure-set-name')}", '${extDom}');
+       var name  = ZeTS.trim(field.getValue());
+
+       var m = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection();
+       if(!m || !m.length) m = null; else m = m[0];
+
+       if(!name.length || !m) return;
+
+       extjsf.handler("${z:vid(v, 'secure-set-edit-name-script')}", '${extDom}')({
+          params: { setName: name, secSet: m.getId() }, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'setsStore')}").load()
+        }})
+    })
+
+    //]]>
+    </script>
+
+    <!-- add set, edit set name] -->
+
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-inline-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [filter sets field -->
+
+    <x:action-call coid = "${z:vid(v, 'search-sets-script')}"
+      action = "#{v.doSearchSets}" modelView = "${v}"/>
+
+    <x:text-field coid = "${z:vid(v, 'search-sets')}"
+      value = "#{v.searchNames}">
+
+      <f:facet name = "extjs-props">
+        margin: extjsf.pts(1, 0, 1, 4),
+        width:  extjsf.ex(24)
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Поиск'
+      </f:facet>
+    </x:text-field>
+
+    <!-- filter sets field] -->
+
+
+    <!-- [restrict to selection set -->
+
+    <x:component coid = "${z:vid(v, 'search-sets-selset')}">
+      <f:facet name = "extjs-props">
+
+       xtype: 'button', enableToggle: true,
+       width: retrade_default('button-selset').width,
+       height: retrade_default('button-selset').height,
+       componentCls: 'retrade-icon-24',
+       margin: extjsf.pts(1, 0, 1, 6),
+       iconCls: 'retrade-selset-button-icon',
+       tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
+
+     </f:facet>
+    </x:component>
+
+    <!-- restrict to selection set] -->
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'search-sets')}", '${extDom}').on('change', function(f)
+    {
+      var sv = ZeTS.trim(f.getValue());
+      if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
+
+      ZeT.timeout(1000, function()
+      {
+        //?: {search string was changed} discard
+        if(f.extjsfBind.searchValue != sv) return;
+
+        var params = { searchSets: sv };
+        var selchk = extjsf.bind("${z:vid(v, 'search-sets-selset')}", '${extDom}').co();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.handler("${z:vid(v, 'search-sets-script')}", '${extDom}')({
+          params: params, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'setsStore')}").load()
+        }})
+      })
+    })
+
+    extjsf.bind("${z:vid(v, 'search-sets-selset')}", '${extDom}').on('click', function()
+    {
+        var names  = extjsf.bind("${z:vid(v, 'search-sets')}", '${extDom}').value();
+        var params = { searchLogins: names };
+
+        var selchk = extjsf.bind("${z:vid(v, 'search-sets-selset')}", '${extDom}').co();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.handler("${z:vid(v, 'search-sets-script')}", '${extDom}')({
+          params: params, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'setsStore')}").load()
+        }})
+    })
+
+    //]]>
+    </script>
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [secure sets list -->
+
+  <x:data-store storeId = "${z:vid(v, 'setsStore')}" modelView = "${v}">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.SecSetView', pageSize: 5
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.SecSetView')
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+    storeId = "${z:vid(v, 'setsStore')}">
+
+    <f:facet name = "grid-props">
+
+      pager: true, preventHeader: true, flex: 2,
+      columns: ZeT.defined('retrade.columns.SecSetView'),
+      selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'})
+
+    </f:facet>
+  </x:data-grid>
+
+  <!-- secure rules list] -->
+
+
+  <!-- [selected secure set panel -->
+
+  <x:component coid = "${z:vid(v, '_secure_set_rules_spliter')}">
+    <f:facet name = "extjs-props">
+      xtype: 'splitter', collapsible: false
+    </f:facet>
+  </x:component>
+
+  <x:component coid = "${z:vid(v, 'secure-set-rules')}">
+
+    <f:facet name = "extjs-props">
+
+      xtype: 'panel', frame: false, border: false,
+      layout: { type: 'vbox', align: 'stretch' },
+      flex: 3, bodyCls: 'retrade-back-panel',
+      title: 'Выберете множество правил'
+
+    </f:facet>
+
+
+    <!-- [panel toolbar -->
+
+    <x:toolbar coid = "${z:vid(v, 'secure-set-toolbar')}">
+
+      <f:facet name = "extjs-props">
+       xtype: 'panel', bodyPadding: extjsf.pt(2),
+       layout: { type: 'hbox', align: 'middle' },
+       bodyCls: 'retrade-toolbar-inline-panel',
+       hidden: true
+      </f:facet>
+
+
+      <!-- [edit set comment] -->
+
+      <x:component coid = "${z:vid(v, 'secure-set-edit-comment')}">
+        <f:facet name = "extjs-props">
+
+         xtype: 'button', enableToggle: true,
+         text: 'Комментарий', margin: extjsf.pts(1, 0, 1, 0),
+         disabled: ${not v.isSecure('secure: operate: sets')},
+         tooltipType: 'title', tooltip: 'Изменить комментарий о множестве правил'
+
+       </f:facet>
+      </x:component>
+
+
+      <!-- [add ables button] -->
+
+      <x:component coid = "${z:vid(v, 'secure-set-add-ables-rules')}">
+        <f:facet name = "extjs-props">
+
+          xtype: 'button', text: 'Добавить', margin: extjsf.pts(1, 0, 1, 6),
+          disabled: ${not rootView.isSecure('secure: operate: sets')},
+          tooltipType: 'title', tooltip: 'Добавить правила доступа из текущей выборки, ' +
+            'а также множеств и пользователей текущей выборки. (Эта операция не добавит ' +
+            'правила пользователям, которым ранее было назначено множество.)'
+
+        </f:facet>
+      </x:component>
+
+
+      <!-- [delete ables button] -->
+
+      <x:component coid = "${z:vid(v, 'secure-set-delete-ables-rules')}">
+        <f:facet name = "extjs-props">
+
+          xtype: 'button', text: 'Удалить',
+          margin: extjsf.pts(1, 0, 1, 6), disabled: true,
+          disabled: ${not rootView.isSecure('secure: operate: sets')},
+          tooltipType: 'title', tooltip: 'Удалить выбранные в таблице правила. ' +
+          '(Эта операция не удалит правила у пользователей, которым ранее было назначено множество.)'
+
+        </f:facet>
+      </x:component>
+
+
+      <!-- [assign and revoke selected set to users -->
+
+      <x:component coid = "${z:vid(v, 'secure-set-operate-to-users-menu-button')}">
+
+        <f:facet name = "extjs-props">
+          xtype: 'button', margin: extjsf.pts(1, 0, 1, 6),
+          disabled: ${not rootView.isSecure('secure: operate: rules')},
+          text: 'Пользователи'
+        </f:facet>
+
+        <x:menu coid = "${z:vid(v, 'secure-set-operate-to-users-menu')}">
+          <f:facet name = "extjs-props">
+            showSeparator: false
+          </f:facet>
+
+          <x:component coid = "${z:vid(v, 'secure-set-grant-to-selected-users')}">
+            <f:facet name = "extjs-props">
+              text: 'Назначить', xtype: 'menuitem', tooltipType: 'title',
+              tooltip: 'Назначить множество пользователям текущей выборки'
+            </f:facet>
+          </x:component>
+
+          <x:component coid = "${z:vid(v, 'secure-set-synch-with-selected-users')}">
+            <f:facet name = "extjs-props">
+              text: 'Обновить', xtype: 'menuitem', tooltipType: 'title',
+              tooltip: 'Синхронизировать правила множества для всех пользователей, которым прежде ' +
+              'было назначено множество, и которым сейчас доступно хотя бы одно правило из этого множества'
+            </f:facet>
+          </x:component>
+
+          <x:component coid = "${z:vid(v, 'secure-set-delete-from-selected-users')}">
+            <f:facet name = "extjs-props">
+              text: 'Удалить', xtype: 'menuitem', tooltipType: 'title',
+              tooltip: 'Уддалить множество правил у пользователей текущей выборки'
+            </f:facet>
+          </x:component>
+        </x:menu>
+      </x:component>
+
+      <!-- assign and revoke selected set to users] -->
+
+
+      <x:component coid = "${z:vid(v, '_tb_fill_set_ables0')}">
+        <f:facet name = "extjs-props">
+         xtype: 'panel', flex: 1, frame: false, border: false,
+         bodyCls: 'retrade-toolbar-inline-panel'
+       </f:facet>
+      </x:component>
+
+
+      <!-- [filter set-ables field -->
+
+      <x:text-field coid = "${z:vid(v, 'search-set-ables')}"
+        value = "#{v.searchSetAblesNames}">
+
+        <f:facet name = "extjs-props">
+          margin: extjsf.pts(1, 0, 1, 4),
+          width:  extjsf.ex(24)
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Поиск'
+        </f:facet>
+      </x:text-field>
+
+      <!-- filter set-ables field] -->
+
+
+      <!-- [restrict to selection set -->
+
+      <x:component coid = "${z:vid(v, 'search-set-ables-selset')}">
+        <f:facet name = "extjs-props">
+
+         xtype: 'button', enableToggle: true,
+         width: retrade_default('button-selset').width,
+         height: retrade_default('button-selset').height,
+         componentCls: 'retrade-icon-24',
+         margin: extjsf.pts(1, 0, 1, 6),
+         iconCls: 'retrade-selset-button-icon',
+         tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
+
+       </f:facet>
+      </x:component>
+
+      <!-- restrict to selection set] -->
+
+      <x:action-call coid = "${z:vid(v, 'search-set-ables-script')}"
+        action = "#{v.doSearchSetAbles}" modelView = "${v}"/>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'search-set-ables')}", '${extDom}').on('change', function(f)
+    {
+      var sv = ZeTS.trim(f.getValue());
+      if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
+
+      ZeT.timeout(1000, function()
+      {
+        //?: {search string was changed} discard
+        if(f.extjsfBind.searchValue != sv) return;
+
+        var params = { searchAbles: sv };
+        var selchk = extjsf.bind("${z:vid(v, 'search-set-ables-selset')}", '${extDom}').co();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.handler("${z:vid(v, 'search-set-ables-script')}", '${extDom}')({
+          params: params, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'setAblesStore')}").load()
+        }})
+      })
+    })
+
+    extjsf.bind("${z:vid(v, 'search-set-ables-selset')}", '${extDom}').on('click', function()
+    {
+        var names  = extjsf.bind("${z:vid(v, 'search-set-ables')}", '${extDom}').value();
+        var params = { searchAbles: names };
+
+        var selchk = extjsf.bind("${z:vid(v, 'search-set-ables-selset')}", '${extDom}').co();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.handler("${z:vid(v, 'search-set-ables-script')}", '${extDom}')({
+          params: params, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'setAblesStore')}").load()
+        }})
+    })
+
+      //]]>
+      </script>
+
+      <!-- filter set-ables field] -->
+
+    </x:toolbar>
+
+    <!-- panel toolbar] -->
+
+
+    <!-- [secure set comment -->
+
+    <x:html coid = "${z:vid(v, 'secure-set-comment')}">
+
+     <f:facet name = "extjs-props">
+
+        xtype: 'panel', border: false,
+        height: extjsf.pt(56), margin: extjsf.pt(2),
+        bodyCls: 'retrade-transparent-panel'
+
+     </f:facet>
+
+     <div id = "${z:vid(v, 'secure-set-about')}"
+       style = "height: 56pt; width: 100%;"
+       class = "retrade-settings-secure-set-nocomment">
+
+       Множество правил доступа объединяет несколько правил в шаблон назначения.
+       Из текущей выборки Вы можете добавлять правила напрямую, а также правила
+       выбранных множест. Назначив пользователю множество правил, Вы позже можете
+       изъять права как по отдельным правилам, так и множество целиком. Одно и
+       то же правило, назначенное по разным множествам, дублируется. При повторном
+       назначении одного и того же множества дублирования правил нет.
+
+     </div>
+
+     <div id = "${z:vid(v, 'secure-set-nocomment')}"
+       style = "display: none; height: 56pt; width: 100%;"
+       class = "retrade-settings-secure-set-nocomment">
+
+       Комментарии по выбранному множеству правил доступа отсутствуют.
+     </div>
+
+     <div id = "${z:vid(v, 'secure-set-comment')}" style = "display: none;"
+       class = "retrade-settings-secure-set-comment"></div>
+
+    </x:html>
+
+    <x:component coid = "${z:vid(v, 'secure-set-comment-edit')}">
+     <f:facet name = "extjs-props">
+
+        xtype: 'textarea', margin: extjsf.pt(2), hidden: true,
+        overflowX: 'hidden', overflowY: 'auto',
+        height: extjsf.pt(56)
+
+     </f:facet>
+    </x:component>
+
+    <x:action-call coid = "${z:vid(v, 'secure-set-edit-comment-script')}"
+      action = "#{v.doCommentSet}" modelView = "${v}"/>
+
+    <!-- secure set comment] -->
+
+
+    <!-- [selected set ables (rules) -->
+
+    <x:data-store storeId = "${z:vid(v, 'setAblesStore')}"
+      modelView = "${v}" modelProvider = "facesSettingsSecSetsView">
+
+      <f:facet name = "store-props">
+        autoLoad: false, model: 'retrade.model.SecAbleView'
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.SecAbleView')
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(v, 'rules-grid')}"
+      storeId = "${z:vid(v, 'setAblesStore')}">
+
+      <f:facet name = "grid-props">
+
+        preventHeader: true, flex: 1, pager: true, hideHeaders: true,
+        columns: ZeT.defined('retrade.columns.SecRuleView'),
+        selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI' })
+
+      </f:facet>
+    </x:data-grid>
+
+    <x:action-call coid = "${z:vid(v, 'set-current-secure-set-script')}"
+      action = "#{v.doChangeCurrentSet}" modelView = "${v}"/>
+
+    <x:action-call coid = "${z:vid(v, 'add-rules-script')}"
+      action = "#{v.doAddRulesToCurrentSet}" modelView = "${v}"/>
+
+    <x:action-call coid = "${z:vid(v, 'delete-rules-script')}"
+      action = "#{v.doDeleteSelectedRules}" modelView = "${v}"/>
+
+    <x:action-call coid = "${z:vid(v, 'secure-set-grant-to-selected-users-script')}"
+      action = "#{v.doGrantSetToSelSetUsers}" modelView = "${v}"/>
+
+    <x:action-call coid = "${z:vid(v, 'secure-set-synch-with-selected-users-script')}"
+      action = "#{v.doSynchSetWithSelSetUsers}" modelView = "${v}"/>
+
+    <x:action-call coid = "${z:vid(v, 'secure-set-delete-from-selected-users-script')}"
+      action = "#{v.doDeleteSetFromSelSetUsers}" modelView = "${v}"/>
+
+    <!-- selected set ables (rules)] -->
+
+  </x:component>
+
+
+  <!-- selected secure set panel] -->
+
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').on('selectionchange', function(grid, selected)
+  {
+    var namef = extjsf.co("${z:vid(v, 'secure-set-name')}", '${extDom}');
+    var model = selected.length && selected[0];
+
+    //~: update the field name
+    if(model) namef.setValue(model.get('name'))
+
+    //~: enable the delete button
+    var D = ("${v.isSecure('secure: operate: sets')}" == "false");
+    extjsf.co("${z:vid(v, 'delete-secure-set')}", '${extDom}').
+      setDisabled(D || !model)
+
+    //~: secure set comment
+    var ab = Ext.get("${z:vid(v, 'secure-set-about')}");
+    var nc = Ext.get("${z:vid(v, 'secure-set-nocomment')}");
+    var co = Ext.get("${z:vid(v, 'secure-set-comment')}");
+    var ds = model && ZeTS.trim(model.get('comment'));
+
+    if(!model) { ab.show(); nc.hide(); co.hide(); } else
+    if(!ds.length) { ab.hide(); nc.show(); co.hide(); } else
+    {
+      ab.hide(); nc.hide(); co.show();
+      co.setHtml(Ext.String.htmlEncode(ds));
+    }
+
+    //~: update panel title
+    var pn = extjsf.co("${z:vid(v, 'secure-set-rules')}", '${extDom}');
+    if(!model) pn.setTitle('Выберете множество правил');
+    else       pn.setTitle("Правила множества '" + model.get('name') + '\'');
+
+    //~: show-hide toolbar
+    extjsf.co("${z:vid(v, 'secure-set-toolbar')}", '${extDom}').
+      setVisible(!!model)
+
+    //~: toggle off comment button
+    extjsf.co("${z:vid(v, 'secure-set-edit-comment')}", '${extDom}').
+      toggle(false, true)
+
+
+    //~: rules of current set
+    var rules = extjsf.co("${z:vid(v, 'rules-grid')}", '${extDom}');
+    rules.setVisible(!!model); if(!model) return;
+
+    //~: change current secure set
+    extjsf.handler("${z:vid(v, 'set-current-secure-set-script')}", '${extDom}')({
+      params: { secSet: model.getId() }, success: function()
+      {
+        rules.getStore().loadPage(1);
+      }
+    })
+  })
+
+  //~: toggle edit comment
+  extjsf.bind("${z:vid(v, 'secure-set-edit-comment')}", '${extDom}').on('toggle', function(btn)
+  {
+     var ct = extjsf.co("${z:vid(v, 'secure-set-comment')}", '${extDom}');
+     var ce = extjsf.co("${z:vid(v, 'secure-set-comment-edit')}", '${extDom}');
+     var m  = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection();
+     if(!m || !m.length) return; else m = m[0];
+
+     //?: {go to edit mode}
+     if(btn.pressed)
+     {
+       ct.hide(); ce.show();
+       ce.setValue(m.get('comment'))
+     }
+     else
+     {
+       var nc = Ext.get("${z:vid(v, 'secure-set-nocomment')}");
+       var co = Ext.get("${z:vid(v, 'secure-set-comment')}");
+       var cs = ZeTS.trim(ce.getValue());
+
+       ct.show(); ce.hide();
+
+       if(!cs.length) { co.hide(); nc.show(); } else
+       {
+         co.show(); nc.hide();
+         co.setHtml(Ext.String.htmlEncode(cs));
+       }
+
+       //~: update the model
+       m.set('comment', cs)
+
+       extjsf.handler("${z:vid(v, 'secure-set-edit-comment-script')}", '${extDom}')({
+          params: { secSet: m.getId(), setComment: cs }
+       })
+     }
+  })
+
+  //~: add rules to secure set
+  extjsf.handler("${z:vid(v, 'secure-set-add-ables-rules')}", '${extDom}', function()
+  {
+     var m = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection();
+     if(!m || !m.length) return; else m = m[0];
+
+     extjsf.handler("${z:vid(v, 'add-rules-script')}", '${extDom}')({
+      params: { secSet: m.getId(), selset: ReTrade.selset.selset } , success: function()
+      {
+        Ext.data.StoreManager.lookup("${z:vid(v, 'setAblesStore')}").load()
+      }
+    })
+  })
+
+  //~: rules table selection changed
+  extjsf.bind("${z:vid(v, 'rules-grid')}", '${extDom}').on('selectionchange', function(grid, selected)
+  {
+    var D = ("${v.isSecure('secure: operate: sets')}" == "false");
+
+    extjsf.co("${z:vid(v, 'secure-set-delete-ables-rules')}", '${extDom}').
+      setDisabled(D || !selected.length)
+  })
+
+  //~: delete rules from secure set
+  extjsf.handler("${z:vid(v, 'secure-set-delete-ables-rules')}", '${extDom}', function()
+  {
+     var m = extjsf.co("${z:vid(v, 'rules-grid')}", '${extDom}').getSelectionModel().getSelection();
+
+     if(!m || !m.length) return; else m = ZeT.a(m);
+     for(var i = 0;(i < m.length);i++) m[i] = m[i].getId();
+
+     extjsf.handler("${z:vid(v, 'delete-rules-script')}", '${extDom}')({
+      params: { secAbles: m } , success: function()
+      {
+        Ext.data.StoreManager.lookup("${z:vid(v, 'setAblesStore')}").load()
+      }
+    })
+  })
+
+  //~: grant secure set to the users of current selection set
+  extjsf.handler("${z:vid(v, 'secure-set-grant-to-selected-users')}", '${extDom}', function()
+  {
+     var m = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection();
+     if(!m || !m.length) return; else m = m[0];
+
+     extjsf.handler("${z:vid(v, 'secure-set-grant-to-selected-users-script')}", '${extDom}')({
+       params: { secSet: m.getId(), selset: ReTrade.selset.selset }, success: function()
+       {
+          ReTrade.desktop.event(ZeTS.cat(
+            "Пользователям текущей выборки были успешно назначены правила множества '",
+            m.get('name'), "'."
+          ))
+       }
+     })
+  })
+
+  //~: synchronize secure set with the able users of current selection set
+  extjsf.handler("${z:vid(v, 'secure-set-synch-with-selected-users')}", '${extDom}', function()
+  {
+     var m = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection();
+     if(!m || !m.length) return; else m = m[0];
+
+     extjsf.handler("${z:vid(v, 'secure-set-synch-with-selected-users-script')}", '${extDom}')({
+       params: { secSet: m.getId(), selset: ReTrade.selset.selset }, success: function()
+       {
+          ReTrade.desktop.event(ZeTS.cat(
+            "Множество правил '", m.get('name'), "' было успешно синхронизовано с пользователями ",
+            'текущей выборки, которые имели правила из этого множества'
+          ))
+       }
+     })
+  })
+
+
+  //~: delete secure set from users of current selection set
+  extjsf.handler("${z:vid(v, 'secure-set-delete-from-selected-users')}", '${extDom}', function()
+  {
+     var m = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection();
+     if(!m || !m.length) return; else m = m[0];
+
+     extjsf.handler("${z:vid(v, 'secure-set-delete-from-selected-users-script')}", '${extDom}')({
+       params: { secSet: m.getId(), selset: ReTrade.selset.selset }, success: function()
+       {
+          ReTrade.desktop.event(ZeTS.cat(
+            "Множество правил '", m.get('name'),
+            "' было успешно удалено у пользователей текущей выборки."
+          ))
+       }
+     })
+  })
+
+  //]]>
+  </script>
+
+
+</x:desktop-panel>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "true"/>
+  </ui:define>
+</ui:decorate>
+</ui:component>

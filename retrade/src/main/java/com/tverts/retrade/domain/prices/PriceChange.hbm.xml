@@ -1,0 +1,103 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.prices'>
+
+  <class name = 'PriceChange' table = 'retrade_price_change'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_price_change'/>
+
+
+    <!-- Price Change Document [bi, master] -->
+
+    <many-to-one name = 'repriceDoc' foreign-key = 'fk_price_change_doc'>
+
+      <column name = 'fk_reprice_doc' not-null = 'true'
+        unique-key = 'ux_price_change'>
+
+        <comment>The Price Change Document this entry is in</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Good Unit -->
+
+    <many-to-one name = 'goodUnit' foreign-key = 'fk_price_change_good'>
+
+      <column name = 'fk_good_unit' not-null = 'true'
+        unique-key = 'ux_price_change' index = 'ix_price_change_good'>
+
+        <comment>The Good Unit of the Price List this entry affecting</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Price List -->
+
+    <many-to-one name = 'priceList' foreign-key = 'fk_price_change_list'>
+
+      <column name = 'fk_price_list' not-null = 'true'
+        index = 'ix_price_change_good'>
+
+        <comment>The copy of the Price List from the document</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Change Time -->
+
+    <property name = 'changeTime' type = 'timestamp'>
+
+      <column name = 'change_time'
+        index = 'ix_price_change_time, ix_price_change_good'>
+
+        <comment>The price change actual time (copy from the document)</comment>
+      </column>
+    </property>
+
+
+    <!-- Old Price -->
+
+    <property name = 'priceOld' type = 'big_decimal'>
+
+      <column name = 'price_old'
+        precision = '12' scale = '2'>
+
+        <comment>
+          The price was when changing it. Undefined value
+          means the Good was not in the Price List before
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- New Price -->
+
+    <property name = 'priceNew' type = 'big_decimal'>
+
+      <column name = 'price_new'
+        precision = '12' scale = '2'>
+
+        <comment>
+          The price to assign (was assigned). Undefined value
+          means the Good was removed from the Price List
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Index in Price Change Document -->
+
+    <property name = 'docIndex'>
+
+      <column name = 'doc_index' not-null = 'true'>
+        <comment>Index in Price Change Document</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

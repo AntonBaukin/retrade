@@ -1,0 +1,41 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.invoice'>
+
+  <class name = 'InvoiceState' lazy = 'true'
+    table = 'retrade_invoice_state'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_invoice_state'/>
+
+
+    <!-- Unity -->
+
+    <many-to-one name = 'unity' cascade = 'save-update'
+      foreign-key = 'fk_invoice_state_mirror'>
+
+      <column name = 'fk_unity' not-null = 'true'
+        unique-key = 'ux_invoice_state_unity'>
+
+        <comment>The (unique) Unified Mirror of the Invoice State</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Invoice (one-bi, to-one, master) -->
+
+    <many-to-one name = 'invoice' foreign-key = 'fk_state_invoice'>
+
+      <column name = 'fk_invoice' not-null = 'true'
+        unique-key = 'ux_invoice_state_invoice'>
+
+        <comment>The Invoice owning this State</comment>
+      </column>
+    </many-to-one>
+
+  </class>
+</hibernate-mapping>

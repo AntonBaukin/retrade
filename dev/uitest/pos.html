@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang = "ru">
+  <head>
+    <meta charset = "UTF-8">
+    <title>Тестовый терминал продаж</title>
+
+    <link rel = "stylesheet" href = "pos.css"/>
+    <link rel = "stylesheet" href = "visuals.css"/>
+
+    <script charset = 'UTF-8' src = "jquery-2.1.1.min.js"></script>
+    <script charset = 'UTF-8' src = "goods.js"></script>
+    <script charset = 'UTF-8' src = "pos.js"></script>
+    <script charset = 'UTF-8' src = "config.js"></script>
+
+    <script>
+    //<![CDATA[
+
+$(document).ready(function()
+{
+  //~: read goods
+  try
+  {
+    POS.readGoodsData()
+    POS.buildGoodsTree()
+  }
+  catch(e)
+  {
+    e = ZeT.cat('Ошибка проверки данных о товарах: ', e)
+    ZeT.log(e); alert(e)
+  }
+
+  //~: goods scroll click
+  $('.pos-goods-list-scroll').click(POS.goodsScrollClick)
+
+  //~: goods inteface
+  POS.goodsUInit()
+
+  //~: draw goods folders
+  POS.drawGoodsFolders('003994')
+})
+
+    //]]>
+    </script>
+
+  </head>
+  <body>
+
+    <div id = "pos-main-area">
+      <div id = "pos-main-area-folders-ext">
+        <div>
+          <table cellpadding = "0" cellspacing = "0">
+            <tbody id = "pos-main-area-folders"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id = "pos-main-area-goods-ext">
+        <div>
+          <table cellpadding = "0" cellspacing = "0">
+            <tbody id = "pos-main-area-goods"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id = "pos-main-area-list-ext">
+        <div>
+          <table cellpadding = "0" cellspacing = "0">
+            <tbody id = "pos-main-area-list"></tbody>
+          </table>
+        </div>
+
+        <table class = "controls" cellpadding = "0" cellspacing = "0">
+          <tr>
+            <td class = "control a"><div></div></td>
+            <td class = "control b"><div></div></td>
+            <td class = "control c"><div></div></td>
+            <td class = "control d"><div></div></td>
+            <td class = "control e"><div></div></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class = "pos-goods-list-scroll up"></div>
+      <div class = "pos-goods-list-scroll down"></div>
+    </div>
+
+    <div id = "pos-goods-numpad" class = "pos-numpad" style = "display:none">
+      <table cellpadding = "0" cellspacing = "0">
+        <tr><td><div>1</div></td><td><div>2</div></td><td><div>3</div></td></tr>
+        <tr><td><div>4</div></td><td><div>5</div></td><td><div>6</div></td></tr>
+        <tr><td><div>7</div></td><td><div>8</div></td><td><div>9</div></td></tr>
+        <tr><td><div>x</div></td><td><div>0</div></td><td><div>e</div></td></tr>
+      </table>
+    </div>
+
+
+    <!-- templates -->
+    <div style = "display:none">
+      <table>
+
+        <!-- folder line template -->
+        <tr id = "pos-goods-folder-line-template" class = "pos-folders-line"></tr>
+
+        <!-- goods line template -->
+        <tr id = "pos-goods-line-template" class = "pos-goods-line"></tr>
+
+        <!-- folder item template -->
+        <tr>
+          <td id = "pos-goods-folder-item-template"
+            class = "pos-folders-item" style = "visibility:hidden">
+            <table cellpadding = "0" cellspacing = "0">
+              <tbody><tr><td><div></div></td></tr></tbody>
+            </table>
+          </td>
+        </tr>
+
+        <!-- goods item template -->
+        <tr>
+          <td id = "pos-goods-item-template"
+            class = "pos-goods-item" style = "visibility:hidden">
+            <table cellpadding = "0" cellspacing = "0">
+              <tbody><tr><td><div></div></td></tr></tbody>
+            </table>
+          </td>
+        </tr>
+
+        <!-- check list item template -->
+        <tr id = "pos-list-item-template" class = "pos-list-item">
+          <td>
+            <div class = "name"></div>
+            <table class = "status" cellpadding = "0" cellspacing = "0">
+              <tr>
+                <td class = "cost"><div></div></td>
+                <td class = "c2v"><div></div></td>
+                <td class = "volume"><div></div></td>
+                <td class = "v2t"><div></div></td>
+                <td class = "total"><div></div></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+
+  </body>
+</html>

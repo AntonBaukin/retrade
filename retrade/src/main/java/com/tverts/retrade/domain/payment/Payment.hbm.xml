@@ -1,0 +1,140 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.payment'>
+
+  <class name = 'Payment' abstract = 'true' lazy = 'true'
+    table = 'retrade_payment'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_payment'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_payment_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Unity reference -->
+
+    <many-to-one name = 'unity' cascade = 'save-update'
+      foreign-key = 'fk_payment_mirror'>
+
+      <column name = 'fk_unity' not-null = 'true'
+        unique-key = 'ux_payment_unity'>
+
+        <comment>The (unique) Unified Mirror of the Payment</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_payment_domain'
+      index = 'ik_payment_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'>
+        <comment>Domain where the Payment is in</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Payment Order reference -->
+
+    <many-to-one name = 'payOrder' foreign-key = 'fk_payment_order'>
+
+      <column name = 'fk_order' not-null = 'true'
+        index = 'ix_payment_order'>
+
+        <comment>The Payment Order this Payment is for</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Pay Self reference -->
+
+    <many-to-one name = 'paySelf' foreign-key = 'fk_payment_pay_self'>
+
+      <column name = 'fk_pay_self' not-null = 'true'
+        index = 'ix_payment_pay_self'>
+
+        <comment>This Domain part of the Payment</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Time -->
+
+    <property name = 'time' type = 'timestamp'>
+
+      <column name = 'payment_time' not-null = 'true'
+        index = 'ix_payment_time'>
+
+        <comment>Timestamp of the Payment</comment>
+      </column>
+    </property>
+
+
+    <!-- Order Index -->
+
+    <property name = 'orderIndex'>
+
+      <column name = 'order_index' index = 'ix_payment_order'>
+
+        <comment>The index within the order space of owning Domain</comment>
+      </column>
+    </property>
+
+
+    <!-- Code -->
+
+    <property name = 'code'>
+
+      <column name = 'payment_code' not-null = 'true'>
+        <comment>Code of the Payment. (Not forced to be Domain unique.)</comment>
+      </column>
+    </property>
+
+
+    <!-- Remarks -->
+
+    <property name = 'remarks' type = 'text'>
+
+      <column name = 'pay_order_remarks'>
+        <comment>Comments on this Payment Order</comment>
+      </column>
+    </property>
+
+
+    <!-- Income -->
+
+    <property name = 'income' type = 'big_decimal'>
+
+      <column name = 'payment_income' precision = '12' scale = '2'>
+
+        <comment>The amount of money the Domain got to its accounts</comment>
+      </column>
+    </property>
+
+
+    <!-- Expense -->
+
+    <property name = 'expense' type = 'big_decimal'>
+
+      <column name = 'payment_expense' precision = '12' scale = '2'>
+        <comment>The amount of money the Domain payed from its accounts</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

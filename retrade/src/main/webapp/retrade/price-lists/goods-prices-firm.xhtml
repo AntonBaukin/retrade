@@ -1,0 +1,198 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesClientGoodsView}"/>
+
+${rootView.forceSecureClientOnly(false)}
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+  <ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+      extjsf.bind('window', '${extDom}').
+        co().setTitle("${z:jss(v.windowTitle)}")
+
+    //]]>
+    </script>
+
+    <f:facet name = "extjs-props">
+      layout: 'fit', bodyCls: 'retrade-back-panel'
+    </f:facet>
+
+
+    <!-- [toolbar -->
+
+    <f:facet name = "toolbar-props">
+      xtype: 'panel', bodyPadding: extjsf.pt(2),
+      layout: {type: 'hbox', align: 'middle'},
+      bodyCls: 'retrade-toolbar-inline-panel'
+    </f:facet>
+
+    <f:facet name = "toolbar">
+
+      <!-- [close window button] -->
+
+      <x:component coid = "${z:vid(v, 'close_window')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Закрыть',
+
+          handler : function()
+          {
+            extjsf.bind('window', '${extDom}').
+              co().close()
+          }
+
+        </f:facet>
+      </x:component>
+
+
+      <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', flex: 1, frame: false, border: false,
+          bodyCls: 'retrade-toolbar-inline-panel'
+        </f:facet>
+      </x:component>
+
+
+      <!-- [filter goods field -->
+
+      <x:text-field coid = "${z:vid(v, 'search-goods')}"
+        value = "#{v.model.searchNames}">
+
+        <f:facet name = "extjs-props">
+          margin: extjsf.pts(1, 0, 1, 4),
+          width:  extjsf.ex(24)
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Поиск', margin: extjsf.pts(1, 0, 1, 8)
+        </f:facet>
+      </x:text-field>
+
+
+      <!-- [restrict to selection set] -->
+
+      <x:component coid = "${z:vid(v, 'search-goods-selset')}">
+        <f:facet name = "extjs-props">
+
+          xtype: 'button', enableToggle: true,
+          width: retrade_default('button-selset').width,
+          height: retrade_default('button-selset').height,
+          componentCls: 'retrade-icon-24',
+          margin: extjsf.pts(1, 0, 1, 6),
+          iconCls: 'retrade-selset-button-icon',
+          tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
+
+        </f:facet>
+      </x:component>
+
+
+      <x:action-call coid = "${z:vid(v, 'search-goods-script')}"
+        action = "#{v.doSearchGoods}" modelView = "${v}"/>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}').on('change', function(f)
+    {
+      var sv = ZeTS.trim(f.getValue());
+      if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
+
+      var fn = function()
+      {
+        //?: {search string was changed} discard
+        if(f.extjsfBind.searchValue != sv) return;
+
+        var params = { searchGoods: sv };
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.handler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
+          params: params, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").loadPage(1)
+        }})
+      }
+
+      setTimeout(fn, 1000)
+    })
+
+    //~: selection set only toggled
+    extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').on('toggle', function()
+    {
+        var names  = extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}').value();
+        var params = { searchGoods: names };
+
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.handler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
+          params: params, success : function() {
+             Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").loadPage(1)
+        }})
+    })
+
+      //]]>
+      </script>
+
+      <!-- filter goods field] -->
+
+    </f:facet>
+
+    <!-- toolbar] -->
+
+
+    <!-- [goods table -->
+
+    <x:data-store storeId = "${z:vid(v, 'goodUnits')}"
+      modelView = "${v}">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.GoodPriceView', remoteSort: true,
+        sorters: [{ property: 'goodName', direction: 'ASC' }]
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.GoodUnitView')
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+      storeId = "${z:vid(v, 'goodUnits')}">
+
+      <f:facet name = "grid-props">
+
+        columns: ZeT.defined('retrade.columns.ClientGoodPriceView'),
+        selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+        pager: true, sortableColumns: true, region: 'center'
+
+      </f:facet>
+    </x:data-grid>
+
+    <!-- goods table] -->
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "true"/>
+  </ui:define>
+</ui:decorate>
+</ui:component>

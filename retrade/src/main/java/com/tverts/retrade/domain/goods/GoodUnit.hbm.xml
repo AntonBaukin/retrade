@@ -1,0 +1,174 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.goods'>
+
+  <class name = 'GoodUnit' table = 'retrade_good_unit'>
+
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_entity'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_good_unit_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Unity -->
+
+    <many-to-one name = 'unity' foreign-key = 'fk_good_unit_mirror'
+      cascade = 'save-update'>
+
+      <column name = 'fk_unity' not-null = 'true'
+        index = 'ix_good_unit_mirror'>
+
+        <comment>
+          Unified mirror of this Good Unit. Goods of the same
+          domain+code pair share the same unity over each measure
+        </comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Domain -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_good_unit_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_good_unit'>
+
+        <comment>Domain where the entity is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code'>
+
+      <column name = 'good_code' not-null = 'true' length = '255'
+        unique-key = 'ux_good_unit'>
+
+        <comment>Unique (for Domain-Measure pair) code of the entity</comment>
+      </column>
+    </property>
+
+
+    <!-- Measure Unit -->
+
+    <many-to-one name = 'measure' lazy = 'proxy'
+      foreign-key = 'fk_measure'>
+
+      <column name = 'fk_measure_unit' not-null = 'true'
+        unique-key = 'ux_good_unit'>
+
+        <comment>The Measure unit of this Good Unit</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Super Good -->
+
+    <many-to-one name = 'superGood' foreign-key = 'fk_good_unit_super'>
+
+      <column name = 'fk_super_good' index = 'ix_good_unit_super'>
+
+        <comment>
+          Assigned only for sub-goods. They have all main attributes
+          the same as of its parent good referred from here
+        </comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Good Calculation -->
+
+    <many-to-one name = 'goodCalc' foreign-key = 'fk_good_calc'>
+
+      <column name = 'fk_good_calc' index = 'ix_good_calc'>
+
+        <comment>
+          When Good Unit refers a Calculation, it is a product.
+          Products may not be bought as the are the result of
+          the Domain owner company work. But semi-ready flag of
+          the Calculation alters this meaning
+        </comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Is Service Flag -->
+
+    <property name = 'service'>
+      <column name = 'is_service' not-null = 'true'>
+        <comment>
+          Defines whteher this Good is a resource or a product,
+          or is a service that may not be stored
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Visibility Flags -->
+
+    <property name = 'visibleBuy'>
+      <column name = 'visible_buy' not-null = 'true'>
+        <comment>Good is visible in Buy Invoices</comment>
+      </column>
+    </property>
+
+    <property name = 'visibleSell'>
+      <column name = 'visible_sell' not-null = 'true'>
+        <comment>Good is visible in Sell Invoices</comment>
+      </column>
+    </property>
+
+    <property name = 'visibleLists'>
+      <column name = 'visible_lists' not-null = 'true'>
+        <comment>Good is visible in tables</comment>
+      </column>
+    </property>
+
+    <property name = 'visibleReports'>
+      <column name = 'visible_reports' not-null = 'true'>
+        <comment>Good is visible in printed reports</comment>
+      </column>
+    </property>
+
+
+    <!-- Name -->
+
+    <property name = 'name'>
+
+      <column name = 'good_name' not-null = 'true' length = '512'>
+        <comment>The name of the good</comment>
+      </column>
+    </property>
+
+
+    <!-- Sort Name -->
+
+    <property name = 'sortName'>
+
+      <column name = 'sort_name' not-null = 'true'
+        length = '512' index = 'ix_good_sort_name'>
+
+        <comment>
+          The name of the good in lower case
+          processed for sort operations.
+        </comment>
+      </column>
+    </property>
+  </class>
+</hibernate-mapping>

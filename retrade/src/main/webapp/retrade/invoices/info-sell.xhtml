@@ -1,0 +1,452 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesInvoiceSellView}"/>
+
+${v.checkModelRequestedWithRedirect}
+${v.checkEntityRequested}
+${v.forceSecureModelEntity('view')}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+    extjsf.co('window', '${extDom}').
+      setTitle('${z:jss(v.windowTitleInfo)}')
+
+    //~: adjust window size
+    Ext.onReady(ZeT.timeouted(150, function()
+    {
+      //~: set window width
+      ReTrade.desktop.applyWindowBox({
+        name: 'window', domain: '${extDom}',
+        widthpt: 620, prevsize: ''
+      })
+    }))
+
+  //]]>
+  </script>
+
+
+  <f:facet name = "extjs-props">
+    layout: { type: 'vbox', align: 'stretch' },
+    bodyPadding: extjsf.pt(1),
+    bodyCls: 'retrade-back-panel'
+  </f:facet>
+
+
+  <!-- [invoice toolbar -->
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar">
+
+    <!-- [close window button] -->
+
+    <x:component coid = "${z:vid(v, 'close_window')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Закрыть', handler : function()
+        {
+          extjsf.co('window', '${extDom}').close()
+        }
+      </f:facet>
+    </x:component>
+
+
+    <!-- [sources + formulas -->
+    <x:component coid = "${z:vid(v, '_tb_buttons_line')}"
+      rendered = '#{v.invoiceAltered}'>
+
+      <f:facet name = "extjs-props">
+        xtype: 'panel', border: false,
+        margin: extjsf.pts(0, 4, 0, 4),
+        bodyPadding: extjsf.pts(2, 4, 2, 4),
+        cls: 'retrade-toolbar-colour-line-one'
+      </f:facet>
+
+
+      <!-- [toggle resulting goods table with sources filtered] -->
+      <x:component coid = "${z:vid(v, 'toggle-sources')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Списаны',
+          margin: extjsf.pts(0, 4, 0, 0),
+          enableToggle: true, tooltipType: 'title',
+          tooltip: 'Отобразить товары фактически списанные со склада'
+        </f:facet>
+      </x:component>
+
+
+      <!-- [toggle resulting goods table with formulas filtered] -->
+      <x:component coid = "${z:vid(v, 'toggle-formulas')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Формулы',
+          enableToggle: true, tooltipType: 'title',
+          tooltip: 'Отобразить промежуточные товары, использованные ' +
+            'при производстве по формулам (рецептам), но не списанные со склада'
+        </f:facet>
+      </x:component>
+
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'toggle-sources')}", '${extDom}').retradeResultsToggle = function(btn, pressed)
+  {
+    var g = extjsf.co("${z:vid(v, 'invoice-goods')}", '${extDom}');
+    var r = extjsf.co("${z:vid(v, 'result-goods')}", '${extDom}');
+    var s = extjsf.co("${z:vid(v, 'toggle-sources')}", '${extDom}');
+    var f = extjsf.co("${z:vid(v, 'toggle-formulas')}", '${extDom}');
+
+    //?: display invoice goods
+    if(!pressed)
+    {
+      r.hide(); g.show()
+    }
+    //~: display results table with sources or formulas filtered
+    else
+    {
+      g.hide(); r.show()
+
+      //?: {sources pressed}
+      if(btn == s)
+      {
+        f.toggle(false, true)
+        extjsf.u.columnByDataInd(r, 'calcDate').hide()
+        r.setTitle('Товары, фактически списанные со склада')
+
+        r.getStore().clearFilter(true)
+        extjsf.u.reindexGrid(r)
+        r.getStore().addFilter(function(m)
+        {
+          return !m.get('calcDate');
+        })
+      }
+
+      //?: {formulas pressed}
+      if(btn == f)
+      {
+        s.toggle(false, true)
+        extjsf.u.columnByDataInd(r, 'calcDate').show()
+        r.setTitle('Промежуточные товары, возникшие при производстве')
+
+        r.getStore().clearFilter(true)
+        extjsf.u.reindexGrid(r)
+        r.getStore().addFilter(function(m)
+        {
+          return !!m.get('calcDate');
+        })
+      }
+
+      //?: {not loaded yet} do load
+      if(!r.getStore().getCount()) r.getStore().load({callback: function()
+      {
+        extjsf.u.reindexGrid(r)
+      }})
+    }
+  }
+
+  extjsf.bind("${z:vid(v, 'toggle-sources')}", '${extDom}').
+    on('toggle', extjsf.bind("${z:vid(v, 'toggle-sources')}", '${extDom}').retradeResultsToggle)
+
+  extjsf.bind("${z:vid(v, 'toggle-formulas')}", '${extDom}').
+    on('toggle', extjsf.bind("${z:vid(v, 'toggle-sources')}", '${extDom}').retradeResultsToggle)
+
+      //]]>
+      </script>
+    </x:component>
+
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [invoice edited -->
+
+    <c:if test = "${v.invoiceEdited}">
+
+      <x:action-button coid = "${z:vid(v, 'fix_invoice')}"
+        action = "#{v.doFixInvoice}" modelView = "#{v}">
+
+        <f:facet name = "extjs-props">
+          text: 'Провести', margin: extjsf.pts(0, 4, 0, 0)
+        </f:facet>
+      </x:action-button>
+
+      <x:action-button coid = "${z:vid(v, 'edit_invoice')}"
+        action = "#{v.gotoEditInvoice}" modelView = "#{v}">
+
+        <f:facet name = "extjs-props">
+          text: 'Редактировать'
+        </f:facet>
+
+        <f:facet name = "action-params">
+          entity: '${v.entity.primaryKey}'
+        </f:facet>
+      </x:action-button>
+
+    </c:if>
+
+    <!-- invoice edited] -->
+
+
+    <!-- [invoice fixed -->
+
+    <c:if test = "${v.invoiceFixed}">
+
+      <x:action-button coid = "${z:vid(v, 'edit_fixed_invoice')}"
+        action = "#{v.gotoEditFixedInvoice}" modelView = "#{v}">
+
+        <f:facet name = "extjs-props">
+          text: 'Редактировать'
+        </f:facet>
+      </x:action-button>
+    </c:if>
+
+    <!-- invoice fixed] -->
+
+  </f:facet>
+
+  <!-- invoice toolbar] -->
+
+
+  <!-- [invoice status bar -->
+
+  <f:facet name = "status-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-status-panel'
+  </f:facet>
+
+
+  <f:facet name = "status">
+
+    <!-- [invoice state -->
+
+    <x:html coid = "${z:vid(v, 'invoice_status')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', frame: false, border: false
+      </f:facet>
+
+      <table class = "retrade-info-table retrade-invoice-info-table-state"
+        cellpadding = "0" cellspacing = "0" border = "0">
+
+        <tr>
+          <td class = "retrade-info-value-invoice-state">
+            <div>#{v.invoiceStateName}</div>
+          </td>
+
+          <ui:fragment rendered = "#{v.invoiceAltered}">
+            <td class = "retrade-info-value-invoice-altered">
+              <div>Автопроизводство</div>
+            </td>
+          </ui:fragment>
+        </tr>
+      </table>
+    </x:html>
+
+    <!-- invoice state] -->
+
+
+    <x:component coid = "${z:vid(v, '_sb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-status-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [invoice summ -->
+
+    <x:html coid = "${z:vid(v, 'invoice_summ')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', frame: false, border: false
+      </f:facet>
+
+      <table class = "retrade-info-table retrade-invoice-info-table-summ"
+        cellpadding = "0" cellspacing = "0" border = "0">
+
+        <tr>
+          <td class = "retrade-info-title retrade-info-title-invoice-summ">
+            <div>Сумма</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-red retrade-info-value-invoice-summ">
+            <div id = "${z:vid(v, 'invoice-summ-val')}" class = "retrade-format-to-currency">
+              #{v.invoiceSumm}
+            </div>
+          </td>
+        </tr>
+      </table>
+    </x:html>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+  retrade.TreetFCurrency.proc("${z:vid(v, 'invoice-summ-val')}")
+
+    //]]>
+    </script>
+
+    <!-- invoice summ] -->
+
+  </f:facet>
+
+  <!-- invoice status bar] -->
+
+
+  <!-- [invoice fields view -->
+
+  <x:html coid = "${z:vid(v, 'invoice_info')}">
+    <f:facet name = "extjs-props">
+      xtype: 'panel', border: false,
+      margin: extjsf.pts(1, 1, 2, 1),
+      bodyPadding: extjsf.pts(3, 2, 3, 2),
+      bodyCls: 'retrade-text-panel retrade-info-invoice-buy'
+    </f:facet>
+
+    <table class = "retrade-info-table retrade-info-table-invoice-first"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-invoice-code">
+          <div>Код</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-invoice-code">
+          <div>#{v.entity.code}</div>
+        </td>
+
+        <td class = "retrade-info-title retrade-info-title-invoice-store">
+          <div>Склад</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-small-text retrade-info-value-invoice-store">
+          <div>#{v.invoiceStore}</div>
+        </td>
+      </tr>
+    </table>
+
+    <table class = "retrade-info-table retrade-invoice-info-table-second"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-invoice-date">
+          <div>Дата</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-invoice-date">
+          <div>#{v.invoiceDateTime}</div>
+        </td>
+
+        <td class = "retrade-info-title retrade-info-title-invoice-contractor">
+          <div>Контрагент</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-small-text retrade-info-value-invoice-contractor">
+          <div>#{v.contractorName}</div>
+        </td>
+      </tr>
+    </table>
+  </x:html>
+
+  <!-- invoice fields view] -->
+
+
+  <x:component coid = "${z:vid(v, '_invoice_goods')}">
+
+    <f:facet name = "extjs-props">
+      xtype: 'panel', flex: 1,
+      border: false, layout: 'fit',
+      bodyCls: 'retrade-transparent-panel'
+    </f:facet>
+
+
+  <!-- [source goods table -->
+
+  <x:data-store storeId = "${z:vid(v, 'invoiceGoods')}" modelView = "${v}">
+    <f:facet name = "store-props">
+      model: 'retrade.model.InvoiceGood'
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.InvoiceGood')
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'invoice-goods')}"
+    storeId = "${z:vid(v, 'invoiceGoods')}">
+
+    <f:facet name = "grid-props">
+      title: 'Товары накладной', sortableColumns: true,
+      columns: ZeT.defined('retrade.columns.InvoiceSellGood')
+    </f:facet>
+  </x:data-grid>
+
+  <!-- source goods table] -->
+
+
+  <!-- [resulting goods table -->
+
+  <x:data-store storeId = "${z:vid(v, 'resultGoods')}"
+    modelView = "${v}" modelRequest = "results">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.InvoiceGood', autoLoad: false
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.InvoiceResGood')
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'result-goods')}"
+    storeId = "${z:vid(v, 'resultGoods')}">
+
+    <f:facet name = "grid-props">
+      hidden: true, sortableColumns: true,
+      title: 'Товары, списанные со склада',
+      columns: ZeT.defined('retrade.columns.InvoiceResGood')
+    </f:facet>
+  </x:data-grid>
+
+  </x:component>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: click the resulting good
+  extjsf.bind("${z:vid(v, 'result-goods')}", '${extDom}').
+    on('itemdblclick', function(comp, rec, node, row, e)
+  {
+    //?: {displaying the formulas} open it
+    var tf = extjsf.co("${z:vid(v, 'toggle-formulas')}", '${extDom}')
+    if(!ZeTS.ises(rec.get('calcKey')) && tf.pressed)
+      retrade_open_window({ url: '/goods/good-calc-info',
+        box: { event: e, widthpt: 540, heightpt: 280, '+xpt': 30, '-ypt': 50 },
+        domain: 'view:good-calc', record: rec.get('calcKey'),
+        params: { goodCalc: true }, collapsible: true
+      })
+  })
+
+  //]]>
+  </script>
+
+  <!-- resulting goods table] -->
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+</ui:component>

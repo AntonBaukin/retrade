@@ -1,0 +1,191 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesDocumentsView}"/>
+
+${rootView.forceSecure('view: documents')}
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+  <!-- [content: documents -->
+
+  <x:desktop-panel coid = "${z:vid(v, 'documents-root')}"
+    position = "#{rootView.extjsPosition}">
+
+    <f:facet name = "extjs-props">
+      title: 'Документы'
+    </f:facet>
+
+    <!-- [topbar controls -->
+
+    <f:facet name = "topbar">
+
+      <!-- [show filter button] -->
+      <x:component coid = "${z:vid(v, 'show-docs-filter')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Фильтр',
+          enableToggle: true, height: 30,
+          iconCls: 'retrade-document-filter-icon',
+          componentCls: 'retrade-button-22pt'
+        </f:facet>
+      </x:component>
+    </f:facet>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+    
+      ZeT.scope(function()
+      {
+        var root  = extjsf.bind("${z:vid(v, 'documents-root')}", '${extDom}')
+        var btn   = extjsf.bind("${z:vid(v, 'show-docs-filter')}", '${extDom}')
+        var panel = extjsf.bind("${z:vid(v, 'documents-root-toolbar')}", '${extDom}')
+
+        var menuNode, pressed, menuObj = {
+          title: 'Фильтр', icon: 'retrade-document-filter-icon', handler: function()
+          {
+            menuNode.find('a').toggleClass('current', (pressed = !pressed))
+            if(!pressed) menuNode.find('a').blur()
+            panel.visible(pressed)
+          }
+        }
+
+        //~: toggle filter toolbar visibility
+        btn.on('toggle', function(b)
+        {
+          panel.visible(pressed = b.pressed)
+        })
+
+        //~: proper button reference
+        btn.on('added', function(b)
+        {
+          b.toggle(!!pressed)
+        })
+
+        //~: insert and remove the topbar menu
+        root.desktopPanelController.topbarMenu(
+
+          function(ul) //<-- inserts menu item
+          {
+            menuNode = retrade_topbar_menu_insert(menuObj)
+            if(pressed) menuNode.find('a').addClass('current')
+          },
+
+          function(ul) //<-- removes menu item
+          {
+            if(menuNode) menuNode.remove()
+            menuNode = null
+          }
+        )
+      })
+
+    //]]>
+    </script>
+
+    <!-- topbar controls] -->
+
+
+    <!-- [documents filter form -->
+
+    <f:facet name = "toolbar-props">
+      xtype: 'panel', bodyPadding: extjsf.pt(2), hidden: true,
+      layout: 'fit', bodyCls: 'retrade-toolbar-panel'
+    </f:facet>
+
+    <f:facet name = "toolbar">
+      <ui:decorate template = "../.items/docs-filter.xhtml">
+
+        <ui:param name = "localView" value = "${v}"/>
+        <ui:param name = "filterModel" value = "${v.model}"/>
+        <ui:param name = "defaultShown" value = "true"/>
+      </ui:decorate>
+    </f:facet>
+
+    <!-- documents filter form] -->
+
+
+    <!-- [documents table -->
+
+    <x:data-store storeId = "${z:vid(v, 'documentsViews')}"
+      modelView = "${v}">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.DocumentView', pageSize: 20
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.DocumentView')
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+      storeId = "${z:vid(v, 'documentsViews')}">
+
+      <f:facet name = "grid-props">
+
+        region: 'center', preventHeader: true,
+        columns: ZeT.defined('retrade.columns.DocumentView'),
+        selModel: extjsf.delayCreate('Ext.ux.selection.No'),
+        pager: true, sortableColumns: false
+
+      </f:facet>
+    </x:data-grid>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'docs_filter_form')}", '${extDom}').success(function()
+  {
+    Ext.data.StoreManager.lookup("${z:vid(v, 'documentsViews')}").loadPage(1)
+  })
+
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
+    on('itemdblclick', function(comp, rec, node, row, e)
+  {
+    jQuery.get("${z:url('/go/unity')}", { entity: rec.getId() }, function(x)
+    {
+      if(!x || !x.info || ZeTS.ises(x.info.page)) return
+
+      var box = { '+xpt': -80, '-ypt': 20, widthpt: 580, heightpt: 420 }
+      if(x.info.box) ZeT.extend(box, x.info.box)
+      box.event = e
+
+      retrade_open_window({ url: retrade_go_url(x.info.page),
+        box: box, record: rec.getId(), domain: 'view:document'
+      })
+    })
+  })
+
+    //]]>
+    </script>
+
+    <!-- documents table] -->
+
+  </x:desktop-panel>
+
+  <!-- content: documents] -->
+
+</ui:define>
+</ui:decorate>
+
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+
+    <validation success = "true" target = "${z:vid(v, 'docs_filter_form')}"/>
+
+  </ui:define>
+</ui:decorate>
+</ui:component>

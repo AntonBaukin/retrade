@@ -1,0 +1,70 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:fragment xmlns = 'http://www.w3.org/1999/xhtml'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'
+   xmlns:co = 'http://java.sun.com/jsf/composite'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:z  = 'uri:tverts.com'>
+
+  <co:interface>
+
+    <!--
+         WARNING! It's not allowed to nest this component
+         in any component that is a JSF form container,
+         namely, x:form-panel!
+    -->
+
+    <co:attribute name = 'coid' required = 'true'
+      type = 'java.lang.String'/>
+
+    <co:attribute name = 'action'
+      method-signature = "java.lang.String action()"/>
+
+    <!--
+         Provide Model View to send action parameter
+         with the model keys.
+    -->
+    <co:attribute name = 'modelView'
+      type = 'com.tverts.faces.ModelViewBase'/>
+
+    <co:facet name = 'extjs-props'/>
+
+    <!--
+         Additional parameters of the action that
+         are sent to the server. To make GET request
+         add parameter { method: 'GET' }.
+    -->
+    <co:facet name = 'action-params'/>
+
+  </co:interface>
+
+  <co:implementation>
+
+    <div id = "#{cc.clientId}-#{cc.attrs.coid}-props" style = "display:none">
+      <co:renderFacet name = "extjs-props"/>
+    </div>
+
+    <div id = "#{cc.clientId}-#{cc.attrs.coid}-params" style = "display:none">
+      <co:renderFacet name = "action-params"/>
+    </div>
+
+    <h:form id = "#{cc.attrs.coid}" style = "display:none">
+      <h:commandButton id = "submit" action = "#{cc.attrs.action}"/>
+    </h:form>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+      extjsf.domain('${extDom}').
+        bind('#{cc.attrs.coid}', new extjsf.LoadActionBind()).
+        ids('#{cc.clientId}').parent('#{cc.parent.attrs.coid}').
+        goAction().props({ xtype: 'button' }).viewId('${rootView.id}').
+        props('params', { model: "#{cc.attrs.modelView.modelKeys}" }).
+        readPropsNode().readPropsNode('params').
+        postMode('${rootView.viewModeStr}').
+        install()
+
+    //]]>
+    </script>
+  </co:implementation>
+</ui:fragment>

@@ -1,0 +1,40 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.invoice'>
+
+  <class name = 'InvGood' abstract = 'true' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_invoice_good'/>
+
+
+    <!-- Good Unit reference -->
+
+    <many-to-one name = 'goodUnit'
+      foreign-key = 'fk_invoice_good_unit_'>
+
+      <column name = 'fk_good_unit' not-null = 'true'
+        index = '_ix_invoice_good_unit'>
+
+        <comment>The Good Unit of the position in the Invoice</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Volume -->
+
+    <property name = 'volume' type = 'big_decimal'>
+
+      <column name = 'good_volume' not-null = 'true'
+        precision = '18' scale = '8'>
+
+        <comment>The volume (amount) of the good</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

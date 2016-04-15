@@ -1,0 +1,31 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Action Bulders for ReTrade Views               =
+    +================================================-->
+
+  <bean name  = 'retradeViewsBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.doc.DocumentView'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.actions.ActionBuildersList'>
+        <property name = 'references'>
+          <list>
+
+            <bean class = 'com.tverts.retrade.domain.invoice.actions.ActInvoiceBuySellUpdateDocumentView'/>
+            <bean class = 'com.tverts.retrade.domain.invoice.actions.ActInvoiceMoveUpdateDocumentView'/>
+            <bean class = 'com.tverts.retrade.domain.invoice.actions.ActVolumeCheckUpdateDocumentView'/>
+
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+</beans>

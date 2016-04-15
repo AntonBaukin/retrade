@@ -1,0 +1,47 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+  <!--=================================================
+    =  The Main Service                               =
+    +================================================-->
+
+  <import resource = 'mainService.xml'/>
+
+
+  <!--=================================================
+    =  Services List of XRoot Module                  =
+    +================================================-->
+
+  <import resource = 'xrootServices.xml'/>
+
+
+  <!--=================================================
+    =  Services List of ReTrade Module                =
+    +================================================-->
+
+  <import resource = 'retradeServices.xml'/>
+
+
+  <!--=================================================
+    =  Services List                                  =
+    +==================================================
+    |
+    |  Overwrite this file in each module that adds
+    |  own services.
+    |
+    +================================================-->
+
+  <bean name  = 'servicesList'
+        class = 'com.tverts.system.services.ServicesList'>
+
+    <property name = 'references'>
+      <list>
+        <ref bean = 'mainService'/>
+        <ref bean = 'xrootServicesList'/>
+        <ref bean = 'retradeServicesList'/>
+      </list>
+    </property>
+  </bean>
+</beans>

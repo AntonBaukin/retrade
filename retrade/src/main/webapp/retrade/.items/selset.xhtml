@@ -1,0 +1,49 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+  xmlns:z  = 'uri:tverts.com'>
+
+  <!-- [selection set hidden placeholder ] -->
+  <x:component coid = "${z:vid(localView, 'retrade-selset-place')}">
+    <f:facet name = "extjs-props">
+      style: { display: 'none' }
+    </f:facet>
+  </x:component>
+
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: domain and view
+  ReTrade.selset.domain('${extDom}').view('${localView.id}', "${z:vid(localView, '')}")
+
+  //~: bind selection set hidden placeholder
+  ReTrade.selset.place(extjsf.bind("${z:vid(localView, 'retrade-selset-place')}", '${extDom}'))
+
+  //~: toggle button node id
+  ReTrade.selset.button("${z:vid(localView, 'retrade-selset-toggle')}")
+
+  //~: menu ul-list node id
+  ReTrade.selset.menu("${z:vid(localView, 'retrade-selset-menu')}")
+
+  //~: node ids of menu control items
+  ReTrade.selset.ctlitems({
+    'edit'    : "${z:vid(localView, 'retrade-selset-edit')}",
+    'add'     : "${z:vid(localView, 'retrade-selset-add')}",
+    'delete'  : "${z:vid(localView, 'retrade-selset-delete')}",
+    'clear'   : "${z:vid(localView, 'retrade-selset-clear')}"
+  })
+
+  //~: delayed load selection set processing UI
+  extjsf.bind("${z:vid(localView, 'retrade-selset-place')}", '${extDom}').
+    on('added', function()
+  {
+    ReTrade.selset.loadPlace("${z:url('/go/retrade/selset-ui?controls=true')}")
+  })
+
+  //]]>
+  </script>
+</ui:component>

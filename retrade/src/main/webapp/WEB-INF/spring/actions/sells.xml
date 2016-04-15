@@ -1,0 +1,70 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Action Bulders for Payments Desk               =
+    +================================================-->
+
+  <bean name  = 'retradePayDeskBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.sells.PayDesk'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.sells.ActPayDesk'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Action Bulders for Sells Desk                  =
+    +================================================-->
+
+  <bean name  = 'retradeSellsDeskBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.sells.SellsDesk'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.sells.ActSellsDesk'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Action Bulders for Sells Session               =
+    +================================================-->
+
+  <bean name  = 'retradeSellsSessionBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.sells.SellsSession'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.sells.ActSellsSession'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Action Bulders for Sells Payment               =
+    +================================================-->
+
+  <bean name  = 'retradeSellsPaymentBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.sells.SellsPay'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.sells.ActSellsPay'/>
+    </property>
+  </bean>
+
+</beans>

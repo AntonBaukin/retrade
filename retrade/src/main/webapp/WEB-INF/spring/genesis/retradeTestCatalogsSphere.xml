@@ -1,0 +1,83 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Sphere of ReTrade Catalogs                     =
+    +================================================-->
+
+  <bean name  = 'retradeTestCatalogsSphere'
+        class = 'com.tverts.genesis.GenesisSphere'>
+
+    <property name = 'name' value = 'ReTrade Test Catalogs'/>
+
+    <!-- the list of genesis units in this sphere -->
+    <constructor-arg>
+      <bean class = 'com.tverts.genesis.GenesisList'>
+        <property name = 'references'>
+          <list>
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Create test Trade Strores
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.retrade.domain.store.GenTestStores'>
+              <property name = 'name' value = 'Stores'/>
+            </bean>
+
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Create test Measures & Goods
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.retrade.domain.goods.GenTestGoods'>
+              <property name = 'name' value = 'Goods'/>
+            </bean>
+
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Create test Goods Tree
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.retrade.domain.goods.GenTestGoodsTree'>
+              <property name = 'name' value = 'Goods Tree'/>
+            </bean>
+
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Create test Contractors
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.retrade.domain.firm.GenTestContractors'>
+              <property name = 'name' value = 'Contractors'/>
+            </bean>
+
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Create test Price Lists
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.retrade.domain.prices.GenTestPrices'>
+              <property name = 'name' value = 'Price Lists'/>
+            </bean>
+
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Assign Price Lists to the Contractors
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.retrade.domain.firm.GenTestFirmPrices'>
+              <property name = 'name' value = 'Firm Prices'/>
+            </bean>
+
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Generate test Users
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.endure.auth.GenTestUsers'>
+              <property name = 'name' value = 'Users'/>
+            </bean>
+
+          </list>
+        </property>
+      </bean>
+    </constructor-arg>
+  </bean>
+
+</beans>

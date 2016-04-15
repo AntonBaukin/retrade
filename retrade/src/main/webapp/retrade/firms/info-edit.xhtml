@@ -1,0 +1,648 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesFirmViewEdit}"/>
+${v.forceSecure()}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+    extjsf.co('window', '${extDom}').
+      setTitle('${z:jss(v.windowTitle)}')
+
+  //]]>
+  </script>
+
+  <f:facet name = "extjs-props">
+    layout: 'fit', bodyCls: 'retrade-back-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pts(1, 2, 1, 2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar">
+
+    <!-- [cancel edit button] -->
+    <x:component coid = "${z:vid(v, 'cancel-edit')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Отмена',
+        cls: 'ux-btn-red', handler : function()
+        {
+          extjsf.co('window', '${extDom}').close()
+        }
+      </f:facet>
+    </x:component>
+
+    <!-- [close window button] -->
+    <x:component coid = "${z:vid(v, 'close')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Закрыть', handler : function()
+        {
+          extjsf.co('window', '${extDom}').close()
+        }
+      </f:facet>
+    </x:component>
+
+
+    <!-- [toolbar buttons line -->
+
+    <x:component coid = "${z:vid(v, '_tb_buttons_line')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', border: false,
+        margin: extjsf.pts(0, 4, 0, 4),
+        bodyPadding: extjsf.pts(2, 4, 2, 4),
+        cls: 'retrade-toolbar-colour-line-one'
+      </f:facet>
+
+      <!-- [show main content] -->
+      <x:component coid = "${z:vid(v, 'show-main')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Основные', margin: extjsf.pts(0, 4, 0, 0),
+          enableToggle: true, extjsfBlock: 'main', handler : function()
+          {
+            extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
+              retradeShowBlock('main')
+          }
+        </f:facet>
+      </x:component>
+
+      <!-- [show contacts] -->
+      <x:component coid = "${z:vid(v, 'show-contacts')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Контакты', margin: extjsf.pts(0, 4, 0, 0),
+          enableToggle: true, extjsfBlock: 'contacts', handler : function()
+          {
+            extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
+              retradeShowBlock('contacts')
+          }
+        </f:facet>
+      </x:component>
+
+      <!-- [show addresses] -->
+      <x:component coid = "${z:vid(v, 'show-addresses')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Адреса', margin: extjsf.pts(0, 0, 0, 0),
+          enableToggle: true, extjsfBlock: 'addresses', handler : function()
+          {
+            extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
+              retradeShowBlock('addresses')
+          }
+        </f:facet>
+      </x:component>
+    </x:component>
+
+    <!-- toolbar buttons line] -->
+
+    <x:component coid = "${z:vid(v, '_tb_fill')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, border: false,
+        bodyCls: 'retrade-toolbar-inline-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [submit button] -->
+    <x:component coid = "${z:vid(v, 'submit')}">
+      <f:facet name = "extjs-props">
+        xtype:'button', text: 'Сохранить', cls: 'ux-btn-green'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [do-edit] -->
+    <x:component coid = "${z:vid(v, 'do-edit')}">
+      <f:facet name = "extjs-props">
+        xtype:'button', text: 'Редактировать',
+        disabled: ${not v.isSecureModelEntity('edit')}
+      </f:facet>
+    </x:component>
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [firm edit form -->
+
+  <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'edit-form')}">
+
+    <f:facet name = "extjs-props">
+      border: false, bodyPadding: extjsf.pt(2),
+      bodyCls: 'retrade-content-panel',
+      layout: {type: 'vbox', align: 'stretch'}
+    </f:facet>
+
+
+    <!-- [code and name line -->
+
+    <x:component coid = "${z:vid(v, '_code_name')}">
+
+      <f:facet name = "extjs-props">
+        layout: {type: 'hbox', align: 'middle'},
+        border: false, bodyCls: 'retrade-transparent-panel',
+        margin: extjsf.pts(4, 0, 0, 0),
+        extjsfBlock: 'main'
+      </f:facet>
+
+
+      <!-- [code field -->
+
+      <x:text-field coid = "${z:vid(v, 'code')}"
+        value = "#{v.firm.code}">
+
+        <f:facet name = "extjs-props">
+          extjsfReadWrite: true,
+          margin: extjsf.pts(0, 4, 0, 0), flex: 1,
+          allowBlank: false, validator: function()
+          {
+            return extjsf.bind("${z:vid(v, 'code')}", '${extDom}').validityStatus || true;
+          }
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Код', cls: 'retrade-info-title-label'
+        </f:facet>
+      </x:text-field>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+//~: validate on code change
+extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
+{
+  var fb = f.extjsfBind;
+  fb.retradeCodeCheck = v; fb.validityStatus = true;
+
+  if(ZeTS.trim(v) != v)
+    fb.validityStatus = 'Код не может начинаться или оканчиваться пробелами!';
+  if(f.validate() !== true) return;
+
+  ZeT.timeout(1000, function()
+  {
+    if(fb.retradeCodeCheck != v) return;
+
+    extjsf.handler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
+      params: { code : fb.retradeCodeCheck }, failure: function()
+      {
+        fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
+        if(ZeTS.ises(fb.validityStatus)) fb.validityStatus = true;
+        f.validate()
+      }})
+  })
+})
+      //]]>
+      </script>
+
+      <!-- code field] -->
+
+
+      <!-- [name field] -->
+      <x:text-field coid = "${z:vid(v, 'name')}"
+        value = "#{v.firm.name}">
+
+        <f:facet name = "extjs-props">
+          flex: 4, allowBlank: false, extjsfReadWrite: true
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Имя', cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 4, 0, 0)
+        </f:facet>
+      </x:text-field>
+
+    </x:component>
+
+    <!-- code and name line] -->
+
+
+    <!-- [full name field] -->
+    <x:text-field coid = "${z:vid(v, 'full-name')}"
+      value = "#{v.firm.fullName}">
+
+      <f:facet name = "extjs-props">
+        xtype: 'textarea', flex: 1,
+        allowBlank: false, extjsfReadWrite: true,
+        extjsfBlock: 'main'
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Полное наименование организации',
+        cls: 'retrade-info-title-label',
+        margin: extjsf.pts(4, 0, 1, 0),
+        extjsfBlock: 'main'
+      </f:facet>
+    </x:text-field>
+
+
+    <!-- [organization type layout -->
+
+    <x:component coid = "${z:vid(v, '_org_type_label')}">
+      <f:facet name = "extjs-props">
+        xtype: 'label', text: 'Тип юридического лица',
+        cls: 'retrade-info-title-label',
+        style: { cursor: 'default' },
+        margin: extjsf.pts(4, 0, 1, 0),
+        extjsfBlock: 'main'
+      </f:facet>
+    </x:component>
+
+    <x:component coid = "${z:vid(v, '_org_type_boxes')}">
+      <f:facet name = "extjs-props">
+        layout: {type: 'hbox', align: 'middle'},
+        border: false, bodyCls: 'retrade-transparent-panel',
+        extjsfBlock: 'main'
+      </f:facet>
+
+      <x:checkboxes coid = "${z:vid(v, 'org-type')}"
+        value = "#{v.firmType}" labels = "#{v.firmTypeLabels}">
+
+        <f:facet name = "check-props">
+          extjsfReadWrite: true, onlyOne: true, allowNone: false
+        </f:facet>
+
+        <f:facet name = "label-props">
+          cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 6, 0, 4)
+        </f:facet>
+      </x:checkboxes>
+    </x:component>
+
+    <!-- organization type layout] -->
+
+
+    <!-- [organization codes line -->
+
+    <x:component coid = "${z:vid(v, '_org_codes')}">
+      <f:facet name = "extjs-props">
+        layout: {type: 'hbox', align: 'middle'},
+        border: false, margin: extjsf.pts(8, 0, 0, 0),
+        bodyCls: 'retrade-transparent-panel',
+        extjsfBlock: 'main'
+      </f:facet>
+
+      <!-- [tax number] -->
+      <x:text-field coid = "${z:vid(v, 'tax-number')}"
+        value = "#{v.firm.taxNumber}">
+
+        <f:facet name = "extjs-props">
+          width: extjsf.ex(18), cls: 'retrade-large-field',
+          fieldStyle: { textAlign: 'center' },
+          maskRe: retrade.rdecimal,
+          extjsfReadWrite: true
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'ИНН', cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 4, 0, 0)
+        </f:facet>
+      </x:text-field>
+
+
+      <!-- [tax code] -->
+      <x:text-field coid = "${z:vid(v, 'tax-code')}"
+        value = "#{v.firm.taxCode}">
+
+        <f:facet name = "extjs-props">
+          width: extjsf.ex(16), cls: 'retrade-large-field',
+          fieldStyle: { textAlign: 'center' },
+          maskRe: retrade.rdecimal,
+          extjsfReadWrite: true
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'КПП', cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 4, 0, 6)
+        </f:facet>
+      </x:text-field>
+
+
+      <!-- [registry code] -->
+      <x:text-field coid = "${z:vid(v, 'reg-code')}"
+        value = "#{v.firm.regCode}">
+
+        <f:facet name = "extjs-props">
+          width: extjsf.ex(20), cls: 'retrade-large-field',
+          fieldStyle: { textAlign: 'center' },
+          maskRe: retrade.rdecimal,
+          extjsfReadWrite: true
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'ОГРН', cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 4, 0, 6)
+        </f:facet>
+      </x:text-field>
+
+    </x:component>
+
+    <!-- organization codes line] -->
+
+
+    <!-- [agreement data] -->
+    <x:text-field coid = "${z:vid(v, 'argreement')}"
+      value = "#{v.firm.agreement}">
+
+      <f:facet name = "extjs-props">
+        xtype: 'textarea', flex: 4,
+        extjsfReadWrite: true, extjsfBlock: 'main'
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Сведения о договоре с контрагентом',
+        cls: 'retrade-info-title-label',
+        margin: extjsf.pts(8, 0, 1, 0),
+        extjsfBlock: 'main'
+      </f:facet>
+    </x:text-field>
+
+
+    <!-- [email] -->
+    <x:component coid = "${z:vid(v, '_email')}">
+      <f:facet name = "extjs-props">
+        layout: {type: 'hbox', align: 'middle'},
+        border: false, bodyCls: 'retrade-transparent-panel',
+        extjsfBlock: 'contacts'
+      </f:facet>
+
+      <x:text-field coid = "${z:vid(v, 'email')}"
+        value = "#{v.firm.email}">
+
+        <f:facet name = "extjs-props">
+          extjsfReadWrite: true, flex: 1
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Эл. почта', cls: 'retrade-info-title-label'
+        </f:facet>
+      </x:text-field>
+    </x:component>
+
+
+    <!-- [phones] -->
+    <x:text-field coid = "${z:vid(v, 'phones')}"
+      value = "#{v.firm.phones}">
+
+      <f:facet name = "extjs-props">
+        xtype: 'textarea', flex: 1,
+        extjsfReadWrite: true,
+        extjsfBlock: 'contacts'
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Телефоны',
+        cls: 'retrade-info-title-label',
+        margin: extjsf.pts(4, 0, 1, 0),
+        extjsfBlock: 'contacts'
+      </f:facet>
+    </x:text-field>
+
+
+    <!-- [persons] -->
+    <x:text-field coid = "${z:vid(v, 'persons')}"
+      value = "#{v.firm.persons}">
+
+      <f:facet name = "extjs-props">
+        xtype: 'textarea', flex: 1,
+        extjsfReadWrite: true,
+        extjsfBlock: 'contacts'
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Представители организации',
+        cls: 'retrade-info-title-label',
+        margin: extjsf.pts(3, 0, 1, 0),
+        extjsfBlock: 'contacts'
+      </f:facet>
+    </x:text-field>
+
+
+    <!-- [remarks] -->
+    <x:text-field coid = "${z:vid(v, 'remarks')}"
+      value = "#{v.firm.remarks}">
+
+      <f:facet name = "extjs-props">
+        xtype: 'textarea', flex: 3,
+        extjsfReadWrite: true,
+        extjsfBlock: 'contacts'
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Примечания',
+        cls: 'retrade-info-title-label',
+        margin: extjsf.pts(3, 0, 1, 0),
+        extjsfBlock: 'contacts'
+      </f:facet>
+    </x:text-field>
+
+
+    <x:component coid = "${z:vid(v, '_address_layout')}">
+      <f:facet name = "extjs-props">
+        layout: 'accordion', border: false,
+        bodyCls: 'retrade-transparent-panel',
+        extjsfBlock: 'addresses'
+      </f:facet>
+
+
+      <!-- [registry address] -->
+
+      <x:component coid = "${z:vid(v, '_registry_address')}">
+        <f:facet name = "extjs-props">
+          title: 'Адрес юридического лица',
+          layout: 'fit', border: false,
+          cls: 'retrade-inline-block-caption',
+          bodyCls: 'retrade-transparent-panel',
+          bodyPadding: extjsf.pts(8, 0, 4, 0)
+        </f:facet>
+
+        <ui:decorate template = ".edit-address.xhtml">
+          <ui:param name = "localView" value = "#{v}"/>
+          <ui:param name = "name" value = "registry"/>
+          <ui:param name = "address" value = "#{v.registryAddress}"/>
+        </ui:decorate>
+      </x:component>
+
+
+      <!-- [contact address] -->
+
+      <x:component coid = "${z:vid(v, '_contact_address')}">
+        <f:facet name = "extjs-props">
+          title: 'Контактный адрес',
+          layout: 'fit', border: false,
+          cls: 'retrade-inline-block-caption',
+          bodyCls: 'retrade-transparent-panel',
+          bodyPadding: extjsf.pts(8, 0, 4, 0)
+        </f:facet>
+
+        <ui:decorate template = ".edit-address.xhtml">
+          <ui:param name = "localView" value = "#{v}"/>
+          <ui:param name = "name" value = "contact"/>
+          <ui:param name = "address" value = "#{v.contactAddress}"/>
+        </ui:decorate>
+      </x:component>
+
+
+      <!-- [office address] -->
+
+      <x:component coid = "${z:vid(v, '_office_address')}">
+        <f:facet name = "extjs-props">
+          title: 'Адрес офиса',
+          layout: 'fit', border: false,
+          cls: 'retrade-inline-block-caption',
+          bodyCls: 'retrade-transparent-panel',
+          bodyPadding: extjsf.pts(8, 0, 4, 0)
+        </f:facet>
+
+        <ui:decorate template = ".edit-address.xhtml">
+          <ui:param name = "localView" value = "#{v}"/>
+          <ui:param name = "name" value = "office"/>
+          <ui:param name = "address" value = "#{v.officeAddress}"/>
+        </ui:decorate>
+      </x:component>
+    </x:component>
+
+
+    <!-- [submit action] -->
+    <h:commandButton id = "submit" value = "submit" style = "display:none;"
+      action = "#{v.doSubmitEdit}"/>
+
+  </x:form-panel>
+
+  <!-- [action to check code exists] -->
+  <x:action-call coid = "${z:vid(v, 'check-code-exists-script')}"
+    action = "#{v.doCheckCodeExists}" modelView = "${v}"/>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: show-hide blocks
+  extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
+    retradeShowBlock = function(block)
+  {
+    //~: toggle the buttons
+    var BUTTONS = [ "${z:vid(v, 'show-main')}",
+      "${z:vid(v, 'show-contacts')}", "${z:vid(v, 'show-addresses')}" ]
+
+    ZeT.each(BUTTONS, function(b)
+    {
+      var btn = extjsf.bind(b, '${extDom}')
+      if(btn.co()) btn.co().toggle(btn.$raw().extjsfBlock == block)
+      else btn.$raw().pressed = (btn.$raw().extjsfBlock == block)
+    })
+
+    //~: toggle the inner components
+    extjsf.u.toggleBlock("${z:vid(v, 'edit-form')}", '${extDom}', block)
+  }
+
+
+  //~: toggle read-write
+  extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
+    retradeToggleReadWrite = function(isread)
+  {
+    //~: toggle the form fields
+    extjsf.u.toggleReadWrite("${z:vid(v, 'edit-form')}", '${extDom}', isread)
+
+    //~: toggle cancel-edit
+    extjsf.bind("${z:vid(v, 'cancel-edit')}", '${extDom}').visible(!isread)
+
+    //~: toggle close
+    extjsf.bind("${z:vid(v, 'close')}", '${extDom}').visible(isread)
+
+    //~: toggle submit
+    extjsf.bind("${z:vid(v, 'submit')}", '${extDom}').visible(!isread)
+
+    //~: toggle do-edit
+    extjsf.bind("${z:vid(v, 'do-edit')}", '${extDom}').visible(isread)
+
+    //~: window title
+    var window = extjsf.bind('window', '${extDom}').co()
+    if(isread) window.setTitle('${z:jss(v.windowTitle)}')
+    else window.setTitle('${z:jss(v.windowTitleEdit)}')
+  }
+
+
+  //~: default read-only for existing
+  extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').when(function(form)
+  {
+    form.retradeShowBlock('main')
+    form.retradeToggleReadWrite("#{v.create}" == 'false')
+  })
+
+
+  //~: do-edit button
+  extjsf.handler("${z:vid(v, 'do-edit')}", '${extDom}', function()
+  {
+    extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
+      retradeToggleReadWrite(false)
+  })
+
+
+  //~: submit form with command button
+  extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', function()
+  {
+    var window = extjsf.bind('window', '${extDom}')
+    window.retradeEditSuccess = false
+
+    extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').submit({
+      command: 'submit', success: function()
+    {
+      window.retradeEditSuccess = true
+      extjsf.handler("${z:vid(v, 'cancel-edit')}", '${extDom}')()
+    }})
+  })
+
+  //]]>
+  </script>
+
+  <!-- firm edit form] -->
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+
+    <validation success = "#{v.valid}">
+
+      <ui:fragment rendered = "#{v.codeExists}">
+        <field target = "${z:vid(v, 'code')}">
+          <error>Данный код уже используется в другой организации!</error>
+        </field>
+      </ui:fragment>
+    </validation>
+  </ui:define>
+
+  <ui:define name = 'scripts'>
+
+    <ui:fragment rendered = "#{not empty v.errorEvent}">
+      <script>
+      //<![CDATA[
+
+ ReTrade.desktop.error("#{z:jss(v.errorEvent)}")
+
+      //]]>
+      </script>
+    </ui:fragment>
+
+  </ui:define>
+</ui:decorate>
+</ui:component>

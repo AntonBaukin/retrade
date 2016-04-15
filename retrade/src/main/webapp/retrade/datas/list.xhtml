@@ -1,0 +1,536 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesDataSources}"/>
+
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+  <ui:define name = 'page_body'>
+
+  <x:desktop-panel coid = "${z:vid(v, 'datas_root')}" position = "#{rootView.extjsPosition}">
+
+    <f:facet name = "extjs-props">
+      title: 'Источники данных',
+      layout: {type: 'vbox', align: 'stretch'}
+    </f:facet>
+
+    <!-- [toolbar -->
+
+    <f:facet name = "toolbar-props">
+      xtype: 'panel', bodyPadding: extjsf.pt(2),
+      layout: {type: 'hbox', align: 'middle'},
+      bodyCls: 'retrade-toolbar-inline-panel'
+    </f:facet>
+
+    <f:facet name = "toolbar">
+
+      <!-- [invoke data source to obtain xml -->
+
+      <x:component coid = "${z:vid(v, 'invoke-data-source')}">
+        <f:facet name = "extjs-props">
+         xtype: 'button', text: 'Данные XML', tooltipType: 'title',
+          tooltip: 'Выполнить источник данных для получения XML-документа'
+        </f:facet>
+      </x:component>
+
+      <x:action-call coid = "${z:vid(v, 'invoke-data-source-script')}"
+        action = "#{v.doInvokeXML}" modelView = "#{v}"/>
+
+      <!-- invoke data source to obtain xml] -->
+
+
+      <x:component coid = "${z:vid(v, '_tb_fill_datas')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', flex: 1, frame: false, border: false,
+          bodyCls: 'retrade-toolbar-inline-panel'
+        </f:facet>
+      </x:component>
+
+
+      <!-- [create report button] -->
+
+      <x:component coid = "${z:vid(v, 'create-template')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Создать шаблон', tooltipType: 'title',
+          tooltip: 'Создать шаблон отчётов для выбранного источника данных'
+        </f:facet>
+      </x:component>
+
+    </f:facet>
+
+    <!-- toolbar] -->
+
+
+    <!-- [upper part: data sources -->
+
+    <x:component coid = "${z:vid(v, 'data_sources_layout')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-back-panel', layout: 'fit'
+      </f:facet>
+
+
+      <!-- [data sources table -->
+
+      <x:data-store storeId = "${z:vid(v, 'dataSources')}"
+        modelView = "${v}" modelRequest = "sources">
+
+        <f:facet name = "store-props">
+          model: 'retrade.model.DataSourceView',
+          sorters: [{ property: 'nameLo', direction: 'ASC' }]
+        </f:facet>
+
+        <f:facet name = "proxy-props">
+          reader: ZeT.defined('retrade.readers.DataSourceView')
+        </f:facet>
+      </x:data-store>
+
+      <x:data-grid coid = "${z:vid(v, 'data-sources')}"
+        storeId = "${z:vid(v, 'dataSources')}">
+
+        <f:facet name = "grid-props">
+          columns: ZeT.defined('retrade.columns.DataSourceView'),
+          selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+          pager: false, sortableColumns: true
+        </f:facet>
+      </x:data-grid>
+
+      <!-- data sources table] -->
+
+
+    </x:component>
+
+    <!-- upper part: data sources] -->
+
+
+    <x:component coid = "${z:vid(v, '_middle_splitter')}">
+      <f:facet name = "extjs-props">
+        xtype: 'splitter', collapsible: true, collapseTarget: 'prev'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [lower part: reports -->
+
+    <x:component coid = "${z:vid(v, 'reports_layout')}">
+      <f:facet name = "extjs-props">
+
+        title: 'Шаблоны отчётов',
+        xtype: 'panel', flex: 2, frame: false, border: false,
+        bodyCls: 'retrade-back-panel', layout: 'fit'
+
+      </f:facet>
+
+
+      <!-- [toolbar -->
+
+      <x:toolbar coid = "${z:vid(v, 'reports_toolbar')}">
+
+        <f:facet name = "extjs-props">
+          xtype: 'panel', bodyPadding: extjsf.pt(2),
+          layout: {type: 'hbox', align: 'middle'},
+          bodyCls: 'retrade-toolbar-inline-panel'
+        </f:facet>
+
+
+        <!-- [delete report template button] -->
+
+        <x:component coid = "${z:vid(v, 'delete-template')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', text: 'Удалить', tooltipType: 'title',
+            tooltip: 'Удалить выбранный шаблон'
+          </f:facet>
+        </x:component>
+
+        <x:action-call coid = "${z:vid(v, 'delete-template-script')}"
+          action = "#{v.doDeleteTemplate}" modelView = "${v}"/>
+
+
+        <!-- [create XLS report button] -->
+
+        <x:component coid = "${z:vid(v, 'create-report-xls')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', text: 'Отчёт Excel', tooltipType: 'title',
+            tooltip: 'Создать отчёт в формате Excel для выбранного шаблона',
+            margin: extjsf.pts(1, 0, 1, 12)
+          </f:facet>
+        </x:component>
+
+
+        <!-- [create PDF report button] -->
+
+        <x:component coid = "${z:vid(v, 'create-report')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', text: 'Отчёт', tooltipType: 'title',
+            tooltip: 'Создать отчёт в формате PDF для выбранного шаблона',
+            margin: extjsf.pts(1, 0, 1, 4)
+          </f:facet>
+        </x:component>
+
+        <x:action-call coid = "${z:vid(v, 'create-report-script')}"
+          action = "#{v.doCreateReport}" modelView = "${v}"/>
+
+
+        <x:component coid = "${z:vid(v, '_tb_fill_templates')}">
+          <f:facet name = "extjs-props">
+            xtype: 'panel', flex: 1, frame: false, border: false,
+            bodyCls: 'retrade-toolbar-inline-panel'
+          </f:facet>
+        </x:component>
+
+
+        <!-- [filter templates field -->
+
+        <x:text-field coid = "${z:vid(v, 'search-templates')}"
+          value = "#{v.model.searchNames}">
+
+          <f:facet name = "extjs-props">
+            margin: extjsf.pts(1, 0, 1, 4),
+            width:  extjsf.ex(24)
+          </f:facet>
+
+          <f:facet name = "label-props">
+            text: 'Поиск', margin: extjsf.pts(1, 0, 1, 8)
+          </f:facet>
+        </x:text-field>
+
+        <x:action-call coid = "${z:vid(v, 'search-templates-script')}"
+          action = "#{v.doSearchTemplates}" modelView = "${v}"/>
+
+        <script type = "text/javascript">
+        //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'search-templates')}", '${extDom}').on('change', function(f)
+    {
+      var sv = ZeTS.trim(f.getValue());
+      if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
+
+      var fn = function()
+      {
+        //?: {search string was changed} discard
+        if(f.extjsfBind.searchValue != sv) return;
+
+        extjsf.handler("${z:vid(v, 'search-templates-script')}", '${extDom}')({
+          params: { searchWords: sv }, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'reportTemplates')}").loadPage(1)
+        }})
+      }
+
+      setTimeout(fn, 1000)
+    })
+
+        //]]>
+        </script>
+
+        <!-- filter templates field] -->
+
+      </x:toolbar>
+
+      <!-- toolbar] -->
+
+
+      <!-- [report templates table -->
+
+      <x:data-store storeId = "${z:vid(v, 'reportTemplates')}"
+        modelView = "${v}" modelRequest = "templates">
+
+        <f:facet name = "store-props">
+          model: 'retrade.model.ReportTemplateView',
+          sorters: [{ property: 'did', direction: 'ASC' }],
+          remoteSort: true, pageSize: 15
+        </f:facet>
+
+        <f:facet name = "proxy-props">
+          reader: ZeT.defined('retrade.readers.ReportTemplateView')
+        </f:facet>
+      </x:data-store>
+
+      <x:data-grid coid = "${z:vid(v, 'report-templates')}"
+        storeId = "${z:vid(v, 'reportTemplates')}">
+
+        <f:facet name = "grid-props">
+          columns: ZeT.defined('retrade.columns.ReportTemplateView'),
+          selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+          pager: true, sortableColumns: true
+        </f:facet>
+      </x:data-grid>
+
+      <!-- report templates table] -->
+
+    </x:component>
+
+    <!-- lower part: reports] -->
+
+    <script type = "application/javascript">
+      //<![CDATA[
+
+  //~: invoke the data source to produce XML data
+  extjsf.handler("${z:vid(v, 'invoke-data-source')}", '${extDom}', function()
+  {
+    //~: current selection
+    var g = extjsf.co("${z:vid(v, 'data-sources')}", '${extDom}');
+    var s = g.getSelectionModel().getSelection();
+    if(s && (s.length == 1)) s = s[0]; else s = null;
+    if(!s) return ReTrade.desktop.error("Выберете источник данных!");
+
+    //~: invoke the action
+    extjsf.handler("${z:vid(v, 'invoke-data-source-script')}", '${extDom}')({
+      params: { dataSource : s.getId() }})
+
+  })
+
+  //~: create | report implementation
+  extjsf.bind("${z:vid(v, 'create-template')}", '${extDom}').createOrEditReportTemplate = function(box, template)
+  {
+    //~: current data source selection
+    var g = extjsf.co("${z:vid(v, 'data-sources')}", '${extDom}');
+    var s = g.getSelectionModel().getSelection();
+    if(s && (s.length == 1)) s = s[0]; else s = null;
+    if(!s && ZeT.isu(template))
+      return ReTrade.desktop.error("Выберете источник данных!");
+
+    var domain; if(ZeT.isu(template))
+      domain = 'window:' + "${z:vid(v, 'create-report-template')}:" + 'datasource-' + s.getId();
+    else
+      domain = 'window:' + "${z:vid(v, 'edit-report-template')}:" + template;
+
+    var window = extjsf.bind('window', domain); if(window)
+    {
+      window.co().toFront()
+      window.co().setPagePosition(box.x, box.y)
+      window.co().expand()
+      return;
+    }
+
+    var params = {
+      '${v.viewModeParam}': 'body',
+      '${rootView.extjsDomainParam}': domain,
+      create: ZeT.isu(template)
+    };
+
+    if(s) params.dataSource = s.getId();
+    if(template) params[entity] = template;
+
+    window = extjsf.domain(domain).bind('window', new extjsf.RootBind()).props({
+
+      xtype: 'window', title: 'Загрузка...', autoShow: true,
+      x: box.x, y: box.y, width: box.width, height: box.height,
+      layout: 'fit', collapsible: true,
+
+      loader: {
+        url: "${z:url('/go/retrade/datas/create-edit-report-template')}",
+        ajaxOptions: {method: 'GET'}, autoLoad: true, scripts: true, params: params
+      }
+    })
+
+    //~: reload table on create-edit
+    window.on('close', function()
+    {
+      if(!window.retradeEditDone) return;
+      Ext.data.StoreManager.lookup("${z:vid(v, 'reportTemplates')}").reload()
+    })
+
+    //~: create the window
+    window.co(Ext.create('Ext.window.Window', window.buildProps()))
+  }
+
+  //~: report template create
+  extjsf.handler("${z:vid(v, 'create-template')}", '${extDom}', function(btn)
+  {
+    var box = ReTrade.desktop.calcWindowBox({
+      x: btn.getX(), y: btn.getY(),
+      widthpt: 280, heightpt: 260, '+xpt': -270, '-ypt': -20
+    })
+
+    extjsf.bind("${z:vid(v, 'create-template')}", '${extDom}').
+      createOrEditReportTemplate(box)
+  })
+
+  //~: edit report template on table double-click
+  extjsf.bind("${z:vid(v, 'report-templates')}", '${extDom}').
+    on('itemdblclick', function(comp, rec, node, row, event)
+  {
+    var box = ReTrade.desktop.calcWindowBox({
+      'event': event, widthpt: 280, heightpt: 260, '+xpt': -80, '-ypt': 20
+    })
+
+    extjsf.bind("${z:vid(v, 'create-template')}", '${extDom}').
+      createOrEditReportTemplate(box, rec.getId())
+  })
+
+  //~: delete template
+  extjsf.handler("${z:vid(v, 'delete-template')}", '${extDom}', function(btn, e)
+  {
+    //~: current selection
+    var g = extjsf.co("${z:vid(v, 'report-templates')}", '${extDom}');
+    var s = g.getSelectionModel().getSelection();
+    if(s && (s.length == 1)) s = s[0]; else s = null;
+    if(!s) return ReTrade.desktop.error("Выберете шаблон отчёта!");
+
+    retrade_yes_no_ask_warning({
+      modal: false,
+      event: e, widthpt: 280, '+xpt': 25, '-ypt': -10,
+      title: 'Удалить выбранный шаблон отчётов?',
+      message: ZeTS.cat("Вы решили удалить шаблон отчётов '", s.get('name'),
+        "'? Операция возможна только если ни у одного пользователя нет ",
+        "запросов на создание отчётов по данному шаблону."),
+
+      yes : function()
+      {
+        //~: invoke the action
+        extjsf.handler("${z:vid(v, 'delete-template-script')}", '${extDom}')({
+          params: { reportTemplate : s.getId() }, success: function()
+          {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'reportTemplates')}").reload()
+          }})
+      }
+    })
+  })
+
+  //~: create report function
+  extjsf.bind("${z:vid(v, 'create-report')}", '${extDom}').createReportRequest = function(format)
+  {
+    //~: current selection
+    var g = extjsf.co("${z:vid(v, 'report-templates')}", '${extDom}');
+    var s = g.getSelectionModel().getSelection();
+    if(s && (s.length == 1)) s = s[0]; else s = null;
+    if(!s) return ReTrade.desktop.error("Выберете шаблон отчёта!");
+
+    if(ZeTS.ises(format)) format = 'PDF';
+
+    extjsf.handler("${z:vid(v, 'create-report-script')}", '${extDom}')({
+      params: { reportTemplate : s.getId(), reportFormat: format }, success: function()
+      {
+        if(s.get('hasUI') === false)
+          ReTrade.desktop.event('Отчёт успешно добавлен в список Ваших отчетов!')
+      }})
+  }
+
+  extjsf.handler("${z:vid(v, 'create-report')}", '${extDom}', function()
+  {
+    extjsf.bind("${z:vid(v, 'create-report')}", '${extDom}').
+      createReportRequest()
+  })
+
+  extjsf.handler("${z:vid(v, 'create-report-xls')}", '${extDom}', function()
+  {
+    extjsf.bind("${z:vid(v, 'create-report')}", '${extDom}').
+      createReportRequest('XLS')
+  })
+
+    //]]>
+    </script>
+
+  </x:desktop-panel>
+
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+
+    <validation success = "#{v.valid}"/>
+
+  </ui:define>
+
+  <ui:define name = 'scripts'>
+
+   <ui:fragment rendered = "#{not empty v.errorText}">
+   <script>
+   //<![CDATA[
+
+ ReTrade.desktop.error("#{z:jss(v.errorText)}")
+
+   //]]>
+   </script>
+   </ui:fragment>
+
+
+   <ui:fragment rendered = "#{not empty v.downloadLink}">
+   <script>
+   //<![CDATA[
+
+ ZeT.timeout(500, function()
+ {
+   window.open("#{z:url(v.downloadLink)}", '_self')
+ })
+
+   //]]>
+   </script>
+   </ui:fragment>
+
+
+   <ui:fragment rendered = "#{not empty v.openWindow}">
+   <script>
+   //<![CDATA[
+
+   (function()
+   {
+      var domain = extjsf.nameDomain('window:invoke-data-source#{v.dataSource}');
+      var xy; if("#{v.dataOnly}" == 'true')
+        xy = extjsf.co("${z:vid(v, 'invoke-data-source')}", '${extDom}').getXY();
+      else
+        xy = extjsf.co("${z:vid(v, 'create-report')}", '${extDom}').getXY();
+
+      var box     = ReTrade.desktop.calcWindowBox({
+        x: xy[0], y: xy[1], '+xpt': 36, '-ypt': -20,
+        widthpt: 360, heightpt: 240
+      })
+
+      if(window)
+      {
+        window.co().toFront()
+        window.co().setPagePosition(box.x, box.y)
+        window.co().expand()
+        return;
+      }
+
+      var ps = {
+        '${v.viewModeParam}': 'body',
+        '${rootView.extjsDomainParam}': domain
+      }
+
+      if("#{v.dataOnly}" == 'true')
+      {
+        ps['${v.modelParam}'] = '#{v.modelKeys}';
+        ps.dataSource = '#{z:jss(v.dataSource)}';
+      }
+
+      var window = extjsf.domain(domain).bind('window', new extjsf.RootBind()).props({
+
+        xtype: 'window', title: 'Загрузка...',
+        x: box.x, y: box.y, width: box.width, height: box.height,
+        layout: 'fit', autoShow: true, collapsible: true,
+
+        loader: {
+          url: "${z:url(v.openWindow)}",
+          ajaxOptions: {method: 'GET'},
+          autoLoad: true, scripts: true,
+          params: ps
+        }
+      })
+
+      window.co(Ext.create('Ext.window.Window', window.buildProps()))
+
+    })()
+
+   //]]>
+   </script>
+   </ui:fragment>
+
+  </ui:define>
+
+</ui:decorate>
+</ui:component>

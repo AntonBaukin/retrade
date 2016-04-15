@@ -1,0 +1,73 @@
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.prices'>
+
+  <class name = 'PriceCross' table = 'retrade_price_cross' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_price_cross'/>
+
+
+    <!-- Firm Prices -->
+
+    <many-to-one name = 'firmPrices' foreign-key = 'fk_price_cross_prices'>
+
+      <column name = 'fk_firm_prices' not-null = 'true'
+        index = 'ix_price_cross_prices'>
+
+        <comment>
+          The association between the Contractor and the Price List
+          having the highest priority af the price of the Good Unit
+        </comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Contractor -->
+
+    <many-to-one name = 'contractor' foreign-key = 'fk_price_cross_contractor'>
+
+      <column name = 'fk_contractor' not-null = 'true'
+        unique-key = 'ux_price_cross'>
+
+        <comment>
+          Contractor related with the Firm Prices.
+          (De-normalized relation.)
+        </comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Good Price -->
+
+    <many-to-one name = 'goodPrice' foreign-key = 'fk_price_cross_good_price'>
+
+      <column name = 'fk_good_price' not-null = 'true'
+        index = 'ix_price_cross_good_price'>
+
+        <comment>
+          The priority-effective Good Price
+          of the associated Price List
+        </comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Good Unit -->
+
+    <many-to-one name = 'goodUnit' foreign-key = 'fk_price_cross_good_unit'>
+
+      <column name = 'fk_good_unit' not-null = 'true'
+        unique-key = 'ux_price_cross' index = 'ix_price_cross_good_unit'>
+
+        <comment>
+          Good Unit related with the Good Price.
+          (De-normalized relation.)
+        </comment>
+      </column>
+    </many-to-one>
+
+  </class>
+</hibernate-mapping>

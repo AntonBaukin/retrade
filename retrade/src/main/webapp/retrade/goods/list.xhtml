@@ -1,0 +1,65 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesGoodsView}"/>
+
+${rootView.forceSecure('view: goods')}
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+  <ui:define name = 'page_body'>
+
+  <x:root-panel coid = "${z:vid(v, 'goods_root_panel')}">
+
+    <!-- [toolbar -->
+
+    <f:facet name = "toolbar-props">
+      xtype: 'panel', bodyPadding: extjsf.pts(0, 2, 0, 2),
+      layout: {type: 'hbox', align: 'middle'},
+      bodyCls: 'retrade-toolbar-inline-panel'
+    </f:facet>
+
+    <f:facet name = "toolbar">
+
+      <ui:decorate template = '.list-toolbar.xhtml'
+        xmlns = 'http://www.w3.org/1999/xhtml'/>
+
+    </f:facet>
+
+    <ui:decorate template = '.list-grid.xhtml'
+        xmlns = 'http://www.w3.org/1999/xhtml'>
+
+      <ui:param name = "pageSize" value = "10"/>
+      <ui:param name = "columnModel" value = "GoodUnitView"/>
+
+    </ui:decorate>
+  </x:root-panel>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: invoke on-load callback of the loader
+  retrade_chain_on_load('${extDom}', "${z:vid(v, 'goods_root_panel')}")
+
+  //]]>
+  </script>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "true"/>
+  </ui:define>
+</ui:decorate>
+</ui:component>

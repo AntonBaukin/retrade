@@ -1,0 +1,214 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+  xmlns:z  = 'uri:tverts.com'>
+
+  <!-- [application main topbar -->
+
+  <x:component coid = "${z:vid(localView, 'main_topbar')}">
+
+    <f:facet name = "extjs-props">
+
+      region: 'north', frame: false, border:false,
+      margin: extjsf.pts(0, 2, 0, 2), height: 35,
+      bodyCls: 'retrade-desktop-panel-topbar retrade-transparent-panel',
+      layout: {type: 'hbox', align: 'middle'}
+    </f:facet>
+
+
+    <!-- [logoff server call] -->
+    <x:action-call coid = "${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}"
+      action = "#{rootView.doLogoff}"/>
+
+
+    <!-- [goods prices] -->
+
+    <x:component coid = "${z:vid(localView, 'retrade-goods-prices')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'button', flex: 0, text: 'Цены',
+        margin: extjsf.pts(0, 6, 0, 0), height: 30,
+        iconCls: 'retrade-prices-icon',
+        componentCls: 'retrade-button-22pt'
+
+      </f:facet>
+    </x:component>
+
+
+    <!-- [goods tree] -->
+
+    <x:component coid = "${z:vid(localView, 'retrade-goods-tree')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'button', flex: 0, text: 'Товары',
+        margin: extjsf.pts(0, 6, 0, 0), height: 30,
+        iconCls: 'retrade-goods-icon',
+        componentCls: 'retrade-button-22pt'
+
+      </f:facet>
+    </x:component>
+
+
+    <!-- [goods tree own] -->
+
+    <x:component coid = "${z:vid(localView, 'retrade-goods-tree-own')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'button', flex: 0, text: 'Наши товары',
+        margin: extjsf.pts(0, 0, 0, 0), height: 30,
+        iconCls: 'retrade-goods-icon',
+        componentCls: 'retrade-button-22pt'
+
+      </f:facet>
+    </x:component>
+
+
+    <!-- [topbar extention point -->
+
+    <x:html coid = "${z:vid(localView, '_main_topbar_ext_sep_left')}"
+      boxClass = "retrade-buttons-sep-line-div">
+
+      <f:facet name = "extjs-props">
+        height: 22, width: 4,
+        margin: extjsf.pts(0, 8, 0, 8)
+      </f:facet>
+
+      <div class = "retrade-buttons-sep-line"/>
+    </x:html>
+
+
+    <!-- [buttons linked directly] -->
+    <ui:insert name = 'topbar-buttons'/>
+
+
+    <x:component coid = "${z:vid(localView, 'main_topbar_ext')}">
+      <f:facet name = "extjs-props">
+
+        border: false, frame: false, flex: 1,
+        bodyCls: 'retrade-transparent-panel',
+        layout: {type: 'hbox', align: 'middle'}
+
+      </f:facet>
+    </x:component>
+
+
+    <x:html coid = "${z:vid(localView, '_main_topbar_ext_sep_right')}"
+      boxClass = "retrade-buttons-sep-line-div">
+
+      <f:facet name = "extjs-props">
+        height: 22, width: 4,
+        margin: extjsf.pts(0, 4, 0, 8)
+      </f:facet>
+
+      <div class = "retrade-buttons-sep-line"/>
+    </x:html>
+
+    <!-- topbar extention point] -->
+
+
+    <!-- [right controls block -->
+
+    <x:component coid = "${z:vid(localView, 'desktop-topbar-right-block')}">
+      <f:facet name = "extjs-props">
+
+        border: false, frame: false,
+        bodyPadding: 0, margin: 0, height: 35,
+        bodyCls: 'retrade-transparent-panel',
+        layout: {type: 'hbox', align: 'middle'}
+
+      </f:facet>
+
+
+      <!-- [selection set button] -->
+      <ui:decorate template = "selset.xhtml">
+        <ui:param name = "localView" value = "#{localView}"/>
+      </ui:decorate>
+
+
+      <!-- [desktop clocks] -->
+      <x:html coid = "${z:vid(localView, 'desktop-topbar-clocks')}">
+        <f:facet name = "extjs-props">
+          bodyCls: 'retrade-transparent-panel',
+          margin: extjsf.pts(0, 0, 0, 4)
+        </f:facet>
+
+        <div id = "${z:vid(rootView, 'desktop-clocks-area')}"
+          style = "width: 90px; height: 35px;"></div>
+      </x:html>
+
+
+      <!-- [user menu] -->
+      <ui:decorate template = "user-menu.xhtml">
+        <ui:param name = "localView" value = "#{localView}"/>
+      </ui:decorate>
+
+    </x:component>
+  </x:component>
+
+
+  <!-- [topbar scripts -->
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: attach top bar panel to the desktop
+  ReTrade.desktop.controller('center').mainTopbar(
+    "${z:vid(localView, 'main_topbar')}", '${extDom}')
+
+  //~: set the top bar extension point
+  ReTrade.desktop.controller('center').mainTopbarExt(
+    "${z:vid(localView, 'main_topbar_ext')}", '${extDom}')
+
+  //~: setup the desktop clocks
+  Ext.onReady(function()
+  {
+    if(ReTrade.desktop.clocks) return;
+
+    ReTrade.desktop.clocks = new ReTrade.Clocks({ start: true,
+      parent: "${z:vid(rootView, 'desktop-clocks-area')}",
+      node: "${z:vid(rootView, 'desktop-clocks')}"
+    })
+  })
+
+
+  //~: open goods prices root panel
+  extjsf.handler("${z:vid(localView, 'retrade-goods-prices')}",
+    '${extDom}', function()
+  {
+    ReTrade.desktop.loadPanel(
+      "${z:url('/go/retrade/price-lists/goods-prices-client')}", {
+      domain: 'retrade-client-menu:goods-prices'
+    })
+  })
+
+
+  //~: open shared goods tree (for read-only)
+  extjsf.handler("${z:vid(localView, 'retrade-goods-tree')}",
+    '${extDom}', function()
+  {
+    ReTrade.desktop.loadPanel(
+      "${z:url('/go/retrade/goods/goods-tree-client')}", {
+      domain: 'retrade-client-menu:goods-tree'
+    })
+  })
+
+
+  //~: open goods tree own (for editing)
+  extjsf.handler("${z:vid(localView, 'retrade-goods-tree-own')}",
+    '${extDom}', function()
+  {
+    ReTrade.desktop.loadPanel(
+      "${z:url('/go/retrade/goods/goods-tree-client-own')}", {
+      domain: 'retrade-client-menu:goods-tree-own'
+    })
+  })
+
+  //]]>
+  </script>
+
+  <!-- topbar scripts] -->
+
+</ui:component>

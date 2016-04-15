@@ -1,0 +1,73 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Aggregating Strategies of Root Aggregator      =
+    +================================================-->
+
+  <bean name  = 'rootAggregatorReferences'
+        class = 'com.tverts.aggr.AggregatorsList'>
+    <property name = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Good Rest Cost Aggregator
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.aggr.cost.AggregatorRestCost'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Volume Aggregator
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.aggr.volume.AggregatorVolume'>
+
+          <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+           · WARNING: changing the step, change ShuntInvoicesAggr
+           · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+          <property name = 'historyStep' value = '8'/>
+
+
+          <property name = 'calculators'>
+            <bean class = 'com.tverts.aggr.calc.AggrCalcsList'>
+              <property name = 'references'>
+                <list>
+
+                  <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+                   · Volumes grouped by month
+                   · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+                  <bean class = 'com.tverts.endure.aggr.volume.AggrCalcMonthVolume'>
+                    <property name = 'calcTypes'>
+                      <bean class = 'com.tverts.objects.StringsSeparated'>
+                        <property name = 'string' value = 'Aggr Calc: Volume: Monthly'/>
+                      </bean>
+                    </property>
+                  </bean>
+
+                  <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+                   · Volumes grouped by weeks
+                   · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+                  <bean class = 'com.tverts.endure.aggr.volume.AggrCalcWeekVolume'>
+                    <property name = 'calcTypes'>
+                      <bean class = 'com.tverts.objects.StringsSeparated'>
+                        <property name = 'string' value = 'Aggr Calc: Volume: Weekly'/>
+                      </bean>
+                    </property>
+                  </bean>
+
+                  <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+                   · Calculator for Volume Check Documents
+                   · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+                  <bean class = 'com.tverts.retrade.domain.invoice.actions.AggrCalcVolumeCheck'/>
+
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+</beans>

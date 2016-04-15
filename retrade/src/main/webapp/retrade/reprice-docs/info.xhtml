@@ -1,0 +1,609 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesRepriceDocView}"/>
+
+${v.checkModelRequestedWithRedirect}
+${v.checkEntityRequested}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+    extjsf.co('window', '${extDom}').
+      setTitle('${z:jss(v.windowTitleInfo)}')
+
+  //]]>
+  </script>
+
+  <f:facet name = "extjs-props">
+    layout: { type: 'hbox', align: 'stretch' },
+    bodyCls: 'retrade-back-panel',
+  </f:facet>
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pts(0, 2, 0, 2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar">
+
+    <!-- [close window button] -->
+    <x:component coid = "${z:vid(v, 'close_window')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Закрыть',
+
+        handler : function()
+        {
+          extjsf.bind('window', '${extDom}').
+            co().close()
+        }
+
+      </f:facet>
+    </x:component>
+
+
+    <x:component coid = "${z:vid(v, '_toggle_group')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', border: false,
+        margin: extjsf.pts(1, 4, 1, 4),
+        bodyPadding: extjsf.pts(2, 4, 2, 4),
+        layout: { type: 'hbox', align: 'middle' },
+        cls: 'retrade-toolbar-colour-line-' +
+          "#{(v.hasGroups or (v.hasChanges and v.hasContractors and not v.oneContractor))?('one'):('none')}"
+      </f:facet>
+
+
+      <!-- [toggle change reason button] -->
+      <x:component coid = "${z:vid(v, 'toggle-reason')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Основание',
+          margin: extjsf.pts(0, 0, 0, 0), tooltipType: 'title',
+          tooltip: 'Отобразить комментарий к данному документу',
+          toggleGroup: "${z:vid(v, 'toggle-group')}"
+        </f:facet>
+      </x:component>
+
+
+      <!-- [toggle good groups button] -->
+      <x:component coid = "${z:vid(v, 'toggle-groups')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Ценовые группы', hidden: #{not v.hasGroups},
+          margin: extjsf.pts(0, 0, 0, 4), tooltipType: 'title',
+          tooltip: 'Отобразить проценты изменения цен по группам товаров',
+          toggleGroup: "${z:vid(v, 'toggle-group')}"
+        </f:facet>
+      </x:component>
+
+
+      <!-- [toggle contractors list button] -->
+      <x:component coid = "${z:vid(v, 'toggle-contractors')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Контрагенты',
+          hidden: #{not v.hasChanges or not v.hasContractors or v.oneContractor},
+          margin: extjsf.pts(0, 0, 0, 4), tooltipType: 'title',
+          tooltip: 'Отобразить изменения цен для затронутых контрагентов',
+          toggleGroup: "${z:vid(v, 'toggle-group')}"
+        </f:facet>
+      </x:component>
+
+    </x:component>
+
+
+    <!-- [back to contractors list]-->
+    <x:component coid = "${z:vid(v, 'back-to-contractors')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Назад', hidden: true,
+        tooltipType: 'title', tooltip: 'Вернуться к списку затронутых контрагентов'
+      </f:facet>
+    </x:component>
+
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 3, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [good groups drop list -->
+
+    <x:data-store storeId = "${z:vid(v, 'filterGroups')}" modelView = "${v}">
+      <f:facet name = "store-props">
+        model: 'retrade.model.KeyValue',
+        sorters: [{ property: 'key' }], data: []
+      </f:facet>
+    </x:data-store>
+
+    <x:component coid = "${z:vid(v, 'filter-group-layout')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', frame: false, border: false,
+        bodyCls: 'retrade-transparent-panel',
+        layout: { type: 'hbox', align: 'middle' },
+        hidden: #{not v.hasGroups}
+      </f:facet>
+
+      <x:drop-list coid = "${z:vid(v, 'filter-group')}"
+       storeId = "${z:vid(v, 'filterGroups')}" value = "">
+
+        <f:facet name = "drop-props">
+          flex: 2, matchFieldWidth: true, queryMode: 'local',
+          notRefreshOnExpand: true, forceSelection: true,
+          valueField: 'key', displayField: 'key'
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Группа', cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 4, 0, 6)
+        </f:facet>
+      </x:drop-list>
+    </x:component>
+
+    <!-- good groups drop list] -->
+
+
+    <!-- [price change document is not fixed -->
+
+    <c:if test = "${not v.documentFixed}">
+
+      <!-- [fix price change document] -->
+      <x:action-button coid = "${z:vid(v, 'fix-doc')}"
+        action = "#{v.doFixReprice}" modelView = "#{v}">
+
+        <f:facet name = "extjs-props">
+          margin: extjsf.pts(0, 4, 0, 8), text: 'Провести'
+        </f:facet>
+      </x:action-button>
+
+
+      <!-- [goto edit button] -->
+      <x:action-button coid = "${z:vid(v, 'edit_reprice')}"
+        action = "#{v.gotoEditReprice}" modelView = "#{v}">
+
+        <f:facet name = "extjs-props">
+          text: 'Редактировать'
+        </f:facet>
+
+        <f:facet name = "action-params">
+          method : 'GET', entity : '${v.model.primaryKey}'
+        </f:facet>
+      </x:action-button>
+    </c:if>
+
+    <!-- price change document is not fixed] -->
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [change reason (comment)] -->
+  <x:text-field coid = "${z:vid(v, 'reason')}"
+   value = "#{v.entity.ox.remarks}">
+
+    <f:facet name = "extjs-props">
+      xtype: 'textarea', flex: 1,
+      hidden: true, readOnly: true
+    </f:facet>
+  </x:text-field>
+
+
+  <!-- [the changes content -->
+
+  <x:component coid = "${z:vid(v, 'reprice-changes-layout')}">
+    <f:facet name = "extjs-props">
+      border: false, flex: 1,
+      layout: {type: 'vbox', align: 'stretch'},
+      bodyCls: 'retrade-transparent-panel',
+      hidden: #{not v.hasChanges},
+      margin: extjsf.pts(1, 0, 0, 0)
+    </f:facet>
+
+    <!-- [price change document info -->
+
+    <x:html coid = "${z:vid(v, 'reprice_info')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', frame: true, border: false,
+        bodyPadding: extjsf.pts(3, 2, 3, 2), margin: extjsf.pts(1),
+        bodyCls: 'retrade-text-panel retrade-info-reprice-doc'
+      </f:facet>
+
+      <table class = "retrade-info-table retrade-info-table-reprice-doc"
+        cellpadding = "0" cellspacing = "0" border = "0" >
+
+        <tr>
+          <td class = "retrade-info-title retrade-info-title-reprice-code">
+            <div>Код</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-value-reprice-code">
+            <div>#{v.entity.code}</div>
+          </td>
+
+          <c:if test = "${v.documentFixed}">
+
+            <td class = "retrade-info-title retrade-info-title-reprice-time">
+              <div>Время</div>
+            </td>
+            <td class = "retrade-info-value retrade-info-value-reprice-time">
+              <div>#{v.changeTime}</div>
+            </td>
+          </c:if>
+
+          <td class = "retrade-info-title retrade-info-title-reprice-price-list">
+            <div>Прайс-лист</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-value-reprice-price-list">
+            <div>#{v.priceList}</div>
+          </td>
+        </tr>
+      </table>
+    </x:html>
+
+    <!-- price change document info] -->
+
+
+    <!-- [price changes table -->
+
+    <x:data-store storeId = "${z:vid(v, 'priceChanges')}" modelView = "${v}">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.GoodPriceHistory',
+        sorters: [{ property: 'documentIndex', direction: 'ASC' }],
+        autoLoad: #{v.hasChanges}
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.PriceChange')
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(v, 'grid')}"
+      storeId = "${z:vid(v, 'priceChanges')}">
+
+      <f:facet name = "grid-props">
+        flex: 1, pager: false, sortableColumns: true,
+        columns: ZeT.defined('retrade.columns.PriceChange'),
+        selModel: extjsf.delayCreate('Ext.ux.selection.No')
+      </f:facet>
+    </x:data-grid>
+
+    <!-- price changes table] -->
+
+
+    <!-- [good groups table -->
+
+    <x:data-store storeId = "${z:vid(v, 'changeGroups')}" modelView = "${v}">
+      <f:facet name = "store-props">
+        model: 'retrade.model.KeyValue',
+        sorters: [{ property: 'key' }],
+        data: [#{v.groupsData}]
+      </f:facet>
+    </x:data-store>
+
+    <x:component coid = "${z:vid(v, 'groups')}">
+      <f:facet name = "extjs-props">
+        hidden: true, flex: 1, border: false,
+        layout: { type: 'vbox', align: 'middle' },
+        bodyCls: 'retrade-transparent-panel'
+      </f:facet>
+
+      <x:component coid = "${z:vid(v, '_groups_fill_up')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', flex: 1, frame: false, border: false,
+          bodyCls: 'retrade-transparent-panel'
+        </f:facet>
+      </x:component>
+
+      <x:data-grid coid = "${z:vid(v, 'groups-grid')}"
+        storeId = "${z:vid(v, 'changeGroups')}">
+
+        <f:facet name = "grid-props">
+          title: 'Проценты изменения цен по группам товаров',
+          selModel: extjsf.delayCreate('Ext.ux.selection.No'),
+          width: extjsf.ex(48), columns: [
+
+            { text: "Группа", dataIndex: 'key', flex: 1 },
+
+            { text: "Изм. %", dataIndex: 'value', width: extjsf.ex(12),
+              align: 'right', renderer: ZeT.fbindu(retrade.round2str, 0, 2)
+            }
+          ]
+        </f:facet>
+      </x:data-grid>
+
+      <x:component coid = "${z:vid(v, '_groups_fill_down')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', flex: 1, frame: false, border: false,
+          bodyCls: 'retrade-transparent-panel'
+        </f:facet>
+      </x:component>
+    </x:component>
+
+    <!-- good groups table] -->
+
+  </x:component>
+
+  <!-- the changes content] -->
+
+
+  <!-- [the contractors content -->
+
+  <x:component coid = "${z:vid(v, 'reprice-contractors-layout')}">
+    <f:facet name = "extjs-props">
+      border: false, layout: 'fit', flex: 1,
+      bodyCls: 'retrade-transparent-panel',
+      margin: extjsf.pts(1, 0, 0, 0),
+      hidden: #{v.hasChanges or v.oneContractor}
+    </f:facet>
+
+
+    <x:data-store storeId = "${z:vid(v, 'contractors')}"
+     modelView = "${v}" modelRequest = "contractors">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.ContractorView',
+        autoLoad: #{not v.hasChanges and not v.oneContractor}
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.ContractorView')
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(v, 'cgrid')}"
+     storeId = "${z:vid(v, 'contractors')}">
+
+      <f:facet name = "grid-props">
+        pager: false, sortableColumns: false,
+        columns: ZeT.defined('retrade.columns.ContractorView'),
+        selModel: extjsf.delayCreate('Ext.ux.selection.No')
+      </f:facet>
+    </x:data-grid>
+  </x:component>
+
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  Ext.onReady(ZeT.timeouted(100, function()
+  {
+    //~: current toggle group
+    var toggledButtons = {}
+    function toggleGroup(btn)
+    {
+      if(!btn) return (ZeT.keys(toggledButtons).length == 0)
+
+      if(btn.pressed)
+        toggledButtons[btn.id] = true
+      else delete
+        toggledButtons[btn.id]
+    }
+
+    //~: toggle change reason
+    extjsf.bind("${z:vid(v, 'toggle-reason')}", '${extDom}').on('toggle', function(btn)
+    {
+      toggleGroup(btn)
+
+      extjsf.bind("${z:vid(v, 'reason')}", '${extDom}').
+        visible(btn.pressed)
+
+      extjsf.bind("${z:vid(v, 'reprice-changes-layout')}", '${extDom}').
+        visible("#{v.hasChanges}" == 'true' && toggleGroup())
+
+      extjsf.bind("${z:vid(v, 'filter-group-layout')}", '${extDom}').
+        visible("#{v.hasGroups}" == 'true' && toggleGroup())
+    })
+
+    //~: toggle contractors list mode
+    extjsf.bind("${z:vid(v, 'toggle-contractors')}", '${extDom}').on('toggle', function(btn)
+    {
+      toggleGroup(btn)
+
+      extjsf.bind("${z:vid(v, 'reprice-changes-layout')}", '${extDom}').
+        visible("#{v.hasChanges}" == 'true' && toggleGroup())
+
+      extjsf.bind("${z:vid(v, 'filter-group-layout')}", '${extDom}').
+        visible("#{v.hasGroups}" == 'true' && toggleGroup())
+
+      extjsf.bind("${z:vid(v, 'reprice-contractors-layout')}", '${extDom}').
+        visible(btn.pressed && ("#{v.oneContractor}" == 'false'))
+
+      extjsf.bind("${z:vid(v, 'reprice-contractor-changes-layout')}", '${extDom}').
+        visible(btn.pressed && ("#{v.oneContractor}" == 'true'))
+
+      extjsf.co("${z:vid(v, 'back-to-contractors')}", '${extDom}').hide()
+
+      //?: {load the contractors}
+      if(btn.pressed && ("#{v.oneContractor}" == 'false'))
+      {
+        var s = extjsf.co("${z:vid(v, 'contractors')}", '${extDom}');
+        if(!s.getCount() && !s.isLoading()) s.load()
+      }
+
+      //?: {load the changes for single contractor}
+      if(btn.pressed && ("#{v.oneContractor}" == 'true'))
+      {
+        var s  = extjsf.co("${z:vid(v, 'contractorChanges')}", '${extDom}');
+        var pk = "#{v.firstContractor.primaryKey}";
+
+        if(!s.getCount() && !s.isLoading())
+        {
+          s.getProxy().setExtraParam('contractor', pk)
+          s.load()
+        }
+      }
+    })
+
+    //~: toggle change groups
+    extjsf.bind("${z:vid(v, 'toggle-groups')}", '${extDom}').on('toggle', function(btn)
+    {
+      toggleGroup(btn)
+
+      extjsf.bind("${z:vid(v, 'reprice-changes-layout')}", '${extDom}').
+        visible(btn.pressed || toggleGroup())
+
+      extjsf.bind("${z:vid(v, 'groups')}", '${extDom}').visible(btn.pressed)
+      extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').visible(!btn.pressed)
+      extjsf.bind("${z:vid(v, 'filter-group-layout')}", '${extDom}').visible(!btn.pressed)
+    })
+  }))
+
+
+  //~: click on the contractor in the table
+  extjsf.bind("${z:vid(v, 'cgrid')}", '${extDom}').on('itemclick', function(cgrid, rec)
+  {
+    extjsf.co("${z:vid(v, 'reprice-contractors-layout')}", '${extDom}').hide()
+    extjsf.co("${z:vid(v, 'reprice-contractor-changes-layout')}", '${extDom}').show()
+    extjsf.co("${z:vid(v, 'back-to-contractors')}", '${extDom}').show()
+
+    //~: assign the info
+    var n = Ext.get("${z:vid(v, 'contractor-info')}");
+    n.down('.retrade-info-value.retrade-info-value-reprice-contractor-code div').update(rec.get('code'))
+    n.down('.retrade-info-value.retrade-info-value-reprice-contractor-name div').update(rec.get('name'))
+
+    //~: load the changes data
+    var s = extjsf.co("${z:vid(v, 'contractorChanges')}", '${extDom}')
+    s.getProxy().setExtraParam('contractor', rec.getId())
+    s.load()
+  })
+
+  //~: click to go back to the contractors list
+  extjsf.handler("${z:vid(v, 'back-to-contractors')}", '${extDom}', function()
+  {
+    extjsf.co("${z:vid(v, 'reprice-contractor-changes-layout')}", '${extDom}').hide()
+    extjsf.co("${z:vid(v, 'back-to-contractors')}", '${extDom}').hide()
+    extjsf.co("${z:vid(v, 'reprice-contractors-layout')}", '${extDom}').show()
+  })
+
+  //~: build filter groups on changes load
+  extjsf.bind("${z:vid(v, 'priceChanges')}", '${extDom}').on('load', function(pcs)
+  {
+    //~: select all the groups
+    var fgs = extjsf.co("${z:vid(v, 'filterGroups')}", '${extDom}')
+    var grs = {}; pcs.each(function(m)
+    {
+      var g = m.get('goodGroup'); if(!ZeTS.ises(g)) grs[g] = true
+    })
+
+    //?: {has nothing}
+    grs = ZeT.keys(grs); if(!grs.length) return
+    grs.push('ø') //<-- select all key
+
+    //~: add each key
+    ZeT.each(grs, function(g) { fgs.add({ key: g }) })
+
+    //~: select the default (all)
+    extjsf.bind("${z:vid(v, 'filter-group')}", '${extDom}').value('ø')
+  })
+
+  //~: filter group value changed (apply grid filter)
+  extjsf.bind("${z:vid(v, 'filter-group')}", '${extDom}').on('change', function(g, v)
+  {
+    //~: remove current filter
+    var s = extjsf.co("${z:vid(v, 'priceChanges')}", '${extDom}')
+    s.clearFilter()
+
+    //?: {has no value}
+    if(ZeTS.ises(v) || (v == 'ø')) return
+
+    //~: apply filter by the group
+    s.filter({ property: 'goodGroup', value: v })
+  })
+
+  //]]>
+  </script>
+
+  <!-- the contractors content] -->
+
+
+  <!-- [contractor changes content -->
+
+  <x:component coid = "${z:vid(v, 'reprice-contractor-changes-layout')}">
+    <f:facet name = "extjs-props">
+      border: false, layout: 'border', flex: 1,
+      bodyCls: 'retrade-transparent-panel',
+      margin: extjsf.pts(1, 0, 0, 0),
+      hidden: #{v.hasChanges or not v.oneContractor}
+    </f:facet>
+
+
+    <!-- [contractor info -->
+
+    <x:html coid = "${z:vid(v, '_contractor_info')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', region: 'north', frame: true,
+        border: false, bodyPadding: extjsf.pts(3, 2, 3, 2),
+        margin: extjsf.pts(1, 1, 1, 1),
+        bodyCls: 'retrade-text-panel retrade-info-reprice-contractor-changes'
+      </f:facet>
+
+      <table id = "${z:vid(v, 'contractor-info')}"
+        cellpadding = "0" cellspacing = "0" border = "0"
+        class = "retrade-info-table retrade-info-table-reprice-doc-contractor">
+
+        <tr>
+          <td class = "retrade-info-title retrade-info-title-reprice-contractor-code">
+            <div>Код контрагента</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-value-reprice-contractor-code">
+            <div>#{v.firstContractor.code}</div>
+          </td>
+
+          <td class = "retrade-info-title retrade-info-title-reprice-contractor-name">
+            <div>Имя</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-value-reprice-contractor-name">
+            <div>#{v.firstContractor.name}</div>
+          </td>
+        </tr>
+      </table>
+    </x:html>
+
+    <!-- contractor info] -->
+
+
+    <x:data-store storeId = "${z:vid(v, 'contractorChanges')}"
+      modelView = "${v}" modelRequest = "contractor-changes">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.GoodPriceHistory',
+        sorters: [{ property: 'goodName', direction: 'ASC' }],
+        autoLoad: false
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.PriceChange')
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(v, 'cpgrid')}"
+     storeId = "${z:vid(v, 'contractorChanges')}">
+
+      <f:facet name = "grid-props">
+        region: 'center', pager: false, sortableColumns: true,
+        columns: ZeT.defined('retrade.columns.PriceChangeWithList'),
+        selModel: extjsf.delayCreate('Ext.ux.selection.No')
+      </f:facet>
+    </x:data-grid>
+  </x:component>
+
+  <!-- contractor changes content] -->
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+</ui:component>

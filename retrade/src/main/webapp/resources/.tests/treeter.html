@@ -1,0 +1,64 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zet.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetdom.js"></script>
+
+</head>
+
+<body>
+
+<script type = "text/javascript">
+//<![CDATA[
+
+window.onload = function()
+{
+  //<: search by id
+
+  var a = ZeTD.n('a'); //<-- normal DOM search
+  ZeT.assert(ZeTD.isn(a) && (a.id === 'a'))
+
+  var c = ZeTD.n('c', a);
+  ZeT.assert(ZeTD.isn(c) && (c.id === 'c'))
+
+  var e = ZeTD.n('e', a);
+  ZeT.assert(ZeTD.isn(e) && (e.id === 'e'))
+
+  //>: search by id
+
+  //~: search by the class
+  var o = { class: 'span-in-c' }
+  ZeT.Layout.Treeters.findNodeByClass.proc(a, o)
+  ZeT.assert(o.result && (o.result.parentNode.id == 'c'))
+}
+
+//]]>
+</script>
+
+
+<div id = "a">
+
+  <span id = "b">span b</span>
+
+  div a
+
+  <!-- this is the comment -->
+
+  <div id = "c"> div c
+    <span class = "span-in-c">
+      <span id = "e"> ... </span>
+    </span>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,210 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesAccountView}"/>
+
+${v.checkModelRequestedWithRedirect}
+${v.checkEntityRequested}
+${v.forceSecureModelEntity('view')}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+
+    extjsf.bind('window', '${extDom}').
+      co().setTitle('${z:jss(v.windowTitleInfo)}')
+
+  </script>
+
+  <f:facet name = "extjs-props">
+    layout: 'border', bodyCls: 'retrade-back-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar">
+
+    <!-- [close window button] -->
+
+    <x:component coid = "${z:vid(v, 'close_window')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Закрыть',
+
+        handler : function()
+        {
+          extjsf.bind('window', '${extDom}').
+            co().close()
+        }
+
+      </f:facet>
+    </x:component>
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [account status bar -->
+
+  <f:facet name = "status-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'vbox', align: 'stretch'},
+    bodyCls: 'retrade-status-panel'
+  </f:facet>
+
+  <f:facet name = "status">
+
+    <!-- [account balance summary] -->
+
+    <x:html coid = "${z:vid(v, 'account_status')}">
+      <f:facet name = "extjs-props">
+        frame: false, border: false
+      </f:facet>
+
+      <table class = "retrade-info-table retrade-info-table-short retrade-account-info-table-balance"
+        cellpadding = "0" cellspacing = "0" border = "0" align = "right"
+        id = "${z:vid(v, 'account-status-balance-table')}">
+
+        <tr>
+          <td class = "retrade-info-title retrade-info-title-account-balance-income">
+            <div>Приход</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-value-account-balance-income">
+            <div class = 'retrade-format-to-currency'>#{z:currency(v.income)}</div>
+          </td>
+
+          <td class = "retrade-info-title retrade-info-title-account-balance-expense">
+            <div>Расход</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-value-account-balance-expense">
+            <div class = 'retrade-format-to-currency'>#{z:currency(v.expense)}</div>
+          </td>
+
+          <td class = "retrade-info-title retrade-info-title-account-balance-delta">
+            <div>Баланс</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-value-account-balance-delta">
+            <div class = 'retrade-format-to-currency'>#{z:currency(v.balance)}</div>
+          </td>
+        </tr>
+      </table>
+    </x:html>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+  retrade.TreetFCurrency.proc("${z:vid(v, 'account-status-balance-table')}")
+
+    //]]>
+    </script>
+
+  </f:facet>
+
+  <!-- account status bar] -->
+
+
+  <!-- [account fields view -->
+
+  <x:html coid = "${z:vid(v, 'account_info')}">
+    <f:facet name = "extjs-props">
+
+      xtype: 'panel', frame: true, region: 'north',
+      margin: extjsf.pts(1, 1, 0, 1)
+
+    </f:facet>
+
+    <table class = "retrade-info-table retrade-info-table-short retrade-info-table-account-code"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-account-code">
+          <div>Код</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-account-code">
+          <div>#{v.entity.code}</div>
+        </td>
+
+        <td class = "retrade-info-title retrade-info-title-account-name">
+          <div>Имя</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-account-name">
+          <div>#{v.entity.name}</div>
+        </td>
+      </tr>
+    </table>
+
+    <ui:fragment rendered = "#{not empty v.entity.contractor}">
+
+    <table class = "retrade-info-table retrade-info-table-short retrade-info-table-account-contractor"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-account-firm">
+          <div>Контрагент</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-small-text retrade-info-value-account-firm">
+          <div>№#{v.entity.contractor.code}, #{v.entity.contractor.name}</div>
+        </td>
+      </tr>
+    </table>
+    </ui:fragment>
+
+  </x:html>
+
+  <!-- account fields view] -->
+
+
+  <!-- [payment ways table -->
+
+  <x:data-store storeId = "${z:vid(v, 'payWays')}" modelView = "${v}">
+    <f:facet name = "store-props">
+      model: 'retrade.model.PayWayView'
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.PayWayView')
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'grid')}"
+    storeId = "${z:vid(v, 'payWays')}">
+
+    <f:facet name = "grid-props">
+      region: 'center', title: 'Платёжные счета',
+      margin: extjsf.pts(2, 1, 1, 1),
+      columns: ZeT.defined('retrade.columns.PayWayView'),
+      sortableColumns: false
+    </f:facet>
+  </x:data-grid>
+
+  <!-- payment ways table] -->
+
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "true"/>
+  </ui:define>
+</ui:decorate>
+</ui:component>

@@ -1,0 +1,66 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:z = 'uri:tverts.com'>
+
+    <ui:fragment rendered = "#{not empty v.infoGood and empty v.infoGood.goodCalc}">
+      <script>
+      //<![CDATA[
+
+      extjsf.bind("${z:vid(v, 'goods-info-window')}", '${extDom}').
+        retardeInitInfoGood({ irg: true })
+
+      //]]>
+      </script>
+    </ui:fragment>
+
+    <ui:fragment rendered = "#{not empty v.infoGood and not empty v.infoGood.goodCalc and not empty v.infoGood.goodCalc.superGood}">
+      <script>
+      //<![CDATA[
+
+      extjsf.bind("${z:vid(v, 'goods-info-window')}", '${extDom}').
+        retardeInitInfoGood({ idg: true,
+          isr: ('true' == '#{v.infoGood.goodCalc.semiReady}'),
+          sgc: '#{z:jss(v.infoGood.goodCalc.superGood.code)}',
+          sgn: '#{z:jss(v.infoGood.goodCalc.superGood.name)}',
+          sgv: '#{z:jss(v.infoGood.goodCalc.ox.subVolume)}',
+          sgm: '#{z:jss(v.infoGood.goodCalc.superGood.measure.code)}'
+        })
+
+      //]]>
+      </script>
+    </ui:fragment>
+
+    <ui:fragment rendered = "#{not empty v.infoGood and not empty v.infoGood.goodCalc and empty v.infoGood.goodCalc.superGood}">
+
+      <script>
+        extjsf.bind("${z:vid(v, 'goods-info-window')}", '${extDom}').retardeInitInfoGood.ITEMS = [];
+      </script>
+
+      <ui:repeat var = "p" value = "#{v.infoGood.goodCalc.parts}">
+        <script>
+        //<![CDATA[
+
+        extjsf.bind("${z:vid(v, 'goods-info-window')}", '${extDom}').retardeInitInfoGood.ITEMS.push({
+          volume: '#{z:trim(p.volume)}', code: '#{z:jss(p.goodUnit.code)}',
+          name: '#{z:jss(p.goodUnit.name)}', mucode: '#{z:jss(p.goodUnit.measure.code)}'
+        })
+
+        //]]>
+      </script>
+      </ui:repeat>
+
+      <script>
+      //<![CDATA[
+
+      extjsf.bind("${z:vid(v, 'goods-info-window')}", '${extDom}').
+        retardeInitInfoGood({ ipr: true,
+          isr: ('true' == '#{v.infoGood.goodCalc.semiReady}'),
+          pts: extjsf.bind("${z:vid(v, 'goods-info-window')}", '${extDom}').retardeInitInfoGood.ITEMS
+        })
+
+      //]]>
+      </script>
+    </ui:fragment>
+
+</ui:component>

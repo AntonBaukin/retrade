@@ -1,0 +1,48 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Services List of ReTrade Module                =
+    +================================================-->
+
+  <bean name  = 'retradeServicesList'
+        class = 'com.tverts.system.services.ServicesList'>
+    <property name = 'references'>
+      <list>
+
+
+      </list>
+    </property>
+  </bean>
+</beans>
+
+
+<!--
+        <bean class = 'com.tverts.system.services.TestService'>
+          <property name = 'UID' value = 'a'/>
+          <property name = 'messages'>
+            <value>
+
+              go! @ b,
+              repeating... @ c
+
+            </value>
+          </property>
+        </bean>
+
+        <bean class = 'com.tverts.system.services.TestService'>
+          <property name = 'UID'     value = 'c'/>
+          <property name = 'depends' value = 'a, b'/>
+
+          <property name = 'messages'
+            value = 'notified!'/>
+        </bean>
+
+        <bean class = 'com.tverts.system.services.TestService'>
+          <property name = 'UID'     value = 'b'/>
+          <property name = 'depends' value = 'a'/>
+        </bean>
+-->

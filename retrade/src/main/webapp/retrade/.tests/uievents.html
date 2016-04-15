@@ -1,0 +1,123 @@
+﻿<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../jquery.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zet.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetdom.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetbor.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../desktop.js"></script>
+
+
+  <link type = 'text/css' rel = 'stylesheet'
+     href = "../clocks.css"/>
+
+  <link type = 'text/css' rel = 'stylesheet'
+     href = "../retrade.css"/>
+
+
+
+  <style type = "text/css">
+
+html
+{
+  height: 100%; background: linear-gradient(135deg, #fcf6e3 0%, #c1c1b3 50%, #e2f5f8 51%, #bdcdfb 100%);
+}
+
+#place
+{
+  position: absolute; left: 70%; top: 10px;
+  margin-left: -71px;
+  width: 142px; height: 35px;
+}
+
+#clocks-area
+{
+  position: absolute;
+  width: 90px; height: 35px;
+}
+
+#num-area
+{
+  position: absolute; right: 0;
+  width: 51px; height: 35px;
+  cursor: pointer;
+}
+
+#num-area td.retrade-eventsnum-number
+{
+  text-align: center; vertical-align: middle;
+  font-family: 'Tahoma', 'Arial', sans-serif;
+  font-size: 25px; color: black;
+}
+
+</style>
+
+</head>
+<body>
+
+<div id = "place">
+  <div id = "clocks-area"></div>
+  <div id = "num-area" class="retrade-eventsnum-gray unselectable-text"></div>
+</div>
+
+<script type = "text/javascript">
+//<![CDATA[
+
+new ReTrade.Clocks({ parent: 'clocks-area', node: 'clocks', start: true })
+
+var ctl = new ReTrade.EventsControl({
+
+  number: { parent: 'num-area', node: 'num', defcolor: 'N' },
+
+  menu: {
+    node: 'menu-area', parent: document.body, length: 5
+  },
+
+  proxy: ZeT.hiddenInstance('ReTrade.EventsDataProxy', {
+
+    request         : function(task, query)
+    {
+      ZeT.log('Do ', task, ': ', query)
+    }
+  })
+})
+
+ctl.toggle(true).set({
+
+ numbers: { N: 999, G: 66, O: 1, R: 1 }, newer: null, older: 58, txn: 100, firstid: 81, items: [
+
+ { id: 105, time: '12:58', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную перемещения №102/ПЕ.', script: "alert('Scripting action...')"},
+ { id: 98, time: '12:35', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную продажи №101/ПР.' },
+ { id: 95, time: '11:20', date: 'сегодня 04 Фев', color: 'G', text: 'Накладная перемещения №100/ПЕ успешно проведена!' },
+ { id: 91, time: '10:15', date: 'сегодня 04 Фев', color: 'O', text: 'Система запущена!', script: "ZeT.log('script run 2+4 = ', 2+4)" },
+ { id: 87, time: '22:13', date: 'вчера 03 Фев', color: 'R', text: 'Производится остановка системы!' },
+
+ { id: 81, time: '10:15', date: 'вчера 03 Фев', color: 'G', text: 'Добавлен пользователь [ivanov] Иванов Иван Иванович.' },
+ { id: 71, time: '12:34', date: '02 Фев', color: 'G', text: 'Добавлен пользователь [navalniy] Навальный Алексей Александрович. Голосуем за Навального! Кому он не нравится: спи, красавица! Крепким вечным сном...' },
+ { id: 70, time: '12:15', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №98/ПЕ.' },
+ { id: 68, time: '12:10', date: '02 Фев', color: 'G', text: 'Пользователь [System] создал накладную продажи №95/ПР.' },
+ { id: 67, time: '12:07', date: '02 Фев', color: 'O', text: 'Пользователь [System] удалил накладную закупки №93/ЗК.' },
+
+ { id: 65, time: '10:57', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №90/ПЕ.' },
+ { id: 60, time: '10:50', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №87/ПЕ.' }
+]})
+
+//]]>
+</script>
+
+</body>
+</html>

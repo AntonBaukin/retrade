@@ -1,0 +1,382 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+  xmlns:z  = 'uri:tverts.com'>
+
+    <!-- [good info window -->
+
+    <x:component coid = "${z:vid(v, 'goods-info-window')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'window', closeAction: 'hide', layout: 'fit',
+        resizable: false, header: false, draggable: false,
+        border: false, bodyCls: 'retrade-transparent-panel',
+        bodyPadding: extjsf.pt(2)
+
+      </f:facet>
+
+      <x:html coid = "${z:vid(v, 'goods-info-html')}">
+
+        <table id = "${z:vid(v, 'goods-info')}"
+          cellpadding = "0" cellspacing = "0" border = "0"
+          class = "retrade-client-good-layout">
+
+          <tr><td><table cellpadding = "0" cellspacing = "0" border = "0"
+            class = "retrade-info-table retrade-client-good-main">
+            <tr>
+              <td class = "retrade-info-title retrade-client-good-info-code">
+                <div>Код товара</div>
+              </td>
+              <td class = "retrade-info-value retrade-client-good-info-code">
+                <div/>
+              </td>
+
+              <td class = "retrade-client-good-info-code-price-sep"><div/></td>
+
+              <td class = "retrade-info-title retrade-client-good-info-price">
+                <div>Цена</div>
+              </td>
+              <td class = "retrade-info-value retrade-client-good-info-price">
+                <div/>
+              </td>
+              <td class = "retrade-info-value retrade-client-good-info-price-mucode">
+                <div/>
+              </td>
+            </tr>
+            <tr>
+              <td colspan = "6" class = "retrade-info-value retrade-client-good-info-name">
+                <div/>
+              </td>
+            </tr>
+          </table>
+
+          <table cellpadding = "0" cellspacing = "0" border = "0"
+                 class = "retrade-info-table retrade-client-good-measure">
+            <tr>
+              <td class = "retrade-info-title retrade-client-good-info-measure">
+                <div>Ед. изм.</div>
+              </td>
+              <td class = "retrade-info-value retrade-client-good-info-mucode">
+                <div/>
+              </td>
+              <td class = "retrade-info-value retrade-client-good-info-muname">
+                <div/>
+              </td>
+            </tr>
+          </table>
+        </td></tr>
+
+        <tr class = "retrade-client-good-loaded-layout"><td>
+
+          <!-- is now loading message -->
+          <span class = "retrade-client-good-loading" style="display:none">
+            Загрузка...
+          </span>
+
+          <!-- loadded content layout-->
+          <table cellpadding = "0" cellspacing = "0" border = "0"
+            class = "retrade-client-good-loaded-content">
+
+            <!-- row for a regular good -->
+            <tr class = "retrade-client-good-is-regular" style="display:none">
+              <td class = "retrade-info-value-small-text">
+               <div>Товар или сырьё</div>
+              </td>
+            </tr>
+
+            <!-- derived good -->
+            <tr class = "retrade-client-good-is-derived" style="display:none"><td>
+
+              <table cellpadding = "0" cellspacing = "0" border = "0">
+                <tr>
+                  <td class = "retrade-info-title retrade-client-good-info-super-code">
+                    <div>Базовый товар</div>
+                  </td>
+                  <td class = "retrade-info-value retrade-client-good-info-super-code">
+                    <div/>
+                  </td>
+
+                  <td class = "retrade-client-good-info-super-code-volume-sep"><div/></td>
+
+                  <td class = "retrade-info-title retrade-client-good-info-super-volume">
+                    <div>Объём</div>
+                  </td>
+                  <td class = "retrade-info-value retrade-client-good-info-super-volume">
+                    <div/>
+                  </td>
+                  <td class = "retrade-info-value retrade-client-good-info-super-volume-mucode">
+                    <div/>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan = "6" class = "retrade-info-value retrade-client-good-info-super-name">
+                    <div/>
+                  </td>
+                </tr>
+              </table>
+
+              <table cellpadding = "0" cellspacing = "0" border = "0">
+                <tr>
+                  <td class = "retrade-info-value-small-text retrade-client-good-is-derived-semi-ready">
+                    <div>Полуфабрикат</div>
+                  </td>
+
+                  <td style="width:100%"><div/></td>
+
+                  <td class = "retrade-info-value-small-text">
+                    <div>Производный продукт</div>
+                  </td>
+                </tr>
+              </table>
+            </td></tr>
+
+            <!-- regular product -->
+            <tr class = "retrade-client-good-is-product" style="display:none"><td>
+
+              <div class = "retrade-info-title-label retrade-client-good-product-top">
+                Ингредиенты (состав):
+              </div>
+
+              <div class = "retrade-client-good-product-table">
+              <table cellpadding = "0" cellspacing = "0" border = "0">
+                <tr class = "retrade-client-good-product-part-template" style = "display:none">
+                  <td class = "retrade-info-value retrade-client-good-product-part-volume">
+                    <div/>
+                  </td>
+                  <td class = "retrade-info-value retrade-client-good-product-part-mucode">
+                    <div/>
+                  </td>
+                  <td class = "retrade-info-value retrade-client-good-product-part-code">
+                    <div/>
+                  </td>
+                  <td class = "retrade-info-value retrade-client-good-product-part-name">
+                    <div/>
+                  </td>
+                </tr>
+              </table>
+              </div>
+
+              <table class = "retrade-client-good-product-bottom"
+                cellpadding = "0" cellspacing = "0" border = "0">
+                <tr>
+                  <td class = "retrade-info-value-small-text retrade-client-good-is-product-semi-ready">
+                    <div style="text-align: right;">Полуфабрикат</div>
+                  </td>
+
+                  <td style="width:100%"><div/></td>
+
+                  <td class = "retrade-info-value-small-text">
+                    <div>Продукт</div>
+                  </td>
+                </tr>
+              </table>
+            </td></tr>
+          </table>
+
+        </td></tr>
+        </table>
+      </x:html>
+    </x:component>
+
+    <x:action-call coid = "${z:vid(v, 'goods-info-script')}"
+      action = "#{v.doViewGoodInfo}" modelView = "${v}"/>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+  extjsf.bind("${z:vid(v, gridId)}", '${extDom}').retradeGridCellClick =
+    function(grid, td, cellIndex, record, tr, rowIndex, e)
+  {
+    //?: {this is action column}
+    var column = extjsf.u.gridColumns(grid, true)[cellIndex];
+    if('actioncolumn' === column.xtype) return
+
+    //?: {react on repeated selection}
+    if('#{repeatedClick}' != 'false')
+    {
+      var sel = grid.getSelectionModel().getLastSelected();
+      if(sel != record) return
+    }
+
+    //~: calculate the box
+    var box = ReTrade.desktop.calcWindowBox({
+      event: e, widthpt: 260, heightpt: 180, '+xpt': -130, '-y': 90
+    })
+
+    //~: the info window
+    var wnd = extjsf.co("${z:vid(v, 'goods-info-window')}", '${extDom}');
+
+    //~: request the info
+    extjsf.handler("${z:vid(v, 'goods-info-script')}", '${extDom}')({
+      params: { goodUnit: record.getId() }
+    })
+
+    //~: close listener
+    if(!wnd.extjsfBind.retradeWindowShow)
+      wnd.on('show', wnd.extjsfBind.retradeWindowShow = function()
+      {
+        ZeT.timeout(100, function()
+        {
+          //~: listen on body
+          var clo; Ext.getBody().on('click', clo = function(e)
+          {
+            //?: {is click in the window}
+            if(!wnd.getRegion().isOutOfBound(Ext.util.Point.fromEvent(e))) return
+
+            //!: destroy the listener
+            Ext.getBody().removeListener('click', clo)
+
+            wnd.close() //<-- hide the window
+          })
+        })
+      })
+
+    //~: init the fields
+    var init = function()
+    {
+      var n = Ext.get("${z:vid(v, 'goods-info')}");
+
+      //=: good code
+      n.down('td.retrade-info-value.retrade-client-good-info-code div').
+        update(record.get('goodCode'))
+
+      //=: good price
+      n.down('td.retrade-info-value.retrade-client-good-info-price div').
+        update(record.get('price'))
+
+      //=: measure unit code (at the price)
+      n.down('td.retrade-info-value.retrade-client-good-info-price-mucode div').
+        update(record.get('measureCode'))
+
+      //=: good name
+      n.down('td.retrade-info-value.retrade-client-good-info-name div').
+        update(record.get('goodName'))
+
+      //=: measure unit code
+      n.down('td.retrade-info-value.retrade-client-good-info-mucode div').
+        update(record.get('measureCode'))
+
+      //=: measure unit name
+      n.down('td.retrade-info-value.retrade-client-good-info-muname div').
+        update(record.get('measureName'))
+
+      //~: hide the content pane & show loading message
+      var ltr = n.down('tr.retrade-client-good-loaded-layout');
+      ltr.addCls('retrade-client-good-loaded-layout-loading')
+      ltr.down('table.retrade-client-good-loaded-content').setDisplayed(false)
+      ltr.down('span.retrade-client-good-loading').setDisplayed(true)
+    }
+
+    //~: show window in the box
+    ZeT.timeout(100, function()
+    {
+      init()
+      wnd.show().setBox(box)
+    })
+  }
+
+  extjsf.bind("${z:vid(v, gridId)}", '${extDom}').on('add', function(grid)
+  {
+    grid.getView().on('beforecellmousedown', grid.extjsfBind.retradeGridCellClick)
+  })
+
+  /**
+   *  x.irg  {this is a regular good}
+   *  x.isr  {this is a semi-ready product}
+   *  x.idg  {this is a derived good}
+   *  x.ipr  {this is a regular product}
+   */
+  extjsf.bind("${z:vid(v, 'goods-info-window')}", '${extDom}').retardeInitInfoGood = function(x)
+  {
+    var wnd = extjsf.co("${z:vid(v, 'goods-info-window')}", '${extDom}');
+    var inf = Ext.get("${z:vid(v, 'goods-info')}");
+    var ltr = inf.down('tr.retrade-client-good-loaded-layout');
+    var ltd = ltr.down('td');
+    var cnt = ltd.down('table.retrade-client-good-loaded-content');
+
+    //~: hide loading message & show the content pane
+    ltr.removeCls('retrade-client-good-loaded-layout-loading')
+    inf.down('span.retrade-client-good-loading').setDisplayed(false)
+    cnt.setDisplayed(true)
+
+    //~: hide-display the content areas
+    cnt.down('tr.retrade-client-good-is-regular').setDisplayed(!!x.irg)
+    cnt.down('tr.retrade-client-good-is-derived').setDisplayed(!!x.idg)
+    cnt.down('td.retrade-client-good-is-derived-semi-ready').setDisplayed(!!x.isr)
+    cnt.down('tr.retrade-client-good-is-product').setDisplayed(!!x.ipr)
+    cnt.down('td.retrade-client-good-is-product-semi-ready').setDisplayed(!!x.isr)
+
+    //?: {is a derived good}
+    if(x.idg)
+    {
+      cnt.down('td.retrade-info-value.retrade-client-good-info-super-code div').update(x.sgc)
+      cnt.down('td.retrade-info-value.retrade-client-good-info-super-volume div').update(x.sgv)
+      cnt.down('td.retrade-info-value.retrade-client-good-info-super-volume-mucode div').update(x.sgm)
+      cnt.down('td.retrade-info-value.retrade-client-good-info-super-name div').update(x.sgn)
+    }
+
+    //?: {is a product}
+    if(x.ipr)
+    {
+      var tmp = cnt.down('tr.retrade-client-good-product-part-template', true);
+      //var tbl = tmp.parent();
+
+      //~: clear the table
+      cnt.select('tr.retrade-client-good-product-part-item').remove()
+
+      //c: for each part
+      for(var i = 0;(i < x.pts.length);i++)
+      {
+        //~: the part
+        var p = x.pts[i];
+
+        //~: clone the template & add it
+        var n = Ext.get(tmp.cloneNode(true));
+
+        //~: assign item class
+        n.removeCls('retrade-client-good-product-part-template')
+        n.addCls('retrade-client-good-product-part-item')
+
+        //~: assign the content
+        n.down('td.retrade-client-good-product-part-volume div').update(p.volume)
+        n.down('td.retrade-client-good-product-part-mucode div').update(p.mucode)
+        n.down('td.retrade-client-good-product-part-mucode div').update(p.mucode)
+        n.down('td.retrade-client-good-product-part-code div').update(p.code)
+        n.down('td.retrade-client-good-product-part-name div').update(p.name)
+
+        //~: display the item
+        n.setDisplayed(true)
+        tmp.parentNode.appendChild(n.dom)
+      }
+
+      //~: release the table height
+      ltd.down('div.retrade-client-good-product-table').setStyle({height: 'auto'})
+    }
+
+    //~: accommodate the window height
+    var dy = wnd.body.getHeight() - (cnt.getTop() - wnd.body.getTop()) - cnt.getHeight();
+    if(dy > 0) wnd.setHeight(wnd.getHeight() - dy)
+
+    //?: {is a product with long table}
+    if(x.ipr & (dy < 0))
+    {
+      var tbl = ltd.down('div.retrade-client-good-product-table');
+      var top = ltd.down('div.retrade-client-good-product-top');
+      var bot = ltd.down('table.retrade-client-good-product-bottom');
+
+      var thh = wnd.body.getHeight() - (cnt.getTop() - wnd.body.getTop()) -
+        top.getHeight() - bot.getHeight();
+
+      if(thh > 0) tbl.setHeight(thh)
+    }
+  }
+
+    //]]>
+    </script>
+
+    <!-- good info window] -->
+
+</ui:component>

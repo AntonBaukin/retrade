@@ -1,0 +1,236 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "e" scope = "request" value = "${facesInvoiceEditFirm}"/>
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+  <ui:define name = 'page_body'>
+
+  <x:winmain coid = "${z:vid(e, 'root_panel')}">
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+      extjsf.co('window', '${extDom}').
+        setTitle('${z:jss(e.windowTitleEditFirm)}')
+
+    //]]>
+    </script>
+
+
+    <f:facet name = "extjs-props">
+      layout: { type: 'vbox', align: 'stretch' },
+      bodyPadding: extjsf.pts(1, 3, 3, 1),
+      bodyCls: 'retrade-back-panel'
+    </f:facet>
+
+
+    <!-- [toolbar -->
+
+    <f:facet name = "toolbar-props">
+      xtype: 'panel', bodyPadding: extjsf.pt(2),
+      layout: {type: 'hbox', align: 'middle'},
+      bodyCls: 'retrade-toolbar-panel'
+    </f:facet>
+
+    <f:facet name = "toolbar">
+
+    <!-- [cancel edit button] -->
+    <x:action-button coid = "${z:vid(e, 'cancel-edit')}"
+      action = "#{e.gotoCancelEdit}" modelView = "#{e}">
+
+      <f:facet name = "extjs-props">
+        cls: 'ux-btn-red', text: 'Отмена',
+        margin: extjsf.pts(0, 0, 0, 0)
+      </f:facet>
+    </x:action-button>
+
+
+      <!-- [filter firms field -->
+
+      <x:text-field coid = "${z:vid(e, 'search-firms')}"
+        value = "#{e.model.contractorsSearch}">
+
+        <f:facet name = "extjs-props">
+          margin: extjsf.pts(0, 0, 0, 4),
+          width:  extjsf.ex(24)
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Поиск', cls: 'retrade-info-title-label'
+        </f:facet>
+      </x:text-field>
+
+
+      <!-- [restrict to selection set] -->
+      <x:component coid = "${z:vid(e, 'search-firms-selset')}">
+        <f:facet name = "extjs-props">
+
+          xtype: 'button', enableToggle: true,
+          width: retrade_default('button-selset').width,
+          height: retrade_default('button-selset').height,
+          componentCls: 'retrade-icon-24',
+          margin: extjsf.pts(1, 0, 1, 6),
+          iconCls: 'retrade-selset-button-icon',
+          tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
+
+        </f:facet>
+      </x:component>
+
+
+      <x:action-call coid = "${z:vid(e, 'search-firms-script')}"
+        action = "#{e.doSearchFirms}" modelView = "#{e}"/>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+    extjsf.bind("${z:vid(e, 'search-firms')}", '${extDom}').on('change', function(f)
+    {
+      var sv = ZeTS.trim(f.getValue());
+      if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
+
+      var fn = function()
+      {
+        //?: {search string was changed} discard
+        if(f.extjsfBind.searchValue != sv) return;
+
+        var params = { searchFirms: sv };
+        var selchk = extjsf.bind("${z:vid(e, 'search-firms-selset')}", '${extDom}').co();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.handler("${z:vid(e, 'search-firms-script')}", '${extDom}')({
+          params: params, success : function() {
+
+            extjsf.co("${z:vid(e, 'contractors')}", '${extDom}').loadPage(1)
+        }})
+      }
+
+      setTimeout(fn, 1000)
+    })
+
+    //~: selection set only toggled
+    extjsf.bind("${z:vid(e, 'search-firms-selset')}", '${extDom}').on('toggle', function()
+    {
+        var names  = extjsf.bind("${z:vid(e, 'search-firms')}", '${extDom}').value();
+        var params = { searchFirms: names };
+
+        var selchk = extjsf.bind("${z:vid(e, 'search-firms-selset')}", '${extDom}').co();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.handler("${z:vid(e, 'search-firms-script')}", '${extDom}')({
+          params: params, success : function() {
+
+            extjsf.co("${z:vid(e, 'contractors')}", '${extDom}').loadPage(1)
+        }})
+    })
+
+      //]]>
+      </script>
+
+      <!-- filter goods field] -->
+
+
+    <x:component coid = "${z:vid(e, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [submit button -->
+
+    <x:action-button coid = "${z:vid(e, 'submit')}"
+      action = "#{e.doEditContractor}" modelView = "#{e}">
+
+      <f:facet name = "extjs-props">
+        cls: 'ux-btn-green', text: 'Применить', disabled: true
+      </f:facet>
+
+      <f:facet name = "action-params">
+
+        contractor : ZeT.delay(function()
+        {
+          var sel = extjsf.co("${z:vid(e, 'grid')}", '${extDom}').
+            getSelectionModel().getSelection()
+
+          return (sel.length == 1)?(sel[0].getId()):('')
+        })
+      </f:facet>
+    </x:action-button>
+
+    <!-- submit button] -->
+
+    </f:facet>
+
+    <!-- toolbar] -->
+
+
+    <!-- [contractors table -->
+
+    <x:data-store storeId = "${z:vid(e, 'contractors')}"
+      modelRequest = "edit-contractor">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.CatItemView'
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.ContractorView'),
+        extraParams : {
+          '${e.modelParam}': '${e.model.modelKey}'
+        }
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(e, 'grid')}" selset = "true"
+      storeId = "${z:vid(e, 'contractors')}">
+
+      <f:facet name = "grid-props">
+        flex: 1, pager: true, sortableColumns: false,
+        columns: ZeT.defined('retrade.columns.CatItemView'),
+        selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'})
+      </f:facet>
+    </x:data-grid>
+
+    <script type = "text/javascript">
+
+  //~: submit on row double click
+  extjsf.bind("${z:vid(e, 'grid')}", '${extDom}').on('itemdblclick', function()
+  {
+    extjsf.handler("${z:vid(e, 'submit')}", '${extDom}')()
+  })
+
+  //~: enable submit button on first selection
+  extjsf.bind("${z:vid(e, 'grid')}", '${extDom}').on('selectionchange', function()
+  {
+    extjsf.bind("${z:vid(e, 'submit')}", '${extDom}').co().enable()
+  })
+
+    </script>
+
+    <!-- contractors table] -->
+
+  </x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+
+    <validation success = "true"/>
+
+  </ui:define>
+</ui:decorate>
+</ui:component>

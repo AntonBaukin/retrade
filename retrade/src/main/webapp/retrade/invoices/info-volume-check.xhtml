@@ -1,0 +1,210 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesVolumeCheckView}"/>
+
+${v.checkModelRequestedWithRedirect}
+${v.checkEntityRequested}
+${v.forceSecureModelEntity('view')}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+    extjsf.co('window', '${extDom}').
+      setTitle('${z:jss(v.windowTitleInfo)}')
+
+  //]]>
+  </script>
+
+
+  <f:facet name = "extjs-props">
+    layout: { type: 'vbox', align: 'stretch' },
+    bodyPadding: extjsf.pt(1),
+    bodyCls: 'retrade-back-panel'
+  </f:facet>
+
+
+  <!-- [invoice toolbar -->
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar">
+
+    <!-- [close window button] -->
+
+    <x:component coid = "${z:vid(v, 'close_window')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Закрыть', handler : function()
+        {
+          extjsf.co('window', '${extDom}').close()
+        }
+      </f:facet>
+    </x:component>
+
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [invoice edited -->
+
+    <c:if test = "${v.invoiceEdited}">
+
+      <x:action-button coid = "${z:vid(v, 'fix_invoice')}"
+        action = "#{v.doFixInvoice}" modelView = "#{v}">
+
+        <f:facet name = "extjs-props">
+          margin: extjsf.pts(0, 4, 0, 0), text: 'Провести',
+          disabled: #{not v.isSecureModelEntity('document: fix')}
+        </f:facet>
+      </x:action-button>
+
+      <x:action-button coid = "${z:vid(v, 'edit_invoice')}"
+        action = "#{v.gotoEditInvoice}" modelView = "#{v}">
+
+        <f:facet name = "extjs-props">
+          text: 'Редактировать',
+          disabled: #{not v.isSecureModelEntity('edit')}
+        </f:facet>
+
+        <f:facet name = "action-params">
+          entity: '${v.entity.primaryKey}'
+        </f:facet>
+      </x:action-button>
+
+    </c:if>
+
+    <!-- invoice edited] -->
+
+
+    <!-- [invoice fixed -->
+
+    <c:if test = "${v.invoiceFixed}">
+
+      <x:action-button coid = "${z:vid(v, 'edit_fixed_invoice')}"
+        action = "#{v.gotoEditFixedInvoice}" modelView = "#{v}">
+
+        <f:facet name = "extjs-props">
+          text: 'Редактировать', disabled: #{not v.isSecureModelEntity('edit')}
+        </f:facet>
+      </x:action-button>
+    </c:if>
+
+    <!-- invoice fixed] -->
+
+  </f:facet>
+
+  <!-- invoice toolbar] -->
+
+
+  <!-- [invoice status bar -->
+
+  <f:facet name = "status-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-status-panel'
+  </f:facet>
+
+
+  <f:facet name = "status">
+
+    <!-- [invoice state] -->
+
+    <x:html coid = "${z:vid(v, 'invoice_status')}">
+      <f:facet name = "extjs-props">
+        frame: false, border: false
+      </f:facet>
+
+      <div class = "retrade-info-value-invoice-state">
+        #{v.invoiceStateName}
+      </div>
+    </x:html>
+
+  </f:facet>
+
+  <!-- invoice status bar] -->
+
+
+  <!-- [invoice fields view -->
+
+  <x:html coid = "${z:vid(v, 'invoice_info')}">
+    <f:facet name = "extjs-props">
+      xtype: 'panel', border: false,
+      margin: extjsf.pts(1, 1, 2, 1),
+      bodyPadding: extjsf.pts(3, 2, 3, 2),
+      bodyCls: 'retrade-text-panel retrade-info-invoice-volume-check'
+    </f:facet>
+
+    <table class = "retrade-info-table retrade-info-table-invoice-code"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-invoice-code">
+          <div>Код</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-invoice-code">
+          <div>#{v.entity.code}</div>
+        </td>
+
+        <td class = "retrade-info-title retrade-info-title-invoice-date">
+          <div>Дата</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-invoice-date">
+          <div>#{v.invoiceDateTime}</div>
+        </td>
+
+        <td class = "retrade-info-title retrade-info-title-invoice-store">
+          <div>Склад</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-small-text retrade-info-value-invoice-store">
+          <div>#{v.invoiceStore}</div>
+        </td>
+      </tr>
+    </table>
+  </x:html>
+
+  <!-- invoice fields view] -->
+
+
+  <x:data-store storeId = "${z:vid(v, 'invoiceGoods')}" modelView = "${v}">
+    <f:facet name = "store-props">
+      model: 'retrade.model.InvoiceGood'
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.InvoiceGood')
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'invoice_goods')}"
+    storeId = "${z:vid(v, 'invoiceGoods')}">
+
+    <f:facet name = "grid-props">
+      title: 'Остатки товаров', flex: 1, sortableColumns: true,
+      columns: ZeT.defined("#{v.invoiceEdited?('retrade.columns.VolumeCheckEdit'):('retrade.columns.VolumeCheckFixed')}")
+    </f:facet>
+  </x:data-grid>
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+</ui:component>

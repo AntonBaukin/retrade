@@ -1,0 +1,1017 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+${v.forceSecureEdit()}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+    extjsf.co('window', '${extDom}').
+      setTitle('${z:jss(v.windowTitleEdit)}')
+
+    //~: adjust window size
+    if("#{v.altered}" == 'true') Ext.onReady(ZeT.timeouted(150, function()
+    {
+      //~: set window width for columns
+      ReTrade.desktop.applyWindowBox({
+        name: 'window', domain: '${extDom}',
+        widthpt: 680, prevsize: 'edit-sell'
+      })
+    }))
+
+  //]]>
+  </script>
+
+
+  <f:facet name = "extjs-props">
+    layout: { type: 'vbox', align: 'stretch' },
+    bodyPadding: extjsf.pt(1),
+    bodyCls: 'retrade-back-panel'
+  </f:facet>
+
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar">
+
+
+  <!-- [cancel edit button] -->
+  <x:action-button coid = "${z:vid(v, 'cancel-edit')}"
+    action = "#{v.gotoCancelEditInvoice}" modelView = "#{v}">
+
+    <f:facet name = "extjs-props">
+      cls: 'ux-btn-red', text: 'Отмена'
+    </f:facet>
+  </x:action-button>
+
+
+  <!-- [delete goods button] -->
+  <x:component coid = "${z:vid(v, 'delete-goods')}">
+
+    <f:facet name = "extjs-props">
+      xtype: 'button', text: 'Удалить',
+      margin: extjsf.pts(0, 0, 0, 8),
+      tooltipType: 'title', tooltip: 'Удалить выделенные товары'
+    </f:facet>
+  </x:component>
+
+
+  <!-- [add good button] -->
+  <x:component coid = "${z:vid(v, 'add-good')}">
+
+    <f:facet name = "extjs-props">
+      xtype: 'button', text: 'Добавить',
+      margin: extjsf.pts(0, 0, 0, 4), tooltipType: 'title',
+      tooltip: 'Добавить товар после выбранной строки (либо в конец списка)'
+    </f:facet>
+  </x:component>
+
+
+  <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+    <f:facet name = "extjs-props">
+      xtype: 'panel', flex: 1, frame: false, border: false,
+      bodyCls: 'retrade-toolbar-panel'
+    </f:facet>
+  </x:component>
+
+
+  <!-- [select contractor] -->
+  <x:component coid = "${z:vid(v, 'edit-contractor')}">
+    <f:facet name = "extjs-props">
+      xtype: 'button', text: 'Выбрать к-та',
+      margin: extjsf.pts(0, 4, 0, 0), tooltipType: 'title',
+      tooltip: 'Выбрать контрагента для этой накладной'
+    </f:facet>
+  </x:component>
+
+
+  <!-- [edit date] -->
+  <x:component coid = "${z:vid(v, 'edit-date')}">
+    <f:facet name = "extjs-props">
+      xtype: 'button', text: 'Изменить дату',
+      margin: extjsf.pts(0, 8, 0, 0)
+    </f:facet>
+  </x:component>
+
+
+  <!-- [submit button -->
+
+  <x:component coid = "${z:vid(v, 'submit')}">
+    <f:facet name = "extjs-props">
+      xtype:'button', text: 'Сохранить',
+      cls: 'ux-btn-green'
+    </f:facet>
+  </x:component>
+
+  <x:action-delegate coid = "${z:vid(v, 'submit-done')}"
+    action = "#{v.gotoDoneEditInvoice}" modelView = "#{v}"/>
+
+  <!-- submit button] -->
+
+</f:facet>
+
+<!-- toolbar] -->
+
+
+<!-- [invoice status bar -->
+
+<f:facet name = "status-props">
+  xtype: 'panel', bodyPadding: extjsf.pt(2),
+  layout: {type: 'hbox', align: 'middle'},
+  bodyCls: 'retrade-status-panel'
+</f:facet>
+
+
+<f:facet name = "status">
+
+  <!-- [altered invoice] -->
+
+  <x:checkbox-field coid = "${z:vid(v, 'altered')}"
+    value = "#{v.altered}">
+
+    <f:facet name = "label-props">
+      labelAlign: 'left', margin: extjsf.pts(0, 2, 0, 0),
+      cls: 'retrade-info-title-label retrade-form-label-upper',
+      html: "&lt;span title = 'Производить товары-продукты (по умолчанию: не полуфабрикаты) по формулам (рецептам)'&gt;автопроизводство&lt;/span&gt;"
+    </f:facet>
+  </x:checkbox-field>
+
+
+  <x:component coid = "${z:vid(v, '_sb_fill_0')}">
+    <f:facet name = "extjs-props">
+      xtype: 'panel', flex: 1, frame: false, border: false,
+      bodyCls: 'retrade-status-panel'
+    </f:facet>
+  </x:component>
+
+
+  <!-- [invoice summ -->
+
+  <x:html coid = "${z:vid(v, 'invoice-summ-val-html')}">
+    <f:facet name = "extjs-props">
+      xtype: 'panel', frame: false, border: false
+    </f:facet>
+
+    <table class = "retrade-info-table retrade-invoice-info-table-summ"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-invoice-summ">
+          <div>Сумма</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-red retrade-info-value-invoice-summ">
+          <div id = "${z:vid(v, 'invoice-summ-val')}" class = "retrade-format-to-currency">
+            #{(empty v.invoiceSumm)?('0.00'):(v.invoiceSumm)}
+          </div>
+        </td>
+      </tr>
+    </table>
+  </x:html>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  retrade.TreetFCurrency.proc("${z:vid(v, 'invoice-summ-val')}")
+
+  //]]>
+  </script>
+
+  <!-- invoice summ] -->
+
+</f:facet>
+
+<!-- invoice status bar] -->
+
+
+<!-- [invoice properties form -->
+
+<x:form-panel modelView = "${v}" coid = "${z:vid(v, 'invoice-form')}">
+
+  <f:facet name = "extjs-props">
+    border: false, bodyPadding: extjsf.pt(2),
+    margin: extjsf.pts(1, 1, 2, 1),
+    bodyCls: 'retrade-text-panel',
+    layout: { type: 'vbox', align: 'stretch' }
+  </f:facet>
+
+
+  <!-- [first row: code + store -->
+
+  <x:component coid = "${z:vid(v, '_invoice_form_first')}">
+
+    <f:facet name = "extjs-props">
+      frame: false, border: false,
+      layout: { type: 'hbox', align: 'middle' },
+      bodyCls: 'retrade-transparent-panel'
+    </f:facet>
+
+
+    <!-- [invoice code field -->
+
+    <x:text-field coid = "${z:vid(v, 'invoice-code')}"
+      value = "#{v.model.invoice.invoiceCode}">
+
+      <f:facet name = "extjs-props">
+        width: extjsf.ex(22), fieldStyle : { textAlign: 'center' },
+        allowBlank: false, validator: function()
+        {
+          return extjsf.bind("${z:vid(v, 'invoice-code')}", '${extDom}').validityStatus || true;
+        }
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Код', cls: 'retrade-info-title-label'
+      </f:facet>
+    </x:text-field>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+  //~: validate on code change
+  extjsf.bind("${z:vid(v, 'invoice-code')}", '${extDom}').on('change', function(f, v)
+  {
+    var fb = f.extjsfBind;
+    fb.retradeCodeCheck = v; fb.validityStatus = true;
+
+    if(ZeTS.trim(v) != v)
+      fb.validityStatus = 'Код не может начинаться или оканчиваться пробелами!';
+    if(f.validate() !== true) return;
+
+    ZeT.timeout(1000, function()
+    {
+      if(fb.retradeCodeCheck != v) return;
+
+      extjsf.handler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
+      params: { code : fb.retradeCodeCheck }, failure: function()
+      {
+        fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
+        if(ZeTS.ises(fb.validityStatus)) fb.validityStatus = true;
+        f.validate()
+      }})
+    })
+  })
+
+    //]]>
+    </script>
+
+    <!-- invoice code field] -->
+
+
+    <!-- [store drop-list] -->
+    <x:drop-list coid = "${z:vid(v, 'trade-store')}"
+      value = "#{v.model.tradeStore}" labels = "#{v.tradeStoresLabels}">
+
+      <f:facet name = "drop-props">
+        width: extjsf.ex(32)
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Склад', cls: 'retrade-info-title-label'
+      </f:facet>
+    </x:drop-list>
+  </x:component>
+
+  <!-- first row: code + store] -->
+
+
+  <!-- [second row: date + contractor -->
+
+  <x:html coid = "${z:vid(v, '_invoice_date_contractor_html')}">
+    <f:facet name = "extjs-props">
+      xtype: 'panel', border: false,
+      margin: extjsf.pts(4, 0, 2, 0),
+      bodyCls: 'retrade-transparent-panel retrade-edit-invoice-buy'
+    </f:facet>
+
+    <table class = "retrade-info-table retrade-info-table-invoice-first"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-invoice-date">
+          <div>Дата</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-invoice-date">
+          <div>#{v.invoiceDate}</div>
+        </td>
+
+        <td class = "retrade-info-title retrade-info-title-invoice-contractor">
+          <div>Контрагент</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-invoice-contractor #{(empty v.contractorName)?('retrade-info-red'):('retrade-info-value-small-text')}">
+          <div id = "${z:vid(v, 'invoice-contractor-name')}">#{v.contractorName}<span
+            class = "retrade-info-value-message-hard retrade-info-value-invoice-contractor-message"
+              style = "display: #{(empty v.contractorName)?('inherit'):('none')};">Выберете контрагента</span></div>
+        </td>
+      </tr>
+    </table>
+  </x:html>
+
+  <!-- second row: date + contractor] -->
+
+
+  <!-- [altered invoice hidden field]-->
+  <x:hidden-field coid = "${z:vid(v, 'altered-field')}"
+    value = "#{v.altered}"/>
+
+  <!-- [special: submit actions] -->
+  <h:commandButton id = "submit" value = "submit" style = "display: none;"
+    action = "#{v.doSubmitEditInvoice}"/>
+
+  <h:commandButton id = "goods" value = "submit" style = "display: none;"
+    action = "#{v.doSubmitEditGoods}" immediate = "true"/>
+
+</x:form-panel>
+
+
+  <!-- [support actions -->
+
+  <x:action-call coid = "${z:vid(v, 'check-code-exists-script')}"
+    action = "#{v.doCheckCodeExists}" modelView = "${v}"/>
+
+  <x:action-delegate coid = "${z:vid(v, 'goto-edit-date')}"
+    action = "#{v.gotoEditInvoiceDate}" modelView = "#{v}"/>
+
+  <x:action-delegate coid = "${z:vid(v, 'goto-edit-contractor')}"
+    action = "#{v.gotoEditContractor}" modelView = "#{v}"/>
+
+  <!-- support actions] -->
+
+  <!-- invoice properties form] -->
+
+
+  <!-- [invoice goods grid -->
+
+  <x:data-store storeId = "${z:vid(v, 'invoiceGoods')}" modelView = "${v}">
+    <f:facet name = "store-props">
+      model: 'retrade.model.InvoiceGood'
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.InvoiceGood')
+    </f:facet>
+  </x:data-store>
+
+  <x:data-store storeId = "${z:vid(v, 'goodUnits')}"
+    modelProvider = "facesPricesSearch" modelRequest = "goods">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.GoodPriceView', autoLoad: false
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.GoodUnitView'),
+      extraParams: { restriction: 'goods.sell' }
+    </f:facet>
+  </x:data-store>
+
+  <x:data-store storeId = "${z:vid(v, 'goodPrices')}"
+    modelProvider = "facesPricesSearch" modelRequest = "prices">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.GoodPriceView',
+      autoLoad: false, filters: [ function(m)
+      {
+        return !ZeTS.ises(m.get('price'))
+      }]
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.GoodUnitView')
+    </f:facet>
+  </x:data-store>
+
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: submit form before going to date form
+  extjsf.handler("${z:vid(v, 'edit-date')}", '${extDom}',
+    extjsf.bind("${z:vid(v, 'invoice-form')}", '${extDom}').
+      submitBound({immediate: true, command: 'goods', success: function()
+      {
+        extjsf.handler("${z:vid(v, 'goto-edit-date')}", '${extDom}')()
+      }}))
+
+  //~: submit form before going to contractor form
+  extjsf.handler("${z:vid(v, 'edit-contractor')}", '${extDom}',
+    extjsf.bind("${z:vid(v, 'invoice-form')}", '${extDom}').
+      submitBound({immediate: true, command: 'goods', success: function()
+      {
+        extjsf.handler("${z:vid(v, 'goto-edit-contractor')}", '${extDom}')()
+      }}))
+
+  //~: submit form with command button
+  extjsf.handler("${z:vid(v, 'submit')}", '${extDom}',
+    extjsf.bind("${z:vid(v, 'invoice-form')}", '${extDom}').
+      submitBound({command: 'submit', success: function()
+      {
+        extjsf.handler("${z:vid(v, 'submit-done')}", '${extDom}')()
+      }}))
+
+  //~: invoice form validation
+  extjsf.bind("${z:vid(v, 'invoice-form')}", '${extDom}').validator(function(form, opts)
+  {
+    if(!form.isValid()) return false;
+
+    //?: {creating invoice, contractor is not set}
+    if(!opts.immediate && ('#{v.contractorName}' == ''))
+    {
+      Ext.get("${z:vid(v, 'invoice-contractor-name')}").highlight('fac2b1', {duration: 4000})
+      ReTrade.desktop.error('Выберете контрагента!')
+
+      return false;
+    }
+
+    //<: validate the goods
+
+    var s = extjsf.co("${z:vid(v, 'invoiceGoods')}", '${extDom}');
+
+    function validateVolume(m)
+    {
+      var v = m.get('goodVolume');
+      return (m.get('volumeInteger') === true)?
+        (retrade.vivolume(v)):(retrade.vvolume(v));
+    }
+
+    var valid = true, recs = [], got = {};
+
+    //~: validate and collect the records
+    s.each(function(m)
+    {
+      if(ZeTS.ises(m.get('goodCode'))) return;
+
+      var v = validateVolume(m);
+      if(ZeT.iss(v)) v = 'Объём: ' + v;
+
+      if(!ZeT.iss(v)) {
+        v = retrade.vvcurrency(m.get('volumeCost'));
+        if(ZeT.iss(v)) v = 'Цена всего объёма: ' + v;
+      }
+
+      if(!ZeT.iss(v) && ZeTS.ises(m.get('goodUnit')))
+        v = 'из списка не выбран существующий товар!';
+
+      if(!ZeT.iss(v) && (got[m.get('goodCode')] === true))
+        v = 'товар повторно занесён в список!';
+      got[m.get('goodCode')] = true;
+
+      if(ZeT.iss(v))
+      {
+        ReTrade.desktop.error(ZeTS.cat('Товар [', m.get('goodCode'), ']: ', v))
+        return valid = false; //<-- break iteration
+      }
+
+      recs.push(m)
+    })
+
+    if(valid && !recs.length && !opts.immediate)
+    {
+      ReTrade.desktop.error('Список товаров не должен быть пустым!')
+      valid = false;
+    }
+
+    if(!valid) return false;
+
+    //>: validate the goods
+
+    //~: put goods into the parameters
+    var iparams = opts.initialParams;
+    if(!iparams) opts.initialParams = iparams = {};
+    var params  = opts.params = ZeT.extend({}, iparams);
+
+    for(var i = 0;(i < recs.length);i++)
+    {
+      params['goodCode'+i] = recs[i].get('goodCode')
+      params['goodUnit'+i] = recs[i].get('goodUnit')
+      params['goodVolume'+i] = recs[i].get('goodVolume')
+      params['volumeCost'+i] = recs[i].get('volumeCost')
+      params['goodPrice'+i] = recs[i].get('goodPrice')
+      params['needCalc'+i] = recs[i].get('needCalc')
+    }
+
+    //~: assign altered field (needs calculation)
+    extjsf.bind("${z:vid(v, 'altered-field')}", '${extDom}').value(
+      extjsf.bind("${z:vid(v, 'altered')}", '${extDom}').value()
+    )
+  })
+
+  //~: insert new record in the table
+  extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}', function()
+  {
+    var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}'); if(!g) return
+    var c = extjsf.u.columnIByDataInd(g, 'goodCode')
+
+    var i, x = g.getSelectionModel().getSelection();
+    if(x && x.length) x = x[0]; else x = null;
+    if(x) i = g.getStore().indexOf(x);
+
+    var m = Ext.create('retrade.model.InvoiceGood');
+
+    //~: assign the last selected price list
+    var sel; if(sel = g.extjsfBind.retradeLastPriceList)
+    {
+      m.set('priceList', sel.get('priceList'))
+      m.set('priceListCode', sel.get('priceListCode'))
+      m.set('priceListName', sel.get('priceListName'))
+    }
+
+    if(ZeT.isu(i)) g.getStore().add(m)
+    else g.getStore().insert(i + 1, m)
+    extjsf.u.reindexGrid(g)
+
+    ZeT.timeout(200, function()
+    {
+      var p = g.getPlugin('cellediting')
+      if(p && p.grid) p.startEdit(m, c)
+    })
+  })
+
+  //~: insert new record in the empty table
+  extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${extDom}').on('load', function(store, recs)
+  {
+    if(!recs.length) ZeT.timeout(500,
+      extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}'))
+  })
+
+  //~: delete selected records from the table
+  extjsf.handler("${z:vid(v, 'delete-goods')}", '${extDom}', function()
+  {
+    var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}');
+    var s = g.getSelectionModel().getSelection(); if(!s.length) return;
+
+    var x, m = 0; for(var i = 0;(i < s.length);i++)
+      if((x = g.getStore().indexOf(s[i])) > m) m = x;
+    if(m + 1 >= g.getStore().count()) m = m - 1; else m++;
+    if(m < 0) m = undefined;
+    if(!ZeT.isu(m)) m = g.getStore().getAt(m);
+
+    g.getStore().remove(s)
+    extjsf.u.reindexGrid(g)
+    if(!ZeT.isx(m)) g.getSelectionModel().select(m)
+
+    //~: calculate the summary
+    extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${extDom}').retradeCalcSumm()
+  })
+
+  //~: name the empty select option for the price lists
+  extjsf.bind("${z:vid(v, 'goodPrices')}", '${extDom}').on('load', function(store, recs)
+  {
+    Ext.Array.each(recs, function(m)
+    {
+      if(!ZeTS.ises(m.get('priceList'))) return;
+      m.set('priceList', '')
+      m.set('priceListCode', '')
+      m.set('priceListName', '[не указан]')
+      return false;
+    })
+  })
+
+  //~: altered checkbox clicked
+  extjsf.bind("${z:vid(v, 'altered')}", '${extDom}').on('change', function(cb, checked)
+  {
+    var col = extjsf.u.columnByDataInd(extjsf.co("${z:vid(v, 'grid')}", '${extDom}'), 'needCalc')
+    ZeT.assertn(col).setVisible(checked)
+
+    if(checked) //~: set window width for more columns
+      ReTrade.desktop.applyWindowBox({
+        name: 'window', domain: '${extDom}',
+        widthpt: 680, prevsize: 'edit-sell'
+      })
+  })
+
+  //~: callback on volume, cost, and unit cost changed
+  extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${extDom}').retradeColumnEdited = function(ed, e)
+  {
+    var m = e.record, v = e.value, ov = e.originalValue;
+    if(ZeT.iss(v))  v  = ZeTS.trim(v)
+    if(ZeT.iss(ov)) ov = ZeTS.trim(ov)
+
+    var f2s = retrade.round2str
+
+    //?: {volume changed}
+    if(e.field == 'goodVolume') m.set('volumeCost', f2s(2,
+      parseFloat(v) * parseFloat(m.get('unitCost'))
+    ))
+
+    var clearList = false
+
+    //?: {volume cost changed}
+    if((e.field == 'volumeCost') && (v != ov))
+    {
+      m.set('unitCost', f2s(2,
+        parseFloat(v) / parseFloat(m.get('goodVolume'))
+      ))
+
+      clearList = true
+    }
+
+    //?: {unit cost changed}
+    if((e.field == 'unitCost') && (v != ov))
+    {
+      m.set('volumeCost', f2s(2,
+        parseFloat(v) * parseFloat(m.get('goodVolume'))
+      ))
+
+      clearList = true
+    }
+
+    //?: {price list was changed}
+    var changePrice = false
+    if((e.field == 'priceListName') && (v != ov))
+      changePrice = true
+
+    //?: {good changed}
+    if((e.field == 'goodCode') && (v != ov))
+      changePrice = !ZeTS.ises(m.get('priceList'))
+
+    //?: {price need to be changed}
+    if(changePrice)
+    {
+      var p = parseFloat(m.get('unitPrice'))
+
+      if(ZeT.isn(p)) {
+
+        //~: set the unit price from the price list
+        m.set('unitCost', f2s(2, p))
+
+        //~: update the volume cost
+        m.set('volumeCost', f2s(2,
+          parseFloat(p) * parseFloat(m.get('goodVolume'))
+        ))
+      }
+    }
+
+    //?: {manual edit of price} clear the list
+    if(clearList) {
+      m.set('goodPrice', '')
+      m.set('priceList', '')
+      m.set('priceListCode', '')
+      m.set('priceListName', '')
+    }
+
+    //~: calculate the summary
+    extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${extDom}').retradeCalcSumm()
+  }
+
+  //~: calculate summary cost
+  extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${extDom}').retradeCalcSumm = function()
+  {
+    //~: recalculate summary
+    var s = 0.0; extjsf.co("${z:vid(v, 'invoiceGoods')}", '${extDom}').each(function(i)
+    {
+      var x = parseFloat(i.get('volumeCost'))
+      if(ZeT.isn(x)) s += x
+    })
+
+    //~: update the status
+    var n = ZeTD.n("${z:vid(v, 'invoice-summ-val')}");
+    ZeTD.update(n, retrade.round2str(2, s))
+    ZeTD.classes(n, '+retrade-format-to-currency')
+    retrade.TreetFCurrency.proc(n)
+
+    //~: realign
+    extjsf.co("${z:vid(v, 'invoice-summ-val-html')}", '${extDom}').
+      ownerCt.doLayout()
+  }
+
+  //~: columns editors
+  extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${extDom}').retradeCreateColumns = function()
+  {
+    var cols = ZeT.defined('retrade.columns.InvoiceSellGoodEdited')()
+    var colCode = cols[1]
+    var colVol  = cols[3]
+    var colList = cols[5]
+    var volCost = cols[6]
+    var unitCost = cols[7]
+    var needCalc = cols[8]
+
+    function selectGood(sel)
+    {
+      var g = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
+      var m = ZeT.assert(g.retradeEditEvent, 'There is no grid edit event!').record;
+
+      m.set('goodUnit', sel.get('objectKey'))
+      m.set('goodCode', sel.get('goodCode'))
+      m.set('goodName', sel.get('goodName'))
+      m.set('volumeUnitName', sel.get('measureCode'))
+      m.set('volumeInteger', sel.get('integer'))
+      m.set('unitCost', sel.get('price'))
+      m.set('goodPrice', sel.get('goodPrice'))
+      m.set('goodVolume', '')
+      m.set('volumeCost', '')
+    }
+
+    function selectPriceList(sel)
+    {
+      var g = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}')
+      var m = ZeT.assertn(g.retradeEditEvent, 'There is no grid edit event!').record
+
+      g.retradeLastPriceList = sel
+      m.set('goodPrice', sel.get('goodPrice'))
+      m.set('priceList', sel.get('priceList'))
+      m.set('priceListCode', sel.get('priceListCode'))
+      m.set('priceListName', sel.get('priceListName'))
+
+      if(!ZeTS.ises(sel.get('price')))
+      {
+        m.set('unitCost', sel.get('price'))
+
+        if(!ZeTS.ises(m.get('goodVolume')))
+          m.set('volumeCost', retrade.round2str(2,
+            parseFloat(m.get('unitCost')) * parseFloat(m.get('goodVolume'))
+          ))
+
+        //~: calculate the summary
+        extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${extDom}').retradeCalcSumm()
+      }
+    }
+
+    function renderVolume(v, meta)
+    {
+      if(meta.record.get('volumeInteger'))
+        return retrade.round2str(0, parseFloat(v))
+      return v
+    }
+
+    function validateVolume(v)
+    {
+      var g = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
+      var m = ZeT.assert(g.retradeEditEvent, 'There is no grid edit event!').record;
+
+      return (m.get('volumeInteger') === true)?
+        (retrade.vivolume(v)):(retrade.vvolume(v));
+    }
+
+    function onSpecialKey(f, e)
+    {
+      var g = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
+      var x = g.retradeEditEvent;
+      var p = g.co().getPlugin('cellediting');
+      var c;
+
+      function commitEdit()
+      {
+        if(ZeT.isf(f.getPicker) && f.getPicker() && f.getPicker().isVisible())
+        {
+          var sel = f.retradeHighlightedItem;
+          if(!ZeT.isu(sel) && (sel == -1)) sel = undefined;
+          if(!ZeT.isu(sel)) f.getPicker().getSelectionModel().select(sel)
+        }
+      }
+
+      if(e.getKey() == e.INSERT)
+      {
+        commitEdit()
+        extjsf.handler("${z:vid(v, 'add-part')}", '${extDom}')()
+      }
+
+      if(e.getKey() == e.TAB)
+      {
+        var cs = extjsf.u.gridColumns(g);
+        for(var i = x.colIdx + 1;(i < cs.length);i++)
+          if(cs[i].retradeHasEditor) { c = [ x.rowIdx, i ]; break; }
+
+        if(!c) for(var i = 0;(i < x.colIdx);i++)
+          if(cs[i].retradeHasEditor) { c = [ x.rowIdx, i ]; break; }
+      }
+
+      if(c)
+      {
+        commitEdit()
+
+        g.retradeDisabledEditing = true;
+        ZeT.timeout(200, function()
+        {
+          g.retradeDisabledEditing = false;
+          p.startEditByPosition({ row: c[0], column: c[1] })
+        })
+      }
+    }
+
+    //~: good column editor with drop-list of goods lookup
+    colCode.retradeHasEditor = true;
+    colCode.editor = Ext.create('Ext.form.field.ComboBox', {
+      store: "${z:vid(v, 'goodUnits')}",
+      valueField: 'goodCode', displayField: 'goodCode',
+      queryCaching: false, queryParam: 'searchGoods', minChars: 1,
+      matchFieldWidth: false,
+
+      listConfig: { minWidth: extjsf.pt(180), maxWidth: extjsf.pt(220), tpl: new Ext.XTemplate(
+
+        "<table class = 'x-grid-table' style = 'width: 100%'>",
+        "<tpl for = '.'><tr class = 'x-boundlist-item'>",
+        "<td style = 'width:8ex;'>{goodCode}</td><td>{goodName}</td><td style='white-space:nowrap;'>{measureCode}</td>",
+        "</tr></tpl></table>"
+      )},
+
+      listeners: { specialkey : onSpecialKey,
+
+        added: function(combo)
+        {
+          combo.getPicker().on('highlightitem', function(view, node)
+          {
+            combo.retradeHighlightedItem = combo.getPicker().getNodes().indexOf(node);
+          })
+        },
+
+        beforequery: function(plan)
+        {
+          if(ZeTS.ises(plan.query))
+            plan.query = plan.combo.getValue()
+
+          if(ZeTS.ises(plan.query)) plan.query = ''; else
+          {
+            if(plan.query.match(/.\d$/))
+              plan.query = plan.query.substring(0, plan.query.length - 1)
+            plan.query = encodeURIComponent(plan.query)
+          }
+        },
+
+        select: function(f, sel)
+        {
+          if(ZeT.isa(sel)) if(sel.length == 1) sel = sel[0]; else sel = null
+          if(!sel || ZeTS.ises(sel.get('goodCode'))) return
+          if(sel) selectGood(sel)
+        }
+      }
+    });
+
+    //~: volume column editor
+    colVol.retradeHasEditor = true
+    colVol.renderer = renderVolume
+    colVol.editor = Ext.create('Ext.form.field.Text', {
+      maskRe: retrade.rdecimal, validator : validateVolume,
+      listeners: { specialkey : onSpecialKey }
+    })
+
+    //~: price list drop-list
+    colList.retradeHasEditor = true;
+    colList.editor = Ext.create('Ext.form.field.ComboBox', {
+      store: "${z:vid(v, 'goodPrices')}",
+      valueField: 'priceListName', displayField: 'priceListName',
+      matchFieldWidth: false, queryCaching: false, editable: false,
+
+      listConfig: { minWidth: extjsf.pt(140), maxWidth: extjsf.pt(200), tpl: new Ext.XTemplate(
+
+        "<table class = 'x-grid-table' style = 'width: 100%'>",
+        "<tpl for = '.'><tr class = 'x-boundlist-item'>",
+        "<td style = 'width:8ex;'>{priceListCode}</td><td>{priceListName}</td>",
+        "</tr></tpl></table>"
+      )},
+
+      listeners: { specialkey : onSpecialKey,
+
+        added: function(combo)
+        {
+          combo.getPicker().on('highlightitem', function(view, node)
+          {
+            combo.retradeHighlightedItem = combo.getPicker().getNodes().indexOf(node);
+          })
+        },
+
+        select: function(f, sel)
+        {
+          if(ZeT.isa(sel)) if(sel.length == 1) sel = sel[0]; else sel = null
+          if(sel) selectPriceList(sel)
+        }
+      }
+    });
+
+    //~: volume cost column editor
+    volCost.retradeHasEditor = true;
+    volCost.editor = Ext.create('Ext.form.field.Text', {
+      maskRe: retrade.rdecimal, validator : retrade.vvcurrency,
+      listeners: { specialkey : onSpecialKey }
+    });
+
+    //~: unit cost column editor
+    unitCost.retradeHasEditor = true;
+    unitCost.editor = Ext.create('Ext.form.field.Text', {
+      maskRe: retrade.rdecimal, validator : retrade.vcurrency,
+      listeners: { specialkey : onSpecialKey }
+    });
+
+    //~: need calculation column
+    needCalc.retradeHasEditor = true;
+    needCalc.editor = Ext.create('Ext.ux.form.TriCheckbox', {
+      listeners: { specialkey : onSpecialKey }
+    });
+
+    //?: {not altered} hide calculation column
+    needCalc.hidden = ("#{v.altered}" == 'false');
+
+    return cols;
+  }
+
+  //]]>
+  </script>
+
+
+  <x:data-grid coid = "${z:vid(v, 'grid')}"
+    storeId = "${z:vid(v, 'invoiceGoods')}">
+
+    <f:facet name = "grid-props">
+
+      title: 'Продаваемые товары', flex: 1, cls: 'ux-grid-not-mark-dirty',
+      pager: false, sortableColumns: false, enableColumnHide: false,
+      selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true }),
+      columns: extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${extDom}').retradeCreateColumns(),
+
+      plugins: [{
+        ptype: 'cellediting', pluginId: 'cellediting', clicksToEdit: 1,
+        listeners : {
+          edit: extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${extDom}').retradeColumnEdited,
+          beforeedit : function(ed, event)
+          {
+             var g = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}')
+             if(g.retradeDisabledEditing) return false; else {
+                g.retradeEditEvent = event
+
+                //~: remember price list of the record (for the code drop list)
+                extjsf.co("${z:vid(v, 'goodUnits')}", '${extDom}').
+                  getProxy().setExtraParam('priceList', event.record.get('priceList'))
+
+                //~: remember good unit of the record (for the price list drop list)
+                extjsf.co("${z:vid(v, 'goodPrices')}", '${extDom}').
+                  getProxy().setExtraParam('goodUnit', event.record.get('goodUnit'))
+             }
+          }}
+      }],
+
+      listeners: {
+
+        cellkeydown: function(grid, td, cellIdx, m, tr, rowIdx, e)
+        {
+          if(e.getKey() == e.INSERT)
+            extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}')()
+
+          if(e.getKey() == e.DELETE)
+            extjsf.handler("${z:vid(v, 'delete-goods')}", '${extDom}')()
+
+          if(e.getKey() == e.ENTER)
+            extjsf.co("${z:vid(v, 'grid')}", '${extDom}').
+              getPlugin('cellediting').startEditByPosition({ row: rowIdx, column: 1})
+        }
+      }
+
+    </f:facet>
+  </x:data-grid>
+
+<!-- invoice goods grid] -->
+
+
+<!-- [overwriting content] -->
+<ui:insert name = "page_body_ext"/>
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+
+    <validation success = "#{v.valid}">
+
+      <ui:fragment rendered = "#{v.codeExists}">
+        <field target = "${z:vid(v, 'invoice-code')}">
+          <error>Указанный код уже используется в другой накладной!</error>
+        </field>
+      </ui:fragment>
+    </validation>
+  </ui:define>
+
+  <ui:define name = 'scripts'>
+
+    <ui:fragment rendered = "#{not empty v.errorEvent}">
+      <script>
+      //<![CDATA[
+
+ ReTrade.desktop.error("#{z:jss(v.errorEvent)}")
+
+      //]]>
+      </script>
+    </ui:fragment>
+
+  </ui:define>
+</ui:decorate>
+</ui:component>

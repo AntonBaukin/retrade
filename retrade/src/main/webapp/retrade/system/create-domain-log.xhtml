@@ -1,0 +1,172 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+  <c:set var = "v" scope = "request" value = "${facesSystemCreateDomainView}"/>
+
+  ${v.checkModelRequested}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+
+    extjsf.bind('window', '${extDom}').
+      co().setTitle('Лог генерации домена')
+
+  </script>
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-inline-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar">
+
+    <!-- [close window button -->
+
+    <x:component coid = "${z:vid(v, 'close_window')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Закрыть',
+
+        handler : function()
+        {
+          var cmp = extjsf.bind('window', '${extDom}').co();
+          cmp.findParentByType('panel').remove(cmp, true)
+        }
+
+      </f:facet>
+    </x:component>
+
+    <!-- close window button] -->
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [genesis log -->
+
+  <x:html coid = "${z:vid(v, 'genesis-log-layout')}">
+
+    <f:facet name = "extjs-props">
+      region: 'center', cls: 'retrade-text-panel'
+    </f:facet>
+
+    <div id = "${z:vid(v, 'genesis-log-wait')}"
+      class = "retrade-create-domain-log-wait-msg">
+
+     Ожидайте завершения генерации...
+
+    </div>
+
+    <div id = "${z:vid(v, 'genesis-log-text')}"
+      class = "retrade-create-domain-log-text" style = "display: none">
+    </div>
+
+  </x:html>
+
+  <x:action-call coid = "${z:vid(v, 'get-genesis-log')}"
+    action = "#{v.doGetGenesisLog}" modelView = "${v}"/>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'get-genesis-log')}", '${extDom}').updateGenesisLog = function()
+  {
+      var script = extjsf.bind("${z:vid(v, 'get-genesis-log')}", '${extDom}');
+      if(!script) return;                    //<-- the window is closed
+      if(script.updated_genesis_log) return; //<-- already updated the script
+
+      //?: {still has no log} ask again
+      if(!script.GENESIS_LOG)
+      {
+          ZeT.timeout(4000, script.handler)
+          return;
+      }
+
+      //~: mark as updated
+      script.updated_genesis_log = true;
+
+      //~: set the log
+      Ext.getDom("${z:vid(v, 'genesis-log-text')}").innerHTML =
+        script.GENESIS_LOG.split('\n').join('<br/>');
+      delete script.GENESIS_LOG
+
+      //~: display
+      Ext.get("${z:vid(v, 'genesis-log-wait')}").hide()
+      Ext.get("${z:vid(v, 'genesis-log-text')}").show()
+
+      //~: reload the domains table
+      Ext.data.StoreManager.lookup("${z:vid(v, 'domainsStore')}").load()
+  }
+
+  Ext.onReady(extjsf.bind("${z:vid(v, 'get-genesis-log')}", '${extDom}').updateGenesisLog)
+
+  //]]>
+  </script>
+
+  <!-- genesis log] -->
+
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "true"/>
+  </ui:define>
+
+  <ui:define name = 'scripts'>
+
+   <ui:fragment rendered = "#{empty v.genesisLog}">
+      <script>
+      //<![CDATA[
+
+(function()
+{
+  var script = extjsf.bind("${z:vid(v, 'get-genesis-log')}", '${extDom}');
+  if(!script) return; //<-- the window is closed
+  script.updateGenesisLog()
+
+})()
+
+      //]]>
+      </script>
+    </ui:fragment>
+
+    <ui:fragment rendered = "#{not empty v.genesisLog}">
+      <script>
+      //<![CDATA[
+
+(function()
+{
+  var script = extjsf.bind("${z:vid(v, 'get-genesis-log')}", '${extDom}');
+  if(!script) return; //<-- the window is closed
+
+  script.GENESIS_LOG = "#{z:jss(v.genesisLog)}";
+  script.updateGenesisLog()
+
+})()
+
+      //]]>
+      </script>
+    </ui:fragment>
+  </ui:define>
+
+</ui:decorate>
+</ui:component>

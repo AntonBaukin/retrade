@@ -1,0 +1,65 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.selset'>
+
+  <class name = 'SelItem' table = 'retrade_sel_item' lazy = 'false'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_sel_item'/>
+
+
+    <!-- Selection Set -->
+
+    <many-to-one name = 'selSet' foreign-key = 'fk_sel_set'>
+
+      <column name = 'fk_sel_set' not-null = 'true'>
+        <comment>The Selection Set this Item is in</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Object Key -->
+
+    <property name = 'object'>
+
+      <column name = 'object_key'>
+        <comment>
+          Copy of the primary key of an United entity
+          this item refers. Undefined for items having
+          object extractions
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Ox-Class -->
+
+    <property name = 'oxClass'>
+
+      <column name = 'oxclass'>
+        <comment>
+          Long or short name of Java class of ox-instance assigned.
+          Assumed undefined when there is no ox-bytes
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Object Extraction -->
+
+    <property name = 'oxBytes' lazy = 'false'>
+
+      <column name = 'oxbytes' sql-type = 'bytea'>
+        <comment>
+          Entity-related data object written to XML and enflated with Gun-ZIP
+        </comment>
+      </column>
+
+      <type name = 'com.tverts.hibery.OxBytesType'/>
+    </property>
+  </class>
+</hibernate-mapping>

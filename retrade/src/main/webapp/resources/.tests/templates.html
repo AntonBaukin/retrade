@@ -1,0 +1,65 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zet.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetdom.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "templates.js"></script>
+
+</head>
+
+<body>
+
+<script type = "text/javascript">
+//<![CDATA[
+
+
+//~: insert simple template  S0
+node = tmplt_S0.cloneNode(); ZeT.assert(node)
+document.body.appendChild(node)
+
+//~: insert simple template  S1
+node = tmplt_S1.cloneNode(); ZeT.assert(node)
+document.body.appendChild(node)
+
+//~: insert global template  G0
+tmplt = ZeT.Layout.template('G0')
+node = tmplt.cloneNode(); ZeT.assert(node)
+document.body.appendChild(node)
+
+//~: insert again! template  G0
+tmplt = ZeT.Layout.template('G0')
+node = tmplt.cloneNode(); ZeT.assert(node)
+document.body.appendChild(node)
+
+//~: wrap node with the template
+tmplt = new ZeT.Layout.Template(
+  { trace : ZeT.Layout.Template.Ways.traceAtNodes },
+
+  "<div class='x'><div class='y'/><div class='z'>@way</div></div>"
+)
+
+node = ZeT.Layout.procPipeCall(
+
+  ZeT.Layout.Proc.Node, { html: "<span class='xyz'/>"},
+  ZeT.Layout.Proc.Wrap, { template: tmplt, insertWay: 'way' }
+)
+
+var that = { class: 'z' };
+ZeT.Layout.Treeters.findNodeByClass.proc(node, that)
+ZeT.assert(that.result && (that.result.parentNode.className == 'y'))
+
+//]]>
+</script>
+
+</body>
+</html>

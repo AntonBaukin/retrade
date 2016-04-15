@@ -1,0 +1,119 @@
+﻿<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zet.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetdom.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../desktop.js"></script>
+
+  <link type = 'text/css' rel = 'stylesheet'
+     href = "../clocks.css"/>
+
+
+  <style type = "text/css">
+
+#place-a
+{
+  position: absolute; left: 50%; top: 50%;
+  margin-left: -290px; margin-top: -70px;
+  width: 582px; height: 140px;
+}
+
+#clocks-area-a
+{
+  position: absolute;
+  width: 360px; height: 140px;
+}
+
+#num-area-a
+{
+  position: absolute; right: 0;
+  width: 215px; height: 140px;
+}
+
+#place-b
+{
+  position: absolute; left: 50%; top: 20%;
+  margin-left: -71px;
+  width: 142px; height: 35px;
+}
+
+#clocks-area-b
+{
+  position: absolute;
+  width: 90px; height: 35px;
+}
+
+#num-area-b
+{
+  position: absolute; right: 0;
+  width: 51px; height: 35px;
+}
+
+#num-area-a td.retrade-eventsnum-number, #num-area-b td.retrade-eventsnum-number
+{
+  text-align: center; vertical-align: middle;
+  font-family: 'Tahoma', 'Arial', sans-serif;
+  font-size: 100px; color: black;
+}
+
+#num-area-b td.retrade-eventsnum-number
+{
+  font-size: 25px;
+}
+
+  </style>
+
+</head>
+<body>
+
+<div id = "place-a">
+  <div id = "clocks-area-a"></div>
+  <div id = "num-area-a" class="retrade-eventsnum-gray"></div>
+</div>
+
+<div id = "place-b">
+  <div id = "clocks-area-b"></div>
+  <div id = "num-area-b" class="retrade-eventsnum-gray"></div>
+</div>
+
+<script type = "text/javascript">
+//<![CDATA[
+
+new ReTrade.Clocks({ parent: 'clocks-area-a', node: 'clocks-a', start: true, test: true })
+var X = new ReTrade.EventsNumber({ parent: 'num-area-a', node: 'num-a' }).set(28)
+
+new ReTrade.Clocks({ parent: 'clocks-area-b', node: 'clocks-b', start: true })
+var Y = new ReTrade.EventsNumber({ parent: 'num-area-b', node: 'num-b' }).set(28)
+
+function change()
+{
+  var C = [ 'G', 'O', 'R', 'N' ]
+  var x = change.time || 0
+  if(x >= C.length) x = 0
+  change.time = x + 1
+
+  var t = new Date().getTime() * 27644437 % 1000
+  X.set(t); Y.set(t)
+
+  ZeTD.classes('num-area-a', ['retrade-eventsnum', C[x]])
+  ZeTD.classes('num-area-b', ['retrade-eventsnum', C[x]])
+}
+
+change()
+setInterval(change, 2000)
+
+//]]>
+</script>
+
+</body>
+</html>

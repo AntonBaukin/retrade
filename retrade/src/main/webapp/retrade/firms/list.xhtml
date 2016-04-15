@@ -1,0 +1,221 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesContractorsView}"/>
+
+${v.forceSecure('view: contractors')}
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+  <ui:define name = 'page_body'>
+
+  <x:desktop-panel coid = "${z:vid(v, 'firms_root')}" position = "#{rootView.extjsPosition}">
+
+    <f:facet name = "extjs-props">
+      title: 'Контрагенты'
+    </f:facet>
+
+
+    <!-- [toolbar -->
+
+    <f:facet name = "toolbar-props">
+      xtype: 'panel', bodyPadding: extjsf.pt(2),
+      layout: {type: 'hbox', align: 'middle'},
+      bodyCls: 'retrade-toolbar-inline-panel'
+    </f:facet>
+
+    <f:facet name = "toolbar">
+
+      <!-- [add contractor+firm] -->
+      <x:component coid = "${z:vid(v, 'add-firm')}">
+        <f:facet name = "extjs-props">
+          xtype:'button', text: 'Добавить юр. лицо'
+        </f:facet>
+      </x:component>
+
+
+      <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', flex: 1, frame: false, border: false,
+          bodyCls: 'retrade-toolbar-inline-panel'
+        </f:facet>
+      </x:component>
+
+
+      <!-- [filter firms field -->
+
+        <x:text-field coid = "${z:vid(v, 'search-firms')}"
+          value = "#{v.model.searchNames}">
+
+          <f:facet name = "extjs-props">
+            margin: extjsf.pts(1, 0, 1, 4),
+            width:  extjsf.ex(24)
+          </f:facet>
+
+          <f:facet name = "label-props">
+            text: 'Поиск', margin: extjsf.pts(1, 0, 1, 8)
+          </f:facet>
+        </x:text-field>
+
+
+         <!-- [restrict to selection set] -->
+
+         <x:component coid = "${z:vid(v, 'search-firms-selset')}">
+           <f:facet name = "extjs-props">
+
+             xtype: 'button', enableToggle: true,
+             width: retrade_default('button-selset').width,
+             height: retrade_default('button-selset').height,
+             componentCls: 'retrade-icon-24',
+             margin: extjsf.pts(1, 0, 1, 6),
+             iconCls: 'retrade-selset-button-icon',
+             tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
+
+          </f:facet>
+        </x:component>
+
+
+        <x:action-call coid = "${z:vid(v, 'search-firms-script')}"
+          action = "#{v.doSearchContractors}" modelView = "${v}"/>
+
+        <script type = "text/javascript">
+        //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'search-firms')}", '${extDom}').on('change', function(f)
+    {
+      var sv = ZeTS.trim(f.getValue());
+      if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
+
+      var fn = function()
+      {
+        //?: {search string was changed} discard
+        if(f.extjsfBind.searchValue != sv) return;
+
+        var params = { searchNames: sv };
+        var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${extDom}').co();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.handler("${z:vid(v, 'search-firms-script')}", '${extDom}')({
+          params: params, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'contractors')}").loadPage(1)
+        }})
+      }
+
+      setTimeout(fn, 1000)
+    })
+
+    //~: selection set only toggled
+    extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${extDom}').on('toggle', function()
+    {
+        var names  = extjsf.bind("${z:vid(v, 'search-firms')}", '${extDom}').value();
+        var params = { searchNames: names };
+
+        var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${extDom}').co();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.handler("${z:vid(v, 'search-firms-script')}", '${extDom}')({
+          params: params, success : function() {
+             Ext.data.StoreManager.lookup("${z:vid(v, 'contractors')}").loadPage(1)
+        }})
+    })
+
+        //]]>
+        </script>
+
+        <!-- filter firms field] -->
+
+    </f:facet>
+
+    <!-- toolbar] -->
+
+
+    <!-- [contractors table -->
+
+    <x:data-store storeId = "${z:vid(v, 'contractors')}"
+      modelView = "${v}">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.ContractorView'
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.ContractorView')
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+      storeId = "${z:vid(v, 'contractors')}">
+
+      <f:facet name = "grid-props">
+        columns: ZeT.defined('retrade.columns.ContractorBalanceView'),
+        selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+        pager: true, sortableColumns: false, region: 'center'
+      </f:facet>
+    </x:data-grid>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+
+  //~: create contractor view on click
+  extjsf.handler("${z:vid(v, 'add-firm')}", '${extDom}', function(btn, e)
+  {
+    retrade_open_window({ url: '/firms/info-edit',
+
+      domain: 'add:contractor-firm',
+      box: { event: e, widthpt: 480, heightpt: 480}, collapsible: true,
+
+      onclose: function()
+      {
+        if(this.retradeEditSuccess)
+          extjsf.co("${z:vid(v, 'contractors')}", '${extDom}').reload()
+      }
+    })
+  })
+
+  //~: open contractor view on click
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
+    on('itemdblclick', function(comp, rec, node, row, e)
+  {
+    retrade_open_window({ url: '/firms/info-edit',
+
+      domain: 'view:contractor',
+      box: { event: e, widthpt: 480, heightpt: 480},
+      record: rec.getId(), collapsible: true,
+
+      onclose: function()
+      {
+        if(this.retradeEditSuccess)
+          extjsf.co("${z:vid(v, 'contractors')}", '${extDom}').reload()
+      }
+    })
+  })
+
+    //]]>
+    </script>
+
+    <!-- contractors table] -->
+
+  </x:desktop-panel>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://extjs.jsf.java.net/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+
+    <validation success = "true"/>
+
+  </ui:define>
+</ui:decorate>
+</ui:component>

@@ -1,0 +1,304 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Forces Handling Secure Entities                =
+    =================================================-->
+
+  <bean name  = 'secForcesOnSecure' class = 'com.tverts.secure.force.SecForces'>
+    <property name = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Create Person Login
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'secure: domain: create person login'/>
+
+          <property name  = 'secKey'
+                    value = 'secure: create: person login'/>
+
+
+          <property name  = 'title'
+                    value = 'Создание пользователя-персоны (логин)'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет добавить нового пользователя-персону в систему:
+              задать его логин и пароль.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · View Auth Logins
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'secure: domain: view: auth logins'/>
+
+          <property name  = 'secKey'
+                    value = 'secure: view: auth logins'/>
+
+
+          <property name  = 'title'
+                    value = 'Просмотр логинов пользователей'/>
+
+          <property name  = 'descr'>
+            <value>
+              Отвечает за отображение пункта меню (в настройках) и списка
+              логинов пользователей домена.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · View Secure Rules
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'secure: domain: view: rules'/>
+
+          <property name  = 'secKey'
+                    value = 'secure: view: rules'/>
+
+
+          <property name  = 'title'
+                    value = 'Просмотр правил безопасности'/>
+
+          <property name  = 'descr'>
+            <value>
+              Отвечает за отображение пункта меню (в настройках) и списка
+              правил безопасности домена.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Grant-Revoke Secure Rules
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'secure: domain: operate: rules'/>
+
+          <property name  = 'secKey'
+                    value = 'secure: operate: rules'/>
+
+
+          <property name  = 'title'
+                    value = 'Назначение и снятие правил безопасности'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет для всех пользователей назначать и отзывать
+              правила доступа (напрямую и во множествах).
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · View Any Login Secure Ables
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainUnityForce'>
+
+          <property name  = 'UID'
+                    value = 'secure: domain: view: any login ables'/>
+
+          <property name  = 'secKey'
+                    value = 'secure: view: ables'/>
+
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.endure.auth.AuthLogin'/>
+
+          <property name  = 'typeName'
+                    value = 'Core: Auth: Login'/>
+
+
+          <property name  = 'title'
+                    value = 'Просмотр правил доступа любого пользователя'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет просматривать назначенные правила доступа
+              для любого пользователя
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · View Secure Sets
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'secure: domain: view: sets'/>
+
+          <property name  = 'secKey'
+                    value = 'secure: view: sets'/>
+
+
+          <property name  = 'title'
+                    value = 'Просмотр можеств правил безопасности'/>
+
+          <property name  = 'descr'>
+            <value>
+              Отвечает за отображение пункта меню (в настройках) и списка
+              множеств правил безопасности домена.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Operate Secure Sets
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'secure: domain: operate: sets'/>
+
+          <property name  = 'secKey'
+                    value = 'secure: operate: sets'/>
+
+
+          <property name  = 'title'
+                    value = 'Операции над можествами правил безопасности'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет создавать, удалять и пополнять множества
+              правил доступа, а также изменять их имена.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Change Login of Any User
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainUnityForce'>
+
+          <property name  = 'UID'
+                    value = 'secure: operate: change any login'/>
+
+          <property name  = 'secKey'
+                    value = 'secure: operate: change login'/>
+
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.endure.auth.AuthLogin'/>
+
+          <property name  = 'typeName'
+                    value = 'Core: Auth: Login'/>
+
+
+          <property name  = 'title'
+                    value = 'Изменение логина любого пользователя'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет изменять логин входа в систему у
+              любого пользователя
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Change Own Login
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.OwnLoginForce'>
+
+          <property name  = 'UID'
+                    value = 'secure: operate: change own login'/>
+
+          <property name  = 'secKey'
+                    value = 'secure: operate: change login'/>
+
+
+          <property name  = 'title'
+                    value = 'Изменение собственного логина'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет пользователю изменять
+              собственный логин
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Change Password of Any User
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainUnityForce'>
+
+          <property name  = 'UID'
+                    value = 'secure: operate: change any password'/>
+
+          <property name  = 'secKey'
+                    value = 'secure: operate: change password'/>
+
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.endure.auth.AuthLogin'/>
+
+          <property name  = 'typeName'
+                    value = 'Core: Auth: Login'/>
+
+
+          <property name  = 'title'
+                    value = 'Изменение пароля любого пользователя'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет изменять пароля входа в систему у
+              любого пользователя
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Change Own Password
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.OwnLoginForce'>
+
+          <property name  = 'UID'
+                    value = 'secure: operate: change own password'/>
+
+          <property name  = 'secKey'
+                    value = 'secure: operate: change password'/>
+
+
+          <property name  = 'title'
+                    value = 'Изменение собственного пароля'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет пользователю изменять
+              собственный пароль
+            </value>
+          </property>
+        </bean>
+
+     </list>
+    </property>
+  </bean>
+</beans>

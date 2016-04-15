@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang = 'ru'>
+<head>
+
+  <meta charset = 'UTF-8'/>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../jquery.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zet.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetdom.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetbor.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../desktop.js"></script>
+
+  <link type = 'text/css' rel = 'stylesheet'
+     href = "../clocks.css"/>
+
+  <link type = 'text/css' rel = 'stylesheet'
+     href = "../icons.css"/>
+
+  <link type = 'text/css' rel = 'stylesheet'
+     href = "../retrade.css"/>
+
+  <style type = "text/css">
+
+html
+{
+  height: 100%; background: linear-gradient(135deg, #fcf9f0 0%, #c1c1b3 75%);
+}
+
+#area
+{
+  position: absolute; left: 10%; right: 10%; top: 10%; bottom: 10%;
+  border: 1px dashed white;
+}
+
+#area > div:last-child
+{
+  position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+}
+
+.retrade-tile-wrap
+{
+  position: absolute;
+  left: 13px; top: 13px;
+  right: 10px; bottom: 10px;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+.retrade-tile-wrap.selected
+{
+  left: 10px; top: 10px;
+  right: 13px; bottom: 13px;
+}
+
+.retrade-tile-wrap .retrade-boshadow-area
+{
+  position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+}
+
+.retrade-tile-wrap .retrade-boshadow-main
+{
+  display: block;
+}
+
+.retrade-tile-wrap .retrade-boshadow-shadow
+{
+  display: none;
+}
+
+.retrade-tile-wrap.selected .retrade-boshadow-shadow
+{
+  display: block;
+}
+
+.retrade-tile-wrap .retrade-boshadow-content
+{
+  font-size: xx-large; padding: 2px 3px;
+}
+
+.retrade-tile-wrap .retrade-tiles-delete,
+  .retrade-tile-wrap .retrade-tiles-edit,
+  .retrade-tile-wrap .retrade-tiles-goto,
+  .retrade-tile-wrap .retrade-tiles-move,
+  .retrade-tile-wrap .retrade-tiles-insert
+{
+  position: absolute; z-index: 10;
+  cursor: pointer; border-radius: 50%;
+}
+
+.retrade-tile-wrap .retrade-tiles-delete
+{
+  right: -5px; top: -5px;
+}
+
+.retrade-tile-wrap .retrade-tiles-edit
+{
+  left: -5px; top: -5px;
+}
+
+.retrade-tile-wrap .retrade-tiles-move
+{
+  left: -5px; bottom: -5px;
+}
+
+.retrade-tile-wrap .retrade-tiles-insert
+{
+  right: -5px; bottom: -5px;
+}
+
+.retrade-tile-wrap .retrade-tiles-goto
+{
+  left: 50%; top: 50%;
+  margin-left: -24px;
+  margin-top: -24px;
+}
+
+.retrade-tile-wrap .retrade-tiles-delete:hover,
+  .retrade-tile-wrap .retrade-tiles-edit:hover,
+  .retrade-tile-wrap .retrade-tiles-move:hover,
+  .retrade-tile-wrap .retrade-tiles-insert:hover
+
+{
+  width: 38px; height: 38px;
+  background-size: 38px 38px;
+}
+
+.retrade-tile-wrap .retrade-tiles-delete:hover
+{
+  right: -8px; top: -8px;
+}
+
+.retrade-tile-wrap .retrade-tiles-edit:hover
+{
+  left: -8px; top: -8px;
+}
+
+.retrade-tile-wrap .retrade-tiles-move:hover
+{
+  left: -8px; bottom: -8px;
+}
+
+.retrade-tile-wrap .retrade-tiles-insert:hover
+{
+  right: -8px; bottom: -8px;
+}
+
+.retrade-tile-wrap .retrade-tiles-goto:hover
+{
+  width: 64px; height: 64px;
+  background-size: 64px 64px;
+  margin-left: -32px;
+  margin-top: -32px;
+}
+
+.retrade-tile-wrap .retrade-tiles-edit:hover
+{
+  left: -8px;
+}
+
+.retrade-tile-wrap .retrade-tiles-colors
+{
+  position: absolute; z-index: 5;
+  left: 50%; top: 50%;
+  width: 156px; height: 36px;
+  margin-top: -18px;
+  margin-left: -78px;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.retrade-tiles-colors > div.N,
+  .retrade-tiles-colors > div.R,
+  .retrade-tiles-colors > div.G,
+  .retrade-tiles-colors > div.O
+{
+  top: 50%; left: 50%;
+  margin-top: -14px;
+  width: 24px; height: 24px;
+  box-sizing: content-box;
+  border-color: white;
+}
+
+.retrade-tiles-colors > div.N.enabled:hover,
+  .retrade-tiles-colors > div.R.enabled:hover,
+  .retrade-tiles-colors > div.G.enabled:hover,
+  .retrade-tiles-colors > div.O.enabled:hover
+{
+  width: 30px; height: 30px;
+  margin-top: -17px;
+}
+
+.retrade-tiles-colors > div.N
+{
+  margin-left: -74px;
+}
+
+.retrade-tiles-colors > div.N.enabled:hover
+{
+  margin-left: -77px;
+}
+
+.retrade-tiles-colors > div.R
+{
+  margin-left: -34px;
+}
+
+.retrade-tiles-colors > div.R.enabled:hover
+{
+  margin-left: -37px;
+}
+
+.retrade-tiles-colors > div.G
+{
+  margin-left: 5px;
+}
+
+.retrade-tiles-colors > div.G.enabled:hover
+{
+  margin-left: 2px;
+}
+
+.retrade-tiles-colors > div.O
+{
+  margin-left: 45px;
+}
+
+.retrade-tiles-colors > div.O.enabled:hover
+{
+  margin-left: 42px;
+}
+
+.retrade-tiles-scroll-right-outer,
+  .retrade-tiles-scroll-left-outer,
+  .retrade-tiles-scroll-up-outer,
+  .retrade-tiles-scroll-down-outer
+{
+  position: absolute; padding: 8px 2px;
+  z-index: 10; border-radius: 4px; cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.75);
+  border-right: solid 3px rgba(124, 131, 143, 0.75);
+  border-bottom: solid 3px rgba(124, 131, 143, 0.75);
+}
+
+.retrade-tiles-scroll-right-outer
+{
+  right: -20px; bottom: 33px;
+}
+
+.retrade-tiles-scroll-right-outer:hover,
+  .retrade-tiles-scroll-right-outer.pressed
+{
+  right: -23px; bottom: 30px;
+  border-right: none; border-bottom: none;
+}
+
+.retrade-tiles-scroll-left-outer
+{
+  left: -23px; top: 30px;
+}
+
+.retrade-tiles-scroll-left-outer:hover,
+  .retrade-tiles-scroll-left-outer.pressed
+{
+  left: -20px; top: 33px;
+  border-right: none; border-bottom: none;
+}
+
+.retrade-tiles-scroll-up-outer
+{
+  left: 50%; margin-left: -33px;
+  top: -20px; padding: 2px 8px;
+}
+
+.retrade-tiles-scroll-up-outer:hover,
+  .retrade-tiles-scroll-up-outer.pressed
+{
+  margin-left: -30px; top: -17px;
+  border-right: none; border-bottom: none;
+}
+
+.retrade-tiles-scroll-down-outer
+{
+  left: 50%; margin-left: -33px;
+  bottom: -20px; padding: 2px 8px;
+}
+
+.retrade-tiles-scroll-down-outer:hover,
+  .retrade-tiles-scroll-down-outer.pressed
+{
+  margin-left: -30px; bottom: -22px;
+  border-right: none; border-bottom: none;
+}
+
+  </style>
+
+</head>
+<body>
+
+  <div id = 'area'>
+    <div class = 'retrade-tiles-scroll-right-outer'><div class = 'retrade-tiles-scroll-right'></div></div>
+    <div class = 'retrade-tiles-scroll-left-outer'><div class = 'retrade-tiles-scroll-left'></div></div>
+    <div class = 'retrade-tiles-scroll-up-outer'><div class = 'retrade-tiles-scroll-up'></div></div>
+    <div class = 'retrade-tiles-scroll-down-outer'><div class = 'retrade-tiles-scroll-down'></div></div>
+  </div>
+
+  <script type = "text/javascript">
+
+   var DATA = [
+
+     { id: 100, color: 'G', text: 'This is a new world!' },
+     { id: 101, color: 'O', text: 'Better to be prepared...' },
+     { id: 102, color: 'N', text: 'Simple text' },
+     { id: 103, color: 'N', text: 'Take my hand and go on' },
+     { id: 104, color: 'N', text: 'This text is so long, it can\'t be inserted in a tiny tile area! Be aware and prepared...' },
+     { id: 105, color: 'N', text: 'Let\'s do it together!' },
+     { id: 106, color: 'N', text: 'Make it quick!' },
+     { id: 107, color: 'N', text: 'Startups forever' },
+     { id: 108, color: 'N', text: 'Young I want to be...' },
+     { id: 109, color: 'N', text: 'Hare and there, walk over it!' },
+     { id: 110, color: 'N', text: 'That is mine' },
+     { id: 111, color: 'N', text: 'I want it all, and now' },
+     { id: 112, color: 'N', text: 'Here you are: fake' },
+     { id: 113, color: 'N', text: 'Phony targets in make' },
+     { id: 114, color: 'N', text: 'Lost & found' },
+     { id: 115, color: 'N', text: 'Batman Vs Superman' },
+     { id: 116, color: 'N', text: 'Fargo' },
+     { id: 117, color: 'N', text: 'Walking are not dead' },
+     { id: 118, color: 'N', text: 'Better than life' },
+     { id: 119, color: 'N', text: 'X-rays for your brains' }
+
+   ]
+
+   $(document).ready(function()
+   {
+     function sc(dir)
+     {
+       return $('.retrade-tiles-scroll-' + dir + '-outer')
+     }
+
+     function updateScrollers(tiles)
+     {
+       var single = (tiles.columns() == 1)
+
+       sc('right').toggle(!single)
+       sc('left').toggle(!single)
+       sc('up').toggle(single)
+       sc('down').toggle(single)
+     }
+
+     var tileItem = new ReTrade.TilesItemExt({
+       wrapClass: 'retrade-tile-wrap', data: { array: DATA },
+       shadow: 'retrade-boshadow-N-XYZ retrade-boshadow-XYZ',
+       selectedClass: 'selected'
+     })
+
+     var tiles = new ReTrade.TilesControl({
+       content : tileItem, onupdate: updateScrollers,
+       tiles : { area: 'area', absolute: true,
+         min: [ 180, 144, 100.0, 80.0 ],
+         max: [ 250, 200, 100.0, 80.0 ],
+         rows: 'max', columns: 'min',
+         cellClass: 'retrade-tile-cell'
+       }
+     })
+
+     function scbind(dir, left)
+     {
+       if(ReTrade.isTouch) sc(dir).
+         mousedown(ZeT.fbind(tiles.scrollStart, tiles, left, true)).
+         mouseup(ZeT.fbind(tiles.scrollStart, tiles, left, false))
+       else sc(dir).
+         mouseenter(ZeT.fbind(tiles.scrollStart, tiles, left, true)).
+         mouseleave(ZeT.fbind(tiles.scrollStart, tiles, left, false))
+     }
+
+     scbind('right', false)
+     scbind('left', true)
+     scbind('up', true)
+     scbind('down', false)
+
+     tiles.update()
+     $(window).resize(ZeT.fbind(tiles.update, tiles))
+   })
+
+  </script>
+
+
+</body>
+</html>

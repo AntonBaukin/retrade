@@ -1,0 +1,100 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:fragment xmlns = 'http://www.w3.org/1999/xhtml'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'
+   xmlns:co = 'http://java.sun.com/jsf/composite'
+   xmlns:f  = 'http://java.sun.com/jsf/core'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:z  = 'uri:tverts.com'>
+
+  <co:interface>
+
+    <co:attribute name = 'coid' required = 'true'
+      type = 'java.lang.Object'/>
+
+    <!--
+         Current value of the field, key in the store.
+    -->
+    <co:attribute name = 'value' required = 'true'
+      type = 'java.lang.Object'/>
+
+    <!--
+         Use this attribute to temporary assign the same
+         visible value while the store is loading. This
+         eliminates temporary displaying the store key
+         instead of the associated item title.
+    -->
+    <co:attribute name = 'displayValue' default = ""
+      type = 'java.lang.String'/>
+
+    <!--
+         In the most cases drop list takes data from
+         a Store. Assign it's Bind name (coid) here.
+    -->
+    <co:attribute name = 'storeId'
+      type = 'java.lang.String'/>
+
+    <!--
+         When list has a fixed number of data pairs
+         (key, display text) instead of using a Store,
+         you may provide the values via a map.
+         Conflicts with storeId attribute!
+    -->
+    <co:attribute name = 'labels'
+      type = 'java.util.Map'/>
+
+    <!--
+         JSF extension point of the field.
+    -->
+    <co:editableValueHolder name = 'valueInput'
+      targets = 'field'/>
+
+    <!--
+         Properties of the drop list component.
+
+         Property notRefreshOnExpand set to true
+         tells not to reload the store (of storeId)
+         on each repeated drop.
+    -->
+    <co:facet name = 'drop-props'/>
+
+    <co:facet name = 'label-props'/>
+
+  </co:interface>
+
+  <co:implementation>
+
+    <h:inputHidden id = "field" value = "#{cc.attrs.value}"/>
+
+    <div id = "#{cc.clientId}-#{cc.attrs.coid}-props" style = "display:none">
+      <co:renderFacet name = "drop-props"/>
+    </div>
+
+    <div id = "#{cc.clientId}-#{cc.attrs.coid}-labels" style = "display:none">
+      <h:outputText escape = "true" value = "#{cc.attrs.labels}">
+        <f:converter converterId = "com.tverts:fmt:special:json-strings-map-list"/>
+      </h:outputText>
+    </div>
+
+    <div id = "#{cc.clientId}-#{cc.attrs.coid}-label-props" style = "display:none">
+      <co:renderFacet name = "label-props"/>
+    </div>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+      extjsf.domain('${extDom}').
+        bind('#{cc.attrs.coid}', new extjsf.DropFieldBind()).
+        ids('#{cc.clientId}').parent('#{cc.parent.attrs.coid}').
+        props({ displayhidden: 'label', valuehidden: 'key' }).
+        props({ xtype: 'combobox', pickerWidthAuto: true }).
+        scope("#{cc.attrs.storeId}", "#{cc.attrs.displayValue}",
+          function(drop, s, v) {
+            if(!ZeT.ises(s)) drop.props({ store: s })
+            if(!ZeT.ises(v)) drop.props({ displayValue: v })
+        }).readPropsNode().buildLabel().install()
+
+    //]]>
+    </script>
+  </co:implementation>
+</ui:fragment>

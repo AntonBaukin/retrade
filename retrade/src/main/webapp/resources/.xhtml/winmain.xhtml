@@ -1,0 +1,173 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:fragment xmlns = 'http://www.w3.org/1999/xhtml'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'
+   xmlns:co = 'http://java.sun.com/jsf/composite'
+   xmlns:z  = 'uri:tverts.com'>
+
+  <co:interface>
+
+    <!--
+         Winmain component is a panel to install
+         as a content of a Window that supports
+         optional toolbar and status bar panels.
+    -->
+
+    <!--
+         Name of the Bind created for the content panel.
+    -->
+    <co:attribute name = 'coid' required = 'true'
+       type = 'java.lang.String'/>
+
+    <!--
+         Ordinary, each window is created in own Domain
+         with 'window' Bind name. If more than one window
+         may be created per Domain, alternate names must
+         be defined and told as this optional parameter.
+    -->
+    <co:attribute name = 'windowBind' default = 'window'
+       type = 'java.lang.String'/>
+
+    <co:attribute name = 'webLink' default = 'true'
+       type = 'java.lang.Boolean'/>
+
+    <co:attribute name = 'winAlign' default = 'lite'
+       type = 'java.lang.String'/>
+
+    <co:attribute name = 'desktopHistory' default = 'save'
+       type = 'java.lang.String'/>
+
+    <!--
+         Properties of the root content panel.
+    -->
+    <co:facet name = 'extjs-props'/>
+
+    <!--
+         Properties of the toolbar panel.
+    -->
+    <co:facet name = 'toolbar-props'/>
+
+    <!--
+         Content of the toolbar.
+         Panel is not created if it has no children!
+    -->
+    <co:facet name = 'toolbar'/>
+
+    <!--
+         Properties of the status bar panel.
+    -->
+    <co:facet name = 'status-props'/>
+
+    <!--
+         Content of the status bar.
+         Panel is not created if it has no children!
+    -->
+    <co:facet name = 'status'/>
+
+  </co:interface>
+
+  <co:implementation>
+
+    <div id = "#{cc.clientId}-#{cc.attrs.coid}-props" style = "display:none">
+      <co:renderFacet name = "extjs-props"/>
+    </div>
+
+    <div id = "#{cc.clientId}-#{cc.attrs.coid}-toolbar-props" style = "display:none">
+      <co:renderFacet name = "toolbar-props"/>
+    </div>
+
+    <div id = "#{cc.clientId}-#{cc.attrs.coid}-status-props" style = "display:none">
+      <co:renderFacet name = "status-props"/>
+    </div>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+      extjsf.domain('${extDom}').
+        bind('#{cc.attrs.coid}', new extjsf.Bind()).ids('#{cc.clientId}').
+        parent('#{cc.parent.attrs.coid}').props({ xtype: 'panel' }).
+        props({ layout: 'border', region: 'center', border: false }).
+        props({ bodyPadding: extjsf.pt(1) }).readPropsNode().
+          nest('toolbar', function(tb) {
+            tb.props({ xtype: 'toolbar', dock: 'top', border: false }).readPropsNode()
+          }).
+          nest('status', function(sb) {
+            sb.props({ xtype: 'panel', dock: 'bottom', border: false }).readPropsNode()
+          })
+
+      extjsf.bind('#{cc.attrs.windowBind}', '${extDom}').scope(function(window){
+        window.props({ desktopHistory: '#{cc.attrs.desktopHistory}', extjsfView: '#{rootView.id}' })
+        if(window.WinAlign) window.WinAlign.opts.behaviour = '#{cc.attrs.winAlign}'; else
+          new ReTrade.WinAlign({window: window, behaviour: '#{cc.attrs.winAlign}' })
+      })
+
+    //]]>
+    </script>
+
+
+    <!-- [insert toolbar controls -->
+
+    <co:renderFacet name = "toolbar"/>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+      extjsf.bind("#{cc.attrs.coid}", '${extDom}').scope(
+        extjsf.bind('#{cc.attrs.coid}-toolbar', '${extDom}'),
+        function(p, tb){ tb.$items_replace(p.$items_replace()) })
+
+    //]]>
+    </script>
+
+    <!-- insert toolbar controls] -->
+
+
+    <!-- [insert status bar controls -->
+
+    <co:renderFacet name = "status"/>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+      extjsf.bind("#{cc.attrs.coid}", '${extDom}').scope(
+        extjsf.bind('#{cc.attrs.coid}-status', '${extDom}'),
+        function(p, sb){ sb.$items_replace(p.$items_replace()) })
+
+    //]]>
+    </script>
+
+    <!-- insert status bar controls] -->
+
+
+    <!-- [window main panel -->
+
+    <co:insertChildren/>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+    extjsf.bind('#{cc.attrs.windowBind}', '${extDom}').when(
+        extjsf.bind("#{cc.attrs.coid}", '${extDom}'),
+        extjsf.bind('#{cc.attrs.coid}-toolbar', '${extDom}'),
+        extjsf.bind('#{cc.attrs.coid}-status', '${extDom}'),
+        function(w, p, tb, sb)
+        {
+          w.co().add(p.co(true))
+
+          if(tb.isEmpty()) tb.destroy(); else
+            w.co().addDocked(tb.co(true))
+
+          if(sb.isEmpty()) sb.destroy(); else
+            w.co().addDocked(sb.co(true))
+
+          if("#{cc.attrs.webLink}" != 'false')
+            retrade_add_web_link_tool(w, "#{z:jss(rootView.requestURI)}",
+              "#{rootView.entityKey}", "#{z:jss(rootView.requestParams)}")
+        })
+
+    //]]>
+    </script>
+
+    <!-- window main panel] -->
+  </co:implementation>
+</ui:fragment>

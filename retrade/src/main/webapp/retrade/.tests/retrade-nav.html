@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset = "UTF-8"/>
+  <meta name = "Viewport" content = "width = device-width, initial-scale = 1"/>
+
+  <title>ТТС РеТрейд™ Навигация</title>
+
+
+  <!-- JQuery Library -->
+  <script type = 'text/javascript'
+    src = "../jquery.js"></script>
+
+
+  <!-- ExtJS Styles -->
+  <link type = 'text/css' rel = 'stylesheet'
+    href = "../../extjs/ext-theme-crisp-touch-all-debug.css"/>
+
+  <link type = 'text/css' rel = 'stylesheet'
+      href = "../../extjs.ux/extjs_ux.css"/>
+
+
+  <!-- SmartMenus Library -->
+  <link type = 'text/css' rel = 'stylesheet'
+    href = '../bootstrap/smartmenus/sm-retrade.css'/>
+
+  <script type = 'text/javascript'
+    src = "../bootstrap/smartmenus/jquery.smartmenus.js"></script>
+
+
+  <!-- ReTrade Styles -->
+  <link type = 'text/css' rel = 'stylesheet'
+    href = "../clocks.css"/>
+
+  <link type = 'text/css' rel = 'stylesheet'
+    href = "../icons.css"/>
+
+  <link type = 'text/css' rel = 'stylesheet'
+     href = "../retrade.css"/>
+
+
+  <!-- 0-ZeT, ReTrade Library -->
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zet.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetdom.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetbor.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../desktop.js"></script>
+
+</head>
+<body style = "padding: 0 15px;">
+
+  <script>
+  //<![CDATA[
+
+  $(document).ready(function()
+  {
+    var MENU = [
+
+      {
+        title: 'РеТрейд', icon: 'retrade-main-icon', handler: function()
+        {
+
+        }
+      },
+
+      [
+        {
+          title: 'Основные документы', icon: 'retrade-document-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Документы изменения цен', icon: 'retrade-price-delta-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Платёжные документы', icon: 'retrade-payment-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Мои отчёты', icon: 'retrade-payment-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Настройки', icon: 'retrade-settings-icon', handler: function()
+          {
+
+          }
+        },
+
+        [
+          {
+            title: 'Атрибуты товаров', icon: 'retrade-good-attrs-icon', handler: function()
+            {
+
+            }
+          },
+
+          {
+            title: 'Данные и отчёты', icon: 'retrade-reports-icon', handler: function()
+            {
+
+            }
+          },
+
+          {
+            title: 'Пользователи', icon: 'retrade-user-icon', handler: function()
+            {
+
+            }
+          },
+
+          {
+            title: 'Правила доступа', icon: 'retrade-secrule-icon', handler: function()
+            {
+
+            }
+          },
+
+          {
+            title: 'Множества правил', icon: 'retrade-secset-icon', handler: function()
+            {
+
+            }
+          }
+        ]
+      ],
+
+      {
+        title: 'Справочники', icon: 'retrade-catalogues-icon', handler: function()
+        {
+
+        }
+      },
+
+      [
+        {
+          title: 'Товары', icon: 'retrade-goods-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Товары, склады, цены', icon: 'retrade-good-store-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Категории товаров', icon: 'retrade-goods-tree-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Единицы измерения', icon: 'retrade-measure-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Склады', icon: 'retrade-trade-store-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Контрагенты', icon: 'retrade-contractor-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Прайс-листы', icon: 'retrade-prices-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Прайс-листы контрагентов', icon: 'retrade-prices-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Учётные счета', icon: 'retrade-accounts-sum-icon',
+          disabled: true, handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Платёжные счета', icon: 'retrade-accounts-pay-icon',
+          disabled: true, handler: function()
+          {
+
+          }
+        }
+      ],
+
+      {
+        title: 'Создать', icon: 'retrade-issue-plus-icon', handler: function()
+        {
+
+        }
+      },
+
+      [
+        {
+          title: 'Накладную закупки', icon: 'retrade-listpad-plus-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Накладную продажи', icon: 'retrade-listpad-minus-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Накладную перемещения', icon: 'retrade-listpad-arrow-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Накладную авто-производства', icon: 'retrade-listpad-bottle-red-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Инвентаризацию остатков', icon: 'retrade-listpad-exclaim', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Накладную корректировки', icon: 'retrade-listpad-delta-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Документ изменения цен', icon: 'retrade-listpad-bottle-red-icon', handler: function()
+          {
+
+          }
+        }
+      ],
+
+      {
+        title: 'Ссылки', icon: 'retrade-my-links', handler: function()
+        {
+
+        }
+      },
+
+      {
+        icon: 'retrade-main-man-icon', class: 'pull-right last-child', handler: function()
+        {
+
+        }
+      },
+
+      {
+        icon: 'retrade-selset-button-icon retrade-icon-nav-24x16', class: 'pull-right',
+        handler: function()
+        {
+
+        }
+      },
+
+      {
+        icon: 'retrade-button-menu-arrow retrade-icon-nav-6x16',
+        class: 'pull-right', aclass: 'icon-only align-menu-middle'
+      },
+
+      [
+        {
+          title: 'Свойства', icon: 'retrade-selset-menu-edit', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Добавить', icon: 'retrade-selset-menu-plus', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Удалить', icon: 'retrade-selset-menu-minus', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Очистить', icon: 'retrade-selset-menu-clear', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'По умолчанию', icon: 'x-menu-item-checkbox',
+          aclass: 'x-menu-item-checked', handler: function()
+          {
+
+          }
+        }
+      ],
+
+      {
+        div: true, class: 'pull-right', style: 'border-left: none; border-right: none;',
+        dclass: 'retrade-desktop-clocks-area'
+      },
+
+      {
+        div: true, class: 'pull-right', style: 'border-left: none; border-right: none;',
+        dclass: 'retrade-desktop-eventsnum-area'
+      }
+    ]
+
+    function createMenu(node, m, subs, level)
+    {
+      if(m && !m.div)
+      {
+        var  a = $('<a/>', { href: '#' })
+        var li = $('<li/>').append(a)
+        node.append(li); node = li
+
+        //?: {li class}
+        if(ZeT.iss(m.class))
+          li.addClass(m.class)
+
+        //?: {a class}
+        if(ZeT.iss(m.aclass))
+          a.addClass(m.aclass)
+
+        //?: {has icon}
+        if(ZeT.iss(m.icon))
+        {
+          var ico = $('<span/>').addClass(m.icon)
+          a.append(ico)
+
+          if(m.icon.indexOf(' ') == -1)
+            ico.addClass((level == 1)?('retrade-icon-nav-20'):('retrade-icon-nav-16'))
+        }
+
+        //~: menu item text
+        if(!ZeTS.ises(m.title))
+          a.append($('<span/>').text(ZeT.asserts(m.title)))
+
+        //?: {disabled}
+        if((m.disabled === true) || (m.disabled === 'true'))
+          a.addClass('disabled')
+      }
+
+      if(m && m.div)
+      {
+        var div = $('<div/>')
+        var  li = $('<li/>').append(div)
+        node.append(li); node = li
+
+        //?: {li class}
+        if(ZeT.iss(m.class))
+          li.addClass(m.class)
+
+        //?: {li style}
+        if(ZeT.iss(m.style))
+          li.attr('style', m.style)
+
+        //?: {div class}
+        if(ZeT.iss(m.dclass))
+          div.addClass(m.dclass)
+
+        //?: {div style}
+        if(ZeT.iss(m.dstyle))
+          div.attr('style', m.dstyle)
+      }
+
+      if(ZeT.isa(subs))
+      {
+        if(level)
+        {
+          var ul = $('<ul/>')
+          node.append(ul)
+          node = ul
+        }
+
+        for(var i = 0;(i < subs.length);i++)
+        {
+          var sub = subs[i]
+          ZeT.assert(ZeT.iso(sub))
+
+          var next = subs[i+1]
+          if(ZeT.isa(next)) i++
+
+          createMenu(node, sub, next, (level)?(level+1):(1))
+        }
+      }
+    }
+
+    createMenu($('ul.sm.sm-retrade'), null, MENU)
+
+    //~: initialize Smart Menus
+    $('ul.sm.sm-retrade').smartmenus({
+      subMenusMinWidth: null,
+      showFunction: function($ul, complete) { $ul.fadeIn(200, complete) }
+    })
+
+
+    //~: create the clocks
+    new ReTrade.Clocks({ parent: $('.retrade-desktop-clocks-area')[0], node: 'clocks', start: true })
+
+    //~: create the events menu
+    var ctl = new ReTrade.EventsControl({
+      number: { parent: $('.retrade-desktop-eventsnum-area')[0], node: 'num', defcolor: 'N' },
+      menu: { node: 'menu-area', parent: document.body, length: 5, offset: 95 },
+
+      proxy: ZeT.hiddenInstance('ReTrade.EventsDataProxy', {
+        request : function(task, query)
+        {
+          ZeT.log('Do ', task, ': ', query)
+        }
+    })})
+
+    ctl.set({
+
+     numbers: { N: 999, G: 66, O: 1, R: 1 }, newer: null, older: 58, txn: 100, firstid: 81, items: [
+
+     { id: 105, time: '12:58', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную перемещения №102/ПЕ.', script: "alert('Scripting action...')"},
+     { id: 98, time: '12:35', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную продажи №101/ПР.' },
+     { id: 95, time: '11:20', date: 'сегодня 04 Фев', color: 'G', text: 'Накладная перемещения №100/ПЕ успешно проведена!' },
+     { id: 91, time: '10:15', date: 'сегодня 04 Фев', color: 'O', text: 'Система запущена!', script: "ZeT.log('script run 2+4 = ', 2+4)" },
+     { id: 87, time: '22:13', date: 'вчера 03 Фев', color: 'R', text: 'Производится остановка системы!' },
+
+     { id: 81, time: '10:15', date: 'вчера 03 Фев', color: 'G', text: 'Добавлен пользователь [ivanov] Иванов Иван Иванович.' },
+     { id: 71, time: '12:34', date: '02 Фев', color: 'G', text: 'Добавлен пользователь [navalniy] Навальный Алексей Александрович. Голосуем за Навального! Кому он не нравится: спи, красавица! Крепким вечным сном...' },
+     { id: 70, time: '12:15', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №98/ПЕ.' },
+     { id: 68, time: '12:10', date: '02 Фев', color: 'G', text: 'Пользователь [System] создал накладную продажи №95/ПР.' },
+     { id: 67, time: '12:07', date: '02 Фев', color: 'O', text: 'Пользователь [System] удалил накладную закупки №93/ЗК.' },
+
+     { id: 65, time: '10:57', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №90/ПЕ.' },
+     { id: 60, time: '10:50', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №87/ПЕ.' }
+   ]})
+})
+
+
+  //]]>
+  </script>
+
+  <ul class = "sm sm-retrade"></ul>
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+  <!--=================================================
+    =  Sphere with empty ReTrade Domain               =
+    +================================================-->
+
+  <import resource = 'ordinaryDomainSphere.xml'/>
+
+
+  <!--=================================================
+    =  Sphere of Test ReTrade Catalogs                =
+    +================================================-->
+
+  <import resource = 'retradeTestCatalogsSphere.xml'/>
+
+
+  <!--=================================================
+    =  Sphere of Test ReTrade Documents               =
+    +================================================-->
+
+  <import resource = 'retradeTestDocumentsSphere.xml'/>
+
+
+  <!--=================================================
+    =  Sphere of ReTrade Test Invoices Fixing         =
+    +================================================-->
+
+  <import resource = 'retradeTestFixInvoicesSphere.xml'/>
+
+
+  <!--=================================================
+    =  Sphere of ReTrade Test Payments                =
+    +================================================-->
+
+  <import resource = 'retradeTestPaymentsSphere.xml'/>
+
+
+  <!--=================================================
+    =  Genesis Spheres of ReTrade module              =
+    +================================================-->
+
+  <bean name  = 'retradeGenesisSpheres'
+        class = 'com.tverts.genesis.GenesisSpheres'>
+    <property name = 'references'>
+      <list>
+
+        <ref bean = 'ordinaryDomainSphere'/>
+        <ref bean = 'retradeTestCatalogsSphere'/>
+        <ref bean = 'retradeTestDocumentsSphere'/>
+
+        <!--
+        <ref bean = 'retradeTestInvoicesFixSphere'/>
+        <ref bean = 'retradeTestPaymentsSphere'/>
+        -->
+
+      </list>
+    </property>
+  </bean>
+</beans>

@@ -1,0 +1,53 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:fragment xmlns = 'http://www.w3.org/1999/xhtml'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'
+   xmlns:co = 'http://java.sun.com/jsf/composite'
+   xmlns:z  = 'uri:tverts.com'>
+
+  <co:interface>
+
+    <!--
+         Domain unique bind name of the menu sub-component.
+    -->
+    <co:attribute name = 'coid' required = 'true'
+       type = 'java.lang.String'/>
+
+    <co:facet name = 'extjs-props'/>
+
+  </co:interface>
+
+  <co:implementation>
+
+    <div id = "#{cc.clientId}-#{cc.attrs.coid}-props" style = "display:none">
+      <co:renderFacet name = "extjs-props"/>
+    </div>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+      extjsf.domain('${extDom}').
+        bind('#{cc.attrs.coid}', new extjsf.Bind()).
+        ids('#{cc.clientId}').parent('#{cc.parent.attrs.coid}').
+        readPropsNode().props({ xtype: 'menu' })
+
+    //]]>
+    </script>
+
+    <co:insertChildren/>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+      extjsf.bind('#{cc.parent.attrs.coid}', '${extDom}').when(
+        extjsf.bind('#{cc.attrs.coid}', '${extDom}'),
+        function(parent, menu) {
+          parent.menu = menu
+          if(ZeT.isf(parent.co().setMenu)) parent.co().setMenu(menu.co(true))
+          menu.co(true).fireEvent('added', menu.co(true), parent.co())
+        })
+
+    //]]>
+    </script>
+  </co:implementation>
+</ui:fragment>

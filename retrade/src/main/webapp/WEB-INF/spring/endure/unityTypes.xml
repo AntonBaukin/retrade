@@ -1,0 +1,68 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Unity Types for XRoot Module                   =
+    +===============================================-->
+
+  <import resource = 'xrootTypes.xml'/>
+
+
+  <!--=================================================
+    =  Unity Types for ReTrade Module                 =
+    +===============================================-->
+
+  <import resource = 'retradeTypes.xml'/>
+
+
+  <!--=================================================
+    =  Unity Types Defined                            =
+    +==================================================
+    |
+    |  Overwrite this file in each module having it's
+    |  own unity types.
+    |
+    +================================================-->
+
+  <bean name  = 'unityTypesActivator'
+        class = 'com.tverts.hibery.system.UnityTypesActivator'>
+
+    <!-- string encoded types -->
+    <property name = 'unityTypes'>
+      <bean class = 'com.tverts.objects.StringsList'>
+        <property name = 'references'>
+          <list>
+
+            <!-- execution root module unity types -->
+            <ref bean = 'xrootUnityTypes'/>
+
+            <!-- primary module unity types -->
+            <ref bean = 'retradeUnityTypes'/>
+            <ref bean = 'retradeAggrTypes'/>
+
+          </list>
+        </property>
+      </bean>
+    </property>
+
+    <!-- unity types descriptors -->
+    <property name = 'structs'>
+      <bean class = 'com.tverts.endure.types.UnityTypeStructsList'>
+        <property name = 'references'>
+          <list>
+
+            <!-- core module unity types -->
+            <ref bean = 'xrootUnityTypeStructs'/>
+
+            <!-- ReTrade module unity types -->
+            <ref bean = 'retradeUnityTypeStructs'/>
+
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+</beans>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Basic//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd">
+<svg version="1.1" baseProfile="basic" id="Layer_1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px"
+	 viewBox="0 0 16 16" xml:space="preserve">
+<polygon fill="#FFFFFF" stroke="#BEBEBF" stroke-miterlimit="10" points="0.5,0.5 15.5,0.5 15.5,8.5 11.5,8.5 11.5,13.5 15.5,13.5 
+	15.5,15.5 0.5,15.5 "/>
+<g>
+	<rect x="2" y="2" fill="#848687" width="8" height="2"/>
+	<rect x="2" y="4" fill="#EAEAEA" width="8" height="2"/>
+	<rect x="2" y="6" fill="#848687" width="8" height="2"/>
+	<rect x="2" y="8" fill="#EAEAEA" width="8" height="2"/>
+	<rect x="2" y="10" fill="#848687" width="8" height="2"/>
+	<rect x="2" y="12" fill="#EAEAEA" width="8" height="2"/>
+</g>
+<g>
+	<polygon fill="#5C5E5F" points="14,5 11,5 11,2 14,2 14,4 	"/>
+	<polygon fill="#5C5E5F" points="16,10 13,10 13,7 14,7 16,7 	"/>
+	<rect x="13" y="12" fill="#5C5E5F" width="3" height="3"/>
+	<g>
+		<rect x="11" y="5" fill="#848687" width="1" height="9"/>
+		<rect x="11" y="8" fill="#848687" width="2" height="1"/>
+		<rect x="11" y="13" fill="#848687" width="2" height="1"/>
+	</g>
+</g>
+</svg>

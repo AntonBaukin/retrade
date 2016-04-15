@@ -1,0 +1,80 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesPriceListsView}"/>
+
+${rootView.forceSecure('view: price-lists')}
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+  <ui:define name = 'page_body'>
+
+
+  <x:root-panel coid = "${z:vid(v, 'prices_root_panel')}">
+
+    <!-- [price lists table -->
+
+    <x:data-store storeId = "${z:vid(v, 'priceLists')}"
+      modelView = "${v}">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.PriceListView',
+        sorters: [{ property: 'code', direction: 'ASC' }]
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.PriceListView')
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+      storeId = "${z:vid(v, 'priceLists')}">
+
+      <f:facet name = "grid-props">
+        region: 'center',
+        columns: ZeT.defined('retrade.columns.CatItemView'),
+        selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+        pager: false, sortableColumns: true
+      </f:facet>
+    </x:data-grid>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
+    on('itemdblclick', function(grid, rec, node, row, e)
+  {
+    retrade_open_window({ url: '/price-lists/info',
+      domain: 'view:global:price-list',
+      box: { event: e, widthpt: 520, heightpt: 390, '-height': true},
+      record: rec.getId(), collapsible: true
+    })
+  })
+
+    //]]>
+    </script>
+
+    <!-- price lists table] -->
+
+  </x:root-panel>
+
+
+  <script type = "text/javascript">
+
+  //~: invoke on-load callback of the loader
+  retrade_chain_on_load('${extDom}', "${z:vid(v, 'prices_root_panel')}")
+
+  </script>
+
+
+</ui:define>
+</ui:decorate>
+</ui:component>

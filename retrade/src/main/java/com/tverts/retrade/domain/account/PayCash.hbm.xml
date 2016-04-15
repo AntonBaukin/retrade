@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.account'>
+
+  <joined-subclass name = 'PayCash' extends = 'PayWay' lazy = 'true'
+    table = 'retrade_pay_cash'>
+
+    <!-- Join Key -->
+
+    <key column = 'pk_pay_cash' foreign-key = 'fk_pay_cash'/>
+
+  </joined-subclass>
+</hibernate-mapping>

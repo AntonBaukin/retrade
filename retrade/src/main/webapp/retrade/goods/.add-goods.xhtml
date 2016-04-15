@@ -1,0 +1,284 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+  xmlns:z  = 'uri:tverts.com'>
+
+
+  <!-- [toggle table view -->
+
+  <x:component coid = "${z:vid(v, 'toggle-good-view')}">
+    <f:facet name = "extjs-props">
+      xtype: 'button', cls: 'retrade-button-white',
+      width: retrade_default('button-square').width,
+      height: retrade_default('button-square').height,
+      iconCls: "${empty toggleTableView?('retrade-list-only'):(toggleTableView)}",
+      tooltipType: 'title', margin: extjsf.pts(0, 8, 0, 0)
+    </f:facet>
+  </x:component>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  ZeT.scope(function()
+  {
+    var b = extjsf.bind("${z:vid(v, 'toggle-good-view')}", '${extDom}')
+    var i, c = [ 'retrade-tree-list', 'retrade-list-tree', 'retrade-list-only' ]
+    var t = [ 'Показать дерево категорий товара слева',
+      'Показать дерево категорий товара справа',
+      'Показать только таблицу товаров' ]
+
+    //~: initial index by the icon class
+    i = ZeT.asserts(b.$raw().iconCls)
+    ZeT.assert((i = c.indexOf(i)) >= 0)
+    i = (i + 1) % 3
+
+    function assignIndex()
+    {
+      b.co().setIconCls(c[i])
+      b.co().setTooltip(t[i])
+
+      var p = extjsf.bind("${z:vid(v, treeTableLayout)}", '${extDom}')
+      var x = extjsf.bind("${z:vid(v, tree)}", '${extDom}')
+      var s = extjsf.bind("${z:vid(v, goodsTreeSplitter)}", '${extDom}')
+      var m = c[(i + 2) % 3]
+
+      if(m == 'retrade-tree-list')
+      {
+        p.co().remove(x.co(), false)
+        p.co().remove(s.co(), false)
+        p.co().insert(0, s.co())
+        p.co().insert(0, x.co())
+        s.co().show()
+        x.co().show()
+      }
+
+      if(m == 'retrade-list-tree')
+      {
+        p.co().remove(x.co(), false)
+        p.co().remove(s.co(), false)
+        p.co().add(s.co())
+        p.co().add(x.co())
+        s.co().show()
+        x.co().show()
+      }
+
+      if(m == 'retrade-list-only')
+      {
+        s.co().hide()
+        x.co().hide()
+      }
+
+      if(ZeT.isf(b.onToggleGoodView))
+        b.onToggleGoodView(m)
+    }
+
+    //~: react on the click
+    b.on('click', function()
+    {
+      i = (i + 1) % 3
+      assignIndex()
+    })
+
+    //~: initial setup
+    b.on('added', assignIndex)
+  })
+  //]]>
+  </script>
+
+  <!-- toggle table view] -->
+
+
+  <!-- [add-edit good -->
+
+  <x:component coid = "${z:vid(v, 'add-good')}">
+    <f:facet name = "extjs-props">
+      xtype: 'button', text: 'Создать',
+      tooltipType: 'title', tooltip: 'Создать новый товар',
+      disabled: ${not rootView.isSecure('edit: goods')}
+    </f:facet>
+  </x:component>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeOpenGoodWindow =
+    function(record, e, opts)
+  {
+    var btn = extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}')
+
+    var dk  = 'edit:global:good'
+    if(!record) dk = 'create:good'
+
+    var ps  = {}; if(!record) ps.create = true
+    var box = ZeT.extend(opts && opts.box, { event: e })
+
+    var window; window = retrade_open_window({ url: '/goods/edit-good',
+      box: retrade_default('good-box',  box),
+      domain: dk, params: ps, collapsible: true,
+      record: record && record.getId(),
+
+      onclose: function()
+      {
+        if(!window.retradeEditDone) return
+        btn.retradeAddSelSetChecked = window.retradeAddSelSetChecked;
+        Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").reload()
+      }
+    })
+
+    window.retradeAddSelSetChecked = (btn.retradeAddSelSetChecked === true)
+  }
+
+  extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}', function(btn, event)
+  {
+    extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').
+      retradeOpenGoodWindow(null, event, { box: { '+xpt': 10, '-ypt': -10,
+        heightpt: retrade_default('good-box').heightpt + 40
+      }})
+  })
+
+  //]]>
+  </script>
+
+  <!-- add-edit good] -->
+
+
+  <!-- [add goods table -->
+
+  <x:component coid = "${z:vid(v, 'add-goods-table')}">
+    <f:facet name = "extjs-props">
+      xtype: 'button', text: 'Создать +',
+      margin: extjsf.pts(0, 0, 0, 4),
+      tooltipType: 'title', tooltip: 'Создать новые товары в табличной форме',
+      disabled: ${not rootView.isSecure('edit: goods')}
+    </f:facet>
+  </x:component>
+
+  <script type = "text/javascript">
+    //<![CDATA[
+
+  extjsf.handler("${z:vid(v, 'add-goods-table')}", '${extDom}', function(btn, e)
+  {
+    var window; window = retrade_open_window({ url: '/goods/create-goods',
+      domain: 'add:goods-table', collapsible: true,
+      box: { event: e, widthpt: 480, heightpt: 240, '+xpt': 30, '-ypt': 10 },
+
+      onclose: function()
+      {
+        if(!window.retradeEditDone) return
+        Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").reload()
+      }
+    })
+  })
+
+    //]]>
+  </script>
+
+  <!-- add goods table] -->
+
+
+  <!-- [assign goods group -->
+
+  <x:component coid = "${z:vid(v, 'assign-group-area')}">
+    <f:facet name = "extjs-props">
+      xtype: 'panel', border: false,
+      margin: extjsf.pts(1, 4, 1, 4),
+      bodyPadding: extjsf.pts(0, 4, 0, 4),
+      layout: { type: 'hbox', align: 'middle' },
+      cls: 'retrade-toolbar-colour-line-none'
+    </f:facet>
+
+    <x:component coid = "${z:vid(v, 'toggle-assign-group')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Группа', margin: extjsf.pts(2, 0, 2, 0),
+        toggleGroup: "${z:vid(v, 'toggle-group-toolbar')}", tooltipType: 'title',
+        tooltip: 'Назначить группу для товаров из текущей выборки'
+      </f:facet>
+    </x:component>
+
+    <!-- [good groups store] -->
+    <x:data-store storeId = "${z:vid(v, 'groups')}"
+      modelProvider = "facesGoodEditView" modelRequest = "groups"
+      modelKey = "#{v.modelKeys}">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.CatItemView', autoLoad: false
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.CatItemView')
+      </f:facet>
+    </x:data-store>
+
+    <x:action-call coid = "${z:vid(v, 'assign-group-script')}"
+      action = "#{v.doAssignGroup}" modelView = "${v}"/>
+
+    <x:component coid = "${z:vid(v, 'assign-group-layout')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', hidden: true, frame: false, border: false,
+        layout: { type: 'hbox', align: 'middle' },
+        bodyCls: 'retrade-transparent-panel'
+      </f:facet>
+
+      <!-- [group drop-list] -->
+      <x:drop-list coid = "${z:vid(v, 'group-to-assign')}"
+        storeId = "${z:vid(v, 'groups')}"
+        value = "#{v.phonyString}">
+
+        <f:facet name = "drop-props">
+          width: extjsf.ex(32),
+          margin: extjsf.pts(0, 4, 0, 4),
+          matchFieldWidth: true, autoSelect: false,
+          valueField: 'code', displayField: 'code'
+        </f:facet>
+      </x:drop-list>
+
+      <!-- [submit button] -->
+      <x:component coid = "${z:vid(v, 'assign-group-submit')}">
+        <f:facet name = "extjs-props">
+          xtype:'button', text: 'Назначить',
+          cls: 'ux-btn-green', tooltipType: 'title',
+          tooltip: 'Назначить выбранную группу'
+        </f:facet>
+      </x:component>
+    </x:component>
+  </x:component>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+    //~: toggle assign group
+    Ext.onReady(ZeT.timeouted(250, function()
+    {
+      extjsf.bind("${z:vid(v, 'toggle-assign-group')}", '${extDom}').on('toggle', function(btn)
+      {
+        var ga = extjsf.co("${z:vid(v, 'assign-group-area')}", '${extDom}').body.parent()
+        ga.removeCls(['retrade-toolbar-colour-line-none', 'retrade-toolbar-colour-line-one'])
+        ga.addCls('retrade-toolbar-colour-line-' + ((btn.pressed)?('one'):('none')))
+
+        extjsf.bind("${z:vid(v, 'search-goods-layout')}", '${extDom}').visible(!btn.pressed)
+        extjsf.bind("${z:vid(v, 'assign-group-layout')}", '${extDom}').visible(btn.pressed)
+      })
+    }))
+
+    //~: do assign group
+    extjsf.handler("${z:vid(v, 'assign-group-submit')}", '${extDom}', function()
+    {
+      var group = extjsf.bind("${z:vid(v, 'group-to-assign')}", '${extDom}').value()
+      if(ZeTS.ises(group)) return ReTrade.desktop.error('Ценовая группа товара не может быть пустой!')
+
+      extjsf.handler("${z:vid(v, 'assign-group-script')}", '${extDom}')({
+        params: { goodsGroup: group, selset: ReTrade.selset.selset }, success : function() {
+
+          extjsf.co("${z:vid(v, 'toggle-assign-group')}", '${extDom}').setPressed(false)
+          extjsf.co("${z:vid(v, 'goodUnits')}", '${extDom}').reload()
+      }})
+    })
+
+  //]]>
+  </script>
+
+  <!-- assign goods group] -->
+</ui:component>

@@ -1,0 +1,64 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.invoice'>
+
+  <union-subclass name = 'SellGood' extends = 'InvGood' lazy = 'true'
+    table = 'retrade_invoice_good_sell'>
+
+
+    <!-- Invoice Sell Data [bi, list, slave] -->
+
+    <many-to-one name = 'data' foreign-key = 'fk_invoice_good_data_sell'
+      insert = 'false' update = 'false' not-null = 'true'>
+
+      <column name = 'fk_invoice_data' not-null = 'true'
+        index = 'ix_invoice_good_data_sell'>
+
+        <comment>Reference to the Invoice (Sell) Data owning this good position</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Volume Cost (volume * price) -->
+
+    <property name = 'cost' type = 'big_decimal'>
+
+      <column name = 'volume_cost' precision = '20' scale = '10'>
+
+        <comment>The the cost of the whole volume</comment>
+      </column>
+    </property>
+
+
+    <!-- Price List -->
+
+    <many-to-one name = 'priceList'
+      foreign-key = 'fk_invoice_good_sell_price_list'>
+
+      <column name = 'fk_price_list'
+        index = 'ix_invoice_good_sell_price_list'>
+
+        <comment>Defined if was sold by a Price List</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Need-Calc Flag -->
+
+    <property name = 'needCalc'>
+
+      <column name = 'need_calc'>
+
+        <comment>
+          Need-calc flag in Sell Invoice Good tells whether
+          this sell position must be calculated by the Good
+          Unit Calculation formula if such does present
+        </comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>
