@@ -1,0 +1,12 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!--================================================
+ =  Apache Tomcat Server Web Aplication Context    =
+ +================================================-->
+
+<Context>
+
+  <Loader className = 'org.apache.catalina.loader.VirtualWebappLoader'
+    searchVirtualFirst = 'true' virtualClasspath = '${catalina.base}/webapps/auth/META-INF/'/>
+
+</Context>

@@ -1,0 +1,98 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<web-app version = '3.0'
+  xmlns              = 'http://java.sun.com/xml/ns/javaee'
+  xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+  xsi:schemaLocation = 'http://java.sun.com/xml/ns/javaee
+    http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd'>
+
+  <display-name>
+    Tver TS 'Re Trade' Authentication Application
+  </display-name>
+
+
+  <!--==================================================
+  =                    Initialization                  =
+  ===================================================-->
+
+  <context-param>
+    <description>
+      Authentication Protocol steps timeout in seconds.
+    </description>
+
+    <param-name>retrade.auth.auth-timeout</param-name>
+    <param-value>60</param-value>
+  </context-param>
+
+  <context-param>
+    <description>
+      Authentication Session timeout in seconds.
+      (Defaults to 4 hours.)
+    </description>
+
+    <param-name>retrade.auth.session-timeout</param-name>
+    <param-value>14400</param-value>
+  </context-param>
+
+  <context-param>
+    <description>
+      (System parameter.) JNDI name of 'Re-Trade'
+      Database Datasorce configured in the server.
+    </description>
+
+    <param-name>retrade.auth.datasource</param-name>
+    <param-value>
+      openejb:/Resource/ReTradeDatabase
+    </param-value>
+  </context-param>
+
+  <context-param>
+    <description>
+      (System parameter.) JNDI name of 'Re-Trade' Execution
+      Notifications Queue configured in the server.
+    </description>
+
+    <param-name>retrade.auth.exec-queue</param-name>
+    <param-value>
+      openejb:/Resource/ReTradeExecNotify
+    </param-value>
+  </context-param>
+
+  <context-param>
+    <description>
+      (System parameter.) JNDI name of
+      JMS Connection Factory.
+    </description>
+
+    <param-name>retrade.auth.jms-conn-factory</param-name>
+    <param-value>
+      openejb:/Resource/ConnectLocalMemoryMessagesBroker
+    </param-value>
+  </context-param>
+
+  <listener>
+    <listener-class>com.tverts.auth.server.AuthInit</listener-class>
+  </listener>
+
+
+  <!--==================================================
+  =                      Servlets                      =
+  ===================================================-->
+
+  <!-- Authentication Session Servlet -->
+
+  <servlet>
+    <display-name>ReTrade Authentication Servlet</display-name>
+    <servlet-name>auth_AuthenticationServlet</servlet-name>
+    <servlet-class>com.tverts.auth.server.AuthServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>auth_AuthenticationServlet</servlet-name>
+
+    <url-pattern>/servlet/session</url-pattern>
+    <url-pattern>/servlet/request</url-pattern>
+    <url-pattern>/servlet/receive</url-pattern>
+  </servlet-mapping>
+
+</web-app>
