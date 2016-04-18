@@ -186,9 +186,19 @@ function retrade_open_window(opts)
 
   if(window) //?: {has this window} show it
   {
-    window.co().toFront()
-    window.co().setPagePosition(box.x, box.y)
-    window.co().expand()
+    var winco = ZeT.assertn(window.co())
+    var winm  = ReTrade.desktop.history.find(winco)
+
+    if(winm) //?: {found it in the history}
+      ReTrade.desktop.history.restore(winm)
+    else
+    {
+      winco.show()
+      winco.toFront()
+      winco.setPagePosition(box.x, box.y)
+      winco.expand()
+    }
+
     return window
   }
 

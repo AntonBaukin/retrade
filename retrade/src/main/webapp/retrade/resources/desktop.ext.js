@@ -589,6 +589,20 @@ ZeT.defineClass('extjsf.Desktop.History',
 		return !!s
 	},
 
+	/**
+	 * Finds model by the component.
+	 */
+	find              : function(co)
+	{
+		var m; this.$store().each(function(x)
+		{
+			if(co != x.get('co')) return
+			m = x; return false
+		})
+
+		return m
+	},
+
 	storeId           : function(id)
 	{
 		if(!arguments.length)
