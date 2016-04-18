@@ -521,8 +521,16 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 
 	$close            : function()
 	{
-		this.$save_history()
+		//~: save this panel into the history
+		if(this.desktop().history)
+			this.$save_history()
+
+		//~: remove it from the desktop
 		this.remove(false)
+
+		//~: search previous content
+		if(this.desktop().history)
+			this.$auto_restore()
 	},
 
 	$save_history     : function()
@@ -537,9 +545,64 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 		//~: take loading options
 		if(!ZeT.iso(l)) return
 
+		//~: mark saving from manual close
+		l.autoclose = !this._tool_close_clicked
+		delete this._tool_close_clicked
+
 		//?: {desktop supports history}
-		if(this.desktop().history)
-			return this.desktop().history.save(l, this)
+		return this.desktop().history.save(l, this)
+	},
+
+	$inserted_co      : function()
+	{
+		//~: hook close button click
+		this.$hook_close()
+	},
+
+	$hook_close       : function()
+	{
+		var sf = this, co = this.bind().co()
+		var to = ZeT.assertn(co.down('tool[type=close]'))
+
+		extjsf.u.wrap(to, 'handler', function()
+		{
+			sf.$close_click()
+			this.$applySuper(arguments)
+		})
+	},
+
+	$close_click      : function()
+	{
+		this._tool_close_clicked = true
+	},
+
+	$auto_restore     : function()
+	{
+		var m, co = this.bind().co(), p = this.position()
+
+		//~: search top desktop model at the same position
+		this.desktop().history.$store().each(function(x)
+		{
+			//?: {not a desktop entry}
+			if(x.get('target') != 'desktop') return
+
+			//?: {else position}
+			if(p != x.get('desktop-position')) return
+
+			//?: {no component}
+			if(!x.get('co')) return
+
+			//?: {this panel component}
+			if(x.get('co') == co) return
+
+			//!: show only when was auto-closed
+			if(x.get('autoclose') === true) m = x
+
+			return false
+		})
+
+		//?: {found it} restory
+		if(m) this.desktop().history.restore(m)
 	}
 })
 
@@ -693,6 +756,9 @@ ZeT.defineClass('extjsf.Desktop.History',
 	$ps_desktop       : function(ps, o, pc)
 	{
 		var b = pc.bind()
+
+		//?: {is manual close}
+		ps.autoclose = !!o.autoclose
 
 		//~: view id
 		if(ZeT.ises(ps.view) && !ZeT.ises(pc.opts.view))

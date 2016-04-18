@@ -3455,8 +3455,9 @@ extjsf.u = ZeT.define('extjsf.utilities',
 	 * with the function given. Function is invoked
 	 * with the same arguments as the original, but
 	 * it's this-context differs! It's an object of:
-	 * 'co' referring the component; $callSuper and
-	 * $applySuper analogues of ZeT.Class.
+	 * 'co' referring the component; 'that' is actual
+	 * context of the call, $callSuper and $applySuper
+	 * are analogues of ZeT.Class.
 	 */
 	wrap             : function(co, method, f)
 	{
@@ -3476,18 +3477,19 @@ extjsf.u = ZeT.define('extjsf.utilities',
 		//~: $applySuper()
 		that.$applySuper = function(args)
 		{
-			return old.apply(co, args)
+			return old.apply(that.that, args)
 		}
 
 		//~: $callSuper()
 		that.$callSuper  = function()
 		{
-			return old.apply(co, arguments)
+			return old.apply(that.that, arguments)
 		}
 
 		//~: wrap it
 		co[method] = function()
 		{
+			that.that = this
 			return f.apply(that, arguments)
 		}
 	},

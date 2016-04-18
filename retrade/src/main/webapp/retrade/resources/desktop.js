@@ -952,7 +952,12 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 
 		//?: {has status bar} dock it
 		this.$insert_docked(this.status())
+
+		this.$inserted_co()
 	},
+
+	$inserted_co     : function()
+	{},
 
 	/**
 	 * Private. Docks component (of the bind)
