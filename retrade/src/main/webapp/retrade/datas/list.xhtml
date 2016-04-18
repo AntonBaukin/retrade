@@ -324,7 +324,7 @@ ${v.checkModelRequestedWithRedirect}
 
       xtype: 'window', title: 'Загрузка...', autoShow: true,
       x: box.x, y: box.y, width: box.width, height: box.height,
-      layout: 'fit', collapsible: true,
+      layout: 'fit', collapsible: false,
 
       loader: {
         url: "${z:url('/go/retrade/datas/create-edit-report-template')}",
@@ -512,7 +512,7 @@ ${v.checkModelRequestedWithRedirect}
 
         xtype: 'window', title: 'Загрузка...',
         x: box.x, y: box.y, width: box.width, height: box.height,
-        layout: 'fit', autoShow: true, collapsible: true,
+        layout: 'fit', autoShow: true, collapsible: false,
 
         loader: {
           url: "${z:url(v.openWindow)}",

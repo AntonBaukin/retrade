@@ -171,7 +171,7 @@ ${v.checkModelRequestedWithRedirect}
     retrade_open_window({ url: '/firms/info-edit',
 
       domain: 'add:contractor-firm',
-      box: { event: e, widthpt: 480, heightpt: 480}, collapsible: true,
+      box: { event: e, widthpt: 480, heightpt: 480}, collapsible: false,
 
       onclose: function()
       {
@@ -189,7 +189,7 @@ ${v.checkModelRequestedWithRedirect}
 
       domain: 'view:contractor',
       box: { event: e, widthpt: 480, heightpt: 480},
-      record: rec.getId(), collapsible: true,
+      record: rec.getId(), collapsible: false,
 
       onclose: function()
       {

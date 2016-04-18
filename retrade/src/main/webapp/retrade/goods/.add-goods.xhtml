@@ -117,7 +117,7 @@
 
     var window; window = retrade_open_window({ url: '/goods/edit-good',
       box: retrade_default('good-box',  box),
-      domain: dk, params: ps, collapsible: true,
+      domain: dk, params: ps, collapsible: false,
       record: record && record.getId(),
 
       onclose: function()
@@ -162,7 +162,7 @@
   extjsf.handler("${z:vid(v, 'add-goods-table')}", '${extDom}', function(btn, e)
   {
     var window; window = retrade_open_window({ url: '/goods/create-goods',
-      domain: 'add:goods-table', collapsible: true,
+      domain: 'add:goods-table', collapsible: false,
       box: { event: e, widthpt: 480, heightpt: 240, '+xpt': 30, '-ypt': 10 },
 
       onclose: function()
