@@ -154,7 +154,8 @@ ${v.checkEntityRequested}
     modelView = "${v}">
 
     <f:facet name = "store-props">
-      model: 'retrade.model.GoodUnitView', remoteSort: true,
+      model: 'retrade.model.GoodUnitView',
+      remoteSort: true, pageSize: 10,
       sorters: [{ property: 'goodName', direction: 'ASC' }]
     </f:facet>
 

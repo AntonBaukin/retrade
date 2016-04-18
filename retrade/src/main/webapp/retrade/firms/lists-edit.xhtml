@@ -624,7 +624,8 @@ ${v.checkModelRequestedWithRedirect}
       modelView = "${v}" modelRequest = "goods">
 
       <f:facet name = "store-props">
-        model: 'retrade.model.GoodPriceView', remoteSort: true,
+        model: 'retrade.model.GoodPriceView',
+        remoteSort: true, pageSize: 10,
         sorters: [{ property: 'goodName', direction: 'ASC' }]
       </f:facet>
 
