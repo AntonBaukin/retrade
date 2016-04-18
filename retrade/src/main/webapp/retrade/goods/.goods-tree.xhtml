@@ -827,8 +827,7 @@
     //~: open the window
     var window; window = retrade_open_window({ url: '/goods/edit-good',
       box: retrade_default('good-box',  { event: e }),
-      domain: dk, params: ps, collapsible: false,
-      record: record && record.getId(),
+      domain: dk, params: ps, record: record && record.getId(),
 
       onclose: function()
       {
@@ -876,8 +875,8 @@
       ps.goodsFolder = fld
 
     //~: open the window
-    var window; window = retrade_open_window({ url: '/goods/create-goods',
-      domain: 'add:goods-table', collapsible: false, params: ps,
+    var window; window = retrade_open_window({
+      url: '/goods/create-goods', domain: 'add:goods-table', params: ps,
       box: { event: e, widthpt: 480, heightpt: 240, '+xpt': -100, '-height': true },
 
       onclose: function()

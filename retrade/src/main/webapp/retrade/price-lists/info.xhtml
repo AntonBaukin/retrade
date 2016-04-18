@@ -204,9 +204,8 @@ ${v.checkEntityRequested}
   extjsf.bind("${z:vid(v, 'prices-history')}", '${extDom}').openPricesHistory = function(rec, e)
   {
     retrade_open_window({ url: '/price-lists/history',
-      domain: 'view:good-price-history',
-      box: { event: e, widthpt: 480, heightpt: 360, '+xpt': -180 },
-      record: rec.get('goodPrice'), collapsible: false
+      domain: 'view:good-price-history', record: rec.get('goodPrice'),
+      box: { event: e, widthpt: 480, heightpt: 360, '+xpt': -180 }
     })
   }
 

@@ -211,9 +211,8 @@ ${v.checkModelRequestedWithRedirect}
     event = Ext.create('Ext.EventObjectImpl', ZeT.assertn(event || window.event))
 
     retrade_open_window({ url: '/price-lists/info',
-      domain: 'view:global:price-list',
-      box: { event: event, widthpt: 520, heightpt: 390, '+xpt': -240, '-ypt': -10},
-      record: plkey, collapsible: false
+      domain: 'view:global:price-list', record: plkey,
+      box: { event: event, widthpt: 520, heightpt: 390, '+xpt': -240, '-ypt': -10}
     })
   }
 
@@ -223,9 +222,8 @@ ${v.checkModelRequestedWithRedirect}
     on('itemdblclick', function(comp, rec, node, row, e)
   {
     retrade_open_window({ url: '/price-lists/goods-prices-firm',
-      domain: 'view:price-list-for-firm',
-      box: { event: e, widthpt: 520, heightpt: 390, '-ypt': -16, '+xpt': -240},
-      record: rec.getId(), collapsible: false
+      domain: 'view:price-list-for-firm', record: rec.getId(),
+      box: { event: e, widthpt: 520, heightpt: 390, '-ypt': -16, '+xpt': -240}
     })
   })
 
@@ -239,9 +237,8 @@ ${v.checkModelRequestedWithRedirect}
     s = Ext.Array.map(s || [], function(i) { return i.getId() })
 
     retrade_open_window({ url: '/firms/lists-edit',
-      domain: 'associate-firms-price-lists',
+      domain: 'associate-firms-price-lists', params:  { contractors: s.join(',') },
       box: { event: e, widthpt: 560, heightpt: 560, '-ypt': -10, '+xpt': -20},
-      collapsible: false, params:  { contractors: s.join(',') },
 
       onclose: function()
       {

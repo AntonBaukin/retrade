@@ -169,11 +169,8 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.handler("${z:vid(v, 'add-firm')}", '${extDom}', function(btn, e)
   {
     retrade_open_window({ url: '/firms/info-edit',
-
-      domain: 'add:contractor-firm',
-      box: { event: e, widthpt: 480, heightpt: 480}, collapsible: false,
-
-      onclose: function()
+      box: { event: e, widthpt: 480, heightpt: 480},
+      domain: 'add:contractor-firm', onclose: function()
       {
         if(this.retradeEditSuccess)
           extjsf.co("${z:vid(v, 'contractors')}", '${extDom}').reload()
@@ -186,10 +183,8 @@ ${v.checkModelRequestedWithRedirect}
     on('itemdblclick', function(comp, rec, node, row, e)
   {
     retrade_open_window({ url: '/firms/info-edit',
-
-      domain: 'view:contractor',
+      domain: 'view:contractor', record: rec.getId(),
       box: { event: e, widthpt: 480, heightpt: 480},
-      record: rec.getId(), collapsible: false,
 
       onclose: function()
       {
