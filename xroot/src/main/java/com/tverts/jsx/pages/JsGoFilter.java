@@ -1,6 +1,6 @@
 package com.tverts.jsx.pages;
 
-/* Sprint Framework */
+/* Spring Framework */
 
 import org.springframework.stereotype.Component;
 

@@ -4,7 +4,7 @@ package com.tverts.secure.system;
 
 import javax.servlet.http.Cookie;
 
-/* Sprint Framework */
+/* Spring Framework */
 
 import org.springframework.stereotype.Component;
 

@@ -2,13 +2,16 @@ package com.tverts.servlet.go;
 
 /* Java */
 
-import java.lang.ref.SoftReference;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /* com.tverts: servlet */
 
 import com.tverts.servlet.filters.FilterTask;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -16,14 +19,13 @@ import com.tverts.servlet.filters.FilterTask;
  * that caches whether the page was successfully
  * dispatched the request.
  *
- *
  * @author anton.baukin@gmail.com
  */
 public class GoDisperCached extends GoDisperBase
 {
 	/* public: Go-Dispatcher interface */
 
-	public String    isGoRequest(FilterTask task)
+	public String  isGoRequest(FilterTask task)
 	{
 		String res = super.isGoRequest(task);
 
@@ -48,7 +50,7 @@ public class GoDisperCached extends GoDisperBase
 		return res;
 	}
 
-	public boolean   dispatch(GoDispatch request)
+	public boolean dispatch(GoDispatch request)
 	{
 		//~: do dispatch
 		boolean res = super.dispatch(request);
@@ -62,35 +64,26 @@ public class GoDisperCached extends GoDisperBase
 
 	/* public: Go-Dispatcher Cached (bean) interface */
 
-	public int       getSize()
+	public int  getSize()
 	{
 		return size;
 	}
 
-	public void      setSize(int size)
+	private int size = 101;
+
+	public void setSize(int size)
 	{
-		if(size <= 0) throw new IllegalArgumentException();
+		EX.assertx(size > 0);
 		this.size = size;
 	}
 
 
 	/* protected: caching */
 
-	@SuppressWarnings("unchecked")
 	protected String get(FilterTask task)
 	{
-		String p = task.getRequest().getRequestURI();
-		Object x;
-
-		synchronized(this)
-		{
-			//~: get the cache map
-			Map m = (Map)((cache == null)?(null):(cache.get()));
-			if(m == null) return null;
-
-			//~: lookup
-			x = m.get(p);
-		}
+		String uri = task.getRequest().getRequestURI();
+		Object   x = cache.get(uri);
 
 		//?: {not found}
 		if(x == null) return null;
@@ -103,30 +96,21 @@ public class GoDisperCached extends GoDisperBase
 		return (String)x;
 	}
 
-	@SuppressWarnings("unchecked")
+	/**
+	 * Maps request URI to the page string or false.
+	 */
+	protected final ConcurrentMap<String, Object> cache =
+	  new ConcurrentHashMap<>();
+
 	protected void   put(FilterTask task, String page)
 	{
-		String p = task.getRequest().getRequestURI();
+		String uri = task.getRequest().getRequestURI();
 
-		synchronized(this)
-		{
-			//~: get the cache map
-			Map m = (Map)((cache == null)?(null):(cache.get()));
-			if(m == null)
-				cache = new SoftReference(m = new HashMap(getSize()));
+		//~: put into the cache
+		cache.put(uri, (page != null)?(page):Boolean.FALSE);
 
-			//?: {got the limit}
-			if(m.size() > getSize())
-				m.remove(m.keySet().iterator().next());
-
-			//~: put
-			m.put(p, (page != null)?(page):Boolean.FALSE);
-		}
+		//?: {cache is too big} remove all
+		if(cache.size() > getSize())
+			cache.clear();
 	}
-
-
-	/* private: the cache map */
-
-	private SoftReference cache;
-	private int           size = 101;
 }

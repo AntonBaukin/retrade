@@ -1,6 +1,6 @@
 package com.tverts.retrade.web;
 
-/* Sprint Framework */
+/* Spring Framework */
 
 import org.springframework.stereotype.Component;
 

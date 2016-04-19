@@ -1,6 +1,6 @@
 package com.tverts.servlet.go;
 
-/* Sprint Framework */
+/* Spring Framework */
 
 import org.springframework.stereotype.Component;
 
@@ -12,9 +12,8 @@ import org.springframework.stereotype.Component;
 
 
 /**
- * Forwards the request to JSP page
- * if such exists. Tries to forward
- * initial go-requests.
+ * Forwards the request to JSP page if such exists.
+ * Tries to forward initial go-requests.
  *
  * @author anton.baukin@gmail.com
  */

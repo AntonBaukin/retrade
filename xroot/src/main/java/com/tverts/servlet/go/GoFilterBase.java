@@ -17,11 +17,9 @@ import com.tverts.support.SU;
 
 
 /**
- * Implementation base for go-filter that
- * just replaces the URI of the request
- * with some else URI, and then does
- * forwarding.
- *
+ * Implementation base for go-filter that replaces
+ * the URI of the request with some else URI, and
+ * then does the forwarding.
  *
  * @author anton.baukin@gmail.com
  */
@@ -69,7 +67,7 @@ public abstract class GoFilterBase extends FilterBase
 			//~: create request dispatcher
 			RequestDispatcher d = EX.assertn(
 			  task.getRequest().getRequestDispatcher(page),
-			  "Can not go to the page [", page, "]!", page
+			  "Can not go to the page [", page, "]!"
 			);
 
 			//?: {include request}

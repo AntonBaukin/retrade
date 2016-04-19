@@ -28,7 +28,9 @@ import com.tverts.support.SU;
 
 
 /**
- * View of the root page template.
+ * Faces view created for each incoming
+ * request and shared between all pages
+ * involved in it's processing.
  *
  * @author anton.baukin@gmail.com
  */
@@ -41,9 +43,8 @@ public class RootView extends ViewWithModes
 	  "domain";
 
 	/**
-	 * Position within the desktop layout panels. The default
-	 * value is {@code null} string, and the real place is defined
-	 * by the implementation (the desktop center).
+	 * Position within the desktop layout panels.
+	 * See desktop-panel.xhtml
 	 */
 	public static final String PARAM_POSITION =
 	  "desktop-position";

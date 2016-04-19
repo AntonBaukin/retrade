@@ -87,6 +87,8 @@ public class GoDisperBase implements GoDisper
 		return goPrefix;
 	}
 
+	private volatile String goPrefix;
+
 	protected String  preparePage(String page, FilterTask task)
 	{
 		StringBuilder p = new StringBuilder(page.length() + 1);
@@ -123,9 +125,4 @@ public class GoDisperBase implements GoDisper
 			task.getResponse().addHeader("Expires", "0");
 		}
 	}
-
-
-	/* private: filter state */
-
-	private volatile String goPrefix;
 }

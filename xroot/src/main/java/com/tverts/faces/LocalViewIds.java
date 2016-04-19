@@ -4,7 +4,7 @@ package com.tverts.faces;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-/* Sprint Framework */
+/* Spring Framework */
 
 import org.springframework.stereotype.Component;
 

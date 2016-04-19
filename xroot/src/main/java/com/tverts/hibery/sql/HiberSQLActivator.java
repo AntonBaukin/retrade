@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.hibernate.mapping.PersistentClass;
 
-/* Sprint Framework */
+/* Spring Framework */
 
 import org.springframework.stereotype.Component;
 

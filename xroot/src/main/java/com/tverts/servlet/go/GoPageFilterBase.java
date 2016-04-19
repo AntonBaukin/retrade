@@ -5,13 +5,15 @@ package com.tverts.servlet.go;
 import com.tverts.servlet.filters.FilterBase;
 import com.tverts.servlet.filters.FilterTask;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
 
 /**
- * Implementation base for go-filters that
- * redirect to the real pages on the server
- * having the same name base, but different
- * suffices (or prefixes).
- *
+ * Implementation base for go-filters that redirect
+ * to the real pages on the server having the same
+ * name base, but different suffices (or prefixes).
  *
  * @author anton.baukin@gmail.com
  */
@@ -44,10 +46,11 @@ public abstract class GoPageFilterBase extends FilterBase
 		return disper;
 	}
 
-	public void     setDisper(GoDisper disper)
+	private GoDisper disper = new GoDisperCached();
+
+	public void setDisper(GoDisper disper)
 	{
-		if(disper == null) throw new IllegalArgumentException();
-		this.disper = disper;
+		this.disper = EX.assertn(disper);
 	}
 
 
@@ -134,9 +137,4 @@ public abstract class GoPageFilterBase extends FilterBase
 
 	protected void    initGoDispatch(GoDispatch request)
 	{}
-
-
-	/* private: the dispatcher */
-
-	private GoDisper disper = new GoDisperCached();
 }

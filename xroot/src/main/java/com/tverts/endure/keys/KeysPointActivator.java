@@ -5,7 +5,7 @@ package com.tverts.endure.keys;
 import java.util.HashMap;
 import java.util.Map;
 
-/* Sprint Framework */
+/* Spring Framework */
 
 import org.springframework.stereotype.Component;
 

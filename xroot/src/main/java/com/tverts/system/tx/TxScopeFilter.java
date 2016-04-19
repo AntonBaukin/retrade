@@ -1,6 +1,6 @@
 package com.tverts.system.tx;
 
-/* Sprint Framework */
+/* Spring Framework */
 
 import org.springframework.stereotype.Component;
 
