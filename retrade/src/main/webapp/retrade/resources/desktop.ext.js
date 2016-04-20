@@ -4011,7 +4011,7 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 			}
 
 		//~: content provider
-		ZeT.assert(ZeT.iso(opts.content))
+		ZeT.assert(ZeT.isox(opts.content))
 		if(opts.content.ReTradeTilesItem === true)
 			this.content = opts.content
 		else

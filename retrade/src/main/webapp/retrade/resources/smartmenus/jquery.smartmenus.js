@@ -815,7 +815,7 @@
 					}
 				}
 
-				$sub.css({ top: 'auto', left: '-1px', marginLeft: x, marginTop: y - itemH, minWidth: parW });
+				$sub.css({ top: 'auto', left: '-1px', marginLeft: x, marginTop: y - itemH /*, minWidth: parW */});
 				// IE iframe shim
 				this.menuIframeShim($sub);
 				if ($sub.dataSM('ie-shim')) {
@@ -1203,8 +1203,8 @@
 		mainMenuSubOffsetY:	0,		// pixels offset from default position
 		subMenusSubOffsetX:	0,		// pixels offset from default position
 		subMenusSubOffsetY:	0,		// pixels offset from default position
-		subMenusMinWidth:	'10em',		// min-width for the sub menus (any CSS unit) - if set, the fixed width set in CSS will be ignored
-		subMenusMaxWidth:	'20em',		// max-width for the sub menus (any CSS unit) - if set, the fixed width set in CSS will be ignored
+		subMenusMinWidth:	0,		// min-width for the sub menus (any CSS unit) - if set, the fixed width set in CSS will be ignored
+		subMenusMaxWidth:	0,		// max-width for the sub menus (any CSS unit) - if set, the fixed width set in CSS will be ignored
 		subIndicators: 		true,		// create sub menu indicators - creates a SPAN and inserts it in the A
 		subIndicatorsPos: 	'prepend',	// position of the SPAN relative to the menu item content ('prepend', 'append')
 		subIndicatorsText:	'+',		// [optionally] add text in the SPAN (e.g. '+') (you may want to check the CSS for the sub indicators too)
@@ -1212,7 +1212,7 @@
 		scrollInterval:		30,		// interval between each scrolling step
 		scrollAccelerate:	true,		// accelerate scrolling or use a fixed step
 		showTimeout:		250,		// timeout before showing the sub menus
-		hideTimeout:		500,		// timeout before hiding the sub menus
+		hideTimeout:		250,		// timeout before hiding the sub menus
 		showDuration:		0,		// duration for show animation - set to 0 for no animation - matters only if showFunction:null
 		showFunction:		null,		// custom function to use when showing a sub menu (the default is the jQuery 'show')
 							// don't forget to call complete() at the end of whatever you do

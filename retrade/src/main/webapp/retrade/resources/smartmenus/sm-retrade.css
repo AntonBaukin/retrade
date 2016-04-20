@@ -226,7 +226,7 @@
 }
 
 .sm-retrade ul a, .sm-retrade.sm-vertical a {
-  white-space: normal;
+  white-space: nowrap;
 }
 
 .sm-retrade .sm-nowrap > li > a, .sm-retrade .sm-nowrap > li > :not(ul) a {
@@ -357,7 +357,7 @@ ul.sm-retrade > li > ul:before {
 }
 .sm-retrade ul a, .sm-retrade ul a:hover, .sm-retrade ul a:focus, .sm-retrade ul a:active, .sm-retrade ul a.highlighted {
   border: 0 !important;
-  padding: 5px 28px;
+  padding: 5px 16px 5px 28px;
   background: transparent;
   color: #404551;
 }
@@ -380,7 +380,7 @@ ul.sm-retrade > li > ul:before {
   bottom: auto;
   left: auto;
   margin-left: 0;
-  right: 10px;
+  right: 2px;
   border-style: dashed dashed dashed solid;
   border-color: transparent transparent transparent rgba(64, 69, 81, 0.5);
 }

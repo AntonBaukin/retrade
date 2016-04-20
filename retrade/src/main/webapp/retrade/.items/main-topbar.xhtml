@@ -581,9 +581,8 @@
 
 
     //~: initialize Smart Menus
-    menuNode.smartmenus({ subMenusMinWidth: null,
-      showFunction: function($ul, complete)
-      {
+    menuNode.smartmenus({ showFunction: function($ul, complete)
+    {
         ReTrade.desktop.uievents.toggle(false)
         extjsf.co("${z:vid(localView, 'desktop-history-menu')}", '${extDom}').hide()
 
@@ -591,8 +590,7 @@
         if(menu) menu.hide()
 
         $ul.fadeIn(200, complete)
-      }
-    })
+    }})
 
    /**
     * Global function that inserts the menu in proper position
