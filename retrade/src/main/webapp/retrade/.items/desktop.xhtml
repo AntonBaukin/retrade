@@ -417,8 +417,12 @@
 <ui:decorate template = '/resources/.view-modes/page_post.xhtml'
   xmlns = 'http://extjs.jsf.java.net/response'>
 
-  <!-- [content of post response] -->
-  <ui:insert name = 'post_response'/>
+  <ui:define name = 'validation'>
+    <ui:insert name = 'desktop-validation'/>
+  </ui:define>
 
+  <ui:define name = 'scripts'>
+    <ui:insert name = 'desktop-scripts'/>
+  </ui:define>
 </ui:decorate>
 </ui:component>
