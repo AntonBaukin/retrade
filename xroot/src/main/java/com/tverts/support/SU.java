@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -33,49 +34,54 @@ public class SU
 
 	/**
 	 * Breaks string into words. The words
-	 * are separated by ',' ';' characters.
+	 * are separated by any character except
+	 * a letter, a digit, '-', ':', '/', '\'.
+	 *
+	 * Side whitespaces of the words are ignored,
+	 * empty strings are removed.
 	 */
 	public static String[] s2a(String s)
 	{
 		if((s = s2s(s)) == null)
 			return new String[0];
 
-		String            sx;
-		ArrayList<String> sa = new ArrayList<String>(
-		  Arrays.asList(s.split("[,;]")
-		));
+		List<String>  sa = new ArrayList<>(8);
+		StringBuilder sb = new StringBuilder(16);
+		char          c, cc;
 
-		for(ListIterator<String> i = sa.listIterator();(i.hasNext());)
-			if((sx = s2s(i.next())) != null)
-				i.set(sx);
-			else
-				i.remove();
+		for(int x = 0, i = 0, l = s.length();(i < l);i++)
+		{
+			cc = c = s.charAt(i);
 
-		if(sa.isEmpty())
-			return new String[0];
+			if(Character.isLetterOrDigit(c))
+				c = '\0';
+			else if(c == '-' || c == ':' || c == '/' || c == '\\')
+				c = '\0';
 
-		return sa.toArray(new String[sa.size()]);
-	}
+			//?: {in the word & continue}
+			if(x == 0 && c == '\0')
+				sb.append(cc);
+			//?: {in the word & break}
+			else if(x == 0)
+			{
+				if(sb.length() != 0)
+				{
+					sa.add(sb.toString());
+					sb.delete(0, sb.length());
+				}
 
-	/**
-	 * Breaks string into words. The words
-	 * are separated by blank characters.
-	 */
-	public static String[] s2aws(String s)
-	{
-		if((s = s2s(s)) == null)
-			return new String[0];
+				x = 1;
+			}
+			//?: {out of a word & enter}
+			else if(c == '\0')
+			{
+				sb.append(cc);
+				x = 0;
+			}
+		}
 
-		String            sx;
-		ArrayList<String> sa = new ArrayList<String>(
-		  Arrays.asList(s.split("\\s+")
-		));
-
-		for(ListIterator<String> i = sa.listIterator();(i.hasNext());)
-			if((sx = s2s(i.next())) != null)
-				i.set(sx);
-			else
-				i.remove();
+		if(sb.length() != 0)
+			sa.add(sb.toString());
 
 		if(sa.isEmpty())
 			return new String[0];

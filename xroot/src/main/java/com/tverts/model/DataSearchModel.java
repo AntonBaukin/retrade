@@ -18,6 +18,10 @@ public interface DataSearchModel
 
 	public void     setSearchNames(String searchNames);
 
+	/**
+	 * Returns array of the names to search based
+	 * on split the whole input string of the names.
+	 */
 	public String[] searchNames();
 
 	/**

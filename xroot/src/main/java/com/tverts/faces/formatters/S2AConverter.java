@@ -41,7 +41,7 @@ public class S2AConverter extends ConverterFormatterBase<String[]>
 
 	protected void  convert(Request<String[]> request)
 	{
-		String[] s = SU.s2aws(request.getString());
+		String[] s = SU.s2a(request.getString());
 		if(s.length == 0) s = null;
 		
 		request.setValue(s);

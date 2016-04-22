@@ -96,7 +96,7 @@ public class JsX extends ServiceBase
 	 */
 	public void setRoots(String roots)
 	{
-		String[] rs = SU.s2aws(roots);
+		String[] rs = SU.s2a(roots);
 		EX.asserte(rs, "No JavaScript roots are given!");
 
 		for(int i = 0;(i < rs.length);i++)

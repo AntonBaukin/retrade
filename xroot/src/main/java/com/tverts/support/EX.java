@@ -22,7 +22,7 @@ import com.tverts.support.streams.StringBuilderWriter;
  */
 public class EX
 {
-	/* Gen the Message */
+	/* Get the Message */
 
 	/**
 	 * Finds the text of the exception. Useful

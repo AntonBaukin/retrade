@@ -32,7 +32,7 @@ public class SelectInvoiceSubType implements TuneQuery
 	public void tuneQuery(QueryBuilder qb)
 	{
 		//~: get & check teh sub-types
-		String[] ts = SU.s2aws(subTypes);
+		String[] ts = SU.s2a(subTypes);
 		for(String t : ts) EX.assertx( (t.length() == 1),
 		  "Wrong invoice sub-type character [", t, "]!"
 		);

@@ -1,6 +1,6 @@
 package com.tverts.support;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Random;
 
@@ -44,4 +44,23 @@ public class TestStrings
 		}
 	}
 
+	@org.junit.Test
+	public void testSplit()
+	{
+		eqs2a("");
+		eqs2a("a", "a");
+		eqs2a("abc", "abc");
+		eqs2a("a-bc", "a-bc");
+		eqs2a("a-b c", "a-b", "c");
+		eqs2a("a-b ..c/d/e", "a-b", "c/d/e");
+		eqs2a("a:b c d  ef   ", "a:b", "c", "d", "ef");
+	}
+
+	private static void eqs2a(String a, String... b)
+	{
+		String[] aa = SU.s2a(a);
+		EX.assertx(aa.length == b.length);
+		for(int i = 0;(i < aa.length);i++)
+			EX.assertx(aa[i].equals(b[i]));
+	}
 }

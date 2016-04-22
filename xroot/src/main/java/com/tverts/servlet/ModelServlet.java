@@ -49,6 +49,21 @@ import com.tverts.support.streams.BytesStream;
  */
 public class ModelServlet extends GenericServlet
 {
+	/* Constants */
+
+	/**
+	 * The name of HTTP request parameter to change
+	 * the limit stored in the model.
+	 *
+	 * WARNING! Not allow for the limit to be too big!
+	 */
+	public static final String LIMIT_PARAM  = "limit";
+
+	public static final int    LIMIT_MAX    = 100;
+
+	public static final String START_PARAM  = "start";
+
+
 	/* public: Generic Servlet */
 
 	public void service(ServletRequest xreq, ServletResponse xres)
@@ -100,8 +115,8 @@ public class ModelServlet extends GenericServlet
 		//~: apply the data selection limits
 		if(model instanceof DataSelectModel)
 		{
-			String  ps = SU.s2s(req.getParameter(DataSelectModel.START_PARAM));
-			String  pl = SU.s2s(req.getParameter(DataSelectModel.LIMIT_PARAM));
+			String  ps = SU.s2s(req.getParameter(START_PARAM));
+			String  pl = SU.s2s(req.getParameter(LIMIT_PARAM));
 			Integer s  = (ps == null)?(null):Integer.parseInt(ps);
 			Integer l  = (pl == null)?(null):Integer.parseInt(pl);
 
@@ -109,7 +124,7 @@ public class ModelServlet extends GenericServlet
 			  "Data selection 'start' parameter is illegal!"
 			);
 
-			EX.assertx( (l == null) || ((l >= 0) && (l <= DataSelectModel.LIMIT_MAX)),
+			EX.assertx( (l == null) || ((l >= 0) && (l <= LIMIT_MAX)),
 			  "Data selection 'limit' parameter is illegal!"
 			);
 
@@ -145,9 +160,6 @@ public class ModelServlet extends GenericServlet
 			else
 				res.sendError(404, "Specified model bean (or provider) was not found!");
 
-			//~: release the model request key
-			ModelRequest.getInstance().setKey(null);
-
 			return;
 		}
 
@@ -179,9 +191,6 @@ public class ModelServlet extends GenericServlet
 		}
 		finally
 		{
-			//~: release the model request key
-			ModelRequest.getInstance().setKey(null);
-
 			//~: close the in-memory buffer
 			bytes.closeAlways();
 		}

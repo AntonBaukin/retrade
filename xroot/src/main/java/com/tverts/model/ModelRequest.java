@@ -1,8 +1,17 @@
 package com.tverts.model;
 
+/* Spring Framework */
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
+
 /* com.tverts: support */
 
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.SU;
 
 
 /**
@@ -11,29 +20,33 @@ import static com.tverts.support.SU.s2s;
  * the state inferred from that parameters,
  * model request single instance stores the
  * runtime-defined request key telling what
- * part of the state data is needed for the
+ * part of the state data are needed for the
  * pending request.
  *
  *
  * @author anton.baukin@gmail.com
  */
+@Component @Scope("request")
 public class ModelRequest
 {
-	/* ModelRequest Singleton */
+	/* Singleton */
 
 	public static ModelRequest getInstance()
 	{
-		return INSTANCE;
+		return bean(ModelRequest.class);
 	}
 
-	private static final ModelRequest INSTANCE =
-	  new ModelRequest();
 
-	protected ModelRequest()
-	{}
+	/* Model Request (support) */
+
+	public static boolean isKey(String key)
+	{
+		if((key = SU.s2s(key)) == null) key = "";
+		return getInstance().getKey().equals(key);
+	}
 
 
-	/* public: ModelRequest interface */
+	/* Model Request */
 
 	/**
 	 * The key of the model request is thread-bound
@@ -42,35 +55,13 @@ public class ModelRequest
 	 */
 	public String getKey()
 	{
-		String key = s2s(this.key.get());
 		return (key == null)?(""):(key);
 	}
+
+	private String key;
 	
 	public void   setKey(String key)
 	{
-		if((key = s2s(key)) == null)
-			this.key.remove();
-		else
-			this.key.set(key);
+		this.key = SU.s2s(key);
 	}
-
-	public void   clear()
-	{
-		this.setKey(null);
-	}
-
-
-	/* public: ModelRequest (support) interface */
-
-	public static boolean isKey(String key)
-	{
-		if((key = s2s(key)) == null) key = "";
-		return getInstance().getKey().equals(key);
-	}
-
-
-	/* private: thread local state */
-
-	private volatile ThreadLocal<String> key =
-	  new ThreadLocal<String>();
 }

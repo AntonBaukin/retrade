@@ -6,7 +6,6 @@ package com.tverts.model;
  * with else method, not from the models
  * storage point.
  *
- *
  * @author anton.baukin@gmail.com
  */
 public interface ModelProvider

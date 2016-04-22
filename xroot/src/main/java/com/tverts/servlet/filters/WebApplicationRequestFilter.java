@@ -12,10 +12,6 @@ import com.tverts.servlet.RequestPoint;
 
 import com.tverts.system.JTAPoint;
 
-/* tverts.com: model */
-
-import com.tverts.model.ModelRequest;
-
 
 /**
  * Binds the response with Servlet related components.
@@ -61,8 +57,5 @@ public class WebApplicationRequestFilter extends FilterBase
 	{
 		//~: clean JTA bindings
 		JTAPoint.jta().clean();
-
-		//~: clear the model
-		ModelRequest.getInstance().clear();
 	}
 }
