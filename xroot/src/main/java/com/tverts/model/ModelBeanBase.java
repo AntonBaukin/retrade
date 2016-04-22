@@ -9,7 +9,6 @@ import java.io.ObjectOutput;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: support */
@@ -23,7 +22,7 @@ import com.tverts.support.IO;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlType(propOrder = {"modelKey", "domain"})
+@XmlType(propOrder = { "modelKey", "domain" })
 public abstract class ModelBeanBase implements ModelBean
 {
 	/* Model Bean (main) */
@@ -41,19 +40,6 @@ public abstract class ModelBeanBase implements ModelBean
 		this.modelKey = key;
 	}
 
-	@XmlTransient
-	public boolean isActive()
-	{
-		return active;
-	}
-
-	private boolean active = true;
-
-	public void    setActive(boolean active)
-	{
-		this.active = active;
-	}
-
 
 	/* Model Bean (data access) */
 
@@ -65,39 +51,38 @@ public abstract class ModelBeanBase implements ModelBean
 
 		try
 		{
-			Class cls = this.getClass();
+			Class     cls = this.getClass();
+			ModelData res = null;
 
-			while(cls != null)
+			while((res == null) && (cls != null))
 			{
 				//?: {has a constructor of that type}
-				try
-				{
-					return (ModelData) dataClass.getConstructor(cls).newInstance(this);
-				}
-				catch(NoSuchMethodException e)
-				{} //<-- ignore this error
+				res = EX.result(NoSuchMethodException.class, () ->
+				  dataClass.getConstructor(cls).newInstance(this));
 
 				//~: lookup in the interfaces
-				for(Class ifs : cls.getInterfaces()) try
-				{
-					return (ModelData) dataClass.getConstructor(ifs).newInstance(this);
-				}
-				catch(NoSuchMethodException e)
-				{} //<-- ignore this error
+				for(Class ifs : cls.getInterfaces())
+					if(res != null)
+						break;
+					else
+						res = EX.result(NoSuchMethodException.class, () ->
+						  dataClass.getConstructor(ifs).newInstance(this));
 			}
 
 			//~: not found any specific constructor, invoke the default
-			try
+			if(res == null) try
 			{
-				return (ModelData) dataClass.getConstructor().newInstance();
+				res = dataClass.getConstructor().newInstance();
 			}
 			catch(NoSuchMethodException e)
 			{
 				//!: unable to create an instance
 				throw EX.state("No constructor available!");
 			}
+
+			return res;
 		}
-		catch(Exception e)
+		catch(Throwable e)
 		{
 			throw EX.wrap(e, "Unable to create Data Model of class [",
 			  dataClass.toString(), "]!");
@@ -124,18 +109,12 @@ public abstract class ModelBeanBase implements ModelBean
 		this.domain = domain;
 	}
 
-	@XmlTransient
-	public Class<? extends ModelData> getDataClass()
-	{
-		return dataClass;
-	}
-
-	private Class<? extends ModelData> dataClass;
-
-	public void setDataClass(Class<? extends ModelData> dataClass)
+	public void      setDataClass(Class<? extends ModelData> dataClass)
 	{
 		this.dataClass = dataClass;
 	}
+
+	private Class<? extends ModelData> dataClass;
 
 
 	/* protected: support interface */
@@ -167,7 +146,6 @@ public abstract class ModelBeanBase implements ModelBean
 	{
 		IO.str(o, modelKey);
 		IO.longer(o, domain);
-		o.writeBoolean(active);
 		IO.cls(o, dataClass);
 	}
 
@@ -177,9 +155,9 @@ public abstract class ModelBeanBase implements ModelBean
 	{
 		modelKey  = IO.str(i);
 		domain    = IO.longer(i);
-		active    = i.readBoolean();
 
 		dataClass = IO.cls(i);
-		EX.assertx((dataClass == null) || ModelData.class.isAssignableFrom(dataClass));
+		EX.assertx((dataClass == null) ||
+		  ModelData.class.isAssignableFrom(dataClass));
 	}
 }

@@ -88,25 +88,6 @@ public abstract class ModelViewBase extends ViewWithModes
 		  (models = obtainRequestedModels());
 	}
 
-	public ModelBean[] getRequestedActiveModels()
-	{
-		//~: get all the requested models
-		ModelBean[] rm = getRequestedModels();
-
-		//?: {all the models are active}
-		int ac = 0; for(ModelBean m : rm)
-			if(m.isActive()) ac++;
-		if(ac == rm.length)
-			return rm;
-
-		//~: select the active models
-		ModelBean[] rs = new ModelBean[ac];
-		for(int r = 0, i = 0;(i < rm.length);i++)
-			if(rm[i].isActive())
-				rs[r++] = rm[i];
-		return rs;
-	}
-
 	/**
 	 * Combines all the model keys requested with
 	 * the key of the current model. Allows to remember
@@ -117,10 +98,10 @@ public abstract class ModelViewBase extends ViewWithModes
 	 */
 	public String      getModelKeys()
 	{
-		ModelBean[] am = getRequestedActiveModels();
+		ModelBean[] am = getRequestedModels();
 		Set<String> ks = new LinkedHashSet<String>(am.length);
 
-		for(ModelBean m : am) if(m.isActive())
+		for(ModelBean m : am)
 			ks.add(m.getModelKey());
 
 		return SU.scats(",", ks);

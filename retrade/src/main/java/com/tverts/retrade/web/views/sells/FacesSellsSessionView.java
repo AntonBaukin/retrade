@@ -40,7 +40,6 @@ public class FacesSellsSessionView extends UnityModelView
 	public String gotoSellsInvoice()
 	{
 		EX.assertx(isFromInvoice());
-		getModel().setActive(false);
 		return "invoice";
 	}
 

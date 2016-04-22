@@ -2,11 +2,8 @@ package com.tverts.model;
 
 /**
  * Each UI model element implements this interface.
- *
- * Implementation class may provide {@link ModelInfo}
- * instance to affect the models persistent container
- * and the in-memory cache.
- *
+ * Model is created for distinct user and is stored
+ * on the server side in the memory cache and the DB.
  *
  * @author anton.baukin@gmail.com
  */
@@ -22,14 +19,6 @@ public interface ModelBean extends java.io.Externalizable
 
 	public void      setModelKey(String key);
 
-	/**
-	 * Inactive models are removed from
-	 * the database and the memory cache.
-	 */
-	public boolean   isActive();
-
-	public void      setActive(boolean active);
-
 	public Long      getDomain();
 
 
@@ -40,7 +29,7 @@ public interface ModelBean extends java.io.Externalizable
 	 * this model bean. Undefined result means that
 	 * this model has no data model related.
 	 *
-	 * Data objects must not be stored in the model.
+	 * Data objects must not be stored in the model!
 	 */
 	public ModelData modelData();
 }

@@ -9,8 +9,9 @@ import java.util.Collection;
 
 import com.tverts.secure.ForbiddenException;
 
-/* com.tverts: supports */
+/* com.tverts: support */
 
+import com.tverts.support.misc.Producer;
 import com.tverts.support.streams.StringBuilderWriter;
 
 
@@ -21,7 +22,7 @@ import com.tverts.support.streams.StringBuilderWriter;
  */
 public class EX
 {
-	/* other functions */
+	/* Gen the Message */
 
 	/**
 	 * Finds the text of the exception. Useful
@@ -59,7 +60,7 @@ public class EX
 	}
 
 
-	/* public: unwrapping  */
+	/* Unwrapping  */
 
 	/**
 	 * Removes the {@link RuntimeException} wrappers
@@ -105,7 +106,7 @@ public class EX
 	}
 
 
-	/* error printing */
+	/* Error Printing */
 
 	public static String    print(Throwable e)
 	{
@@ -129,7 +130,7 @@ public class EX
 	}
 
 
-	/* assertions */
+	/* Assertions */
 
 	public static void   assertx(boolean x, Object... msg)
 	{
@@ -168,7 +169,7 @@ public class EX
 	}
 
 
-	/* exceptions */
+	/* Exceptions */
 
 	public static AssertionError   ass(Object... msg)
 	{
@@ -221,5 +222,52 @@ public class EX
 				s = e2en(cause);
 
 		return new RuntimeException(s, cause);
+	}
+
+
+	/* Closures */
+
+	/**
+	 * Returns the result ignoring any exception.
+	 */
+	public static <T> T result(Producer<T> x)
+	{
+		EX.assertn(x);
+
+		try
+		{
+			return x.get();
+		}
+		catch(Throwable e)
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the result ignoring any exception
+	 * of the class given, throwing else wrapped.
+	 */
+	public static <T> T result(Class<? extends Throwable> cls, Producer<T> x)
+	{
+		EX.assertn(cls);
+		EX.assertn(x);
+
+		try
+		{
+			return x.get();
+		}
+		catch(Throwable e)
+		{
+			//~: unwrap it wrapped
+			e = EX.xrt(e);
+
+			//?: {is of ignored class}
+			if(cls.isAssignableFrom(e.getClass()))
+				return null;
+
+			//!: raise it again
+			throw EX.wrap(e);
+		}
 	}
 }

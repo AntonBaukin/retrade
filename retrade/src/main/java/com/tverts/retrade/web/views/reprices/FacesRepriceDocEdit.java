@@ -73,7 +73,6 @@ public class FacesRepriceDocEdit extends ModelView
 
 	public String gotoCancelEditReprice()
 	{
-		getModel().setActive(false);
 		return "cancel-edit";
 	}
 

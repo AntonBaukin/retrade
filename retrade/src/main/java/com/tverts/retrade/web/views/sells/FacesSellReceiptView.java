@@ -48,7 +48,6 @@ public class FacesSellReceiptView extends NumericModelView
 
 	public String gotoSellsSession()
 	{
-		getModel().setActive(false);
 		return "session";
 	}
 

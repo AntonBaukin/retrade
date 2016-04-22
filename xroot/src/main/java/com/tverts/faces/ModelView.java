@@ -97,11 +97,9 @@ public abstract class ModelView
 		ModelBean m = getModel();
 		String    k = m.getModelKey();
 
-		//?: {owned model is inactive | has the key}
-		if((k == null) || r.contains(k) || !m.isActive())
-			return r;
-
-		return SU.scats(",", r, k);
+		//?: {owned model has the key}
+		return ((k == null) || r.contains(k))?(r):
+		  SU.scats(",", r, k);
 	}
 
 

@@ -97,13 +97,11 @@ public abstract class FacesInvoiceEditBase extends ModelView
 
 	public String  gotoDoneEditInvoice()
 	{
-		getModel().setActive(false);
 		return "done-edit";
 	}
 
 	public String  gotoCancelEditInvoice()
 	{
-		getModel().setActive(false);
 		return "cancel-edit";
 	}
 

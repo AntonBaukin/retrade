@@ -374,11 +374,8 @@ public class      ModelsStoreService
 
 		if(backend == null) return;
 
-		//?: {bean is not active}
-		if(!e.bean.isActive())
-			backend.remove(e);
-		//?: {it is just created}
-		else if(e.accessInc.get() != 0)
+		//?: {it is not just created}
+		if(e.accessInc.get() != 0)
 			backend.store(Collections.singleton(e));
 	}
 
