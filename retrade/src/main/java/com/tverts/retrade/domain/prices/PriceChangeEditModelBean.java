@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.tverts.model.ModelBeanBase;
 import com.tverts.model.ModelData;
+import com.tverts.model.ModelsAccessPoint;
 
 /* com.tverts: retrade model data */
 
@@ -71,7 +72,7 @@ public class PriceChangeEditModelBean extends ModelBeanBase
 
 	public RepriceDocEditModelBean getRepriceDocModel()
 	{
-		return readModelBean(getRepriceDocModelKey(),
+		return ModelsAccessPoint.read(getRepriceDocModelKey(),
 		  RepriceDocEditModelBean.class);
 	}
 

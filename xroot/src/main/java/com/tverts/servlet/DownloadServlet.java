@@ -90,7 +90,7 @@ public class DownloadServlet extends GenericServlet
 		{
 			//~: access the model  <-- this is secure access
 			provider = EX.assertn(
-			  ModelsAccessPoint.modelsStore().read(param),
+			  ModelsAccessPoint.read(param),
 			  "Model Bean [", param, "] is not found!"
 			);
 

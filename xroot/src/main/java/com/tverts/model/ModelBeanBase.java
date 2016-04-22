@@ -117,28 +117,6 @@ public abstract class ModelBeanBase implements ModelBean
 	private Class<? extends ModelData> dataClass;
 
 
-	/* protected: support interface */
-
-	protected ModelBean readModelBean(String key)
-	{
-		return ModelsAccessPoint.modelsStore().read(key);
-	}
-
-	@SuppressWarnings("unchecked")
-	protected <B extends ModelBean> B readModelBean(String key, Class<B> beanClass)
-	{
-		ModelBean mb = readModelBean(key);
-
-		if((mb != null) && (beanClass != null) &&
-		   !beanClass.isAssignableFrom(mb.getClass())
-		  )
-			throw EX.state("Model bean requested by the key [", key,
-			  "] is not a class checked [", beanClass.getName(), "]!");
-
-		return (B)mb;
-	}
-
-
 	/* Serialization */
 
 	public void writeExternal(ObjectOutput o)

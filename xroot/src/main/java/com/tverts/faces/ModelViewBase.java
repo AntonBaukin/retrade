@@ -194,7 +194,7 @@ public abstract class ModelViewBase extends ViewWithModes
 
 	protected ModelsStore modelsStore()
 	{
-		return ModelsAccessPoint.modelsStore();
+		return ModelsAccessPoint.store();
 	}
 
 

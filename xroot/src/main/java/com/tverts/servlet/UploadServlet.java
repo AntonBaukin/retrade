@@ -91,7 +91,7 @@ public class UploadServlet extends GenericServlet
 		{
 			//~: access the model  <-- this is secure access
 			upload = EX.assertn(
-			  ModelsAccessPoint.modelsStore().read(param),
+			  ModelsAccessPoint.read(param),
 			  "Model Bean [", param, "] is not found!"
 			);
 

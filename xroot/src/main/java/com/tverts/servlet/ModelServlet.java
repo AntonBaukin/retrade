@@ -94,7 +94,7 @@ public class ModelServlet extends GenericServlet
 			param = SU.s2s(req.getParameter(ModelView.MODEL_PARAM));
 
 			if(param != null)
-				model = ModelsAccessPoint.modelsStore().read(param);
+				model = ModelsAccessPoint.read(param);
 		}
 
 		//~: apply the data selection limits

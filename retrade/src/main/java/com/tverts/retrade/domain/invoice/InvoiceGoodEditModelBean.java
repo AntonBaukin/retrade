@@ -24,6 +24,7 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import com.tverts.model.DataSelectModelBean;
 import com.tverts.model.ModelData;
+import com.tverts.model.ModelsAccessPoint;
 
 /* com.tverts: retrade domain (goods) */
 
@@ -121,7 +122,7 @@ public class InvoiceGoodEditModelBean extends DataSelectModelBean
 	public InvoiceEditModelBean getInvoiceModelBean()
 	{
 		return (getInvoiceModel() == null)?(null):
-		  readModelBean(getInvoiceModel(), InvoiceEditModelBean.class);
+		  ModelsAccessPoint.read(getInvoiceModel(), InvoiceEditModelBean.class);
 	}
 
 	public InvoiceGoodView      getGoodEdit()

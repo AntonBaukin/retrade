@@ -7,7 +7,6 @@ import com.tverts.model.store.ModelsStoreAccess;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
-import com.tverts.support.LU;
 
 
 /**
@@ -34,17 +33,33 @@ public class ModelsAccessPoint
 
 	/* Models Access Point */
 
-	public static ModelsStore modelsStore()
+	public static ModelsStore store()
 	{
 		//?: {has no store access strategy}
-		EX.assertn(INSTANCE.modelAccess, "No UI Model Beans Store ",
-		  "access strategy is installed in the Point!"
-		);
+		EX.assertn(INSTANCE.modelAccess);
 
-		return EX.assertn(INSTANCE.modelAccess.accessStore(),
-		  "UI Model Beans Store access strategy [",
-		  LU.cls(INSTANCE.modelAccess), "] is broken!"
-		);
+		//?: {access strategy got no store}
+		return EX.assertn(INSTANCE.modelAccess.accessStore());
+	}
+
+	public static ModelBean   read(String key)
+	{
+		return ModelsAccessPoint.store().read(key);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <B extends ModelBean> B
+	                          read(String key, Class<B> beanClass)
+	{
+		ModelBean mb = ModelsAccessPoint.read(key);
+
+		if((mb != null) && (beanClass != null) &&
+		   !beanClass.isAssignableFrom(mb.getClass())
+		  )
+			throw EX.state("Model bean requested by the key [", key,
+			  "] is not a class checked [", beanClass.getName(), "]!");
+
+		return (B) mb;
 	}
 
 

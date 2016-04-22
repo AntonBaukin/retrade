@@ -2,12 +2,12 @@ package com.tverts.model;
 
 /**
  * While model bean contains user related input
- * parameters, model data bean stores the data
- * loaded from the database.
+ * parameters (the UI state), model data bean
+ * provides the data loaded from the database.
  *
- * Model data beans a mapped to XML, may be
- * serialized and transferred, but never stored
- * in the model point.
+ * Model data beans are mapped to XML or JSON, may
+ * be serialized and transferred, but never stored
+ * in the model or their store.
  *
  *
  * @author anton.baukin@gmail.com
