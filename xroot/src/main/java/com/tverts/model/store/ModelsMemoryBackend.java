@@ -6,10 +6,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/* com.tverts: models */
-
-import com.tverts.model.ModelsStore.ModelEntry;
-
 
 /**
  * Models backend for test purposes.

@@ -4,10 +4,6 @@ package com.tverts.model.store;
 
 import java.util.Collection;
 
-/* com.tverts: models */
-
-import com.tverts.model.ModelsStore.ModelEntry;
-
 
 /**
  * Strategy to permanently store UI Models.

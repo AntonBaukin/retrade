@@ -18,10 +18,6 @@ import org.springframework.stereotype.Component;
 
 import com.tverts.hibery.GetObjectBase;
 
-/* com.tverts: models */
-
-import com.tverts.model.ModelsStore.ModelEntry;
-
 /* com.tverts: support */
 
 import com.tverts.support.EX;

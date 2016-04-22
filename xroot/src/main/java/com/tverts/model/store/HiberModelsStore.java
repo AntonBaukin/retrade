@@ -14,10 +14,6 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import com.tverts.system.tx.TxBean;
 
-/* com.tverts: models */
-
-import com.tverts.model.ModelsStore.ModelEntry;
-
 
 /**
  * Persistent backend for the UI Model Beans stored
