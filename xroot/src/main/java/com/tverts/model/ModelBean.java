@@ -43,6 +43,4 @@ public interface ModelBean extends java.io.Externalizable
 	 * Data objects must not be stored in the model.
 	 */
 	public ModelData modelData();
-
-	public ModelInfo modelInfo();
 }

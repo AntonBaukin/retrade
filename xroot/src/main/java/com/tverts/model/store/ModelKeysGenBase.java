@@ -3,7 +3,6 @@ package com.tverts.model.store;
 /* com.tverts: model */
 
 import com.tverts.model.ModelBean;
-import com.tverts.model.ModelInfo;
 
 /* com.tverts: support */
 
@@ -39,13 +38,6 @@ public abstract class ModelKeysGenBase
 
 	protected String          selectKeyPrefix(ModelBean bean)
 	{
-		String    p = null;
-		ModelInfo i = bean.modelInfo();
-
-		//?: {has model info}
-		if(i != null)
-			p = i.keysPrefix;
-
-		return (p != null)?EX.asserts(p):(bean.getClass().getSimpleName());
+		return bean.getClass().getSimpleName();
 	}
 }

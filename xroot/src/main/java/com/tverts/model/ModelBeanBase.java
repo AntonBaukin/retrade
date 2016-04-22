@@ -104,11 +104,6 @@ public abstract class ModelBeanBase implements ModelBean
 		}
 	}
 
-	public ModelInfo modelInfo()
-	{
-		return null;
-	}
-
 	public Long      domain()
 	{
 		return EX.assertn(getDomain(),
