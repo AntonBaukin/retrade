@@ -99,11 +99,10 @@ public abstract class ModelViewBase extends ViewWithModes
 	public String      getModelKeys()
 	{
 		ModelBean[] am = getRequestedModels();
-		Set<String> ks = new LinkedHashSet<String>(am.length);
+		Set<String> ks = new LinkedHashSet<>(am.length);
 
 		for(ModelBean m : am)
 			ks.add(m.getModelKey());
-
 		return SU.scats(",", ks);
 	}
 
@@ -114,6 +113,7 @@ public abstract class ModelViewBase extends ViewWithModes
 		for(ModelBean m : getRequestedModels())
 			if(beanClass.equals(m.getClass()))
 				return (B)m;
+
 		return null;
 	}
 
@@ -124,6 +124,7 @@ public abstract class ModelViewBase extends ViewWithModes
 		for(ModelBean m : getRequestedModels())
 			if(beanClass.isAssignableFrom(m.getClass()))
 				return (B)m;
+
 		return null;
 	}
 
@@ -151,7 +152,7 @@ public abstract class ModelViewBase extends ViewWithModes
 	protected ModelBean[] obtainRequestedModels()
 	{
 		Set<String>     keys = obtainRequestedModelKeys();
-		List<ModelBean> res  = new ArrayList<ModelBean>(keys.size());
+		List<ModelBean> res  = new ArrayList<>(keys.size());
 
 		for(String key : keys) if((key = SU.s2s(key)) != null)
 		{
@@ -165,11 +166,11 @@ public abstract class ModelViewBase extends ViewWithModes
 	public Set<String>    obtainRequestedModelKeys()
 	{
 		//~: get the keys parameter
-		String[]        prms = request().getParameterValues(getModelParam());
+		String[] prms = request().getParameterValues(getModelParam());
 		if(prms == null) prms = new String[0];
 
 		//~: split the keys
-		Set<String>     keys = new LinkedHashSet<String>(prms.length);
+		Set<String> keys = new LinkedHashSet<>(prms.length);
 		for(String s : prms) if((s = SU.s2s(s)) != null)
 			keys.addAll(Arrays.asList(SU.s2a(s)));
 

@@ -1,10 +1,5 @@
 package com.tverts.model;
 
-/* com.tverts: support */
-
-import com.tverts.model.store.ModelEntry;
-
-
 /**
  * Model Store is a container of the User Interface Model
  * Beans with in-memory cache and a persistence backend.

@@ -1,6 +1,6 @@
 package com.tverts.faces;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Set;
 

@@ -6,10 +6,10 @@ import com.tverts.support.misc.HiddenError;
 
 
 /**
- * While processing HTTP request, it no model reference
+ * While processing HTTP request, if no model reference
  * provided, or the reference is for obsolete model instance,
- * the vew implementation may raise this exception to redirect
- * the request to the actual model reference.
+ * the view implementation may raise this exception to redirect
+ * the request to newly created model reference.
  *
  * This exception is handled by {@link NoModelFilter}.
  *
@@ -59,6 +59,7 @@ public class      NoModelException
 		this.modelKeys = modelKeys;
 		return this;
 	}
+
 
 	/* private: actual model reference */
 

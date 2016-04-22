@@ -19,11 +19,12 @@ import com.tverts.servlet.filters.PickFilter;
 /* tverts.com: faces */
 
 import com.tverts.faces.Functions;
-import com.tverts.faces.ModelView;
+import com.tverts.faces.ModelViewBase;
 
 /* tverts.com: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -102,20 +103,19 @@ public class NoModelFilter extends FilterBase
 
 	protected String createRedirectURL(FilterTask task, NoModelException nomoe)
 	{
-		String        cp  = request(0).getContextPath();
-		String        uri = request(0).getRequestURI();
-		String        url = Functions.absoluteURL(uri.substring(cp.length()));
-		String        qs  = request(0).getQueryString();
-		String        mp  = ModelView.MODEL_PARAM + '=';
-		StringBuilder res;
+		String cp  = request(0).getContextPath();
+		String uri = request(0).getRequestURI();
+		String url = Functions.absoluteURL(uri.substring(cp.length()));
+		String qs = SU.sXs(request(0).getQueryString());
+		String mp  = ModelViewBase.MODEL_PARAM + '=';
 
 		//~: add request URI as it is
-		if(qs == null) qs = "";
-		res = new StringBuilder(url.length() + qs.length() + 64);
+		StringBuilder res = new StringBuilder(
+		  url.length() + qs.length() + 64);
 		res.append(url).append('?');
 
 		//~: detect the model reference in the request
-		int           mi  = qs.indexOf(mp);
+		int mi  = qs.indexOf(mp);
 
 		//?: {has no model parameter in query string} add it
 		if(mi == -1)
@@ -127,7 +127,7 @@ public class NoModelFilter extends FilterBase
 		//!: replace the model parameter in the query string
 		else
 		{
-			int        ai  = qs.indexOf('&', mi);
+			int ai  = qs.indexOf('&', mi);
 			if(ai == -1) ai = qs.length();
 
 			res.append(qs.substring(0, mi + mp.length()));
