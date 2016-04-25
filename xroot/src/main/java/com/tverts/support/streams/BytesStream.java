@@ -370,7 +370,7 @@ public final class BytesStream extends OutputStream
 	/* private: list of buffers */
 
 	private ArrayList<byte[]> buffers =
-	  new ArrayList<byte[]>(16);
+	  new ArrayList<>(16);
 
 	/**
 	 * The position within the last

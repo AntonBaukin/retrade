@@ -53,7 +53,8 @@ public interface CachingModelsStore extends ModelsStore
 
 	/* Caching Delegate */
 
-	public static interface CachingDelegate extends Delegate
+	public static interface CachingDelegate
+	       extends          ModelsStoreBase.Delegate
 	{
 		/* Caching Delegate */
 

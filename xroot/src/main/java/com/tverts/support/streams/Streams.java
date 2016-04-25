@@ -1,5 +1,7 @@
 package com.tverts.support.streams;
 
+/* Java */
+
 import java.io.FilterInputStream;
 import java.io.FilterOutputStream;
 import java.io.IOException;
@@ -7,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+
 
 /**
  * Collection of simple tiny streams.

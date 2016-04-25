@@ -27,21 +27,18 @@ public class HiberModelsStore extends ModelsBackendBase
 
 	public void find(final ModelEntry e)
 	{
-		bean(TxBean.class).execute(new Runnable()
+		bean(TxBean.class).execute(() ->
 		{
-			public void run()
+			//~: load bean bytes from the database
+			byte[] bytes = bean(GetModelRecord.class).load(e);
+
+			if(bytes != null)
 			{
-				//~: load bean bytes from the database
-				byte[] bytes = bean(GetModelRecord.class).load(e);
+				//~: decode the bean
+				e.bean = restore(bytes);
 
-				if(bytes != null)
-				{
-					//~: decode the bean
-					e.bean = restore(bytes);
-
-					//~: mark as loaded
-					e.loaded = true;
-				}
+				//~: mark as loaded
+				e.loaded = true;
 			}
 		});
 	}
@@ -50,30 +47,30 @@ public class HiberModelsStore extends ModelsBackendBase
 	{
 		//~: encode the beans
 		final HashMap<ModelEntry, byte[]> ebs =
-		  new HashMap<ModelEntry, byte[]>(es.size());
+		  new HashMap<>(es.size());
 		for(ModelEntry e : es)
 			ebs.put(e, store(e.bean));
 
-		bean(TxBean.class).execute(new Runnable()
-		{
-			public void run()
-			{
-				//~: save the records
-				bean(GetModelRecord.class).save(ebs);
-			}
-		});
+		//~: save the records
+		bean(TxBean.class).execute(() ->
+			bean(GetModelRecord.class).save(ebs)
+		);
 	}
 
 	public void remove(final ModelEntry e)
 	{
-		bean(TxBean.class).execute(new Runnable()
-		{
-			public void run()
-			{
-				//~: remove the record
-				bean(GetModelRecord.class).
-				  remove(Collections.singleton(e.key));
-			}
-		});
+		//~: remove the record
+		bean(TxBean.class).execute(() ->
+			bean(GetModelRecord.class).
+			  remove(Collections.singleton(e.key))
+		);
+	}
+
+	public void sweep(long backTime)
+	{
+		//~: do database sweep
+		bean(TxBean.class).execute(() ->
+			bean(GetModelRecord.class).sweep(backTime)
+		);
 	}
 }

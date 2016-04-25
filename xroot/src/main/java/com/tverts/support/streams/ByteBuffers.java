@@ -1,6 +1,6 @@
 package com.tverts.support.streams;
 
-/* standard Java classes */
+/* Java */
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -48,8 +48,7 @@ public final class ByteBuffers
 			List<byte[]> list = (pool == null)?(null):(pool.get());
 
 			if(list == null)
-				pool = new WeakReference<List<byte[]>>(
-				  list = new ArrayList<byte[]>(16));
+				pool = new WeakReference<>(list = new ArrayList<>(16));
 
 			list.add(buf);
 		}
@@ -66,8 +65,8 @@ public final class ByteBuffers
 			List<byte[]> list = (pool == null)?(null):(pool.get());
 
 			if(list == null)
-				pool = new WeakReference<List<byte[]>>(
-				  list = new ArrayList<byte[]>(bufs.size() + 16));
+				pool = new WeakReference<>(list =
+				  new ArrayList<>(bufs.size() + 16));
 
 			list.addAll(bufs);
 		}

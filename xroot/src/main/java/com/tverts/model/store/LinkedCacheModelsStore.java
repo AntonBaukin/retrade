@@ -33,12 +33,16 @@ public class      LinkedCacheModelsStore
 		this.pruned  = new HashSet<LinkedEntry>(size / 10);
 	}
 
+	public final int size;
+
 
 	/* Models Store Base */
 
 	public void setDelegate(Delegate delegate)
 	{
-		EX.assertx(delegate == null || delegate instanceof CachingDelegate);
+		EX.assertx((delegate == null) ||
+		  (delegate instanceof CachingDelegate));
+
 		super.setDelegate(delegate);
 	}
 
@@ -67,7 +71,9 @@ public class      LinkedCacheModelsStore
 	{
 		synchronized(this)
 		{
-			Iterator<Map.Entry<ModelEntry, Integer>> i = items.entrySet().iterator();
+			Iterator<Map.Entry<ModelEntry, Integer>> i =
+			  items.entrySet().iterator();
+
 			while(i.hasNext())
 			{
 				Map.Entry<ModelEntry, Integer> p = i.next();
@@ -245,9 +251,7 @@ public class      LinkedCacheModelsStore
 
 	/* protected: the cache state */
 
-	protected final int   size;
-	protected LinkedEntry head, tail;
-
+	protected LinkedEntry                    head, tail;
 	protected final Map<String, LinkedEntry> entries;
 	protected final Set<LinkedEntry>         pruned;
 }

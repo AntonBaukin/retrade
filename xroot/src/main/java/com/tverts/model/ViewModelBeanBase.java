@@ -21,7 +21,7 @@ public abstract class ViewModelBeanBase extends ModelBeanBase
 {
 	/* View */
 
-	public Object getView()
+	public Object     getView()
 	{
 		return view;
 	}
@@ -29,9 +29,11 @@ public abstract class ViewModelBeanBase extends ModelBeanBase
 	private Object view;
 
 	@SuppressWarnings("unchecked")
-	public void setView(Object view)
+	public void       setView(Object view)
 	{
-		EX.assertx((view == null) || viewClass().isAssignableFrom(view.getClass()));
+		EX.assertx((view == null) ||
+		  viewClass().isAssignableFrom(view.getClass()));
+
 		this.view = view;
 	}
 

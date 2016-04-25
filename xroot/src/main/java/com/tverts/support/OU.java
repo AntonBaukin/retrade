@@ -146,7 +146,7 @@ public class OU
 
 	public static <O> ObjectAccess<O> permAcces(O ref)
 	{
-		return new ObjectAccessRef<O>(ref);
+		return new ObjectAccessRef<>(ref);
 	}
 
 
@@ -207,8 +207,8 @@ public class OU
 	 */
 	public static Class[] getAllInterfaces(Class c)
 	{
-		LinkedHashSet<Class> set = new LinkedHashSet<Class>(3);
-		LinkedList<Class>    stk = new LinkedList<Class>();
+		LinkedHashSet<Class> set = new LinkedHashSet<>(3);
+		LinkedList<Class>    stk = new LinkedList<>();
 
 		stk.addLast(c);
 
@@ -390,7 +390,7 @@ public class OU
 			ObjectInputStream is = new ObjectInputStream(
 			  new ByteArrayInputStream(bytes));
 
-			return (Serializable) is.readObject();
+			return is.readObject();
 		}
 		catch(Exception e)
 		{

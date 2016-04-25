@@ -18,6 +18,56 @@ import com.tverts.support.EX;
  */
 public abstract class ModelsStoreBase implements ModelsStore
 {
+	/* Store Delegation */
+
+	/**
+	 * Interface to additionally wrap store strategies.
+	 */
+	public static interface Delegate
+	{
+		/* Models Store Delegate */
+
+		/**
+		 * Invoked by the caching store before search
+		 * in the backend. Assigns additional fields
+		 * to set up in the query that are taken from
+		 * current execution context (user id, etc.).
+		 */
+		public void find(ModelEntry e);
+
+		/**
+		 * Check access rights of the current execution
+		 * context to read the model entry is found in
+		 * the cache, or loaded from the backend.
+		 *
+		 * Essentially, you may check that the user created
+		 * the model is the same user accessing it now.
+		 */
+		public void found(ModelEntry e);
+
+		/**
+		 * Actually removes model entry from
+		 * the persistent store.
+		 */
+		public void remove(ModelEntry e);
+
+		/**
+		 * Saves the entry in the backend.
+		 *
+		 * Optionally, check that current execution
+		 * context is the same as stored in the entry.
+		 */
+		public void save(ModelEntry e);
+
+		/**
+		 * Assigns the fields of the model entry
+		 * related to the user login, roles, etc.,
+		 * that are found from the execution context.
+		 */
+		public void create(ModelEntry e);
+	}
+
+
 	/* Models Store Base */
 
 	public void setDelegate(Delegate delegate)

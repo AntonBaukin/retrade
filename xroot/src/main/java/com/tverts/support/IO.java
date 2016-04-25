@@ -87,9 +87,9 @@ public class IO
 	/* Serialization Support */
 
 	/**
-	 * Maximum size of the compressed XML text (200 MBytes).
+	 * Maximum size of the compressed bytes of XML text (64 MBytes).
 	 */
-	public static final long MAX_XML_BYTES = 200 * 1024 * 1024;
+	public static final long MAX_XML_BYTES = 64 * 1024 * 1024;
 
 	public static void   xml(DataOutput d, Object bean)
 	{

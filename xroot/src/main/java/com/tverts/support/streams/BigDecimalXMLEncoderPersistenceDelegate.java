@@ -12,7 +12,6 @@ import java.math.BigDecimal;
  * Allows to write and read BigDecimal properties
  * of Java Beans via XML Encoder and Decoder.
  *
- *
  * @author anton.baukin@gmail.com
  */
 public class   BigDecimalXMLEncoderPersistenceDelegate

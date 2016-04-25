@@ -7,10 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/* com.tverts: system (spring) */
-
-import static com.tverts.spring.SpringPoint.bean;
-
 /* com.tverts: system (services) */
 
 import com.tverts.system.services.Event;
@@ -258,12 +254,10 @@ public class      ModelsStoreService
 
 	protected void    doSweep()
 	{
-		try
+		if(this.backend != null) try
 		{
 			LU.I(getLog(), logsig(), ": executing sweep of UI models persisted");
-
-			//~: do database sweep
-			bean(GetModelRecord.class).sweep(1000L * 60 * sweepTimeout);
+			this.backend.sweep(1000L * 60 * sweepTimeout);
 		}
 		finally
 		{
@@ -281,7 +275,7 @@ public class      ModelsStoreService
 	protected Boolean savePruned()
 	{
 		Map<ModelEntry, Integer> items =
-		  new HashMap<ModelEntry, Integer>(101);
+		  new HashMap<>(101);
 
 		//~: collect the items removed from the cache
 		((CachingModelsStore) modelsStore).copyPruned(items);
@@ -314,7 +308,7 @@ public class      ModelsStoreService
 	protected boolean saveShutdown()
 	{
 		Map<ModelEntry, Integer> items =
-		  new HashMap<ModelEntry, Integer>(1001);
+		  new HashMap<>(1001);
 
 		//~: collect all the items of the store
 		((CachingModelsStore) modelsStore).copyAll(items);

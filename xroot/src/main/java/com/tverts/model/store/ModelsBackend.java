@@ -19,4 +19,10 @@ public interface ModelsBackend
 	public void store(Collection<ModelEntry> es);
 
 	public void remove(ModelEntry e);
+
+	/**
+	 * Remove stored entries with last update time
+	 * age before the back time given (milliseconds).
+	 */
+	public void sweep(long backTime);
 }

@@ -73,7 +73,7 @@ public class ModelEntry implements Externalizable
 
 	/* Object */
 
-	public int hashCode()
+	public int     hashCode()
 	{
 		return key.hashCode();
 	}
