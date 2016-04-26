@@ -38,110 +38,18 @@ ${v.checkModelRequestedWithRedirect}
         xmlns = 'http://www.w3.org/1999/xhtml'>
 
         <ui:param name = "toggleTableView" value = "retrade-tree-list"/>
-
       </ui:decorate>
     </f:facet>
 
+    <!-- toolbar] -->
+
+
+    <!-- [the goods grid] -->
     <ui:decorate template = '.list-grid.xhtml'
         xmlns = 'http://www.w3.org/1999/xhtml'>
 
-      <ui:param name = "pageSize" value = "20"/>
       <ui:param name = "columnModel" value = "GoodUnitViewShort"/>
-
     </ui:decorate>
-
-    <script type = "text/javascript">
-    //<![CDATA[
-
-    //~: insert selected folders in the top
-    extjsf.bind("${z:vid(v, 'goodUnits')}", '${extDom}').on('load', function(store, recs)
-    {
-      //~: selected folder node
-      var t = extjsf.co("${z:vid(v, 'tree')}", '${extDom}')
-      var f = t.getSelection(); if(!f || f.length != 1) return; else f = f[0]
-      if(f.get('objectKey') == '$') return
-
-      var ms = [], p = f
-      function addItem()
-      {
-        ms.unshift(Ext.create('retrade.model.GoodUnitView', {
-          objectKey: 'folder$'+ p.get('objectKey'),
-          goodCode: p.get('code'), goodName: p.get('name'),
-          uiRowClass: ZeTS.cat('retrade-goods-grid-row-', (f == p)?('selected'):('parent'))
-        }))
-      }
-
-      //~: trace up to the root
-      while(true)
-      {
-        //~: create model item
-        addItem()
-
-        //?: {has no parent node}
-        if(ZeT.isu(p = p.get('parentKey')))
-        {
-          p = t.getStore().getRoot()
-          addItem()
-          break
-        }
-
-        //~: go up
-        p = ZeT.assertn(t.getStore().getAt(t.getStore().find('objectKey', p)))
-      }
-
-      //~: has the children
-      ZeT.each(f.get('children'), function(c)
-      {
-        ms.push(Ext.create('retrade.model.GoodUnitView', {
-          objectKey: 'folder$'+ c.objectKey, goodCode: c.code, goodName: c.name,
-          parentFolder : f, uiRowClass: 'retrade-goods-grid-row-child'
-        }))
-      })
-
-      //~: insert the models
-      store.insert(0, ms)
-    })
-
-    //~: set special formatter of the grid rows
-    extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').getRowClass = function(record)
-    {
-      return record.get('uiRowClass')
-    }
-
-    //~: grid double click -> open good if not a folder
-    extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeOpenGoodWindow2 =
-      extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeOpenGoodWindow
-    extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeOpenGoodWindow  =
-      function(record, e, opts)
-    {
-      var f = record && record.get('objectKey')
-      if(!f || (f.indexOf('folder$') != 0))
-        return extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').
-          retradeOpenGoodWindow2(record, e, opts)
-    }
-
-    //~: grid click -> open folder
-    extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
-      on('itemclick', function(grid, record)
-      {
-        var f = record.get('objectKey'); if(f.indexOf('folder$') != 0) return
-        var k = f.substring('folder$'.length)
-
-        //~: find the folder in the tree
-        var t = extjsf.co("${z:vid(v, 'tree')}", '${extDom}')
-        f = t.getStore().query('objectKey', k)
-        if(f && (f.getCount() == 1))
-          return t.getSelectionModel().select([ f.getAt(0) ])
-
-        //~: expand the parent node
-        record.get('parentFolder').expand()
-        f = t.getStore().query('objectKey', k)
-        ZeT.assert(f && (f.getCount() == 1))
-        t.getSelectionModel().select([ f.getAt(0) ])
-      })
-
-    //]]>
-    </script>
   </x:desktop-panel>
 </ui:define>
 </ui:decorate>

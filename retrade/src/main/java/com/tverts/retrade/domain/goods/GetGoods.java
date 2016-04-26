@@ -1369,7 +1369,7 @@ from MeasureUnit mu where
 		if(folder != null)
 		{
 			final String Q =
-"gu.id in (select c.item.item.id from TreeCross c where (c.folder.id = :folder))";
+"gu.id in (select ti.item.id from TreeItem ti where (ti.folder.id = :folder))";
 
 			qb.nameEntity("TreeCross", TreeCross.class);
 
