@@ -1,9 +1,5 @@
 package com.tverts.retrade.web.views.goods;
 
-/* Java */
-
-import java.util.List;
-
 /* JavaServer Faces */
 
 import javax.faces.bean.ManagedBean;
@@ -17,15 +13,6 @@ import com.tverts.faces.ModelView;
 
 import static com.tverts.servlet.RequestPoint.request;
 
-/* com.tverts: spring */
-
-import static com.tverts.spring.SpringPoint.bean;
-
-/* com.tverts: actions */
-
-import com.tverts.actions.ActionType;
-import com.tverts.actions.ActionsPoint;
-
 /* com.tverts: model */
 
 import com.tverts.model.ModelBean;
@@ -36,14 +23,10 @@ import com.tverts.jsx.JsX;
 
 /* com.tverts: retrade domain (goods) */
 
-import com.tverts.retrade.domain.goods.GetGoods;
-import com.tverts.retrade.domain.goods.GoodUnit;
-import com.tverts.retrade.domain.goods.Goods;
 import com.tverts.retrade.domain.goods.GoodsModelBean;
 
 /* com.tverts: support */
 
-import com.tverts.support.EX;
 import com.tverts.support.SU;
 
 
@@ -64,33 +47,6 @@ public class FacesGoodsView extends ModelView
 
 		//~: selection set
 		getModel().setSelSet(request().getParameter("selset"));
-
-		return null;
-	}
-
-	public String doAssignGroup()
-	{
-		String selset = request().getParameter("selset");
-		String group  = SU.s2s(request().getParameter("goodsGroup"));
-		EX.assertx((selset != null) & (group != null));
-
-		//~: select the goods
-		GetGoods   get = bean(GetGoods.class);
-		List<Long> ids = get.getSelectedGoodsKeys(selset);
-
-		for(Long id : ids)
-		{
-			GoodUnit gu = EX.assertn(get.getGoodUnit(id));
-
-			//:= good group
-			Goods.attrs(gu.getOxOwn()).put(Goods.AT_GROUP, group);
-
-			//~: update object extraction
-			gu.updateOx();
-
-			//~: update the good
-			ActionsPoint.actionRun(ActionType.UPDATE, gu);
-		}
 
 		return null;
 	}
