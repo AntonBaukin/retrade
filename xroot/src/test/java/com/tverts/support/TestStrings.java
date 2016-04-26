@@ -47,18 +47,35 @@ public class TestStrings
 	@org.junit.Test
 	public void testSplit()
 	{
-		eqs2a("");
-		eqs2a("a", "a");
-		eqs2a("abc", "abc");
-		eqs2a("a-bc", "a-bc");
-		eqs2a("a-b c", "a-b", "c");
-		eqs2a("a-b ..c/d/e", "a-b", "c/d/e");
-		eqs2a("a:b c d  ef   ", "a:b", "c", "d", "ef");
+		eq_s2aw("");
+		eq_s2aw("a", "a");
+		eq_s2aw("abc", "abc");
+		eq_s2aw("a-bc", "a-bc");
+		eq_s2aw("a-b c", "a-b", "c");
+		eq_s2aw("a-b ..c/d/e", "a-b", "c/d/e");
+		eq_s2aw("a:b c d  ef   ", "a:b", "c", "d", "ef");
+		eq_s2aw("\n a:b ef   ", "a:b", "ef");
+
+		eq_s2as("");
+		eq_s2as("a", "a");
+		eq_s2as("abc", "abc");
+		eq_s2as("a bc", "a", "bc");
+		eq_s2as("a b,c", "a", "b", "c");
+		eq_s2as(" \t a b\n,  c", "a", "b\n", "c");
+		eq_s2as("abc, d f, e ", "abc", "d", "f", "e");
 	}
 
-	private static void eqs2a(String a, String... b)
+	private static void eq_s2aw(String a, String... b)
 	{
-		String[] aa = SU.s2a(a);
+		String[] aa = SU.s2aw(a);
+		EX.assertx(aa.length == b.length);
+		for(int i = 0;(i < aa.length);i++)
+			EX.assertx(aa[i].equals(b[i]));
+	}
+
+	private static void eq_s2as(String a, String... b)
+	{
+		String[] aa = SU.s2a(a, ',', ';', ' ', '\t');
 		EX.assertx(aa.length == b.length);
 		for(int i = 0;(i < aa.length);i++)
 			EX.assertx(aa[i].equals(b[i]));

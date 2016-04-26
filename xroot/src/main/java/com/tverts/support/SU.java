@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -33,6 +32,16 @@ public class SU
 	/* Simplifications */
 
 	/**
+	 * Breaks string into words. The words are
+	 * separated by whitespaces, ';', and ','
+	 * characters. Whitespaces are trimmed.
+	 */
+	public static String[] s2a(String s)
+	{
+		return SU.a2a(SU.s2a(s, ',', ';', '\n', '\t', ' '));
+	}
+
+	/**
 	 * Breaks string into words. The words
 	 * are separated by any character except
 	 * a letter, a digit, '-', ':', '/', '\'.
@@ -40,72 +49,80 @@ public class SU
 	 * Side whitespaces of the words are ignored,
 	 * empty strings are removed.
 	 */
-	public static String[] s2a(String s)
+	public static String[] s2aw(String s)
 	{
-		if((s = s2s(s)) == null)
-			return new String[0];
+		if(s == null) return new String[0];
 
-		List<String>  sa = new ArrayList<>(8);
-		StringBuilder sb = new StringBuilder(16);
-		char          c, cc;
+		List<String> a = new ArrayList<>(4);
+		boolean      w = true, f;
+		int          l, i, j, b = 0;
 
-		for(int x = 0, i = 0, l = s.length();(i < l);i++)
+		for(i = 0, l = s.length();(i < l);i++)
 		{
-			cc = c = s.charAt(i);
+			char c = s.charAt(i);
 
-			if(Character.isLetterOrDigit(c))
-				c = '\0';
-			else if(c == '-' || c == ':' || c == '/' || c == '\\')
-				c = '\0';
+			//?: {is a separator}
+			f = !Character.isLetterOrDigit(c) &&
+			  (c != '-' & c != ':' & c != '/' & c != '\\');
 
-			//?: {in the word & continue}
-			if(x == 0 && c == '\0')
-				sb.append(cc);
-			//?: {in the word & break}
-			else if(x == 0)
+			//?: {in a word & break}
+			if(w && f)
 			{
-				if(sb.length() != 0)
-				{
-					sa.add(sb.toString());
-					sb.delete(0, sb.length());
-				}
-
-				x = 1;
+				if(b != i)
+					a.add(s.substring(b, i));
+				w = false;
 			}
 			//?: {out of a word & enter}
-			else if(c == '\0')
+			else if(!w && !f)
 			{
-				sb.append(cc);
-				x = 0;
+				b = i;
+				w = true;
 			}
 		}
 
-		if(sb.length() != 0)
-			sa.add(sb.toString());
+		//?: {last word}
+		if(w && b != i)
+			a.add(s.substring(b, i));
 
-		if(sa.isEmpty())
-			return new String[0];
-
-		return sa.toArray(new String[sa.size()]);
+		return a.toArray(new String[a.size()]);
 	}
 
 	/**
 	 * Splits the string by the separator given.
 	 * Note that whitespaces are not trimmed here.
 	 */
-	public static String[] s2a(String s, char x)
+	public static String[] s2a(String s, char... p)
 	{
 		if(s == null) return new String[0];
+		EX.assertx(p.length != 0);
 
-		ArrayList<String> a = new ArrayList<String>(4);
+		List<String> a = new ArrayList<>(4);
+		boolean      w = true, f;
+		int          l, i, j, b = 0;
 
-		for(int i, b = 0;(b < s.length());b = i + 1)
+		for(i = 0, l = s.length();(i < l);i++)
 		{
-			i = s.indexOf(x, b);
-			if(i == -1) i = s.length();
+			char c = s.charAt(i);
 
-			a.add(s.substring(b, i));
+			//?: {is a separator}
+			for(f = false, j = 0;(j < p.length);j++)
+				if(c == p[j]) { f = true; break; }
+
+			//?: {in a word & break}
+			if(w && f)
+			{
+				if(b != i)
+					a.add(s.substring(b, i));
+				w = false;
+			}
+			//?: {out of a word & enter}
+			else if(!w && !f)
+				{ b = i; w = true; }
 		}
+
+		//?: {last word}
+		if(w && b != i)
+			a.add(s.substring(b, i));
 
 		return a.toArray(new String[a.size()]);
 	}
@@ -359,9 +376,7 @@ public class SU
 
 	static
 	{
-		TreeMap<Character, Character> m =
-		  new TreeMap<Character, Character>();
-
+		TreeMap<Character, Character> m = new TreeMap<>();
 		for(int i = 0;(i < JS_ESC_K.length);i++)
 			m.put(JS_ESC_K[i], JS_ESC_V[i]);
 

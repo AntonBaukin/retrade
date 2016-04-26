@@ -259,7 +259,7 @@ public class AuthProtocol implements Cloneable
 
 
 		//~: connect to the database
-		Boolean   txc = null;
+		Boolean txc = null;
 		Connect dbc = createDbConnect();
 		dbc.connect();
 

@@ -10,7 +10,7 @@
     =  Object XML Mapping Point                       =
     =================================================-->
 
-  <bean name  = 'objectXMLNappingPoint' factory-method = 'getInstance'
+  <bean name  = 'objectXMLMappingPoint' factory-method = 'getInstance'
         class = 'com.tverts.objects.XPoint'>
 
 

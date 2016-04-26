@@ -82,7 +82,7 @@ public class XStreamer
 
 	public void   setWriteProps(String str)
 	{
-		String[] ps = SU.s2a(str);
+		String[] ps = SU.a2a(SU.s2a(str, ','));
 		EX.assertx((ps.length % 2) == 0);
 
 		for(int i = 0;(i < ps.length);i += 2)
@@ -93,7 +93,7 @@ public class XStreamer
 
 	public void   setReadProps(String str)
 	{
-		String[] ps = SU.s2a(str);
+		String[] ps = SU.a2a(SU.s2a(str, ','));
 		EX.assertx((ps.length % 2) == 0);
 
 		for(int i = 0;(i < ps.length);i += 2)

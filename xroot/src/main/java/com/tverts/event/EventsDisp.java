@@ -80,7 +80,7 @@ public class EventsDisp implements Reactor, ReactorRef
 	@SuppressWarnings("unchecked")
 	public void setRegistryAsText(String text)
 	{
-		String[] a  = SU.s2a(text);
+		String[] a  = SU.a2a(SU.s2a(text, ';'));
 		EX.assertx((a.length % 2) == 0);
 
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();

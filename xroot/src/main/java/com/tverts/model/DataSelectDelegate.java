@@ -142,7 +142,7 @@ public class      DataSelectDelegate
 
 	public String[]  searchNames()
 	{
-		String[] res = SU.s2a(getSearchNames());
+		String[] res = SU.s2aw(getSearchNames());
 		return (res.length == 0)?(null):(res);
 	}
 

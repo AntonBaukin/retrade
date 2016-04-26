@@ -142,7 +142,7 @@ public class JsX extends ServiceBase
 		JsFile file = files.cached(script);
 
 		//?: {found it not}
-		EX.assertn(file, "No script script file is found by the path [", script, "]!");
+		EX.assertn(file, "No script file is found by the path [", script, "]!");
 
 		//~: allocate the engine
 		JsEngine engine = this.engines.take(file);
