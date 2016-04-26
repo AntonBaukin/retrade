@@ -17,16 +17,10 @@ ${v.checkModelRequestedWithRedirect}
 
 <ui:define name = 'page-body'>
 
-<x:winmain coid = "${z:vid(v, 'root_panel')}">
-
-  <script type = "text/javascript">
-
-    extjsf.bind('window', '${extDom}').
-      co().setTitle('Добавление товаров в табличной форме')
-
-  </script>
+<x:desktop-panel coid = "${z:vid(v, 'root-panel')}">
 
   <f:facet name = "extjs-props">
+    title: 'Добавление товаров в табличной форме',
     layout: 'fit', bodyCls: 'retrade-back-panel'
   </f:facet>
 
@@ -45,45 +39,27 @@ ${v.checkModelRequestedWithRedirect}
 
    <x:component coid = "${z:vid(v, 'close-window')}">
       <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Отмена',
-        cls: 'ux-btn-red',
-
-        handler : function()
+        xtype: 'button', text: 'Отмена', cls: 'ux-btn-red', handler : function()
         {
-          extjsf.bind('window', '${extDom}').
-            co().close()
+          extjsf.co("${z:vid(v, 'root-panel')}", '${extDom}').close()
         }
-
       </f:facet>
    </x:component>
 
 
-   <!-- [add row button] -->
+   <!-- [add to selection set] -->
+   <x:checkbox-field coid = "${z:vid(v, 'selset')}">
 
-   <x:component coid = "${z:vid(v, 'add-row')}">
-    <f:facet name = "extjs-props">
-      xtype:'button', text: 'Добавить',
-      margin: extjsf.pts(0, 0, 0, 4),
+     <f:facet name = "extjs-props">
+       checked: true, hidden: #{not v.selSetAble},
+       margin: extjsf.pts(0, 0, 0, 8)
+     </f:facet>
 
-      handler : function()
-      {
-        extjsf.co("${z:vid(v, 'grid')}", '${extDom}').
-          getPlugin('cellediting').completeEdit()
-
-        extjsf.handler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
-      }
-    </f:facet>
-   </x:component>
-
-
-   <!-- [delete row button] -->
-
-   <x:component coid = "${z:vid(v, 'delete-row')}">
-    <f:facet name = "extjs-props">
-      xtype:'button', text: 'Удалить',
-      margin: extjsf.pts(0, 0, 0, 4)
-    </f:facet>
-   </x:component>
+     <f:facet name = "label-props">
+       margin: extjsf.pts(0, 6, 0, 4), hidden: #{not v.selSetAble},
+       html: "&lt;span title = 'Добавить созданные товары в текущую выборку?'&gt;добавить в выборку&lt;/span&gt;"
+     </f:facet>
+   </x:checkbox-field>
 
 
    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
@@ -94,30 +70,36 @@ ${v.checkModelRequestedWithRedirect}
    </x:component>
 
 
-   <!-- [with sub-folders checkbox] -->
+   <!-- [delete row button] -->
+   <x:component coid = "${z:vid(v, 'delete-row')}">
+    <f:facet name = "extjs-props">
+      xtype:'button', text: 'Удалить'
+    </f:facet>
+   </x:component>
 
-   <x:checkbox-field coid = "${z:vid(v, 'selset')}">
 
-     <f:facet name = "extjs-props">
-        checked: true, hidden: #{not v.selSetAble}
-     </f:facet>
+   <!-- [add row button] -->
+   <x:component coid = "${z:vid(v, 'add-row')}">
+    <f:facet name = "extjs-props">
+      xtype:'button', text: 'Добавить',
+      margin: extjsf.pts(0, 12, 0, 6), handler : function()
+      {
+        extjsf.co("${z:vid(v, 'grid')}", '${extDom}').
+          getPlugin('cellediting').completeEdit()
 
-     <f:facet name = "label-props">
-       margin: extjsf.pts(0, 6, 0, 4), hidden: #{not v.selSetAble},
-       html: "&lt;span title = 'Добавить созданные товары в текущую выборку?'&gt;добавить в выборку&lt;/span&gt;"
-     </f:facet>
-   </x:checkbox-field>
+        extjsf.handler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
+      }
+    </f:facet>
+   </x:component>
 
 
    <!-- [submit button] -->
-
    <x:component coid = "${z:vid(v, 'submit')}">
     <f:facet name = "extjs-props">
       xtype:'button', text: 'Сохранить',
       cls: 'ux-btn-green'
     </f:facet>
    </x:component>
-
   </f:facet>
 
   <!-- toolbar] -->
@@ -176,10 +158,8 @@ ${v.checkModelRequestedWithRedirect}
 
       pager: false, border: false, sortableColumns: false,
       enableColumnHide: false, enableColumnMove: false,
-      cls: 'ux-grid-not-mark-dirty ux-grid-smaller',
       selModel: extjsf.delayCreate('Ext.selection.CellModel', {}),
-
-      plugins: [{
+      cls: 'ux-grid-not-mark-dirty', plugins: [{
         ptype: 'cellediting', pluginId: 'cellediting', clicksToEdit: 1,
         listeners : { beforeedit : function(ed, event)
         {
@@ -477,8 +457,11 @@ ${v.checkModelRequestedWithRedirect}
     extjsf.handler("${z:vid(v, 'commit-script')}", '${extDom}')({
       params: params, success: function()
       {
-        extjsf.bind('window', '${extDom}').retradeEditDone = true;
         extjsf.handler("${z:vid(v, 'close-window')}", '${extDom}')()
+
+        ReTrade.desktop.loadPanel( '/goods/list-nav', {
+          domain: 'main-menu:goods-nav'
+        })
       }
     })
   })
@@ -488,7 +471,7 @@ ${v.checkModelRequestedWithRedirect}
 
   <!-- store processing scripts] -->
 
-</x:winmain>
+</x:desktop-panel>
 </ui:define>
 </ui:decorate>
 

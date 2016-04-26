@@ -847,52 +847,8 @@
       </script>
 
       <!-- add-edit good] -->
-
-
-      <!-- [add goods table -->
-
-      <x:component coid = "${z:vid(v, 'add-goods-table')}">
-        <f:facet name = "extjs-props">
-         xtype: 'button', text: 'Создать +',
-         margin: extjsf.pts(0, 0, 0, 4),
-         tooltipType: 'title', tooltip: 'Создать новые товары в табличной форме поместить их в каталог (указанный на момент открытия формы)',
-         disabled: ${not rootView.isSecure('edit: goods')}
-       </f:facet>
-      </x:component>
-
-      <script type = "text/javascript">
-      //<![CDATA[
-
-  extjsf.handler("${z:vid(v, 'add-goods-table')}", '${extDom}', function(btn, e)
-  {
-    var ps  = { disableSelSet: true }
-
-    //~: add the folder selected
-    var fld  = extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
-      getSelectionModel().getSelection()
-    if(fld && (fld.length == 1)) fld = fld[0] && fld[0].get('modelId')
-    if(fld && fld.length && (fld.charAt(0) != '$'))
-      ps.goodsFolder = fld
-
-    //~: open the window
-    var window; window = retrade_open_window({
-      url: '/goods/create-goods', domain: 'add:goods-table', params: ps,
-      box: { event: e, widthpt: 480, heightpt: 240, '+xpt': -100, '-height': true },
-
-      onclose: function()
-      {
-        if(!window.retradeEditDone) return
-        Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").reload()
-      }
-    })
-  })
-
-      //]]>
-      </script>
-
-      <!-- add goods table] -->
-
       </ui:fragment>
+
 
       <x:component coid = "${z:vid(v, '_folder_goods_tb_fill_0')}">
         <f:facet name = "extjs-props">
@@ -1094,7 +1050,6 @@
       extjsf.co("${z:vid(v, 'tree-move-goods')}", '${extDom}').setDisabled(fid == '$')
       extjsf.co("${z:vid(v, 'tree-unlink-goods')}", '${extDom}').setDisabled(fid == '$')
       extjsf.co("${z:vid(v, 'add-good')}", '${extDom}').setDisabled(fid == '$')
-      extjsf.co("${z:vid(v, 'add-goods-table')}", '${extDom}').setDisabled(fid == '$')
     }
 
 

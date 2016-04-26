@@ -142,38 +142,4 @@
   </script>
 
   <!-- add-edit good] -->
-
-
-  <!-- [add goods table -->
-
-  <x:component coid = "${z:vid(v, 'add-goods-table')}">
-    <f:facet name = "extjs-props">
-      xtype: 'button', text: 'Создать +',
-      margin: extjsf.pts(0, 0, 0, 4),
-      tooltipType: 'title', tooltip: 'Создать новые товары в табличной форме',
-      disabled: ${not rootView.isSecure('edit: goods')}
-    </f:facet>
-  </x:component>
-
-  <script type = "text/javascript">
-    //<![CDATA[
-
-  extjsf.handler("${z:vid(v, 'add-goods-table')}", '${extDom}', function(btn, e)
-  {
-    var window; window = retrade_open_window({
-      url: '/goods/create-goods', domain: 'add:goods-table',
-      box: { event: e, widthpt: 480, heightpt: 240, '+xpt': 30, '-ypt': 10 },
-
-      onclose: function()
-      {
-        if(!window.retradeEditDone) return
-        Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").reload()
-      }
-    })
-  })
-
-    //]]>
-  </script>
-
-  <!-- add goods table] -->
 </ui:component>

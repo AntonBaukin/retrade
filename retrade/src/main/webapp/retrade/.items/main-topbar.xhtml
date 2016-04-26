@@ -242,6 +242,15 @@
 
       [
         {
+          title: 'Добавить товары в таблице', icon: 'retrade-goods-icon', handler: function()
+          {
+            ReTrade.desktop.loadPanel( '/goods/create-goods', {
+              domain: 'add:goods-table'
+            })
+          }
+        },
+
+        {
           title: 'Накладную закупки', icon: 'retrade-listpad-plus-icon', handler: function()
           {
             retrade_open_window({ url: '/invoices/create-buy',
