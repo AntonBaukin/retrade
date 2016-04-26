@@ -52,6 +52,10 @@
       //~: assign tree store
       extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').on('add', function(tree)
       {
+        ReTrade.selset.grid("${z:vid(v, 'tree')}", '${extDom}')
+
+
+
         tree.setStore(new Ext.data.TreeStore({
           autoDestroy: true, rootVisible: true, root: {
             objectKey: '$', expanded: true,

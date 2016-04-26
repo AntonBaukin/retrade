@@ -33,6 +33,7 @@ function getGoodFoldersTree(domain)
 		x.code = f.getCode()
 		x.name = x.text = f.getName()
 		x.cmp  = ZeT.SU.oxtext(x.name)
+		x.selsetItemKey = f.getPrimaryKey()
 
 		//?: {is not root itself}
 		if(f.getParent())
