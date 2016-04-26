@@ -964,8 +964,8 @@ from MeasureUnit mu where
 
 /* --> folders
 
- gu.id in (select ti.item.id from TreeCross tc join tc.item ti
-   where tc.folder.id in (select si.object from
+ gu.id in (select ti.item.id from TreeItem ti
+   where ti.folder.id in (select si.object from
      SelItem si join si.selSet ss where
        (ss.name = :sset) and (ss.login.id = :login)))
 
@@ -973,10 +973,10 @@ from MeasureUnit mu where
 
 		if(w.contains("folders")) or.addPart(
 
-"gu.id in (select ti.item.id from TreeCross tc join tc.item ti\n" +
-"  where tc.folder.id in (select si.object from\n" +
-"    SelItem si join si.selSet ss where\n" +
-"      (ss.name = :sset) and (ss.login.id = :login)))"
+"gu.id in (select ti.item.id from TreeItem ti\n" +
+"where ti.folder.id in (select si.object from\n" +
+"  SelItem si join si.selSet ss where\n" +
+"    (ss.name = :sset) and (ss.login.id = :login)))"
 
 		).
 		  param("sset",  selset).
