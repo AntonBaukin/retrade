@@ -98,10 +98,35 @@ ${v.checkModelRequestedWithRedirect}
       storeId = "${z:vid(v, 'tradeStores')}">
 
       <f:facet name = "grid-props">
-        region: 'center',
-        columns: ZeT.defined('retrade.columns.CatItemView'),
+        region: 'center', pager: false, sortableColumns: true,
         selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
-        pager: false, sortableColumns: true
+        columns: ZeT.delay(function()
+        {
+          var cs = ZeT.defined('retrade.columns.CatItemView')()
+
+          function h()
+          {
+            var e = arguments[4], m = arguments[5]
+
+            retrade_open_window({ url: '/stores/info',
+              domain: 'view:global:store', record: m.getId(),
+              box: { event: e, widthpt: 520, heightpt: 390, '+xpt': -260, '-ypt': 195 }
+            })
+          }
+
+          cs.push({
+            xtype: 'actioncolumn', width: 28,
+            flex:0, align: 'center', menuDisabled: true,
+            draggable: false, resizable: false, hideable: false,
+            items: [{ handler: h, iconCls: 'retrade-goods-icon' }],
+            renderer: function(v, meta) {
+              meta.tdAttr = "title='Отобразить остатки товаров на складе'"
+              return v
+            }
+          })
+
+          return cs
+        })
       </f:facet>
     </x:data-grid>
 
