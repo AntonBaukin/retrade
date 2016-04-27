@@ -237,6 +237,11 @@ tr.x-boundlist-item td:first-child
   margin-right: -2px;
 }
 
+.x-tree-view.x-grid-with-row-lines .x-grid-item
+{
+  border-color: transparent;
+}
+
 
 /* Grids Smaller */
 

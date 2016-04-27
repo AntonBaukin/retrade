@@ -44,12 +44,10 @@
             renderer: function(v, meta)
             {
               meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"'
-
               var vs = v.split('•'); if(vs.length &gt; 1) if(vs[0].length &gt; 13) {
-                 vs[0] = ZeTS.trim(vs[0].substring(0, 13)) + '…'
-                 v = vs.join('•')
+                var vv = ZeTS.trim(vs[0].substring(0, 13))
+                if(vv.length + 6 &lt; vs[0].length) { vs[0] = vv + '…';  v = vs.join('•') }
               }
-
               return v
             }
           }]

@@ -11,668 +11,683 @@
 <x:desktop-panel coid = "${z:vid(v, 'goods-tree-panel')}">
 
   <f:facet name = "extjs-props">
-    title: '#{z:jss(panelTitle)}',
-    layout: {type: 'vbox', align: 'stretch'}
+
+    layout: { type: 'hbox', align: 'stretch' },
+    title: '#{z:jss(panelTitle)}', tools: [{
+
+      type: 'search', tooltipType: 'title', tooltip: 'Отобразить инструменты поиска',
+      margin: extjsf.pts(0, 6, 0, 2), handler: function()
+      {
+        var bs = extjsf.co("${z:vid(v, 'goods-edit-buttons')}", '${extDom}')
+        var fi = extjsf.co("${z:vid(v, 'goods-filter')}", '${extDom}')
+
+        bs.setVisible(!bs.isVisible())
+        fi.setVisible(!fi.isVisible())
+      }
+    }]
+
   </f:facet>
 
 
-  <!-- [tree toolbar -->
+  <!-- [tree panel -->
 
-  <f:facet name = "toolbar-props">
+  <x:component coid = "${z:vid(v, 'tree-panel')}">
+    <f:facet name = "extjs-props">
+      layout: 'fit', border: false, flex: 1,
+      bodyCls: 'retrade-transparent-panel'
+    </f:facet>
 
-    xtype: 'panel', bodyPadding: extjsf.pt(2),
-    layout: {type: 'hbox', align: 'middle'},
-    bodyCls: 'retrade-toolbar-inline-panel',
-    bodyPadding: extjsf.pt(2)
 
-  </f:facet>
+    <!-- [tree toolbar -->
 
-  <f:facet name = "toolbar">
+    <x:toolbar coid = "${z:vid(v, 'tree-toolbar')}">
 
-    <!-- [expand the tree] -->
-
-    <x:component coid = "${z:vid(v, 'expand-tree')}">
       <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Раскрыть',
-        tooltipType: 'title', tooltip: 'Раскрыть дерево, отобразив все каталоги'
-      </f:facet>
-    </x:component>
-
-
-    <!-- [collapse the tree] -->
-
-    <x:component coid = "${z:vid(v, 'collapse-tree')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Свернуть',
-        margin: extjsf.pts(0, 4, 0, 4), tooltipType: 'title',
-        tooltip: 'Свернуть все каталоги дерева, отобразив путь к выбранному'
-      </f:facet>
-    </x:component>
-
-
-    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
-      <f:facet name = "extjs-props">
-        xtype: 'panel', flex: 1, frame: false, border: false,
+        xtype: 'panel', bodyPadding: extjsf.pt(2),
+        layout: {type: 'hbox', align: 'middle'},
         bodyCls: 'retrade-toolbar-inline-panel'
       </f:facet>
-    </x:component>
 
 
-    <ui:fragment rendered = "#{canEditTree}">
+      <!-- [expand the tree] -->
+      <x:component coid = "${z:vid(v, 'expand-tree')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Раскрыть',
+          tooltipType: 'title', tooltip: 'Раскрыть дерево, отобразив все каталоги'
+        </f:facet>
+      </x:component>
 
-    <!-- [cut node] -->
 
-    <x:component coid = "${z:vid(v, 'tree-cut')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Вырезать',
-        margin: extjsf.pts(0, 4, 0, 0), tooltipType: 'title',
-        tooltip: 'Вырезать каталог, чтобы вставить его в другой каталог дерева'
-      </f:facet>
-    </x:component>
+      <!-- [collapse the tree] -->
+      <x:component coid = "${z:vid(v, 'collapse-tree')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Свернуть',
+          margin: extjsf.pts(0, 4, 0, 4), tooltipType: 'title',
+          tooltip: 'Свернуть все каталоги дерева, отобразив путь к выбранному'
+        </f:facet>
+      </x:component>
 
 
-    <!-- [cut node cancel] -->
+      <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', flex: 1, frame: false, border: false,
+          bodyCls: 'retrade-toolbar-inline-panel'
+        </f:facet>
+      </x:component>
 
-    <x:component coid = "${z:vid(v, 'tree-cut-cancel')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Отм. выр.', hidden: true,
-        margin: extjsf.pts(0, 4, 0, 0), tooltipType: 'title',
-        tooltip: 'Отменить вырезание каталога'
-      </f:facet>
-    </x:component>
-
-
-    <!-- [paste node as child] -->
-
-    <x:component coid = "${z:vid(v, 'tree-paste-child')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Вст. вниз', hidden: true,
-        margin: extjsf.pts(0, 4, 0, 0), tooltipType: 'title',
-        tooltip: 'Вставить вырезанный каталог как последний дочерний выделеного каталога'
-      </f:facet>
-    </x:component>
-
-
-    <!-- [paste node as prev] -->
-
-    <x:component coid = "${z:vid(v, 'tree-paste-prev')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Вст. рядом', hidden: true,
-        margin: extjsf.pts(0, 4, 0, 0), tooltipType: 'title',
-        tooltip: 'Вставить вырезанный каталог на уровне выделеного каталога'
-      </f:facet>
-    </x:component>
-
-
-    <!-- [add empty node] -->
-
-    <x:component coid = "${z:vid(v, 'tree-add')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Добавить', margin: extjsf.pts(0, 4, 0, 0),
-        tooltipType: 'title', tooltip: 'Добавить новый каталог как дочерний к выбранному'
-      </f:facet>
-    </x:component>
-
-
-    <!-- [commit tree changes button] -->
-
-    <x:component coid = "${z:vid(v, 'tree-commit')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Сохранить', disabled: true,
-        tooltipType: 'title', tooltip: 'Сохранить накопленные изменения'
-      </f:facet>
-    </x:component>
-
-    </ui:fragment>
-  </f:facet>
-
-
-  <!-- tree toolbar] -->
-
-
-  <!-- [tree (flat) data -->
-
-  <x:data-store storeId = "${z:vid(v, 'goodsTreeData')}"
-    modelView = "${v}" modelRequest = "tree">
-
-    <f:facet name = "store-props">
-      model: 'retrade.model.CatItemTree', autoLoad: false
-    </f:facet>
-
-    <f:facet name = "proxy-props">
-      reader: ZeT.defined('retrade.readers.CatItemTree')
-    </f:facet>
-  </x:data-store>
-
-  <!-- tree (flat) data] -->
-
-
-  <script type = "text/javascript">
-  //<![CDATA[
-
-  //~: tree creation script
-  Ext.onReady(function()
-  {
-    //~: store with tree flat data
-    var store = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${extDom}');
-
-    //~: create tree store
-    var tree  = Ext.create('Ext.data.TreeStore', {
-      storeId: "${z:vid(v, 'goodsTreeStore')}",
-      data: [], proxy: {type: 'memory'}
-    })
-
-    //~: delete store on domain delete
-    extjsf.domain('${extDom}').onDestroy(function()
-    {
-        Ext.data.StoreManager.unregister("${z:vid(v, 'goodsTreeStore')}")
-    })
-
-    function nodesSorter(l, r)
-    {
-      var lc = l.get('code').toLowerCase(); if(!lc) lc = '';
-      var rc = r.get('code').toLowerCase(); if(!rc) rc = '';
-
-      while(lc.length < rc.length) lc += ' ';
-      while(rc.length < lc.length) rc += ' ';
-
-      return lc.localeCompare(rc);
-    }
-
-    function onNodeMoved(n, op, np)
-    {
-      var m = store.getById(n.get('modelId'));
-      if(!m || (m.get('parentKey') == np.get('modelId'))) return;
-
-      m.set('parentKey', np.get('modelId'))
-      np.sort(nodesSorter, true)
-      extjsf.co("${z:vid(v, 'tree-commit')}", '${extDom}').setDisabled(false)
-    }
-
-    function doResizeColumn()
-    {
-      var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}');
-      var col  = extjsf.u.columnByType(tree, 'treecolumn');
-      col.setWidth(tree.getView().getMaxContentWidth(col) + 4)
-    }
-
-    var selNode
-
-    function createNode(map, k, pn)
-    {
-      var m = map[k].m
-      var n = pn.appendChild({})
-
-      n.set('modelId', k)
-      n.set('selsetItemKey', k)
-      n.set('code', m.get('code'))
-      n.set('name', m.get('name'))
-      n.set('leaf', !ZeT.isa(map[k].cs) || !map[k].cs.length)
-
-      if(store.retradeLastSelection == m.get('code')) selNode = n
-
-      n.on('move', onNodeMoved)
-      n.on('expand', doResizeColumn)
-      n.on('collapse', doResizeColumn)
-
-      if(map[k].cs) Ext.Array.each(map[k].cs, function(c)
-      {
-         createNode(map, c, n)
-      })
-    }
-
-    function createRootNode(map)
-    {
-       var n = tree.setRootNode({ leaf: false, expanded: true });
-
-       n.set('modelId', '$')
-       n.set('selsetDisabled', true)
-       n.set('name', '[Корень каталога]')
-
-       if(map[''].cs) Ext.Array.each(map[''].cs, function(c)
-       {
-          createNode(map, c, n)
-       })
-
-       n.sort(nodesSorter, true)
-       n.on('expand', doResizeColumn)
-       n.on('collapse', doResizeColumn)
-
-       return n;
-    }
-
-    store.on('load', function(store, rows)
-    {
-       var map = {};
-
-       //~: map the rows
-       Ext.Array.each(rows, function(m)
-       {
-         var k = m.get('objectKey');
-         var p = m.get('parentKey'); if(!p) p = '';
-
-         if(!map[p]) map[p] = { k: p };
-         if(!map[p].cs) map[p].cs = [ k ]; else map[p].cs.push(k)
-         map[k] = ZeT.extend(map[k], { k: k, p: p, m: m });
-       })
-
-       //~: create root node
-       if(!map['']) map[''] = { k: '' }
-       var root = createRootNode(map);
-
-       //~: restore previous selection
-       store.retradeLastSelection = null;
-       if(selNode)
-       {
-         extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
-           getSelectionModel().select([selNode])
-
-         while(selNode.parentNode)
-         {
-           selNode.parentNode.expand()
-           selNode = selNode.parentNode
-         }
-       }
-
-       //~: resize tree column
-       doResizeColumn()
-
-       //~: select the root
-       ZeT.timeout(250, function()
-       {
-         extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
-           getSelectionModel().select(root)
-       })
-    })
-
-
-    //!: load the store
-    store.load()
-  })
-
-  //~: expand the tree
-  extjsf.handler("${z:vid(v, 'expand-tree')}", '${extDom}', function()
-  {
-    var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}')
-    tree.getRootNode().expandChildren(true)
-  })
-
-  //~: expand the tree to the selection
-  extjsf.handler("${z:vid(v, 'collapse-tree')}", '${extDom}', function()
-  {
-    extjsf.u.showTreeToSel("${z:vid(v, 'tree')}", '${extDom}')
-  })
-
-  //]]>
-  </script>
-
-
-  <!-- [tree commit script] -->
-
-  <ui:fragment rendered = "#{canEditTree}">
-
-  <x:action-call coid = "${z:vid(v, 'tree-commit-script')}"
-    action = "#{v.doCommitTreeEdit}" modelView = "${v}"/>
-
-  <script type = "text/javascript">
-  //<![CDATA[
-
-  //~: add to the tree
-  extjsf.handler("${z:vid(v, 'tree-add')}", '${extDom}', function()
-  {
-    var store = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${extDom}');
-    var tree  = extjsf.co("${z:vid(v, 'tree')}", '${extDom}');
-
-    var sel   = tree.getSelectionModel().getSelection(); sel = sel.length && sel[0];
-    if(!sel) sel = tree.getRootNode();
-
-    var m = Ext.create('retrade.model.CatItemTree', {
-      objectKey: '$' + new Date().getTime(),
-      parentKey: sel.get('modelId'),
-      code: '', name: ''
-    })
-
-    store.add(m)
-
-    var n = sel.insertChild(0, {
-      modelId: m.getId(), leaf: true, code: '', name: ''
-    })
-
-    sel.expand()
-    tree.getSelectionModel().select(n)
-  })
-
-  //~: commit the tree
-  extjsf.handler("${z:vid(v, 'tree-commit')}", '${extDom}', function()
-  {
-    //~: store with tree flat data
-    var store   = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${extDom}');
-
-    //~: collect modifications
-    var records = store.getModifiedRecords(); if(!records.length) return;
-    var params  = {};
-
-    //~: find codes of all records
-    var codes   = {};
-    for(var i = 0;(i < store.getCount());i++) try
-    {
-      var code = store.getAt(i).get('code');
-      if(!code || !code.length) continue;
-
-      //?: {code is repeated}
-      if(codes[code])
-        throw ZeTS.cat('Код каталога [', code, '] указан несколько раз!')
-      codes[code] = true;
-    }
-    catch(e)
-    {
-      ReTrade.desktop.error(e)
-      return
-    }
-
-    //c: process the updates
-    for(i = 0;(i < records.length);i++) try
-    {
-      var m = records[i];
-
-      //?: {empty code}
-      if(ZeTS.ises(m.get('code')))
-        throw 'Код каталога не может быть пустым!'
-
-      //?: {empty name}
-      if(ZeTS.ises(m.get('name')))
-        throw 'Имя каталога не может быть пустым!'
-
-      params['treeFolderKey'    + i] = m.getId();
-      params['treeFolderCode'   + i] = m.get('code');
-      params['treeFolderName'   + i] = m.get('name');
-      params['treeFolderParent' + i] = m.get('parentKey');
-    }
-    catch(e)
-    {
-      ReTrade.desktop.error(e)
-      return
-    }
-
-    //~: disable the commit button
-    extjsf.co("${z:vid(v, 'tree-commit')}", '${extDom}').setDisabled(true)
-
-    //~: current selection
-    var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}').getView();
-    var sel  = tree.getSelectionModel().getSelection(); sel = sel.length && sel[0];
-
-    //!: send to the server
-    extjsf.handler("${z:vid(v, 'tree-commit-script')}", '${extDom}')({
-      params: params, success: function()
-      {
-        store.retradeLastSelection = sel && sel.get('code');
-        store.reload()
-      }
-    })
-
-  })
-
-  //~: tree cut show-hide
-  extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').retradeEnableCutPaste = function(x)
-  {
-    var BTNS = [
-      "${z:vid(v, 'tree-cut-cancel')}",
-      "${z:vid(v, 'tree-paste-child')}",
-      "${z:vid(v, 'tree-paste-prev')}"
-    ];
-
-    var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}');
-
-    //~: hide cut button
-    ctl.co().setVisible(!x)
-
-    //show the related buttons
-    for(var i = 0;(i < BTNS.length);i++)
-      extjsf.co(BTNS[i], '${extDom}').setVisible(x)
-  }
-
-  extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').retradeShowNode = function(node, v)
-  {
-    if(v) node.getOwnerTree().getView().removeRowCls(node, 'retrade-almost-opaque')
-    else  node.getOwnerTree().getView().addRowCls(node, 'retrade-almost-opaque')
-  }
-
-  //~: tree cut button
-  extjsf.handler("${z:vid(v, 'tree-cut')}", '${extDom}', function()
-  {
-    var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}');
-
-    //~: enable cut
-    ctl.retradeEnableCutPaste(true)
-
-    //?: {has a node cut} show it back
-    if(ctl.retradeNodeCut) ctl.retradeShowNode(ctl.retradeNodeCut, true)
-    ctl.retradeNodeCut = null;
-
-    //~: selected folder
-    var sel = extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
-      getSelectionModel().getSelection();
-    if(sel && (sel.length == 1)) sel = sel[0];
-
-    //?: {not a valid folder selected}
-    if(!sel || (sel.get('modelId') == '$'))
-    {
-      ctl.retradeEnableCutPaste(false)
-      return;
-    }
-
-    //~: hide current node
-    ctl.retradeShowNode(ctl.retradeNodeCut = sel, false)
-  })
-
-  //~: tree cut cancel button
-  extjsf.handler("${z:vid(v, 'tree-cut-cancel')}", '${extDom}', function()
-  {
-    var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}');
-
-    //~: disable cut
-    ctl.retradeEnableCutPaste(false)
-
-    //?: {has a node cut} show it back
-    if(ctl.retradeNodeCut) ctl.retradeShowNode(ctl.retradeNodeCut, true)
-    ctl.retradeNodeCut = null;
-  })
-
-  //~: tree paste general function
-  extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').retradePasteNode = function(xyz)
-  {
-    var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}');
-
-    //~: disable cut
-    ctl.retradeEnableCutPaste(false)
-
-    //?: {has no node cut} do nothing
-    var cut = ctl.retradeNodeCut; if(!cut) return
-    ctl.retradeNodeCut = null;
-
-    //~: show it back
-    ctl.retradeShowNode(cut, true)
-
-    //~: selected folder
-    var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}');
-    var sel  = tree.getSelectionModel().getSelection();
-    if(sel && (sel.length == 1)) sel = sel[0];
-
-    //?: {there is no current selection | selected the same node}
-    if(!sel || (sel == cut)) return
-
-    //?: {selected in the same sub-tree]
-    if(cut.contains(sel)) return
-
-    //?: {append as the child}
-    if(xyz == 'child')
-    {
-      sel.expand()
-      sel.appendChild(cut)
-    }
-
-    //?: {insert before}
-    else if(xyz == 'prev')
-    {
-      //?: {is a root node}
-      if(!sel.parentNode) return
-
-      sel.parentNode.expand()
-      sel.parentNode.insertBefore(cut, sel)
-    }
-
-    //~: resize the column
-    var col  = extjsf.u.columnByType(tree, 'treecolumn');
-    col.setWidth(tree.getView().getMaxContentWidth(col) + 4)
-  }
-
-  //~: tree paste down button
-  extjsf.handler("${z:vid(v, 'tree-paste-child')}", '${extDom}', function()
-  {
-    extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').
-      retradePasteNode('child')
-  })
-
-  //~: tree paste before button
-  extjsf.handler("${z:vid(v, 'tree-paste-prev')}", '${extDom}', function()
-  {
-    extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').
-      retradePasteNode('prev')
-  })
-
-  //]]>
-  </script>
-  </ui:fragment>
-
-
-  <!-- [tree with goods folders -->
-
-  <x:component coid = "${z:vid(v, 'tree')}">
-    <f:facet name = "extjs-props">
-
-      xtype: 'treepanel', store: "${z:vid(v, 'goodsTreeStore')}",
-      border: false, flex: 1, rootVisible : true, animate: false,
-      collapseMode: 'mini', enableColumnHide: false, sortableColumns: false,
-      selectModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
-      cls: 'ux-grid-not-mark-dirty ux-tree-folders-only',
 
       <ui:fragment rendered = "#{canEditTree}">
 
-      viewConfig: { plugins: [
-        { ptype: 'treeviewdragdrop', containerScroll: true, appendOnly: true },
-      ]},
+        <!-- [cut node] -->
+        <x:component coid = "${z:vid(v, 'tree-cut')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', text: 'Вырезать',
+            margin: extjsf.pts(0, 4, 0, 0), tooltipType: 'title',
+            tooltip: 'Вырезать каталог, чтобы вставить его в другой каталог дерева'
+          </f:facet>
+        </x:component>
 
-      plugins: [{ ptype: 'cellediting', pluginId: 'cellediting', listeners: {
 
-        beforeedit: function(ed, e)
-        {
-           if(e.record.get('modelId') == '$') return false;
-        }
-      }}],
+        <!-- [cut node cancel] -->
+        <x:component coid = "${z:vid(v, 'tree-cut-cancel')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', text: 'Отм. выр.', hidden: true,
+            margin: extjsf.pts(0, 4, 0, 0), tooltipType: 'title',
+            tooltip: 'Отменить вырезание каталога'
+          </f:facet>
+        </x:component>
 
+
+        <!-- [paste node as child] -->
+        <x:component coid = "${z:vid(v, 'tree-paste-child')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', text: 'Вст. внутрь', hidden: true,
+            margin: extjsf.pts(0, 4, 0, 0), tooltipType: 'title',
+            tooltip: 'Вставить вырезанный каталог как последний дочерний выделеного каталога'
+          </f:facet>
+        </x:component>
+
+
+        <!-- [paste node as prev] -->
+        <x:component coid = "${z:vid(v, 'tree-paste-prev')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', text: 'Вст. рядом', hidden: true,
+            margin: extjsf.pts(0, 4, 0, 0), tooltipType: 'title',
+            tooltip: 'Вставить вырезанный каталог на уровне выделеного каталога'
+          </f:facet>
+        </x:component>
+
+
+        <!-- [add empty node] -->
+        <x:component coid = "${z:vid(v, 'tree-add')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', text: 'Добавить', margin: extjsf.pts(0, 4, 0, 0),
+            tooltipType: 'title', tooltip: 'Добавить новый каталог как дочерний к выбранному'
+          </f:facet>
+        </x:component>
+
+
+        <!-- [commit tree changes button] -->
+        <x:component coid = "${z:vid(v, 'tree-commit')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', text: 'Сохранить', disabled: true,
+            tooltipType: 'title', tooltip: 'Сохранить накопленные изменения'
+          </f:facet>
+        </x:component>
       </ui:fragment>
+    </x:toolbar>
 
-      columns: [
+    <!-- tree toolbar] -->
 
-        { xtype: 'treecolumn', width: 64, resizable: false },
 
-        { text: "Код", dataIndex: 'code', width: extjsf.ex(16)
-           #{canEditTree?(", editor: 'textfield'"):('')} },
+    <!-- [tree (flat) data -->
+    <x:data-store storeId = "${z:vid(v, 'goodsTreeData')}"
+      modelView = "${v}" modelRequest = "tree">
 
-        { text: "Наименование", dataIndex: 'name', flex: 1
-          #{canEditTree?(", editor: 'textfield'"):('')} }
-      ]
+      <f:facet name = "store-props">
+        model: 'retrade.model.CatItemTree', autoLoad: false
+      </f:facet>
 
-    </f:facet>
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.CatItemTree')
+      </f:facet>
+    </x:data-store>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+    //~: tree creation script
+    Ext.onReady(function()
+    {
+      //~: store with tree flat data
+      var store = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${extDom}');
+
+      //~: create tree store
+      var tree  = Ext.create('Ext.data.TreeStore', {
+        storeId: "${z:vid(v, 'goodsTreeStore')}",
+        data: [], proxy: {type: 'memory'}
+      })
+
+      //~: delete store on domain delete
+      extjsf.domain('${extDom}').onDestroy(function()
+      {
+          Ext.data.StoreManager.unregister("${z:vid(v, 'goodsTreeStore')}")
+      })
+
+      function nodesSorter(l, r)
+      {
+        var lc = l.get('code').toLowerCase(); if(!lc) lc = '';
+        var rc = r.get('code').toLowerCase(); if(!rc) rc = '';
+
+        while(lc.length < rc.length) lc += ' ';
+        while(rc.length < lc.length) rc += ' ';
+
+        return lc.localeCompare(rc);
+      }
+
+      function onNodeMoved(n, op, np)
+      {
+        var m = store.getById(n.get('modelId'));
+        if(!m || (m.get('parentKey') == np.get('modelId'))) return;
+
+        m.set('parentKey', np.get('modelId'))
+        np.sort(nodesSorter, true)
+        extjsf.co("${z:vid(v, 'tree-commit')}", '${extDom}').setDisabled(false)
+      }
+
+      function doResizeColumn()
+      {
+        var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}');
+        var col  = extjsf.u.columnByType(tree, 'treecolumn');
+        col.setWidth(tree.getView().getMaxContentWidth(col) + 4)
+      }
+
+      var selNode
+
+      function createNode(map, k, pn)
+      {
+        var m = map[k].m
+        var n = pn.appendChild({})
+
+        n.set('modelId', k)
+        n.set('selsetItemKey', k)
+        n.set('code', m.get('code'))
+        n.set('name', m.get('name'))
+        n.set('leaf', !ZeT.isa(map[k].cs) || !map[k].cs.length)
+
+        if(store.retradeLastSelection == m.get('code')) selNode = n
+
+        n.on('move', onNodeMoved)
+        n.on('expand', doResizeColumn)
+        n.on('collapse', doResizeColumn)
+
+        if(map[k].cs) Ext.Array.each(map[k].cs, function(c)
+        {
+           createNode(map, c, n)
+        })
+      }
+
+      function createRootNode(map)
+      {
+         var n = tree.setRootNode({ leaf: false, expanded: true });
+
+         n.set('modelId', '$')
+         n.set('selsetDisabled', true)
+         n.set('name', '[Корень каталога]')
+
+         if(map[''].cs) Ext.Array.each(map[''].cs, function(c)
+         {
+            createNode(map, c, n)
+         })
+
+         n.sort(nodesSorter, true)
+         n.on('expand', doResizeColumn)
+         n.on('collapse', doResizeColumn)
+
+         return n;
+      }
+
+      store.on('load', function(store, rows)
+      {
+         var map = {};
+
+         //~: map the rows
+         Ext.Array.each(rows, function(m)
+         {
+           var k = m.get('objectKey');
+           var p = m.get('parentKey'); if(!p) p = '';
+
+           if(!map[p]) map[p] = { k: p };
+           if(!map[p].cs) map[p].cs = [ k ]; else map[p].cs.push(k)
+           map[k] = ZeT.extend(map[k], { k: k, p: p, m: m });
+         })
+
+         //~: create root node
+         if(!map['']) map[''] = { k: '' }
+         var root = createRootNode(map);
+
+         //~: restore previous selection
+         store.retradeLastSelection = null;
+         if(selNode)
+         {
+           extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
+             getSelectionModel().select([selNode])
+
+           while(selNode.parentNode)
+           {
+             selNode.parentNode.expand()
+             selNode = selNode.parentNode
+           }
+         }
+
+         //~: resize tree column
+         doResizeColumn()
+
+         //~: select the root
+         ZeT.timeout(250, function()
+         {
+           extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
+             getSelectionModel().select(root)
+         })
+      })
+
+
+      //!: load the store
+      store.load()
+    })
+
+    //~: expand the tree
+    extjsf.handler("${z:vid(v, 'expand-tree')}", '${extDom}', function()
+    {
+      var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}')
+      tree.getRootNode().expandChildren(true)
+    })
+
+    //~: expand the tree to the selection
+    extjsf.handler("${z:vid(v, 'collapse-tree')}", '${extDom}', function()
+    {
+      extjsf.u.showTreeToSel("${z:vid(v, 'tree')}", '${extDom}')
+    })
+
+    //]]>
+    </script>
+
+    <!-- tree (flat) data] -->
+
+    <!-- [tree commit script] -->
+
+    <ui:fragment rendered = "#{canEditTree}">
+
+      <x:action-call coid = "${z:vid(v, 'tree-commit-script')}"
+        action = "#{v.doCommitTreeEdit}" modelView = "${v}"/>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+      //~: add to the tree
+      extjsf.handler("${z:vid(v, 'tree-add')}", '${extDom}', function()
+      {
+        var store = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${extDom}');
+        var tree  = extjsf.co("${z:vid(v, 'tree')}", '${extDom}');
+
+        var sel   = tree.getSelectionModel().getSelection(); sel = sel.length && sel[0];
+        if(!sel) sel = tree.getRootNode();
+
+        var m = Ext.create('retrade.model.CatItemTree', {
+          objectKey: '$' + new Date().getTime(),
+          parentKey: sel.get('modelId'),
+          code: '', name: ''
+        })
+
+        store.add(m)
+
+        var n = sel.insertChild(0, {
+          modelId: m.getId(), leaf: true, code: '', name: ''
+        })
+
+        sel.expand()
+        tree.getSelectionModel().select(n)
+      })
+
+      //~: commit the tree
+      extjsf.handler("${z:vid(v, 'tree-commit')}", '${extDom}', function()
+      {
+        //~: store with tree flat data
+        var store   = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${extDom}');
+
+        //~: collect modifications
+        var records = store.getModifiedRecords(); if(!records.length) return;
+        var params  = {};
+
+        //~: find codes of all records
+        var codes   = {};
+        for(var i = 0;(i < store.getCount());i++) try
+        {
+          var code = store.getAt(i).get('code');
+          if(!code || !code.length) continue;
+
+          //?: {code is repeated}
+          if(codes[code])
+            throw ZeTS.cat('Код каталога [', code, '] указан несколько раз!')
+          codes[code] = true;
+        }
+        catch(e)
+        {
+          ReTrade.desktop.error(e)
+          return
+        }
+
+        //c: process the updates
+        for(i = 0;(i < records.length);i++) try
+        {
+          var m = records[i];
+
+          //?: {empty code}
+          if(ZeTS.ises(m.get('code')))
+            throw 'Код каталога не может быть пустым!'
+
+          //?: {empty name}
+          if(ZeTS.ises(m.get('name')))
+            throw 'Имя каталога не может быть пустым!'
+
+          params['treeFolderKey'    + i] = m.getId();
+          params['treeFolderCode'   + i] = m.get('code');
+          params['treeFolderName'   + i] = m.get('name');
+          params['treeFolderParent' + i] = m.get('parentKey');
+        }
+        catch(e)
+        {
+          ReTrade.desktop.error(e)
+          return
+        }
+
+        //~: disable the commit button
+        extjsf.co("${z:vid(v, 'tree-commit')}", '${extDom}').setDisabled(true)
+
+        //~: current selection
+        var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}').getView();
+        var sel  = tree.getSelectionModel().getSelection(); sel = sel.length && sel[0];
+
+        //!: send to the server
+        extjsf.handler("${z:vid(v, 'tree-commit-script')}", '${extDom}')({
+          params: params, success: function()
+          {
+            store.retradeLastSelection = sel && sel.get('code');
+            store.reload()
+          }
+        })
+
+      })
+
+      //~: tree cut show-hide
+      extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').retradeEnableCutPaste = function(x)
+      {
+        var SHOW = [
+          "${z:vid(v, 'tree-cut-cancel')}",
+          "${z:vid(v, 'tree-paste-child')}",
+          "${z:vid(v, 'tree-paste-prev')}"
+        ]
+
+        var HIDE = [
+          "${z:vid(v, 'tree-cut')}",
+          "${z:vid(v, 'tree-add')}",
+          "${z:vid(v, 'tree-commit')}"
+        ]
+
+        //~: show the related buttons
+        for(var i = 0;(i < SHOW.length);i++)
+          extjsf.co(SHOW[i], '${extDom}').setVisible(x)
+
+        //~: hide the related buttons
+        for(var i = 0;(i < HIDE.length);i++)
+          extjsf.co(HIDE[i], '${extDom}').setVisible(!x)
+      }
+
+      extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').retradeShowNode = function(node, v)
+      {
+        if(v) node.getOwnerTree().getView().removeRowCls(node, 'retrade-almost-opaque')
+        else  node.getOwnerTree().getView().addRowCls(node, 'retrade-almost-opaque')
+      }
+
+      //~: tree cut button
+      extjsf.handler("${z:vid(v, 'tree-cut')}", '${extDom}', function()
+      {
+        var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}');
+
+        //~: enable cut
+        ctl.retradeEnableCutPaste(true)
+
+        //?: {has a node cut} show it back
+        if(ctl.retradeNodeCut) ctl.retradeShowNode(ctl.retradeNodeCut, true)
+        ctl.retradeNodeCut = null;
+
+        //~: selected folder
+        var sel = extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
+          getSelectionModel().getSelection();
+        if(sel && (sel.length == 1)) sel = sel[0];
+
+        //?: {not a valid folder selected}
+        if(!sel || (sel.get('modelId') == '$'))
+        {
+          ctl.retradeEnableCutPaste(false)
+          return;
+        }
+
+        //~: hide current node
+        ctl.retradeShowNode(ctl.retradeNodeCut = sel, false)
+      })
+
+      //~: tree cut cancel button
+      extjsf.handler("${z:vid(v, 'tree-cut-cancel')}", '${extDom}', function()
+      {
+        var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}');
+
+        //~: disable cut
+        ctl.retradeEnableCutPaste(false)
+
+        //?: {has a node cut} show it back
+        if(ctl.retradeNodeCut) ctl.retradeShowNode(ctl.retradeNodeCut, true)
+        ctl.retradeNodeCut = null;
+      })
+
+      //~: tree paste general function
+      extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').retradePasteNode = function(xyz)
+      {
+        var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}');
+
+        //~: disable cut
+        ctl.retradeEnableCutPaste(false)
+
+        //?: {has no node cut} do nothing
+        var cut = ctl.retradeNodeCut; if(!cut) return
+        ctl.retradeNodeCut = null;
+
+        //~: show it back
+        ctl.retradeShowNode(cut, true)
+
+        //~: selected folder
+        var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}');
+        var sel  = tree.getSelectionModel().getSelection();
+        if(sel && (sel.length == 1)) sel = sel[0];
+
+        //?: {there is no current selection | selected the same node}
+        if(!sel || (sel == cut)) return
+
+        //?: {selected in the same sub-tree]
+        if(cut.contains(sel)) return
+
+        //?: {append as the child}
+        if(xyz == 'child')
+        {
+          sel.expand()
+          sel.appendChild(cut)
+        }
+
+        //?: {insert before}
+        else if(xyz == 'prev')
+        {
+          //?: {is a root node}
+          if(!sel.parentNode) return
+
+          sel.parentNode.expand()
+          sel.parentNode.insertBefore(cut, sel)
+        }
+
+        //~: resize the column
+        var col  = extjsf.u.columnByType(tree, 'treecolumn');
+        col.setWidth(tree.getView().getMaxContentWidth(col) + 4)
+      }
+
+      //~: tree paste down button
+      extjsf.handler("${z:vid(v, 'tree-paste-child')}", '${extDom}', function()
+      {
+        extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').
+          retradePasteNode('child')
+      })
+
+      //~: tree paste before button
+      extjsf.handler("${z:vid(v, 'tree-paste-prev')}", '${extDom}', function()
+      {
+        extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').
+          retradePasteNode('prev')
+      })
+
+      //]]>
+      </script>
+    </ui:fragment>
+
+
+    <!-- [tree with goods folders -->
+
+    <x:component coid = "${z:vid(v, 'tree')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'treepanel', store: "${z:vid(v, 'goodsTreeStore')}",
+        border: false, flex: 1, rootVisible : true, rowLines: true,
+        enableColumnHide: false, sortableColumns: false,
+        selectModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+        cls: 'ux-grid-not-mark-dirty ux-tree-folders-only',
+
+        <ui:fragment rendered = "#{canEditTree}">
+
+        viewConfig: { plugins: [
+          { ptype: 'treeviewdragdrop', containerScroll: true, appendOnly: true },
+        ]},
+
+        plugins: [{ ptype: 'cellediting', pluginId: 'cellediting', listeners: {
+
+          beforeedit: function(ed, e)
+          {
+             if(e.record.get('modelId') == '$') return false;
+          }
+        }}],
+
+        </ui:fragment>
+
+        columns: [
+
+          { xtype: 'treecolumn', width: 64, resizable: false },
+
+          { text: "Код", dataIndex: 'code', width: extjsf.ex(16)
+             #{canEditTree?(", editor: 'textfield'"):('')} },
+
+          { text: "Наименование", dataIndex: 'name', flex: 1
+            #{canEditTree?(", editor: 'textfield'"):('')} }
+        ]
+
+      </f:facet>
+    </x:component>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+    //~: single click expand-collapse
+    extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').on('add', function(tree)
+    {
+      var expandSelected, expandTime = 0;
+
+      //~: listen expand-collapse click
+      tree.getView().on('beforecellmousedown', function(tree2, td, ci, node, tr, ri, e)
+      {
+        var sel = tree.getSelectionModel().getLastSelected();
+
+        //?: {is not a tree special column}
+        var cs = extjsf.u.gridColumns(tree, false)
+        if(cs[ci].xtype != 'treecolumn')
+        {
+          //?: {table cell second click to start editing}
+          if(('#{canEditTree}' == 'true') && (sel === node) && (node.get('modelId') != '$'))
+          {
+            var p = tree.getPlugin('cellediting');
+
+            ZeT.timeout(200, function()
+            {
+              p.startEditByPosition({ row: ri, column: ci })
+            })
+          }
+
+          return
+        }
+
+        //?: {is not expander icon}
+        if(node.isExpandable())
+          if(!Ext.get(e.getTarget()).hasCls('x-tree-expander'))
+          {
+            if(node.isExpanded()) node.collapse(); else node.expand()
+            expandTime = new Date().getTime();
+            expandSelected = tree.getSelectionModel().getLastSelected();
+          }
+      })
+
+      //~: listen selection change
+      tree.on('beforeselect', function(tree2, node)
+      {
+        var ts = new Date().getTime() - expandTime;
+
+        //?: {prevent selection}
+        if(ts < 200)
+        {
+          if(expandSelected)
+            tree.getSelectionModel().select(expandSelected, false, true)
+          return false
+        }
+      })
+    })
+
+    //]]>
+    </script>
+
+    <ui:fragment rendered = "#{canEditTree}">
+    <script type = "text/javascript">
+    //<![CDATA[
+
+    //~: after tree cell edited
+    extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').on('edit', function(ed, e)
+    {
+      var store = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${extDom}');
+      var m = store.getById(e.record.get('modelId')); if(!m) return;
+      var v = ZeTS.trim(e.value);
+
+      if(m.get(e.field) == v) return;
+
+      m.set(e.field, v)
+      extjsf.co("${z:vid(v, 'tree-commit')}", '${extDom}').setDisabled(false)
+    })
+
+    //]]>
+    </script>
+    </ui:fragment>
+
+    <!-- tree with goods folders] -->
+
   </x:component>
 
-  <script type = "text/javascript">
-  //<![CDATA[
-
-  //~: single click expand-collapse
-  extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').on('add', function(tree)
-  {
-    var expandSelected, expandTime = 0;
-
-    //~: listen expand-collapse click
-    tree.getView().on('beforecellmousedown', function(tree2, td, ci, node, tr, ri, e)
-    {
-      var sel = tree.getSelectionModel().getLastSelected();
-
-      //?: {is not a tree special column}
-      var cs = extjsf.u.gridColumns(tree, false)
-      if(cs[ci].xtype != 'treecolumn')
-      {
-        //?: {table cell second click to start editing}
-        if(('#{canEditTree}' == 'true') && (sel === node) && (node.get('modelId') != '$'))
-        {
-          var p = tree.getPlugin('cellediting');
-
-          ZeT.timeout(200, function()
-          {
-            p.startEditByPosition({ row: ri, column: ci })
-          })
-        }
-
-        return
-      }
-
-      //?: {is not expander icon}
-      if(node.isExpandable())
-        if(!Ext.get(e.getTarget()).hasCls('x-tree-expander'))
-        {
-          if(node.isExpanded()) node.collapse(); else node.expand()
-          expandTime = new Date().getTime();
-          expandSelected = tree.getSelectionModel().getLastSelected();
-        }
-    })
-
-    //~: listen selection change
-    tree.on('beforeselect', function(tree2, node)
-    {
-      var ts = new Date().getTime() - expandTime;
-
-      //?: {prevent selection}
-      if(ts < 200)
-      {
-        if(expandSelected)
-          tree.getSelectionModel().select(expandSelected, false, true)
-        return false
-      }
-    })
-  })
-
-  //]]>
-  </script>
-
-  <ui:fragment rendered = "#{canEditTree}">
-  <script type = "text/javascript">
-  //<![CDATA[
-
-  //~: after tree cell edited
-  extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').on('edit', function(ed, e)
-  {
-    var store = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${extDom}');
-    var m = store.getById(e.record.get('modelId')); if(!m) return;
-    var v = ZeTS.trim(e.value);
-
-    if(m.get(e.field) == v) return;
-
-    m.set(e.field, v)
-    extjsf.co("${z:vid(v, 'tree-commit')}", '${extDom}').setDisabled(false)
-    extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').retradeSetGoodsPanelTitle(e.record)
-  })
-
-  //]]>
-  </script>
-  </ui:fragment>
-
-  <!-- tree with goods folders] -->
+  <!-- tree panel] -->
 
 
   <x:component coid = "${z:vid(v, '_folder_goods_spliter')}">
     <f:facet name = "extjs-props">
-      xtype: 'splitter', collapsible: true, collapseTarget: 'prev'
+      xtype: 'splitter', collapsible: true, collapseTarget: 'next'
     </f:facet>
   </x:component>
 
@@ -693,67 +708,29 @@
     </f:facet>
   </x:data-store>
 
-  <x:component coid = "${z:vid(v, 'folder-goods-layout')}">
 
+  <!-- [goods table panel -->
+
+  <x:component coid = "${z:vid(v, 'folder-goods-panel')}">
     <f:facet name = "extjs-props">
-
-      xtype: 'panel', flex: 1, border: false, layout: 'fit',
-      collapsible: true, collapseDirection: 'bottom', collapseFirst: false,
-      title: 'Выберете каталог в дереве',
-      bodyCls: 'retrade-back-panel', tools: [
-
-      {
-        type: 'search', tooltipType: 'title', tooltip: 'Отобразить инструменты поиска',
-        handler: function()
-        {
-          var bs = extjsf.co("${z:vid(v, 'goods-edit-buttons')}", '${extDom}')
-          var fi = extjsf.co("${z:vid(v, 'goods-filter')}", '${extDom}')
-
-          bs.setVisible(!bs.isVisible())
-          fi.setVisible(!fi.isVisible())
-        }
-      },
-
-      {
-        type: 'maximize', tooltipType: 'title', tooltip: 'Свернуть дерево товаров',
-        handler: function()
-        {
-          extjsf.co("${z:vid(v, 'tree')}", '${extDom}').collapse()
-        }
-      },
-
-      {
-        type: 'restore', tooltipType: 'title', tooltip: 'Развернуть дерево товаров',
-        hidden: true, handler: function()
-        {
-          extjsf.co("${z:vid(v, 'tree')}", '${extDom}').expand()
-        }
-      }]
+      border: false, layout: 'fit', flex: 1,
+      collapseDirection: 'right', collapseFirst: true,
+      bodyCls: 'retrade-transparent-panel'
     </f:facet>
 
 
-    <!-- [goods table panel -->
+    <!-- [goods panel toolbar -->
 
-    <x:component coid = "${z:vid(v, 'folder-goods-panel')}">
+    <x:toolbar coid = "${z:vid(v, 'folder-goods-toolbar')}">
+
       <f:facet name = "extjs-props">
-        xtype: 'panel', border: false, layout: 'fit', hidden: true,
-        bodyPadding: extjsf.pt(1), bodyCls: 'retrade-transparent-panel'
+        xtype: 'panel', bodyPadding: extjsf.pt(2),
+        layout: { type: 'hbox', align: 'middle' },
+        bodyCls: 'retrade-toolbar-inline-panel'
       </f:facet>
 
 
-      <!-- [goods panel toolbar -->
-
-      <x:toolbar coid = "${z:vid(v, 'folder-goods-toolbar')}">
-        <f:facet name = "extjs-props">
-
-          xtype: 'panel', bodyPadding: extjsf.pt(2),
-          layout: { type: 'hbox', align: 'middle' },
-          bodyCls: 'retrade-toolbar-inline-panel'
-
-        </f:facet>
-
-
-        <ui:fragment rendered = "#{canEditTree}">
+      <ui:fragment rendered = "#{canEditTree}">
 
         <x:component coid = "${z:vid(v, 'goods-edit-buttons')}">
           <f:facet name = "extjs-props">
@@ -790,63 +767,60 @@
             </f:facet>
           </x:component>
 
+
+          <!-- [add-edit good -->
+
+          <x:component coid = "${z:vid(v, 'add-good')}">
+            <f:facet name = "extjs-props">
+              xtype: 'button', text: 'Создать',
+              tooltipType: 'title', tooltip: 'Создать новый товар и поместить его в каталог (указанный на момент открытия формы)',
+              disabled: ${not rootView.isSecure('edit: goods')}
+            </f:facet>
+          </x:component>
+    
+          <script type = "text/javascript">
+          //<![CDATA[
+    
+          extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeOpenGoodWindow = function(record, e)
+          {
+            var dk  = 'add-good'
+            if(record) dk = dk.replace('add-', 'create-')
+    
+            var ps = { disableSelSet: true }
+            if(!record) ps.create = true
+    
+            //~: add the folder selected
+            var fld  = extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
+              getSelectionModel().getSelection()
+            if(fld && (fld.length == 1)) fld = fld[0] && fld[0].get('modelId')
+            if(fld && fld.length && (fld.charAt(0) != '$'))
+              ps.goodsFolder = fld
+    
+            //~: open the window
+            var window; window = retrade_open_window({ url: '/goods/edit-good',
+              box: retrade_default('good-box',  { event: e }),
+              domain: dk, params: ps, record: record && record.getId(),
+    
+              onclose: function()
+              {
+                if(!window.retradeEditDone) return
+                Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").reload()
+              }
+            })
+          }
+    
+          extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}', function(btn, event)
+          {
+            extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').
+              retradeOpenGoodWindow(null, event)
+          })
+    
+          //]]>
+          </script>
+    
+          <!-- add-edit good] -->
+    
         </x:component>
-        </ui:fragment>
-
-
-        <ui:fragment rendered = "#{canEditGoods}">
-
-        <!-- [add-edit good -->
-
-      <x:component coid = "${z:vid(v, 'add-good')}">
-        <f:facet name = "extjs-props">
-         xtype: 'button', text: 'Создать',
-         tooltipType: 'title', tooltip: 'Создать новый товар и поместить его в каталог (указанный на момент открытия формы)',
-         disabled: ${not rootView.isSecure('edit: goods')}
-       </f:facet>
-      </x:component>
-
-      <script type = "text/javascript">
-      //<![CDATA[
-
-  extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeOpenGoodWindow = function(record, e)
-  {
-    var dk  = 'add-good'
-    if(record) dk = dk.replace('add-', 'create-')
-
-    var ps = { disableSelSet: true }
-    if(!record) ps.create = true
-
-    //~: add the folder selected
-    var fld  = extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
-      getSelectionModel().getSelection()
-    if(fld && (fld.length == 1)) fld = fld[0] && fld[0].get('modelId')
-    if(fld && fld.length && (fld.charAt(0) != '$'))
-      ps.goodsFolder = fld
-
-    //~: open the window
-    var window; window = retrade_open_window({ url: '/goods/edit-good',
-      box: retrade_default('good-box',  { event: e }),
-      domain: dk, params: ps, record: record && record.getId(),
-
-      onclose: function()
-      {
-        if(!window.retradeEditDone) return
-        Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").reload()
-      }
-    })
-  }
-
-  extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}', function(btn, event)
-  {
-    extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').
-      retradeOpenGoodWindow(null, event)
-  })
-
-      //]]>
-      </script>
-
-      <!-- add-edit good] -->
       </ui:fragment>
 
 
@@ -867,121 +841,119 @@
       </x:checkbox-field>
 
 
+      <!-- [goods filter block -->
+
       <x:component coid = "${z:vid(v, 'goods-filter')}">
         <f:facet name = "extjs-props">
           xtype: 'panel', bodyCls: 'retrade-transparent-panel',
           border: false, layout: {type: 'hbox', align: 'middle'},
           hidden: #{canEditTree}
         </f:facet>
-
-
+    
+  
         <!-- [filter goods field -->
-
+    
         <x:text-field coid = "${z:vid(v, 'search-goods')}"
           value = "#{v.model.searchNames}">
-
+    
           <f:facet name = "extjs-props">
             margin: extjsf.pts(0, 0, 0, 4),
             width:  extjsf.ex(24)
           </f:facet>
-
+    
           <f:facet name = "label-props">
             text: 'поиск', margin: extjsf.pts(0, 0, 0, 8),
             cls: 'retrade-info-title-label'
           </f:facet>
         </x:text-field>
-
-
-         <!-- [restrict to selection set] -->
-
-         <x:component coid = "${z:vid(v, 'search-goods-selset')}">
-           <f:facet name = "extjs-props">
-
-             xtype: 'button', enableToggle: true,
-             width: retrade_default('button-selset').width,
-             height: retrade_default('button-selset').height,
-             componentCls: 'retrade-icon-24',
-             margin: extjsf.pts(0, 0, 0, 6),
-             iconCls: 'retrade-selset-button-icon',
-             tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
-
+    
+  
+        <!-- [restrict to selection set] -->
+        <x:component coid = "${z:vid(v, 'search-goods-selset')}">
+          <f:facet name = "extjs-props">
+    
+            xtype: 'button', enableToggle: true,
+            width: retrade_default('button-selset').width,
+            height: retrade_default('button-selset').height,
+            componentCls: 'retrade-icon-24',
+            margin: extjsf.pts(0, 0, 0, 6),
+            iconCls: 'retrade-selset-button-icon',
+            tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
+    
           </f:facet>
         </x:component>
-
-
+    
         <x:action-call coid = "${z:vid(v, 'search-goods-script')}"
           action = "#{v.doSearchGoods}" modelView = "${v}"/>
-
+    
         <script type = "text/javascript">
         //<![CDATA[
-
-    extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}').on('change', function(f)
-    {
-      var sv = ZeTS.trim(f.getValue());
-      if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
-
-      var fn = function()
-      {
-        //?: {search string was changed} discard
-        if(f.extjsfBind.searchValue != sv) return;
-
-        var params = { searchGoods: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
-        if(selchk.pressed) params.selset = ReTrade.selset.selset;
-
-        extjsf.handler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
-          params: params, success : function() {
-            Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
-        }})
-      }
-
-      setTimeout(fn, 1000)
-    })
-
-    //~: selection set only toggled
-    extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').on('toggle', function()
-    {
-        var names  = extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}').value();
-        var params = { searchGoods: names };
-
-        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
-        if(selchk.pressed) params.selset = ReTrade.selset.selset;
-
-        extjsf.handler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
-          params: params, success : function() {
-            Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
-        }})
-    })
-
+    
+        extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}').on('change', function(f)
+        {
+          var sv = ZeTS.trim(f.getValue());
+          if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
+          
+          var fn = function()
+          {
+            //?: {search string was changed} discard
+            if(f.extjsfBind.searchValue != sv) return;
+          
+            var params = { searchGoods: sv };
+            var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
+            if(selchk.pressed) params.selset = ReTrade.selset.selset;
+          
+            extjsf.handler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
+              params: params, success : function() {
+                Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
+            }})
+          }
+          
+          setTimeout(fn, 1000)
+        })
+          
+        //~: selection set only toggled
+        extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').on('toggle', function()
+        {
+            var names  = extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}').value();
+            var params = { searchGoods: names };
+          
+            var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
+            if(selchk.pressed) params.selset = ReTrade.selset.selset;
+          
+            extjsf.handler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
+              params: params, success : function() {
+                Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
+            }})
+        })
+          
         //]]>
         </script>
-
         <!-- filter goods field] -->
 
       </x:component>
-      </x:toolbar>
+      <!-- goods filter block] -->
 
-      <!-- goods panel toolbar] -->
+    </x:toolbar>
+    <!-- goods panel toolbar] -->
 
 
-      <!-- [goods table] -->
+    <!-- [goods table] -->
 
-      <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
-        storeId = "${z:vid(v, 'folderGoodsStore')}">
+    <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+      storeId = "${z:vid(v, 'folderGoodsStore')}">
 
-        <f:facet name = "grid-props">
-          preventHeader: true, pager: true,
-          sortableColumns: true, border: false,
-          columns: ZeT.defined('#{goodsColumnModel}'),
-          selModel: #{goodsColumnSelModel}
-       </f:facet>
-      </x:data-grid>
-
-    </x:component>
-
-    <!-- goods table panel] -->
+      <f:facet name = "grid-props">
+        preventHeader: true, pager: true,
+        sortableColumns: true, border: false,
+        columns: ZeT.defined('#{goodsColumnModel}'),
+        selModel: #{goodsColumnSelModel}
+     </f:facet>
+    </x:data-grid>
 
   </x:component>
+
+  <!-- goods table panel] -->
 
 
   <x:action-call coid = "${z:vid(v, 'set-current-folder-script')}"
@@ -990,31 +962,24 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-  Ext.onReady(function()
+  //~: connect tree (as grid) to selection set
+  extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').when(function()
   {
-    //~: connect tree (as grid) to selection set
     ReTrade.selset.grid("${z:vid(v, 'tree')}", '${extDom}')
   })
 
-  //~: display goods of current selection
-  extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').retradeSetGoodsPanelTitle = function(sel)
+
+  //~: set toolbar equal heights
+  extjsf.bind("${z:vid(v, 'goods-tree-panel')}", '${extDom}').on('afterlayout', function()
   {
-    var fid  = sel.get('modelId');
-    var root = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${extDom}');
+    var gtb = extjsf.co("${z:vid(v, 'folder-goods-toolbar')}", '${extDom}')
+    var ttb = extjsf.co("${z:vid(v, 'tree-toolbar')}", '${extDom}')
+    var   H = Math.max(gtb.getHeight(), ttb.getHeight())
+    gtb.setHeight(H); ttb.setHeight(H)
+  })
 
-    if(fid == '$') root.setTitle('Товары и услуги всех каталогов')
 
-    if((fid != '$') && (fid.charAt(0) == '$'))
-      root.setTitle(ZeTS.cat(
-         'Сохраните каталог [', sel.get('code'), '] ',  sel.get('name'), '!'
-       ))
-
-    if(fid.charAt(0) != '$')
-      root.setTitle(ZeTS.cat(
-         'Товары и услуги каталога • ', sel.get('code'), ' • ',  sel.get('name')
-      ))
-  }
-
+  //~: display goods depending on the selection
   extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').retradeShowFolderGoods = function()
   {
     var sel  = extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
@@ -1030,9 +995,6 @@
     }
 
     var fid = sel.get('modelId');
-
-    //~: update the root title
-    extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').retradeSetGoodsPanelTitle(sel)
 
     //?: {it is a new folder}
     if((fid != '$') && (fid.charAt(0) == '$'))
@@ -1086,37 +1048,6 @@
     extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').retradeShowFolderGoods()
   })
 
-  //~: collapse goods
-  extjsf.bind("${z:vid(v, 'folder-goods-layout')}", '${extDom}').on('collapse', function()
-  {
-    extjsf.co("${z:vid(v, 'tree')}", '${extDom}').expand()
-
-    var p = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${extDom}')
-    p.query('tool[type="maximize"]')[0].show()
-    p.query('tool[type="restore"]')[0].hide()
-  })
-
-  //~: maximize goods == collapse tree
-  extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').on('collapse', function()
-  {
-    var p = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${extDom}')
-    p.query('tool[type="maximize"]')[0].hide()
-    p.query('tool[type="restore"]')[0].show()
-    p.expand()
-
-    extjsf.co("${z:vid(v, 'goods-tree-panel-toolbar')}", '${extDom}').hide()
-  })
-
-  //~: restore goods == expand tree
-  extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').on('expand', function()
-  {
-    var p = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${extDom}')
-    p.query('tool[type="maximize"]')[0].show()
-    p.query('tool[type="restore"]')[0].hide()
-
-    extjsf.co("${z:vid(v, 'goods-tree-panel-toolbar')}", '${extDom}').show()
-  })
-
   //]]>
   </script>
 
@@ -1128,7 +1059,6 @@
 
   <x:action-call coid = "${z:vid(v, 'tree-unlink-goods-script')}"
     action = "#{v.doMoveSelectedGoods}" modelView = "${v}"/>
-
 
   <script type = "text/javascript">
   //<![CDATA[
@@ -1194,7 +1124,6 @@
   </ui:fragment>
 
   <!-- grid with folder goods] -->
-
 
   <ui:insert name = 'tree-ext'/>
 
