@@ -192,6 +192,8 @@
 
         m.set('parentKey', np.get('modelId'))
         np.sort(nodesSorter, true)
+        np.expand()
+
         extjsf.co("${z:vid(v, 'tree-commit')}", '${extDom}').setDisabled(false)
       }
 
@@ -462,8 +464,8 @@
         ctl.retradeNodeCut = null;
 
         //~: selected folder
-        var sel = extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
-          getSelectionModel().getSelection();
+        var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}')
+        var sel  = tree.getSelectionModel().getSelection()
         if(sel && (sel.length == 1)) sel = sel[0];
 
         //?: {not a valid folder selected}
@@ -475,6 +477,9 @@
 
         //~: hide current node
         ctl.retradeShowNode(ctl.retradeNodeCut = sel, false)
+
+        //~: clear the selection
+        tree.getSelectionModel().deselectAll()
       })
 
       //~: tree cut cancel button
@@ -570,9 +575,10 @@
 
         <ui:fragment rendered = "#{canEditTree}">
 
-        viewConfig: { plugins: [
-          { ptype: 'treeviewdragdrop', containerScroll: true, appendOnly: true },
-        ]},
+        viewConfig: { plugins: [{
+          ptype: 'treeviewdragdrop', containerScroll: true,
+          dropZone: { getPosition: function(){ return 'append' }}
+        }]},
 
         plugins: [{ ptype: 'cellediting', pluginId: 'cellediting', listeners: {
 
@@ -714,7 +720,7 @@
   <x:component coid = "${z:vid(v, 'folder-goods-panel')}">
     <f:facet name = "extjs-props">
       border: false, layout: 'fit', flex: 1,
-      collapseDirection: 'right', collapseFirst: true,
+      collapseDirection: 'right', collapseMode: 'mini',
       bodyCls: 'retrade-transparent-panel'
     </f:facet>
 
@@ -988,12 +994,7 @@
     var subf = extjsf.co("${z:vid(v, 'with-subfolders')}", '${extDom}');
 
     //?: {the selection is empty} hide the panel
-    sel = sel.length && sel[0]; if(!sel)
-    {
-      extjsf.co("${z:vid(v, 'folder-goods-panel')}", '${extDom}').hide()
-      return;
-    }
-
+    sel = sel.length && sel[0]; if(!sel) return
     var fid = sel.get('modelId');
 
     //?: {it is a new folder}
