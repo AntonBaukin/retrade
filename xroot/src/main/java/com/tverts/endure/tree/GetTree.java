@@ -40,31 +40,12 @@ public class GetTree extends GetObjectBase
 
 	public TreeDomain getDomain(Long domain, UnityType type, Long owner)
 	{
-/*
-
- from TreeDomain where (domain.id = :domain) and
-   (treeType = :type) and (owner is null)
-
- from TreeDomain where (domain.id = :domain) and
-   (treeType = :type) and (owner.id = :owner)
-
- */
-
-		final String N =
-
-"from TreeDomain where (domain.id = :domain) and\n" +
-"  (treeType = :type) and (owner is null)";
-
 		if(owner == null)
-			return object(TreeDomain.class, N, "domain", domain, "type", type);
+			return object(TreeDomain.class, q("TD-n"),
+			  "domain", domain, "type", type);
 
 
-		final String Y =
-
-"from TreeDomain where (domain.id = :domain) and\n" +
-"  (treeType = :type) and (owner.id = :owner)";
-
-		return object(TreeDomain.class, Y,
+		return object(TreeDomain.class, q("TD-y"),
 		  "domain", domain, "type", type, "owner", owner);
 	}
 
@@ -83,32 +64,14 @@ public class GetTree extends GetObjectBase
 
 	public TreeFolder getFolder(Long treeDomain, String code)
 	{
-
-// from TreeFolder where (domain.id = :domain) and (code = :code)
-
-		return (TreeFolder) Q(
-
-"  from TreeFolder where (domain.id = :domain) and (code = :code)"
-
-		).
-		  setLong("domain", treeDomain).
-		  setString("code", code).
-		  uniqueResult();
+		return object(TreeFolder.class, q("TF-tdc"),
+		  "domain", treeDomain, "code", code);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<TreeFolder> selectFolders(TreeDomain domain)
 	{
-		EX.assertn(domain);
-
-
-// from TreeFolder where (domain = :domain)
-
-		return (List<TreeFolder>) Q(
-		  "from TreeFolder where (domain = :domain)"
-		).
-		  setParameter("domain", domain).
-		  list();
+		return list(TreeFolder.class, q("TF-d"),
+		  "domain", EX.assertn(domain));
 	}
 
 
@@ -116,44 +79,24 @@ public class GetTree extends GetObjectBase
 
 	public TreeItem getTreeItem(Long folder, Long unity)
 	{
-
-// from TreeItem where (folder.id = :folder) and (item.id = :unity)
-
-		return (TreeItem) Q(
-
-"  from TreeItem where (folder.id = :folder) and (item.id = :unity)"
-
-		).
-		  setLong("folder", folder).
-		  setLong("unity",  unity).
-		  uniqueResult();
+		return object(TreeItem.class, q("TI-fu"),
+		  "folder", folder, "unity", unity);
 	}
 
 	public List<TreeItem> getTreeItems(TreeDomain domain, Long unity)
 	{
-
-// from TreeItem where (folder.domain = :domain) and (item.id = :unity)
-
-		return list(TreeItem.class,
-
-"  from TreeItem where (folder.domain = :domain) and (item.id = :unity)",
-
-		  "domain", domain,
-		  "unity",  unity
-		);
+		return list(TreeItem.class, q("TI-du"),
+		  "domain", domain, "unity", unity);
 	}
 
 	public List<TreeCross> getCrossItems(TreeDomain domain, Long unity)
 	{
+		return list(TreeCross.class, q("TC-du"),
+		  "domain", domain, "unity",  unity);
+	}
 
-// from TreeCross where (folder.domain = :domain) and (item.item.id = :unity)
-
-		return list(TreeCross.class,
-
-"  from TreeCross where (folder.domain = :domain) and (item.item.id = :unity)",
-
-		  "domain", domain,
-		  "unity",  unity
-		);
+	public List<TreeCross> getCrossItems(TreeItem item)
+	{
+		return list(TreeCross.class, q("TC-i"), "item", item);
 	}
 }

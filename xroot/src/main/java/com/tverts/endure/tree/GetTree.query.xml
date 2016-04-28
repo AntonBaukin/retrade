@@ -1,0 +1,52 @@
+<queries>
+
+  <query id = "TD-n">
+
+    from TreeDomain where (domain.id = :domain) and
+      (treeType = :type) and (owner is null)
+
+  </query>
+
+  <query id = "TD-y">
+
+    from TreeDomain where (domain.id = :domain) and
+      (treeType = :type) and (owner.id = :owner)
+
+  </query>
+
+  <query id = "TF-tdc">
+
+    from TreeFolder where (domain.id = :domain) and (code = :code)
+
+  </query>
+
+  <query id = "TF-d">
+
+    from TreeFolder where (domain = :domain)
+
+  </query>
+
+  <query id = "TI-fu">
+
+    from TreeItem where (folder.id = :folder) and (item.id = :unity)
+
+  </query>
+
+  <query id = "TI-du">
+
+    from TreeItem where (folder.domain = :domain) and (item.id = :unity)
+
+  </query>
+
+  <query id = "TC-du">
+
+    from TreeCross where (folder.domain = :domain) and (item.item.id = :unity)
+
+  </query>
+
+  <query id = "TC-i">
+
+    from TreeCross where (item = :item)
+
+  </query>
+</queries>

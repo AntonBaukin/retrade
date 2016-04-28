@@ -49,7 +49,7 @@ import com.tverts.support.logic.Predicate;
  */
 public class ActTreeFolder extends ActionBuilderXRoot
 {
-	/* action types */
+	/* Action Types */
 
 	public static final ActionType SAVE   =
 	  ActionType.SAVE;
@@ -72,8 +72,16 @@ public class ActTreeFolder extends ActionBuilderXRoot
 	public static final ActionType ADD    =
 	  new ActionType(TreeFolder.class, "add");
 
+	/**
+	 * Removes United instance defined by parameter
+	 * {@link #PARAM_ITEM} from this folder. Nothing
+	 * happens if it is not there.
+	 */
+	public static final ActionType REMOVE =
+	  new ActionType(TreeFolder.class, "remove");
 
-	/* parameters */
+
+	/* Parameters */
 
 	/**
 	 * Unity Type of the Folder to add.
@@ -110,6 +118,9 @@ public class ActTreeFolder extends ActionBuilderXRoot
 
 		if(ADD.equals(actionType(abr)))
 			addToTreeFolder(abr);
+
+		if(REMOVE.equals(actionType(abr)))
+			removeFromTreeFolder(abr);
 	}
 
 
@@ -152,6 +163,21 @@ public class ActTreeFolder extends ActionBuilderXRoot
 		//~: add item to the folder
 		chain(abr).first(new AddToFolderAction(task(abr), u).
 		  setSingle(flag(abr, PARAM_SINGLE)));
+
+		complete(abr);
+	}
+
+	protected void removeFromTreeFolder(ActionBuildRec abr)
+	{
+		//?: {target is not a Tree Folder}
+		checkTargetClass(abr, TreeFolder.class);
+
+		//~: obtain Unity to add
+		United u = param(abr, PARAM_ITEM, United.class);
+		if(u == null) throw EX.arg("No Unity (PARAM_ITEM) set!");
+
+		//~: add item to the folder
+		chain(abr).first(new RemoveFromFolderAction(task(abr), u));
 
 		complete(abr);
 	}
@@ -206,7 +232,7 @@ public class ActTreeFolder extends ActionBuilderXRoot
 	}
 
 
-	/* action to add United to the folder */
+	/* Action to Add United to a Folder */
 
 	protected static class AddToFolderAction
 	          extends      ActionWithTxBase
@@ -231,8 +257,6 @@ public class ActTreeFolder extends ActionBuilderXRoot
 
 		/* public: Action interface */
 
-		protected TreeItem item;
-
 		/**
 		 * Returns the item was created or found existing.
 		 */
@@ -240,6 +264,8 @@ public class ActTreeFolder extends ActionBuilderXRoot
 		{
 			return item;
 		}
+
+		protected TreeItem item;
 
 
 		/* public: ActionBase interface */
@@ -327,5 +353,62 @@ public class ActTreeFolder extends ActionBuilderXRoot
 
 		protected final United unity;
 		protected boolean      single;
+	}
+
+
+	/* Action to Remove United from a Folder */
+
+	protected static class RemoveFromFolderAction
+	          extends      ActionWithTxBase
+	{
+		/* public: constructor */
+
+		public RemoveFromFolderAction(ActionTask task, United unity)
+		{
+			super(task);
+			this.unity = unity;
+		}
+
+		protected final United unity;
+
+
+		/* public: Action interface */
+
+		/**
+		 * Returns the item was found and removed.
+		 */
+		public Object getResult()
+		{
+			return item;
+		}
+
+		protected TreeItem item;
+
+
+		/* public: ActionBase interface */
+
+		protected void execute()
+		{
+			TreeFolder folder = target(TreeFolder.class);
+
+			//~: search the item in the folder
+			item = bean(GetTree.class).getTreeItem(
+			  folder.getPrimaryKey(), unity.getPrimaryKey()
+			);
+
+			//?: {found it not} nothing to do
+			if(item == null) return;
+
+			//~: select all crosses
+			List<TreeCross> tcs = bean(GetTree.class).
+			  getCrossItems(item);
+
+			//~: and delete them first
+			for(TreeCross tc : tcs)
+				session().delete(tc);
+
+			//!: do delete the item
+			session().delete(item);
+		}
 	}
 }

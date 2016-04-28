@@ -155,19 +155,19 @@ public class FacesGoodsTreeView extends FacesGoodsView
 		//~: load current folder
 		String     pk = s2s(request().getParameter("destinationFolder"));
 		TreeFolder tf = (pk == null)?(null):loadFolder(Long.parseLong(pk));
-		if(tf == null) throw EX.arg("No destination Tree Folder is given!");
+		EX.assertn(tf, "No destination Tree Folder is given!");
 
 		//~: selection set
 		String selset = s2s(request().getParameter("selset"));
 		if(selset == null) selset = "";
 
 		//~: the goods selected
-		List<GoodUnit> goods = bean(GetGoods.class).
-		  getSelectedGoodUnits(tf.getDomain().getDomain().getPrimaryKey(), selset);
+		List<GoodUnit> goods = bean(GetGoods.class).getSelectedGoodUnits(
+		  tf.getDomain().getDomain().getPrimaryKey(), selset);
 
 		boolean copy = "true".equals(request().getParameter("copyGoods"));
 
-		//c: add the goods
+		//c: add/move the goods
 		for(GoodUnit g : goods)
 			actionRun(ActTreeFolder.ADD, tf,
 			  ActTreeFolder.PARAM_ITEM,   g,
@@ -179,15 +179,24 @@ public class FacesGoodsTreeView extends FacesGoodsView
 
 	public String doUnlinkSelectedGoods()
 	{
-//		//~: load current folder
-//		String     pk = s2s(request().getParameter("destinationFolder"));
-//		TreeFolder tf = (pk == null)?(null):loadFolder(Long.parseLong(pk));
-//		if(tf == null) throw EX.arg("No destination Tree Folder is given!");
-//
-//		//~: selection set
-//		String selset = s2s(request().getParameter("selset"));
-//		if(selset == null) selset = "";
+		//~: load current folder
+		String     pk = s2s(request().getParameter("destinationFolder"));
+		TreeFolder tf = (pk == null)?(null):loadFolder(Long.parseLong(pk));
+		EX.assertn(tf, "No destination Tree Folder is given!");
 
+		//~: selection set
+		String selset = s2s(request().getParameter("selset"));
+		if(selset == null) selset = "";
+
+		//~: the goods selected
+		List<GoodUnit> goods = bean(GetGoods.class).getSelectedGoodUnits(
+		  tf.getDomain().getDomain().getPrimaryKey(), selset);
+
+		//c: remove the goods
+		for(GoodUnit g : goods)
+			actionRun(ActTreeFolder.REMOVE, tf,
+			  ActTreeFolder.PARAM_ITEM, g
+			);
 
 		return null;
 	}
@@ -207,9 +216,7 @@ public class FacesGoodsTreeView extends FacesGoodsView
 	{
 		//~: get it
 		TreeFolder tf = bean(GetTree.class).getFolder(pk);
-
-		//?: {not found it}
-		if(tf == null) throw EX.state("Folder not found!");
+		EX.assertn(tf, "Folder not found!");
 
 		//?: {not that type}
 		if(!Goods.TYPE_GOODS_FOLDER.equals(tf.getUnity().getUnityType().getTypeName()))

@@ -1059,39 +1059,44 @@
     action = "#{v.doMoveSelectedGoods}" modelView = "${v}"/>
 
   <x:action-call coid = "${z:vid(v, 'tree-unlink-goods-script')}"
-    action = "#{v.doMoveSelectedGoods}" modelView = "${v}"/>
+    action = "#{v.doUnlinkSelectedGoods}" modelView = "${v}"/>
 
   <script type = "text/javascript">
   //<![CDATA[
 
   //~: move or copy selected goods implementation
-  extjsf.bind("${z:vid(v, 'tree-add-goods')}", '${extDom}').retradeMoveSelectedGoods = function(copy)
+  extjsf.bind("${z:vid(v, 'tree-add-goods')}", '${extDom}').
+    retradeMoveSelectedGoods = function(copy, unlink)
   {
     //~: current selection
-    var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}');
-    var sel  = tree.getSelectionModel().getSelection(); sel = sel.length && sel[0];
+    var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}')
+    var sel  = tree.getSelectionModel().getSelection()
+    sel = sel.length && sel[0]
 
     //?: {not existing folder selected}
-    if(!sel || (sel.get('modelId').charAt(0) == '$')) return;
+    if(!sel || (sel.get('modelId').charAt(0) == '$')) return
 
     //~: call parameters
     var params = {
       destinationFolder: sel.get('modelId'),
       selset: ReTrade.desktop.selset
-    };
+    }
 
-    if(copy) params.copyGoods = true;
+    if(copy) params.copyGoods = true
+
+    var script = "${z:vid(v, 'tree-move-goods-script')}"
+    if(unlink) script = "${z:vid(v, 'tree-unlink-goods-script')}"
 
     //!: invoke the action
-    extjsf.handler("${z:vid(v, 'tree-move-goods-script')}", '${extDom}')({
+    extjsf.handler(script, '${extDom}')({
       params: params, success: function()
       {
         Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
 
         ReTrade.desktop.event(ZeTS.cat(
          'Товары и услуги текущей выборки были успешно ',
-         (copy)?('скопированы'):('перенесены'),
-         ' в каталог [', sel.get('code'), '].'
+         (unlink)?('изъяты из каталога'):(copy)?('скопированы в каталог'):('перенесены в каталог'),
+         ' [', sel.get('code'), '].'
         ))
       }
     })
@@ -1109,6 +1114,13 @@
   {
     extjsf.bind("${z:vid(v, 'tree-add-goods')}", '${extDom}').
      retradeMoveSelectedGoods(false)
+  })
+
+  //~: unlink selected goods handler
+  extjsf.handler("${z:vid(v, 'tree-unlink-goods')}", '${extDom}', function()
+  {
+    extjsf.bind("${z:vid(v, 'tree-add-goods')}", '${extDom}').
+     retradeMoveSelectedGoods(false, true)
   })
 
   //~: edit good unit
