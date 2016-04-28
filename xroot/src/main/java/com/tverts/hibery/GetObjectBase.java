@@ -7,6 +7,7 @@ import java.util.List;
 
 /* Hibernate Persistence Layer */
 
+import com.tverts.hibery.sql.QueryCache;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -70,6 +71,20 @@ public abstract class GetObjectBase
 		//~: direct Hibernate session access
 		return HiberPoint.getInstance().getSession();
 	}
+
+	/**
+	 * Returns query from the cache related to this strategy.
+	 */
+	protected String  q(String id)
+	{
+		if(qCache == null)
+			qCache = QueryCache.cache(this.getClass());
+
+		return EX.asserts(qCache.q(id), "No found query [",
+		  id, "] in ", this.getClass().getSimpleName());
+	}
+
+	protected volatile QueryCache qCache;
 
 	protected Query   Q(String hql, Object... params)
 	{
