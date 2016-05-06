@@ -5,7 +5,6 @@ package com.tverts.support;
 import java.io.ByteArrayInputStream;
 import java.io.DataInput;
 import java.io.DataOutput;
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInput;
@@ -220,11 +219,7 @@ public class IO
 			return null;
 
 		byte[] buf = new byte[l];
-		if((l = i.read(buf)) != buf.length)
-			throw new EOFException(SU.cats(
-			  "Was unable to read [", buf.length,
-			  "] string bytes from the stream, read [", l, "] bytes!"
-			));
+		i.readFully(buf);
 
 		return new String(buf, "UTF-8");
 	}
@@ -263,11 +258,7 @@ public class IO
 			return null;
 
 		byte[] buf = new byte[l];
-		if((l = i.read(buf)) != buf.length)
-			throw new EOFException(SU.cats(
-			  "Was unable to read [", buf.length,
-			  "] class name bytes from the stream, read [", l, "] bytes!"
-			));
+		i.readFully(buf);
 
 		return Thread.currentThread().getContextClassLoader().
 		  loadClass(new String(buf, "UTF-8"));
@@ -410,8 +401,7 @@ public class IO
 		public void close()
 		{
 			if(targets != null)
-				for(AutoCloseable x : targets)
-					accept(x);
+				targets.forEach(this::accept);
 
 			this.raiseFirst();
 		}
