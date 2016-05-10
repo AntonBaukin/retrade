@@ -1,6 +1,6 @@
 package com.tverts.support.cpscan;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +42,7 @@ public class ClasspathScanner
 	public Set<Class> getClassesSet()
 	{
 		List<MetadataReader> mrs = loadMetadataFiltered();
-		Set<Class>           res = new HashSet<Class>(mrs.size());
+		Set<Class>           res = new HashSet<>(mrs.size());
 		ClassLoader          cll = Thread.currentThread().getContextClassLoader();
 		String               cln = Void.class.getName();
 
@@ -111,7 +111,7 @@ public class ClasspathScanner
 
 	protected Set<String>          collectRootPackages()
 	{
-		Set<String> acc = new HashSet<String>(7);
+		Set<String> acc = new HashSet<>(7);
 
 		//~: add direct packages list
 		if(getPackages() != null)
@@ -122,7 +122,7 @@ public class ClasspathScanner
 			for(Object s : getPackageNames().dereferObjects())
 				acc.addAll(Arrays.asList(SU.s2a((String)s, ';')));
 
-		Set<String> res = new HashSet<String>(acc.size());
+		Set<String> res = new HashSet<>(acc.size());
 
 		//~: remove the empty strings
 		for(String s : acc)
@@ -135,7 +135,7 @@ public class ClasspathScanner
 	protected Set<String>          collectScanURIs()
 	{
 		Set<String> pks = collectRootPackages();
-		Set<String> res = new HashSet<String>(pks.size());
+		Set<String> res = new HashSet<>(pks.size());
 
 		for(String pkg : pks)
 			res.add(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
@@ -149,7 +149,7 @@ public class ClasspathScanner
 		Set<String>                 uris = collectScanURIs();
 		ResourcePatternResolver     rpr  = new PathMatchingResourcePatternResolver();
 		SimpleMetadataReaderFactory mrf  = new SimpleMetadataReaderFactory();
-		Set<Resource>               rcls = new HashSet<Resource>(101);
+		Set<Resource>               rcls = new HashSet<>(101);
 
 		//~: collect all the resources found at all the paths
 		for(String uri : uris) try
@@ -162,7 +162,7 @@ public class ClasspathScanner
 			  "Error occured while scanning classes in the URI [%s]!", uri), e);
 		}
 
-		List<MetadataReader>        res  = new ArrayList<MetadataReader>(rcls.size());
+		List<MetadataReader>        res  = new ArrayList<>(rcls.size());
 
 		//~: load metadata for all that resources & filter them
 		for(Resource rcl : rcls) try
@@ -186,11 +186,11 @@ public class ClasspathScanner
 
 		//?: {there are no filters} no classes must be returned
 		if((fts == null) || fts.isEmpty())
-			return new ArrayList<MetadataReader>(0);
+			return new ArrayList<>(0);
 
 		//~: load the metadata
 		List<MetadataReader> all = loadAllMetadata();
-		List<MetadataReader> res = new ArrayList<MetadataReader>(all.size()/10);
+		List<MetadataReader> res = new ArrayList<>(all.size()/10);
 
 		//~: filter it...
 		for(MetadataReader mr : all)

@@ -6,15 +6,15 @@ import com.tverts.support.EX;
 
 
 /**
- * Point to access procedures of writing and read
- * objects marked by JAXB annotations to XML or
- * JSON and back.
+ * Point to access procedures of writing and
+ * reading objects marked by JAXB annotations
+ * to XML or JSON and back.
  *
  * @author anton.baukin@gmail.com
  */
 public class XPoint
 {
-	/* X-Point Singleton */
+	/* Singleton */
 
 	public static XPoint getInstance()
 	{

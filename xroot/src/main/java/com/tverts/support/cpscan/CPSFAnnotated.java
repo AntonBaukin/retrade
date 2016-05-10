@@ -6,9 +6,8 @@ import org.springframework.core.type.classreading.MetadataReader;
 
 
 /**
- * Allows classes that directly declare the runtime
- * annotation specified.
- *
+ * Allows classes that directly declare
+ * the runtime annotation specified.
  *
  * @author anton.baukin@gmail.com
  */

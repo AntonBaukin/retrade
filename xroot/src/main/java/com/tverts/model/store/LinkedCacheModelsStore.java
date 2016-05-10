@@ -29,8 +29,8 @@ public class      LinkedCacheModelsStore
 	{
 		EX.assertx(size > 0);
 		this.size    = size;
-		this.entries = new HashMap<String, LinkedEntry>(size);
-		this.pruned  = new HashSet<LinkedEntry>(size / 10);
+		this.entries = new HashMap<>(size);
+		this.pruned  = new HashSet<>(size / 10);
 	}
 
 	public final int size;

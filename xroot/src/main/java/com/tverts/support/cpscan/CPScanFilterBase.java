@@ -1,6 +1,6 @@
 package com.tverts.support.cpscan;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +11,7 @@ import org.springframework.core.type.classreading.MetadataReader;
 
 
 /**
- * COMMENT CPScanFilterBase
+ * Implementation base of filter for classpath scaner.
  *
  * @author anton.baukin@gmail.com
  */

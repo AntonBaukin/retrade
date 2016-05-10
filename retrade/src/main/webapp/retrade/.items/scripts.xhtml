@@ -118,6 +118,28 @@ function retrade_add_user_web_link(wl)
   })
 }
 
+function retrade_add_win_min_tool(window)
+{
+  //~: minimize to history tool
+  var tool = { xtype: 'tool', cls: 'retrade-minimize-tool',
+    tooltipType: 'title', tooltip: 'Свернуть окно в историю просмотра',
+    handler: function()
+    {
+      ReTrade.desktop.history.save(window.openOpts, window)
+      window.co().close()
+    }
+  }
+
+  //~: insert tool in the window's header
+  var items = window.co().getHeader().items
+  for(var i = 0;(i < items.getCount());i++)
+    if(items.get(i).xtype == 'tool')
+      return window.co().getHeader().insert(i, tool)
+
+  //~: append a single tool
+  window.co().addTool([ tool ])
+}
+
 function retrade_add_web_link_tool(window, link, entity, params)
 {
   //?: {tool is already installed}
@@ -239,9 +261,6 @@ function retrade_open_window(opts)
   //~: before the close action
   window.on('beforeclose', function()
   {
-    if(ReTrade.desktop.history)
-      ReTrade.desktop.history.save(opts, window)
-
     if(ZeT.isf(opts.onclose)) //?: {has on-close}
       opts.onclose.apply(window, arguments)
   })
@@ -251,6 +270,9 @@ function retrade_open_window(opts)
 
   //~: install positioning strategy
   new ReTrade.WinAlign({ window: window })
+
+  //~: open options
+  window.openOpts = opts
 
   return window
 }

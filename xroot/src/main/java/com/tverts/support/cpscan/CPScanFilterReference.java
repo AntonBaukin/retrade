@@ -4,6 +4,7 @@ package com.tverts.support.cpscan;
 
 import com.tverts.objects.ObjectsReference;
 
+
 /**
  * A reference to classpath scan filter.
  *

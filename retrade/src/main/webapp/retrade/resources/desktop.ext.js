@@ -503,6 +503,10 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 {
 	$add_link_tool    : function(tools)
 	{
+		//~: add minimize tool
+		this.$add_min_tool(tools)
+
+		//?: {web link is suppoorted here}
 		if(!ZeT.iso(this.opts.webLink)) return
 
 		tools.push({ xtype: 'tool', cls: 'retrade-web-link-tool',
@@ -510,6 +514,27 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 		  margin: extjsf.pts(0, 8, 0, 2), tooltipType: 'title',
 		  tooltip: 'Создать постоянную ссылку на панель'
 		})
+	},
+
+	$add_min_tool     : function(tools)
+	{
+		//?: {no history}
+		if(!this.desktop().history) return
+
+		//?: {got no loading options}
+		if(!this.$loading_opts()) return
+
+		tools.push({ xtype: 'tool', cls: 'retrade-minimize-tool',
+		  handler: ZeT.fbind(this.$minimize, this),
+		  margin: extjsf.pts(0, 8, 0, 2), tooltipType: 'title',
+		  tooltip: 'Свернуть панель в историю просмотра'
+		})
+	},
+
+	$minimize         : function()
+	{
+		//~: close the panel
+		this.bind().co().close()
 	},
 
 	$web_link         : function()
@@ -533,7 +558,7 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 			this.$auto_restore()
 	},
 
-	$save_history     : function()
+	$loading_opts     : function()
 	{
 		var l; if(!(l = this._saved_loader))
 		{
@@ -543,7 +568,14 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 		}
 
 		//~: take loading options
-		if(!ZeT.iso(l)) return
+		if(ZeT.iso(l)) return l
+	},
+
+	$save_history     : function()
+	{
+		//~: take loading options
+		var l = this.$loading_opts()
+		if(!l) return
 
 		//~: mark saving from manual close
 		l.autoclose = !this._tool_close_clicked
@@ -691,6 +723,11 @@ ZeT.defineClass('extjsf.Desktop.History',
 
 	$is_save          : function(o, saver)
 	{
+		//?: {is manual close}
+		if(o.autoclose === false)
+			return false
+
+		//~: get the history task
 		var h = this.$history(o, saver)
 		return !ZeT.ises(h) && ZeT.ii(h.split(/\s+/), 'save')
 	},

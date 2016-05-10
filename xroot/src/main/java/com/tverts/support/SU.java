@@ -88,7 +88,7 @@ public class SU
 	}
 
 	/**
-	 * Splits the string by the separator given.
+	 * Splits the string by the separators given.
 	 * Note that whitespaces are not trimmed here.
 	 */
 	public static String[] s2a(String s, char... p)
