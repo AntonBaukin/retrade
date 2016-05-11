@@ -131,13 +131,20 @@ function retrade_add_win_min_tool(window)
   }
 
   //~: insert tool in the window's header
-  var items = window.co().getHeader().items
+  var ii, items = window.co().getHeader().items
   for(var i = 0;(i < items.getCount());i++)
     if(items.get(i).xtype == 'tool')
-      return window.co().getHeader().insert(i, tool)
+    {
+      if(ZeT.isu(ii)) ii = i
 
-  //~: append a single tool
-  window.co().addTool([ tool ])
+      //?: {already got this tool}
+      if(ZeT.ii(items.get(i).cls, 'retrade-minimize-tool')) return
+    }
+
+  if(!ZeT.isu(ii)) //?: {insert index}
+    window.co().getHeader().insert(ii, tool)
+  else //~: append a single tool
+    window.co().addTool([ tool ])
 }
 
 function retrade_add_web_link_tool(window, link, entity, params)
