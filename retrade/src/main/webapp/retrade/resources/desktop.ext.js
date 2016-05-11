@@ -533,8 +533,7 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 
 	$minimize         : function()
 	{
-		//~: close the panel
-		this.bind().co().close()
+		this.close({ minimize: true })
 	},
 
 	$web_link         : function()
@@ -547,15 +546,19 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 	$close            : function()
 	{
 		//~: save this panel into the history
-		if(this.desktop().history)
-			this.$save_history()
+		var m; if(this.desktop().history)
+			m = this.$save_history()
 
 		//~: remove it from the desktop
 		this.remove(false)
 
+		//?: {not a close model}
+		if(!(m && m.isModel === true))
+			m = undefined
+
 		//~: search previous content
 		if(this.desktop().history)
-			this.$auto_restore()
+			this.$auto_restore(m)
 	},
 
 	$loading_opts     : function()
@@ -573,9 +576,14 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 
 	$save_history     : function()
 	{
+		var copts = this._close_opts
+
 		//~: take loading options
 		var l = this.$loading_opts()
 		if(!l) return
+
+		//~: minimize
+		l.minimize = copts && copts.minimize
 
 		//~: mark saving from manual close
 		l.autoclose = !this._tool_close_clicked
@@ -608,7 +616,27 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 		this._tool_close_clicked = true
 	},
 
-	$auto_restore     : function()
+	$auto_restore     : function(m)
+	{
+		//?: {model closed as auto} don't restore
+		var ac = (m && m.get('autoclose') === true)
+		var mi = (m && m.get('minimize')  === true)
+
+		//?: {close action is implicit}
+		if(ac && !mi) return
+
+		//?: {desktop panel is loading}
+		var copts = this._close_opts
+		if(copts && copts.loader) return
+
+		//~: search for the model to auto-show
+		var am = this.$auto_search()
+
+		//?: {found it} display the component
+		if(am) this.desktop().history.restore(am)
+	},
+
+	$auto_search      : function()
 	{
 		var m, co = this.bind().co(), p = this.position()
 
@@ -633,8 +661,7 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 			return false
 		})
 
-		//?: {found it} restory
-		if(m) this.desktop().history.restore(m)
+		return m
 	}
 })
 
@@ -794,6 +821,9 @@ ZeT.defineClass('extjsf.Desktop.History',
 	{
 		var b = pc.bind()
 
+		//?: {is minimized}
+		ps.minimize = !!o.minimize
+
 		//?: {is manual close}
 		ps.autoclose = !!o.autoclose
 
@@ -935,9 +965,8 @@ ZeT.defineClass('extjsf.Desktop.History',
 		//~: take present controller of the panel
 		var xc = pc.desktop().panelController(pc.position())
 
-		//?: {has component} close it
-		if(xc && xc.bind() && xc.bind().co())
-			xc.bind().co().close()
+		//~: and close it
+		if(xc) xc.close()
 
 		//~: put the component back
 		pc.insert()

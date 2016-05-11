@@ -835,6 +835,22 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 	},
 
 	/**
+	 * Closes the controller and the content panel.
+	 * Options provided may help with the following
+	 * operations on this desktop panel.
+	 */
+	close            : function(opts)
+	{
+		this._close_opts = opts
+
+		//?: {has panel component}
+		if(this.bind() && this.bind().co())
+			this.bind().co().close()
+		else
+			this.remove()
+	},
+
+	/**
 	 * Before close callback just the registration of
 	 * the panel as it would be destroyed by Ext JS.
 	 */
@@ -1271,11 +1287,8 @@ ZeT.defineClass('extjsf.Desktop.Load', extjsf.LoadCo,
 		var pc = this.desktop().
 		  panelController(this.position())
 
-		//?: {close the component}
-		if(pc && pc.bind() && pc.bind().co())
-			pc.bind().co().close()
-		else
-			pc.remove()
+		//~: close the controller
+		if(pc) pc.close({ loader: this })
 	},
 
 	$special_params  : function(ps)

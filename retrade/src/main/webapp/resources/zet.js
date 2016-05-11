@@ -89,10 +89,22 @@ var ZeT = window.ZeT =
 		}
 	})(),
 
-	stack            : function()
+	/**
+	 * Returns (as a string) current JS call stack.
+	 * Optional integer argument allows to take only
+	 * the leading lines of result.
+	 */
+	stack            : function(n)
 	{
-		return '' + new Error().stack
-	},
+		var s = '' + new Error().stack
+		if(!ZeT.isi(n)) return s
+
+		//~: split & splice
+		if((s = s.split('\n')).length > n)
+			s.splice(n, s.length - n)
+
+		return s.join('\n')
+	}
 }
 
 
