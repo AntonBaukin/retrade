@@ -41,13 +41,24 @@
           viewConfig: { scrollable: false }, pager: false,
           hideHeaders: true, columns: [{
             dataIndex: 'title', sortable: false, flex: 1,
-            renderer: function(v, meta)
+            renderer: function(v, meta, m)
             {
               meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"'
+
               var vs = v.split('•'); if(vs.length &gt; 1) if(vs[0].length &gt; 13) {
                 var vv = ZeTS.trim(vs[0].substring(0, 13))
                 if(vv.length + 6 &lt; vs[0].length) { vs[0] = vv + '…';  v = vs.join('•') }
               }
+
+              if(m.get('timestamp'))
+              {
+                var ts = new Date(m.get('timestamp'))
+                var hh = '' + ts.getHours();    if(hh.length == 1) hh = '0' + hh
+                var mm = '' + ts.getMinutes();  if(mm.length == 1) mm = '0' + mm
+                var ss = '' + ts.getSeconds();  if(ss.length == 1) ss = '0' + ss
+                v += ' на ' + hh + ':' + mm + ':' + ss
+              }
+
               return v
             }
           }]

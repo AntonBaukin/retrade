@@ -814,6 +814,10 @@ ZeT.defineClass('extjsf.Desktop.History',
 		if(this.$target(o, saver) == 'window')
 			this.$ps_winmain(ps, o, saver)
 
+		//?: {is global domain}
+		if(ZeT.ii(ZeT.asserts(ps.domain), ':global:'))
+			delete ps.timestamp
+
 		return ps
 	},
 
@@ -888,15 +892,24 @@ ZeT.defineClass('extjsf.Desktop.History',
 	 */
 	$gen_key          : function(ps)
 	{
-		if(ZeT.ises(ps.url)) return
-		if(ZeT.ises(ps.title)) return
-		if(ZeT.ises(ps.target)) return
+		ZeT.asserts(ps.target)
+		ZeT.asserts(ps.url)
 
 		var sha = CryptoJS.algo.SHA1.create()
 
-		sha.update(ps.url)
-		sha.update(ps.title)
+		//:+ target type
 		sha.update(ps.target)
+
+		//:+ load url
+		sha.update(ps.url)
+
+		//:+ entity key
+		if(!ZeT.ises(ps.entity))
+			sha.update(ps.entity)
+
+		//:+ load timestamp
+		if(ps.timestamp)
+			sha.update(''+ps.timestamp)
 
 		return sha.finalize().toString().toUpperCase()
 	},

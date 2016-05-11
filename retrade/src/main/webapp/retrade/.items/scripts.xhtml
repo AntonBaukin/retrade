@@ -245,6 +245,9 @@ function retrade_open_window(opts)
   //~: record parameter
   if(opts.record) opts.params['${rootView.entityParam}'] = '' + opts.record
 
+  //~: load timestamp
+  opts.params.timestamp = new Date().getTime()
+
   //~: create the window bind
   window = extjsf.domain(opts.domain).bind('window', new extjsf.RootBind()).props({
 

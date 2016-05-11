@@ -1297,6 +1297,9 @@ ZeT.defineClass('extjsf.Desktop.Load', extjsf.LoadCo,
 
 		//~: set the position parameter
 		ps['desktop-position'] = this.position()
+
+		//~: load timestamp
+		ps.timestamp = new Date().getTime()
 	}
 })
 
