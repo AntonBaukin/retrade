@@ -178,12 +178,15 @@ function retrade_open_window(opts)
   if(!d) d = 'window:temporary'
   ZeT.asserts(d)
 
-  if(!ZeTS.starts(d, 'window:') && (d.indexOf(':window:') == -1))
+  if(!ZeT.ii(d, 'window:', ':window:'))
   {
     if(ZeTS.starts(d, ':'))
       d = d.substring(1)
     d = 'window:' + d
   }
+
+  if(ZeT.ii(d, ':domain:'))
+    d = ZeTS.replace(d, ':domain:', ':')
 
   if(!ZeT.isx(opts.record)) //?: {has record key}
   {

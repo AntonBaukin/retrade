@@ -76,7 +76,7 @@
           title: 'Мои отчёты', icon: 'retrade-payment-icon', handler: function()
           {
             retrade_open_window({ url: '/datas/my-reports',
-              domain: 'main-menu:my-reports',
+              domain: 'global:main-menu:my-reports',
               box: { widthpt: 560, heightpt: 260 }
             })
           }
@@ -91,7 +91,7 @@
             title: 'Атрибуты товаров', icon: 'retrade-good-attrs-icon', handler: function()
             {
               retrade_open_window({ url: '/goods/attrs',
-                domain: 'main-menu:good-attrs',
+                domain: 'global:main-menu:good-attrs',
                 box: { widthpt: 460, heightpt: 380 }
               })
             }
@@ -101,7 +101,7 @@
             title: 'Данные и отчёты', icon: 'retrade-reports-icon', handler: function()
             {
               ReTrade.desktop.loadPanel( '/datas/list', {
-                domain: 'main-menu:datas'
+                domain: 'global:main-menu:datas'
               })
             }
           },
@@ -110,7 +110,7 @@
             title: 'Пользователи', icon: 'retrade-user-icon', handler: function()
             {
               ReTrade.desktop.loadPanel( '/settings/users', {
-                domain: 'main-menu:settings:users'
+                domain: 'global:main-menu:settings:users'
               })
             }
           },
@@ -119,7 +119,7 @@
             title: 'Правила доступа', icon: 'retrade-secrule-icon', handler: function()
             {
               ReTrade.desktop.loadPanel( '/settings/secure-rules', {
-                domain: 'main-menu:settings:secure-rules'
+                domain: 'global:main-menu:settings:secure-rules'
               })
             }
           },
@@ -128,7 +128,7 @@
             title: 'Множества правил', icon: 'retrade-secset-icon', handler: function()
             {
               ReTrade.desktop.loadPanel( '/settings/secure-sets', {
-                domain: 'main-menu:settings:secure-sets'
+                domain: 'global:main-menu:settings:secure-sets'
               })
             }
           }
@@ -171,7 +171,7 @@
           title: 'Единицы измерения', icon: 'retrade-measure-icon', handler: function()
           {
             retrade_open_window({ url: '/goods/list-measures',
-              domain: 'main-menu:measures',
+              domain: 'global:main-menu:measures',
               box: { widthpt: 400, heightpt: 320 }
             })
           }
@@ -181,7 +181,7 @@
           title: 'Склады', icon: 'retrade-trade-store-icon', handler: function()
           {
             retrade_open_window({ url: '/stores/list-win',
-              domain: 'main-menu:stores',
+              domain: 'global:main-menu:stores',
               box: { widthpt: 360, heightpt: 240 }
             })
           }
@@ -200,7 +200,7 @@
           title: 'Прайс-листы', icon: 'retrade-prices-icon', handler: function()
           {
             retrade_open_window({ url: '/price-lists/list-win',
-              domain: 'main-menu:price-lists',
+              domain: 'global:main-menu:price-lists',
               box: { widthpt: 360, heightpt: 240 }
             })
           }

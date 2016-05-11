@@ -547,6 +547,8 @@ ZeT.extend(ZeT,
 	 */
 	ii               : function(s /* x0, x1, ... */)
 	{
+		if(!s) return false
+
 		for(var i = 1;(i < arguments.length);i++)
 			if(s.indexOf(arguments[i]) >= 0)
 				return true
