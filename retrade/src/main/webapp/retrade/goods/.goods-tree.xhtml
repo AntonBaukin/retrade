@@ -11,21 +11,48 @@
 <x:desktop-panel coid = "${z:vid(v, 'goods-tree-panel')}">
 
   <f:facet name = "extjs-props">
-
     layout: { type: 'hbox', align: 'stretch' },
-    title: '#{z:jss(panelTitle)}', tools: [{
+    title: '#{z:jss(panelTitle)}', tools: [
 
-      type: 'search', tooltipType: 'title', tooltip: 'Отобразить инструменты поиска',
-      margin: extjsf.pts(0, 6, 0, 2), handler: function()
       {
-        var bs = extjsf.co("${z:vid(v, 'goods-edit-buttons')}", '${extDom}')
-        var fi = extjsf.co("${z:vid(v, 'goods-filter')}", '${extDom}')
+        type: 'search', tooltipType: 'title',
+        tooltip: 'Отобразить инструменты поиска',
+        margin: extjsf.pts(0, 6, 0, 2), handler: function()
+        {
+          var bs = extjsf.co("${z:vid(v, 'goods-edit-buttons')}", '${extDom}')
+          var fi = extjsf.co("${z:vid(v, 'goods-filter')}", '${extDom}')
+    
+          bs.setVisible(!bs.isVisible())
+          fi.setVisible(!fi.isVisible())
+        }
+      },
 
-        bs.setVisible(!bs.isVisible())
-        fi.setVisible(!fi.isVisible())
+      {
+        type: 'maximize', tooltipType: 'title',
+        tooltip: 'Свернуть панель товаров',
+        margin: extjsf.pts(0, 6, 0, 2), handler: function()
+        {
+          extjsf.co("${z:vid(v, 'folder-goods-panel')}", '${extDom}').collapse()
+
+          var p = extjsf.co("${z:vid(v, 'goods-tree-panel')}", '${extDom}')
+          p.down('tool[type=maximize]').hide()
+          p.down('tool[type=restore]').show()
+        }
+      },
+
+      {
+        hidden: true, type: 'restore', tooltipType: 'title',
+        tooltip: 'Раскрыть панель товаров',
+        margin: extjsf.pts(0, 6, 0, 2), handler: function()
+        {
+          extjsf.co("${z:vid(v, 'folder-goods-panel')}", '${extDom}').expand()
+
+          var p = extjsf.co("${z:vid(v, 'goods-tree-panel')}", '${extDom}')
+          p.down('tool[type=maximize]').show()
+          p.down('tool[type=restore]').hide()
+        }
       }
-    }]
-
+    ]
   </f:facet>
 
 
@@ -1025,6 +1052,7 @@
     })
   }
 
+
   //~: on tree selection change
   extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').on('selectionchange', function(tree, sel)
   {
@@ -1042,6 +1070,7 @@
         setDisabled(!sel || (sel.get('modelId') == '$'))
     }
   })
+
 
   //~: with sub-folders changed
   extjsf.bind("${z:vid(v, 'with-subfolders')}", '${extDom}').on('change', function()
