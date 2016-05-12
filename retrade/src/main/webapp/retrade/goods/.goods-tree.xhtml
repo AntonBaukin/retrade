@@ -20,7 +20,7 @@
         margin: extjsf.pts(0, 6, 0, 2), handler: function()
         {
           var bs = extjsf.co("${z:vid(v, 'goods-edit-buttons')}", '${extDom}')
-          var fi = extjsf.co("${z:vid(v, 'goods-filter')}", '${extDom}')
+          var fi = extjsf.co("${z:vid(v, 'search-goods-layout')}", '${extDom}')
     
           bs.setVisible(!bs.isVisible())
           fi.setVisible(!fi.isVisible())
@@ -874,98 +874,13 @@
       </x:checkbox-field>
 
 
-      <!-- [goods filter block -->
+      <!-- [search goods controls block] -->
+      <ui:decorate template = '.search.xhtml'
+        xmlns = 'http://www.w3.org/1999/xhtml'>
 
-      <x:component coid = "${z:vid(v, 'goods-filter')}">
-        <f:facet name = "extjs-props">
-          xtype: 'panel', bodyCls: 'retrade-transparent-panel',
-          border: false, layout: {type: 'hbox', align: 'middle'},
-          hidden: #{canEditTree}
-        </f:facet>
-    
-  
-        <!-- [filter goods field -->
-    
-        <x:text-field coid = "${z:vid(v, 'search-goods')}"
-          value = "#{v.model.searchNames}">
-    
-          <f:facet name = "extjs-props">
-            margin: extjsf.pts(0, 0, 0, 4),
-            width:  extjsf.ex(24)
-          </f:facet>
-    
-          <f:facet name = "label-props">
-            text: 'поиск', margin: extjsf.pts(0, 0, 0, 8),
-            cls: 'retrade-info-title-label'
-          </f:facet>
-        </x:text-field>
-    
-  
-        <!-- [restrict to selection set] -->
-        <x:component coid = "${z:vid(v, 'search-goods-selset')}">
-          <f:facet name = "extjs-props">
-    
-            xtype: 'button', enableToggle: true,
-            width: retrade_default('button-selset').width,
-            height: retrade_default('button-selset').height,
-            componentCls: 'retrade-icon-24',
-            margin: extjsf.pts(0, 0, 0, 6),
-            iconCls: 'retrade-selset-button-icon',
-            tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
-    
-          </f:facet>
-        </x:component>
-    
-        <x:action-call coid = "${z:vid(v, 'search-goods-script')}"
-          action = "#{v.doSearchGoods}" modelView = "${v}"/>
-    
-        <script type = "text/javascript">
-        //<![CDATA[
-    
-        extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}').on('change', function(f)
-        {
-          var sv = ZeTS.trim(f.getValue());
-          if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
-          
-          var fn = function()
-          {
-            //?: {search string was changed} discard
-            if(f.extjsfBind.searchValue != sv) return;
-          
-            var params = { searchGoods: sv };
-            var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
-            if(selchk.pressed) params.selset = ReTrade.selset.selset;
-          
-            extjsf.handler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
-              params: params, success : function() {
-                Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
-            }})
-          }
-          
-          setTimeout(fn, 1000)
-        })
-          
-        //~: selection set only toggled
-        extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').on('toggle', function()
-        {
-            var names  = extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}').value();
-            var params = { searchGoods: names };
-          
-            var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
-            if(selchk.pressed) params.selset = ReTrade.selset.selset;
-          
-            extjsf.handler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
-              params: params, success : function() {
-                Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
-            }})
-        })
-          
-        //]]>
-        </script>
-        <!-- filter goods field] -->
-
-      </x:component>
-      <!-- goods filter block] -->
+        <ui:param name = "storeId" value = "${z:vid(v, 'folderGoodsStore')}"/>
+        <ui:param name = "searchGoodsHidden" value = "true"/>
+      </ui:decorate>
 
     </x:toolbar>
     <!-- goods panel toolbar] -->
