@@ -941,7 +941,7 @@ from MeasureUnit mu where
 	public void restrictGoodsBySelSet(WherePartLogic or, String selset, String... what)
 	{
 		HashSet<String> w = new HashSet<>(Arrays.asList(what));
-		if(w.contains("all")) w.addAll(Arrays.asList(SU.s2a(
+		if(w.contains("all")) w.addAll(Arrays.asList(SU.s2aw(
 		  "goods folders prices buys sells moves reprices"
 		)));
 
