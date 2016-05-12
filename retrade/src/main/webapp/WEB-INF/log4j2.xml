@@ -179,7 +179,7 @@
     </Logger>
 
 
-    <!-- Events and Secure -->
+    <!-- Events and Secure, and Messages -->
 
     <Logger name = 'com.tverts.event'
       level = 'DEBUG' additivity = 'false'>
@@ -194,6 +194,13 @@
       <AppenderRef ref = 'debug'/>
       <AppenderRef ref = 'debug.json'/>
       <AppenderRef ref = 'other'/>
+    </Logger>
+
+    <Logger name = 'com.tverts.endure.msg.Msg'
+      level = 'DEBUG' additivity = 'false'>
+
+      <AppenderRef ref = 'debug'/>
+      <AppenderRef ref = 'debug.json'/>
     </Logger>
 
 

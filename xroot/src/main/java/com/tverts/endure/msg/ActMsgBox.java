@@ -89,15 +89,8 @@ public class ActMsgBox extends ActionBuilderXRoot
 		mb.updateOx();
 
 		//~: save the box
-		chain(abr).first(new SaveNumericIdentified(task(abr)).setOwner(mb.getLogin()).
-		setAfterSave(new Runnable()
-		{
-			public void run()
-			{
-				greetUser(abr);
-			}
-		}
-		));
+		chain(abr).first(new SaveNumericIdentified(task(abr)).
+		  setOwner(mb.getLogin()).setAfterSave(() -> greetUser(abr)));
 
 		complete(abr);
 	}

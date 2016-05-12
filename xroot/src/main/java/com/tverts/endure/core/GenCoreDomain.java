@@ -329,7 +329,7 @@ public class GenCoreDomain extends GenesisHiberPartBase
 		String sm = getSystemMessages();
 		if(SU.sXe(sm)) return;
 
-		//~: separate by ';'
+		//~: separate by '\n'
 		String[] types = SU.s2a(sm);
 		EX.asserte(types);
 

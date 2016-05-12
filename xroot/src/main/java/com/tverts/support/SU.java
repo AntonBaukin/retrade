@@ -33,12 +33,12 @@ public class SU
 
 	/**
 	 * Breaks string into words. The words are
-	 * separated by whitespaces, ';', and ','
+	 * separated by '\n', ';', and ','
 	 * characters. Whitespaces are trimmed.
 	 */
 	public static String[] s2a(String s)
 	{
-		return SU.a2a(SU.s2a(s, ',', ';', '\n', '\t', ' '));
+		return SU.a2a(SU.s2a(s, ',', ';', '\n'));
 	}
 
 	/**

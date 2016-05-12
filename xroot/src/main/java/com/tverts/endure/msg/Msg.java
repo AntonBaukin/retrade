@@ -28,6 +28,7 @@ import com.tverts.endure.core.DomainEntity;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.LU;
 import com.tverts.support.SU;
 
 
@@ -239,6 +240,9 @@ public class Msg
 			//!: insert into the database
 			bean(GetMsg.class).send(source, msg, Arrays.asList(types));
 		}
+
+		//~: do log
+		this.dolog();
 	}
 
 
@@ -281,5 +285,107 @@ public class Msg
 	public static MsgLink link(MsgBoxObj box, DomainEntity domain, String type)
 	{
 		return link(box, domain.getDomain().getPrimaryKey(), type);
+	}
+
+
+	/* Logging */
+
+	/**
+	 * Set logging options. These are:
+	 *
+	 *  false  not to log;
+	 *  true   do log (the default);
+	 *  'I'    to log as info;
+	 *  'D'    to log as debug (the default);
+	 *  'E'    to log as error;
+	 *  'W'    to log as warning.
+	 */
+	public Msg    log(Object... opts)
+	{
+		for(Object o : opts)
+		{
+			if(o instanceof Boolean)
+				this.nolog = ((Boolean)o).booleanValue();
+
+			if(o instanceof Character)
+				level = ((Character)o).charValue();
+		}
+
+		return this;
+	}
+
+	/**
+	 * Does the logging and sets flag not to log again.
+	 */
+	public Msg    dolog()
+	{
+		//?: {logging is denied}
+		if(nolog) return this;
+		nolog = true;
+
+		//~: format the message
+		String msg = this.logFormat();
+
+		if(level == 'D')
+			LU.D(getLog(), msg);
+		else if(level == 'I')
+			LU.I(getLog(), msg);
+		else if(level == 'E')
+			LU.E(getLog(), msg);
+		else if(level == 'W')
+			LU.W(getLog(), msg);
+
+		return this;
+	}
+
+	private boolean nolog;
+	private char    level = 'D';
+
+	public String logFormat()
+	{
+		StringBuilder s = new StringBuilder();
+
+		//~: message color
+		if(msg.getColor() != null)
+		{
+			char c = msg.getColor();
+
+			if(c == 'G')
+				s.append("GREEN ");
+			else if(c == 'R')
+				s.append("RED ");
+			else if(c == 'O')
+				s.append("ORANGE ");
+		}
+
+		//~: types
+		if((types != null) && (types.length != 0))
+		{
+			s.append('[');
+			for(int i = 0;(i < types.length);i++)
+				s.append((i == 0)?(""):("; ")).append(types[i]);
+			s.append("] ");
+		}
+
+		//?: {sending to a box}
+		if(box != null)
+			s.append('@').append(box.getLogin().getCode());
+
+		//?: {sending to a source}
+		if(source != null)
+			s.append("@{").append(source).append('}');
+
+		//?: {has title}
+		if(!SU.sXe(msg.getTitle()))
+			s.append(": ").append(msg.getTitle());
+
+		//TODO make Message log text to be more informative?
+
+		return s.toString();
+	}
+
+	public String getLog()
+	{
+		return LU.cls(this);
 	}
 }
