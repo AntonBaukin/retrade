@@ -411,6 +411,12 @@
 
       [
         {
+          title: 'Окно выборки', icon: 'retrade-selset-menu-window',
+          id: "${z:vid(localView, 'retrade-selset-open-window')}",
+          tooltip: 'Открыть окно выборки'
+        },
+
+        {
           title: 'Свойства', icon: 'retrade-selset-menu-edit',
           id: "${z:vid(localView, 'retrade-selset-edit')}",
           tooltip: 'Свойства текущей выборки'
@@ -432,7 +438,9 @@
           title: 'Очистить', icon: 'retrade-selset-menu-clear',
           id: "${z:vid(localView, 'retrade-selset-clear')}",
           tooltip: 'Очистить текущую выборку'
-        }
+        },
+
+        { class: 'sm-line' }
       ],
 
       {

@@ -2051,18 +2051,29 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 	toggle            : function(active, opts)
 	{
 		var btn = $('#' + ZeT.asserts(this.button()))
+		var old = !!this.active
 
-		//?: {has no option}
-		if(ZeT.isu(active)) active = !this.active
-		this.active = !!active
+		//?: {has no target toggle state}
+		if(ZeT.isu(active))
+			this.active = !this.active
+		else
+			this.active = !!active
 
 		//~: update look of the toggle button
 		btn.blur().toggleClass('current', this.active)
 
-		if(active) this._open_wnd(opts)
-		else       this._close_wnd(opts)
+		//?: {close the window}
+		if(!active)
+			this._close_wnd(opts)
+		else if(ZeT.iso(opts))
+			this._open_wnd(opts)
 
-		this._onoff()
+		//?: {the state had changed}
+		if(this.active != old)
+			this._onoff()
+		else
+			this._window_when_active = true
+
 		return this
 	},
 
@@ -2237,12 +2248,20 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		})
 
 		//~: close window listener
-		window.on('close', function()
-		{
-			self.toggle(false)
-		})
+		window.on('close', ZeT.fbind(this._on_wnd_close, this))
 
 		return window
+	},
+
+	_on_wnd_close     : function()
+	{
+		if(this._window_when_active)
+		{
+			delete this._window_when_active
+			this._close_wnd()
+		}
+		else
+			this.toggle(false)
 	},
 
 	_open_wnd         : function(opts)

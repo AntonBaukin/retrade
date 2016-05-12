@@ -31,6 +31,9 @@
     <co:attribute name = 'webLink' default = 'true'
        type = 'java.lang.Boolean'/>
 
+    <co:attribute name = 'minimize' default = 'true'
+       type = 'java.lang.Boolean'/>
+
     <co:attribute name = 'winAlign' default = 'lite'
        type = 'java.lang.String'/>
 
@@ -164,7 +167,8 @@
             retrade_add_web_link_tool(w, "#{z:jss(rootView.requestURI)}",
               "#{rootView.entityKey}", "#{z:jss(rootView.requestParams)}")
 
-          retrade_add_win_min_tool(w)
+          if("#{cc.attrs.minimize}" != 'false')
+            retrade_add_win_min_tool(w)
         })
 
     //]]>

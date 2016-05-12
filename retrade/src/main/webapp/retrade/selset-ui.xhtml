@@ -72,7 +72,14 @@
   //~: selection set toggle button
   $('#' + ReTrade.selset.button()).click(function()
   {
-    ReTrade.selset.toggle(undefined, retrade_default('selset-win'))
+    ReTrade.selset.toggle()
+  })
+
+
+  //~: open selection set window
+  $('#' + ReTrade.selset.ctlitems('window')).click(function()
+  {
+    ReTrade.selset.toggle(true, retrade_default('selset-win'))
   })
 
 
@@ -179,8 +186,8 @@
   <!-- [selection set window -->
 
   <x:winmain coid = "${z:vid(v, 'selset-panel')}"
-    webLink = "false" winAlign = "strict"
-    windowBind = 'window-selset'>
+    winAlign = "strict" windowBind = 'window-selset'
+    webLink = "false" minimize = "false">
 
     <script type = "text/javascript">
     //<![CDATA[

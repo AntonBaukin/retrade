@@ -483,3 +483,13 @@ ul.sm-retrade > li > ul:before {
 .sm-retrade.sm-vertical ul a {
   padding: 9px 23px;
 }
+
+.sm-retrade li.sm-line
+{
+  height: 2px; border-bottom: 2px dotted #a8a8a8; margin: 2px;
+}
+
+.sm-retrade li.sm-line > a
+{
+  display: none;
+}
