@@ -51,8 +51,7 @@ ${v.checkModelRequestedWithRedirect}
    <x:checkbox-field coid = "${z:vid(v, 'selset')}">
 
      <f:facet name = "extjs-props">
-       checked: true, hidden: #{not v.selSetAble},
-       margin: extjsf.pts(0, 0, 0, 8)
+       hidden: #{not v.selSetAble}, margin: extjsf.pts(0, 0, 0, 8)
      </f:facet>
 
      <f:facet name = "label-props">
@@ -374,6 +373,9 @@ ${v.checkModelRequestedWithRedirect}
   //~: insert new record on window open
   Ext.onReady(function()
   {
+    extjsf.bind("${z:vid(v, 'selset')}", '${extDom}').
+      value(!retrade.createGoodAddSelSetCheckedNot)
+
     extjsf.handler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
   })
 
@@ -402,6 +404,7 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
     var store = extjsf.co("${z:vid(v, 'store')}", '${extDom}');
+    var addss = extjsf.bind("${z:vid(v, 'selset')}", '${extDom}')
 
     //~: validate the records
     function validate()
@@ -448,15 +451,17 @@ ${v.checkModelRequestedWithRedirect}
        params['measureCode'+i] = m.get('measureCode')
     }
 
-    //?: has selection set
-    if(extjsf.co("${z:vid(v, 'selset')}", '${extDom}').getValue())
-      params.selset = ReTrade.selset.selset;
+    //?: {has selection set}
+    if(addss.value()) params.selset = ReTrade.selset.selset;
 
 
     //!: send to the server
     extjsf.handler("${z:vid(v, 'commit-script')}", '${extDom}')({
       params: params, success: function()
       {
+        if(addss.visible()) //?: {save that global flag}
+          retrade.createGoodAddSelSetCheckedNot = !addss.value()
+
         extjsf.handler("${z:vid(v, 'close-window')}", '${extDom}')()
 
         ReTrade.desktop.loadPanel( '/goods/list-nav', {

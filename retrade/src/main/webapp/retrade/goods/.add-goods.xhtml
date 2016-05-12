@@ -122,12 +122,9 @@
       onclose: function()
       {
         if(!window.retradeEditDone) return
-        btn.retradeAddSelSetChecked = window.retradeAddSelSetChecked;
         Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").reload()
       }
     })
-
-    window.retradeAddSelSetChecked = (btn.retradeAddSelSetChecked === true)
   }
 
   extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}', function(btn, event)

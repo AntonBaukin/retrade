@@ -1166,7 +1166,7 @@ ${v.checkModelRequestedWithRedirect}
     extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', submitForm)
 
     //~: initial check status of the selection field
-    addss.value(!!extjsf.bind('window', '${extDom}').retradeAddSelSetChecked)
+    addss.value(!retrade.createGoodAddSelSetCheckedNot)
 
     function submitForm()
     {
@@ -1203,9 +1203,11 @@ ${v.checkModelRequestedWithRedirect}
         command: "${z:vid(v, 'submit-action')}", success: function()
         {
           var window = extjsf.bind('window', '${extDom}');
-          window.retradeEditDone = true
-          window.retradeAddSelSetChecked = (addss.value() && addss.visible())
 
+          if(addss.visible()) //?: {save that global flag}
+            retrade.createGoodAddSelSetCheckedNot = !addss.value()
+
+          window.retradeEditDone = true
           extjsf.handler("${z:vid(v, 'reload-window')}", '${extDom}')()
         }
       })
