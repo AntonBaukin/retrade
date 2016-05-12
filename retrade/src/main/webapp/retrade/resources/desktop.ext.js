@@ -622,8 +622,8 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 		var ac = (m && m.get('autoclose') === true)
 		var mi = (m && m.get('minimize')  === true)
 
-		//?: {close action is implicit}
-		if(ac && !mi) return
+		//?: {close action is implicit | minimized}
+		if(ac || mi) return
 
 		//?: {desktop panel is loading}
 		var copts = this._close_opts
@@ -977,13 +977,17 @@ ZeT.defineClass('extjsf.Desktop.History',
 	{
 		//~: take present controller of the panel
 		var xc = pc.desktop().panelController(pc.position())
+		var to = 0
 
 		//~: and close it
-		if(xc) xc.close()
+		if(xc) { xc.close(); to = 250 }
 
 		//~: put the component back
-		pc.insert()
-		pc.bind().co().show()
+		ZeT.timeout(to, function()
+		{
+			pc.insert()
+			pc.bind().co().show()
+		})
 	}
 })
 
