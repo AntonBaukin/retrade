@@ -689,7 +689,7 @@ ZeT.defineClass('extjsf.Desktop.History',
 {
 	init              : function(opts)
 	{
-		this.opts = ZeT.extend({ limit: 10 }, opts)
+		this.opts = ZeT.extend({ limit: 4 }, opts)
 	},
 
 	save              : function(o, saver)
@@ -962,11 +962,40 @@ ZeT.defineClass('extjsf.Desktop.History',
 
 	$prune_rest       : function()
 	{
+		var sf = this
 		var lm = this.$models_limit()
 		var  s = this.$store()
+		var ss = s.getCount()
 
-		while(s.getCount() > lm)
-			s.remove(this.$free_model(s.getAt(s.getCount() - 1)))
+		//?: {limit is not exeeded}
+		if(ss <= lm) return
+
+		//~: detect fixed size
+		s.each(function(m)
+		{
+			if(!sf.$can_prune(m)) ss--
+		})
+
+		//?: {limit to prune is not exeeded}
+		if(ss <= lm) return
+
+		//~: collect buttom items allowed to prune
+		for(var p = [], i = s.getCount() - 1;(i >= 0);i--)
+			if(this.$can_prune(s.getAt(i)))
+			{
+				p.push(s.getAt(i))
+				if(--ss == lm) break
+			}
+
+		ZeT.each(p, function(m) {
+			ZeT.log('Prune ', m)
+			s.remove(sf.$free_model(m))
+		})
+	},
+
+	$can_prune        : function(m)
+	{
+		return (m.get('minimize') !== true)
 	},
 
 	$models_limit     : function()
