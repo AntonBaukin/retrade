@@ -217,7 +217,7 @@
        if(!ZeTS.ises(m.open.panel))
        {
          ReTrade.desktop.loadPanel(
-           retrade_go_url(m.open.link), {
+           extjsf_go_url(m.open.link), {
            domain: domain, position: m.open.panel,
            params: m.open.params
          })
@@ -225,7 +225,7 @@
        //!: open it in window
        else
        {
-         retrade_open_window({ url: retrade_go_url(m.open.link),
+         retrade_open_window({ url: extjsf_go_url(m.open.link),
            box: m.open.box, record: m.open.recordId,
            domain: domain, params: m.open.params
          })

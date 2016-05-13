@@ -101,7 +101,8 @@ public class RootView extends ViewWithModes
 
 	private static final List<String> STD_PARAMS = Arrays.asList(
 	  "_dc", RootView.PARAM_DOMAIN, ModelViewBase.MODEL_PARAM,
-	  ViewWithModes.VIEWID_PARAM,   ViewWithModes.ENTITY_PARAM
+	  ViewWithModes.VIEWID_PARAM,   ViewWithModes.ENTITY_PARAM,
+	  ViewWithModes.VMODE_PARAM
 	);
 
 
