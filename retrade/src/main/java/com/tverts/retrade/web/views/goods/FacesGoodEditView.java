@@ -560,6 +560,13 @@ public class FacesGoodEditView extends ModelView
 		return null;
 	}
 
+	public String doSetEditMode()
+	{
+		getModel().setEditMode("true".equals(
+		  request().getParameter("edit-mode")));
+		return null;
+	}
+
 
 	/* public: view interface */
 
@@ -625,6 +632,11 @@ public class FacesGoodEditView extends ModelView
 
 
 	/* public: edit interface */
+
+	public boolean isEditing()
+	{
+		return isCreating() || getModel().isEditMode();
+	}
 
 	public boolean isCreating()
 	{

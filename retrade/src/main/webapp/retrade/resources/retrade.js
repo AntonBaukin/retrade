@@ -3481,323 +3481,330 @@ ZeT.extend(ReTrade,
  */
 function retrade_default(p, ext)
 {
-  var o = ReTrade.Defaults[p]
-  if(ZeT.isx(ext)) return o
+	var o = ReTrade.Defaults[p]
+	if(ZeT.isx(ext)) return o
 
-  ZeT.assert(ZeT.iso(o))
-  ZeT.assert(ZeT.iso(ext))
+	ZeT.assert(ZeT.iso(o))
+	ZeT.assert(ZeT.iso(ext))
 
-  return ZeT.extend(ZeT.deepClone(o), ext)
+	return ZeT.extend(ZeT.deepClone(o), ext)
 }
 
 function retrade_toggle_web_link_tool(/* enabled, domain | name, domain */)
 {
-  var a = ZeT.a(arguments)
-  a.unshift('retrade-web-link-tool')
-  retrade_toggle_tool.apply(this, a)
+	var a = ZeT.a(arguments)
+	a.unshift('retrade-web-link-tool')
+	retrade_toggle_tool.apply(this, a)
+}
+
+function retrade_toggle_close_tool(/* enabled, domain | name, domain */)
+{
+	var a = ZeT.a(arguments)
+	a.unshift('close')
+	retrade_toggle_tool.apply(this, a)
 }
 
 function retrade_toggle_tool(/* class, enabled, domain | name, domain */)
 {
-  var e, c, n, d, w, a = arguments
-  ZeT.assert(a.length == 3 || a.length == 4)
-  ZeT.asserts(c = a[0])
-  ZeT.assert(ZeT.isb(e = a[1]))
+	var e, c, n, d, w, a = arguments
+	ZeT.assert(a.length == 3 || a.length == 4)
+	ZeT.asserts(c = a[0])
+	ZeT.assert(ZeT.isb(e = a[1]))
 
-  if(a.length == 4) { n = a[2]; d = a[3] }
-  else { n = 'window'; d = a[2] }
+	if(a.length == 4) { n = a[2]; d = a[3] }
+	else { n = 'window'; d = a[2] }
 
-  //~: take the window bind
-  ZeT.assert(!ZeT.ises(n) && ZeT.iss(d))
-  w = ZeT.assertn(extjsf.bind(n, d))
-  ZeT.assertn(w.co())
+	//~: take the window bind
+	ZeT.assert(!ZeT.ises(n) && ZeT.iss(d))
+	w = ZeT.assertn(extjsf.bind(n, d))
+	ZeT.assertn(w.co())
 
-  //~: search for the item & disable
-  var items = w.co().getHeader().items
-  for(var i = 0;(i < items.getCount());i++)
-    if(items.get(i).xtype == 'tool')
-      if(ZeT.ii(items.get(i).cls, c))
-        return items.get(i).setVisible(e)
+	//~: search for the item & disable
+	var items = w.co().getHeader().query('tool')
+	for(var i = 0;(i < items.length);i++)
+		if(ZeT.ii(items[i].cls, c) || (items[i].type == c))
+			return items[i].setVisible(e)
 
-  //~: invoke instantly later
-  var n = this; if(n == 0) return
-  n = ZeT.isn(n)?(n - 1):(10)
-  ZeT.timeout(10-n, retrade_toggle_tool, n, a)
+	//~: invoke instantly later
+	var n = this; if(n == 0) return
+	n = ZeT.isn(n)?(n - 1):(10)
+	ZeT.timeout(10-n, retrade_toggle_tool, n, a)
 }
 
 function retrade_add_win_min_tool(window)
 {
-  //~: minimize to history tool
-  var tool = { xtype: 'tool', cls: 'retrade-minimize-tool',
-    tooltipType: 'title', tooltip: 'Свернуть окно в историю просмотра',
-    handler: function()
-    {
-      ReTrade.desktop.history.save(window.openOpts, window)
-      window.co().close()
-    }
-  }
+	//~: minimize to history tool
+	var tool = { xtype: 'tool', cls: 'retrade-minimize-tool',
+		tooltipType: 'title', tooltip: 'Свернуть окно в историю просмотра',
+		handler: function()
+		{
+			ReTrade.desktop.history.save(window.openOpts, window)
+			window.co().close()
+		}
+	}
 
-  //~: insert tool in the window's header
-  var ii, items = window.co().getHeader().items
-  for(var i = 0;(i < items.getCount());i++)
-    if(items.get(i).xtype == 'tool')
-    {
-      if(ZeT.isu(ii)) ii = i
+	//~: insert tool in the window's header
+	var ii, items = window.co().getHeader().items
+	for(var i = 0;(i < items.getCount());i++)
+		if(items.get(i).xtype == 'tool')
+		{
+			if(ZeT.isu(ii)) ii = i
 
-      //?: {already got this tool}
-      if(ZeT.ii(items.get(i).cls, 'retrade-minimize-tool')) return
-    }
+			//?: {already got this tool}
+			if(ZeT.ii(items.get(i).cls, 'retrade-minimize-tool')) return
+		}
 
-  if(!ZeT.isu(ii)) //?: {insert index}
-    window.co().getHeader().insert(ii, tool)
-  else //~: append a single tool
-    window.co().addTool([ tool ])
+	if(!ZeT.isu(ii)) //?: {insert index}
+		window.co().getHeader().insert(ii, tool)
+	else //~: append a single tool
+		window.co().addTool([ tool ])
 }
 
 function retrade_add_user_web_link(wl)
 {
-  ZeT.assert(ZeT.iso(wl))
-  wl = ZeT.deepClone(wl)
+	ZeT.assert(ZeT.iso(wl))
+	wl = ZeT.deepClone(wl)
 
-  //~: assign proper link
-  ZeT.asserts(wl.link)
-  wl.link = extjsf_go_url(wl.link)
+	//~: assign proper link
+	ZeT.asserts(wl.link)
+	wl.link = extjsf_go_url(wl.link)
 
-  //?: {has parameters as string}
-  if(ZeT.iss(wl.params))
-    wl.params = ZeT.s2o(wl.params)
+	//?: {has parameters as string}
+	if(ZeT.iss(wl.params))
+		wl.params = ZeT.s2o(wl.params)
 
-  //?: {has entity param}
-  if(wl.entity)
-  {
-    if(!wl.params) wl.params = {}
-    wl.params.entity = '' + wl.entity
-    delete wl.entity
-  }
+	//?: {has entity param}
+	if(wl.entity)
+	{
+		if(!wl.params) wl.params = {}
+		wl.params.entity = '' + wl.entity
+		delete wl.entity
+	}
 
-  //?: {has parameters}
-  if(wl.params)
-  {
-    var lnk = wl.link
-    lnk += (lnk.indexOf('?') == -1)?('?'):('&')
+	//?: {has parameters}
+	if(wl.params)
+	{
+		var lnk = wl.link
+		lnk += (lnk.indexOf('?') == -1)?('?'):('&')
 
-    ZeT.each(ZeT.keys(wl.params), function(k, i)
-    {
-      //?: {has single value}
-      var p = wl.params[k]; if(ZeT.iss(p, i))
-      {
-        if(i) lnk += '&'
-        lnk += encodeURIComponent(k) + '=' + encodeURIComponent(''+p)
-      }
-      //?: {has arrays of values}
-      else if(ZeT.isa(p)) ZeT.each(p, function(v, j)
-      {
-        if(i+j) lnk += '&'
-        lnk += encodeURIComponent(k) + '=' + encodeURIComponent(''+p)
-      })
-    })
+		ZeT.each(ZeT.keys(wl.params), function(k, i)
+		{
+			//?: {has single value}
+			var p = wl.params[k]; if(ZeT.iss(p, i))
+			{
+				if(i) lnk += '&'
+				lnk += encodeURIComponent(k) + '=' + encodeURIComponent(''+p)
+			}
+			//?: {has arrays of values}
+			else if(ZeT.isa(p)) ZeT.each(p, function(v, j)
+			{
+				if(i+j) lnk += '&'
+				lnk += encodeURIComponent(k) + '=' + encodeURIComponent(''+p)
+			})
+		})
 
-    wl.link = lnk
-    delete wl.params
-  }
+		wl.link = lnk
+		delete wl.params
+	}
 
-  //?: {has box} encode to json text
-  if(ZeT.iso(wl.box)) wl.box = ZeT.o2s(wl.box)
+	//?: {has box} encode to json text
+	if(ZeT.iso(wl.box)) wl.box = ZeT.o2s(wl.box)
 
-  //~: issue add request
-  function updateTxn(txn)
-  {
-    ZeT.asserts(txn)
-    txn = parseInt(txn)
-    ZeT.assert(ZeT.isn(txn))
-    ReTrade.desktop.event({ color: 'G' }, 'Успешно создана ссылка на: ', wl.text)
-    ZeT.defined('ReTrade.getUserWebLinks').reload(txn)
-  }
+	//~: issue add request
+	function updateTxn(txn)
+	{
+		ZeT.asserts(txn)
+		txn = parseInt(txn)
+		ZeT.assert(ZeT.isn(txn))
+		ReTrade.desktop.event({ color: 'G' }, 'Успешно создана ссылка на: ', wl.text)
+		ZeT.defined('ReTrade.getUserWebLinks').reload(txn)
+	}
 
-  //!: issue add action
-  wl.task = 'add'
-  jQuery.get(retrade_encode_url('/go/userlinks'), wl, updateTxn).fail(function(x)
-  {
-    if(!ZeTS.ises(x.responseText))
-      ReTrade.desktop.error(x.responseText)
-  })
+	//!: issue add action
+	wl.task = 'add'
+	jQuery.get(retrade_encode_url('/go/userlinks'), wl, updateTxn).fail(function(x)
+	{
+		if(!ZeTS.ises(x.responseText))
+			ReTrade.desktop.error(x.responseText)
+	})
 }
 
 function retrade_add_web_link_tool(window, link, entity, params)
 {
-  //?: {tool is already installed}
-  if(!ZeT.isu(window.webLink)) return
+	//?: {tool is already installed}
+	if(!ZeT.isu(window.webLink)) return
 
-  var tool = window.webLink = {
-    xtype: 'tool', cls: 'retrade-web-link-tool',
-    tooltipType: 'title', tooltip: 'Создать постоянную ссылку на окно'
-  }
+	var tool = window.webLink = {
+		xtype: 'tool', cls: 'retrade-web-link-tool',
+		tooltipType: 'title', tooltip: 'Создать постоянную ссылку на окно'
+	}
 
-  //~: web link + tool handler
-  tool.handler = ZeT.fbind(retrade_add_user_web_link, this, {
-    link: link, entity: entity, params: params,
-    text: window.co().title, domain: window.domain, box: {
-      width: window.co().getWidth(),
-      height: window.co().getHeight() }
-  })
+	//~: web link + tool handler
+	tool.handler = ZeT.fbind(retrade_add_user_web_link, this, {
+	  link: link, entity: entity, params: params,
+	  text: window.co().title, domain: window.domain, box: {
+	    width: window.co().getWidth(),
+	    height: window.co().getHeight()
+	  }
+	})
 
-  //~: insert tool in the window's header
-  var items = window.co().getHeader().items
-  for(var i = 0;(i < items.getCount());i++)
-    if(items.get(i).xtype == 'tool')
-      return window.co().getHeader().insert(i, tool)
+	//~: insert tool in the window's header
+	var items = window.co().getHeader().items
+	for(var i = 0;(i < items.getCount());i++)
+		if(items.get(i).xtype == 'tool')
+			return window.co().getHeader().insert(i, tool)
 
-  //~: append a single tool
-  window.co().addTool([ tool ])
+	//~: append a single tool
+	window.co().addTool([ tool ])
 }
 
 function retrade_open_window(opts)
 {
-  ZeT.assertn(opts)
+	ZeT.assertn(opts)
 
-  //<: build the domain key
+	//<: build the domain key
 
-  var d = opts.domain
-  if(!d) d = 'window:temporary'
-  ZeT.asserts(d)
+	var d = opts.domain
+	if(!d) d = 'window:temporary'
+	ZeT.asserts(d)
 
-  if(!ZeT.ii(d, 'window:', ':window:'))
-  {
-    if(ZeTS.starts(d, ':'))
-      d = d.substring(1)
-    d = 'window:' + d
-  }
+	if(!ZeT.ii(d, 'window:', ':window:'))
+	{
+		if(ZeTS.starts(d, ':'))
+			d = d.substring(1)
+		d = 'window:' + d
+	}
 
-  if(ZeT.ii(d, ':domain:'))
-    d = ZeTS.replace(d, ':domain:', ':')
+	if(ZeT.ii(d, ':domain:'))
+		d = ZeTS.replace(d, ':domain:', ':')
 
-  if(!ZeT.isx(opts.record)) //?: {has record key}
-  {
-    if(!ZeTS.ends(d, ':')) d += ':'
-    d += ZeTS.cat('record:', opts.record, ':')
-  }
+	if(!ZeT.isx(opts.record)) //?: {has record key}
+	{
+		if(!ZeTS.ends(d, ':')) d += ':'
+		d += ZeTS.cat('record:', opts.record, ':')
+	}
 
-  //~: make domain name unique
-  opts.domain = extjsf.nameDomain(d)
+	//~: make domain name unique
+	opts.domain = extjsf.nameDomain(d)
 
-  //>: build the domain key
+	//>: build the domain key
 
-  //~: lookup the window bind
-  var window = extjsf.bind('window', opts.domain)
+	//~: lookup the window bind
+	var window = extjsf.bind('window', opts.domain)
 
-  //?: {has no box provided}
-  if(!opts.box) opts.box = { widthpt: 480, heightpt: 360 }
-  ZeT.assert(ZeT.iso(opts.box))
+	//?: {has no box provided}
+	if(!opts.box) opts.box = { widthpt: 480, heightpt: 360 }
+	ZeT.assert(ZeT.iso(opts.box))
 
-  //~: calculate the box
-  var box = ReTrade.desktop.calcWindowBox(opts.box)
+	//~: calculate the box
+	var box = ReTrade.desktop.calcWindowBox(opts.box)
 
-  if(window) //?: {has this window} show it
-  {
-    var winco = ZeT.assertn(window.co())
-    var winm  = ReTrade.desktop.history.find(winco)
+	if(window) //?: {has this window} show it
+	{
+		var winco = ZeT.assertn(window.co())
+		var winm  = ReTrade.desktop.history.find(winco)
 
-    if(winm) //?: {found it in the history}
-      ReTrade.desktop.history.restore(winm)
-    else
-    {
-      winco.show()
-      winco.toFront()
-      winco.setPagePosition(box.x, box.y)
-      winco.expand()
-    }
+		if(winm) //?: {found it in the history}
+			ReTrade.desktop.history.restore(winm)
+		else
+		{
+			winco.show()
+			winco.toFront()
+			winco.setPagePosition(box.x, box.y)
+			winco.expand()
+		}
 
-    return window
-  }
+		return window
+	}
 
-  //~: load url
-  opts.url = extjsf_go_url(opts.url)
+	//~: load url
+	opts.url = extjsf_go_url(opts.url)
 
-  //~: window layout
-  if(!opts.layout) opts.layout = 'fit'
-  ZeT.asserts(opts.layout)
+	//~: window layout
+	if(!opts.layout) opts.layout = 'fit'
+	ZeT.asserts(opts.layout)
 
-  //~: parameters
-  if(!opts.params) opts.params = {}
-  ZeT.assert(ZeT.iso(opts.params))
+	//~: parameters
+	if(!opts.params) opts.params = {}
+	ZeT.assert(ZeT.iso(opts.params))
 
-  //~: domain parameter
-  opts.params.domain = opts.domain
+	//~: domain parameter
+	opts.params.domain = opts.domain
 
-  //~: view mode parameter (default is body)
-  if(!opts.params.mode) opts.params.mode = 'body'
+	//~: view mode parameter (default is body)
+	if(!opts.params.mode) opts.params.mode = 'body'
 
-  //~: record parameter
-  if(opts.record) opts.params.entity = '' + opts.record
+	//~: record parameter
+	if(opts.record) opts.params.entity = '' + opts.record
 
-  //~: load timestamp
-  opts.params.timestamp = new Date().getTime()
+	//~: load timestamp
+	opts.params.timestamp = new Date().getTime()
 
-  //~: create the window bind
-  window = extjsf.domain(opts.domain).bind('window', new extjsf.RootBind()).props({
+	//~: create the window bind
+	window = extjsf.domain(opts.domain).bind('window', new extjsf.RootBind()).props({
 
-    xtype: 'window', title: 'Загрузка...',
-    x: box.x, y: box.y, width: box.width, height: box.height,
-    layout: opts.layout, autoShow: !opts.hidden,
-    collapsible: (opts.collapsible === true),
+	  xtype: 'window', title: 'Загрузка...',
+	  x: box.x, y: box.y, width: box.width, height: box.height,
+	  layout: opts.layout, autoShow: !opts.hidden,
+	  collapsible: (opts.collapsible === true),
 
-    loader: { url: opts.url, autoLoad: true, scripts: true,
-      ajaxOptions: { method: 'GET' }, params: opts.params
-    }
-  })
+	  loader: { url: opts.url, autoLoad: true, scripts: true,
+	    ajaxOptions: { method: 'GET' }, params: opts.params
+	  }
+	})
 
-  //~: before the close action
-  window.on('beforeclose', function()
-  {
-    if(ZeT.isf(opts.onclose)) //?: {has on-close}
-      opts.onclose.apply(window, arguments)
-  })
+	//~: before the close action
+	window.on('beforeclose', function()
+	{
+		if(ZeT.isf(opts.onclose)) //?: {has on-close}
+			opts.onclose.apply(window, arguments)
+	})
 
-  //~: create the Ext JS Window component & return the bind
-  window.co(Ext.create('Ext.window.Window', window.buildProps()))
+	//~: create the Ext JS Window component & return the bind
+	window.co(Ext.create('Ext.window.Window', window.buildProps()))
 
-  //~: install positioning strategy
-  new ReTrade.WinAlign({ window: window })
+	//~: install positioning strategy
+	new ReTrade.WinAlign({ window: window })
 
-  //~: open options
-  window.openOpts = opts
+	//~: open options
+	window.openOpts = opts
 
-  return window
+	return window
 }
 
 function retrade_msg_open(id)
 {
-  ZeT.assertn(id, 'Can not open user event object by unknown primary key!')
+	ZeT.assertn(id, 'Can not open user event object by unknown primary key!')
 
-  function openInfo(x)
-  {
-    var box = { widthpt: 580, heightpt: 420 }
-    if(x.info.box) ZeT.extend(box, x.info.box)
+	function openInfo(x)
+	{
+		var box = { widthpt: 580, heightpt: 420 }
+		if(x.info.box) ZeT.extend(box, x.info.box)
 
-    retrade_open_window({ url: extjsf_go_url(x.info.page),
-      box: box, record: id, domain: 'open:message'
-    })
-  }
+		retrade_open_window({ url: extjsf_go_url(x.info.page),
+			box: box, record: id, domain: 'open:message'
+		})
+	}
 
-  //~: access the unity description
-  var xr = jQuery.get(retrade_encode_url('/go/unity'), { entity: id })
+	//~: access the unity description
+	var xr = jQuery.get(retrade_encode_url('/go/unity'), { entity: id })
 
-  xr.done(function(x)
-  {
-    ZeT.assertn(x, 'Server could not return entity [', id, ']!')
+	xr.done(function(x)
+	{
+		ZeT.assertn(x, 'Server could not return entity [', id, ']!')
 
-    //?: {got object info page}
-    if(x.info) openInfo(x)
-  })
+		//?: {got object info page}
+		if(x.info) openInfo(x)
+	})
 
-  xr.fail(function()
-  {
-    ZeT.log(xr)
-    if(xr.status == 404)
-      ReTrade.desktop.error('Выбранный объект был удалён из системы!')
-    else
-      ReTrade.desktop.error('Невозможно открыть объект!')
-  })
+	xr.fail(function()
+	{
+		ZeT.log(xr)
+		if(xr.status == 404)
+			ReTrade.desktop.error('Выбранный объект был удалён из системы!')
+		else
+			ReTrade.desktop.error('Невозможно открыть объект!')
+	})
 }
 
 /**
@@ -3806,115 +3813,116 @@ function retrade_msg_open(id)
  */
 function retrade_chain_loader(/* [callback], options for each area */)
 {
-  function load(next)
-  {
-    var url = this.url, bind = this.bind,
-      domain = this.domain, viewMode = this.viewMode
+	function load(next)
+	{
+		var url = this.url, bind = this.bind,
+			domain = this.domain, viewMode = this.viewMode
 
-    extjsf.domain(domain).bind('onload', new extjsf.Bind()).
-      callback = function(root)
-      {
-        bind.co().add(root.co())
-        if(ZeT.isf(next)) next()
-      }
+		extjsf.domain(domain).bind('onload', new extjsf.Bind()).
+		  callback = function(root)
+		{
+			bind.co().add(root.co())
+			if(ZeT.isf(next)) next()
+		}
 
-    Ext.create('Ext.ComponentLoader', {
-      target: bind.co(), url: url,
-      ajaxOptions: {method: 'GET'}, autoLoad: true,
-      scripts: true, params: {
-        mode: viewMode, domain: domain
-      }})
-  }
+		Ext.create('Ext.ComponentLoader', {
+		  target: bind.co(), url: url,
+		  ajaxOptions: {method: 'GET'}, autoLoad: true,
+		  scripts: true, params: {
+		    mode: viewMode, domain: domain
+		}})
+	}
 
-  var prev = null
+	var prev = null
 
-  //?: {has callback}
-  if(ZeT.isf(arguments[0]))
-    prev = arguments[0] //<-- will be the last
+	//?: {has callback}
+	if(ZeT.isf(arguments[0]))
+		prev = arguments[0] //<-- will be the last
 
-  //~: build the loads chain
-  ZeT.each(arguments, function(opts)
-  {
-    if(!ZeT.iso(opts)) return
+	//~: build the loads chain
+	ZeT.each(arguments, function(opts)
+	{
+		if(!ZeT.iso(opts)) return
 
-    //?: {not an active item}
-    if(opts.active === false || opts.active === 'false') return
+		//?: {not an active item}
+		if(opts.active === false || opts.active === 'false') return
 
-    //~: process the load url
-    opts.url = extjsf_go_url(opts.url)
+		//~: process the load url
+		opts.url = extjsf_go_url(opts.url)
 
-    //?: {has no bind}
-    ZeT.assert(extjsf.isbind(opts.bind))
+		//?: {has no bind}
+		ZeT.assert(extjsf.isbind(opts.bind))
 
-    //?: {has no domain}
-    ZeT.asserts(opts.domain)
-    opts.domain = extjsf.nameDomain(opts.domain)
+		//?: {has no domain}
+		ZeT.asserts(opts.domain)
+		opts.domain = extjsf.nameDomain(opts.domain)
 
-    //~: view mode
-    if(!opts.viewMode) opts.viewMode = 'body'
+		//~: view mode
+		if(!opts.viewMode) opts.viewMode = 'body'
 
-    //~: add to the loading chain
-    prev = ZeT.fbind(load, opts, prev)
-  })
+		//~: add to the loading chain
+		prev = ZeT.fbind(load, opts, prev)
+	})
 
-  //~: invoke the loads chain
-  return function()
-  {
-    if(prev) prev()
-  }
+	//~: invoke the loads chain
+	return function()
+	{
+		if(prev) prev()
+	}
 }
 
 function retrade_chain_on_load(domain, rootBind)
 {
-  ZeT.asserts(domain)
+	ZeT.asserts(domain)
 
-  var onload = extjsf.bind('onload', domain)
-  if(!onload) return
+	var onload = extjsf.bind('onload', domain)
+	if(!onload) return
 
-  if(ZeT.iss(rootBind))
-    rootBind = extjsf.bind(rootBind, domain)
-  ZeT.assert(rootBind && rootBind.extjsfBind === true)
+	if(ZeT.iss(rootBind))
+		rootBind = extjsf.bind(rootBind, domain)
+	ZeT.assert(rootBind && rootBind.extjsfBind === true)
 
-  onload.callback(rootBind)
+	onload.callback(rootBind)
 }
 
 function retrade_replicate_store(master, slave, domain)
 {
-  if(ZeT.iss(master))
-    master = extjsf.bind(master, domain)
-  master = extjsf.bind(master)
-  ZeT.assert(master)
+	if(ZeT.iss(master))
+		master = extjsf.bind(master, domain)
+	master = extjsf.bind(master)
+	ZeT.assert(master)
 
-  if(ZeT.iss(slave))
-    slave = extjsf.bind(slave, domain)
-  slave = extjsf.bind(slave)
-  ZeT.assert(slave)
+	if(ZeT.iss(slave))
+		slave = extjsf.bind(slave, domain)
+	slave = extjsf.bind(slave)
+	ZeT.assert(slave)
 
-  function synch_data()
-  {
-    var rs = []; master.co().each(
-      function(m){ rs.push(m.copy()) })
+	function synch_data()
+	{
+		var rs = []; master.co().each(
+		function(m){ rs.push(m.copy()) })
 
-    slave.co().removeAll()
-    slave.co().add(rs)
-  }
+		slave.co().removeAll()
+		slave.co().add(rs)
+	}
 
-  if(master.co() && slave.co() && master.co().isLoaded())
-    synch_data()
+	if(master.co() && slave.co() && master.co().isLoaded())
+		synch_data()
 
-  //~: record inserted-removed
-  master.on('datachanged', synch_data)
+	//~: record inserted-removed
+	master.on('datachanged', synch_data)
 
-  //~: record changed
-  master.on('update', function(s, m, op, fs)
-  {
-    ZeT.assertn(m.getId())
-    var x = ZeT.assertn(slave.co().getById(m.getId()),
-      'Record ID [', m.getId(), '] is not found in the slave Store!')
+	//~: record changed
+	master.on('update', function(s, m, op, fs)
+	{
+		ZeT.assertn(m.getId())
+		var x = ZeT.assertn(slave.co().getById(m.getId()),
+		  'Record ID [', m.getId(), '] is not found in the slave Store!'
+		)
 
-    //~: assign the updated fields
-    ZeT.each(fs, function(f){ x.set(f, m.get(f)) })
-  })
+		//~: assign the updated fields
+		ZeT.each(fs, function(f){ x.set(f, m.get(f)) })
+	})
 }
 
 /**
@@ -3947,80 +3955,80 @@ function retrade_replicate_store(master, slave, domain)
  */
 function retrade_yes_no(opts, f)
 {
-  ZeT.assertn(opts)
+	ZeT.assertn(opts)
 
-  var p = {
-    buttons: Ext.MessageBox.YESNO, closable: false,
-    buttonText: { yes: 'Нет', no: 'Да'} //!: swap them
-  }
+	var p = {
+	  buttons: Ext.MessageBox.YESNO, closable: false,
+	  buttonText: { yes: 'Нет', no: 'Да'} //!: swap them
+	}
 
-  //~: calculate the box
-  var box = ReTrade.desktop.calcWindowBox.call(ReTrade.desktop, opts)
-  p.width = box.width //<-- height is auto
-  ZeT.assert(ZeT.isn(p.width) && (p.width > 0))
-  ZeT.assert(ZeT.isn(box.x) && ZeT.isn(box.y))
+	//~: calculate the box
+	var box = ReTrade.desktop.calcWindowBox.call(ReTrade.desktop, opts)
+	p.width = box.width //<-- height is auto
+	ZeT.assert(ZeT.isn(p.width) && (p.width > 0))
+	ZeT.assert(ZeT.isn(box.x) && ZeT.isn(box.y))
 
-  //=: css
-  if(!ZeTS.ises(opts.css))
-    p.css = opts.css
+	//=: css
+	if(!ZeTS.ises(opts.css))
+		p.css = opts.css
 
-  //=: icon
-  if(!ZeTS.ises(opts.icon))
-    p.icon = opts.icon
+	//=: icon
+	if(!ZeTS.ises(opts.icon))
+		p.icon = opts.icon
 
-  //=: icon width
-  if(ZeT.isn(opts.iconWidth))
-    p.iconWidth = opts.iconWidth
+	//=: icon width
+	if(ZeT.isn(opts.iconWidth))
+		p.iconWidth = opts.iconWidth
 
-  //=: icon height
-  if(ZeT.isn(opts.iconHeight))
-    p.iconHeight = opts.iconHeight
+	//=: icon height
+	if(ZeT.isn(opts.iconHeight))
+		p.iconHeight = opts.iconHeight
 
-  //=: title
-  ZeT.assert(!ZeTS.ises(opts.title))
-  p.title = opts.title
+	//=: title
+	ZeT.assert(!ZeTS.ises(opts.title))
+	p.title = opts.title
 
-  //=: message
-  ZeT.assert(!ZeTS.ises(opts.message))
-  p.msg = opts.message
+	//=: message
+	ZeT.assert(!ZeTS.ises(opts.message))
+	p.msg = opts.message
 
-  //=: modal
-  p.modal = ZeT.isx(true, opts.modal)
+	//=: modal
+	p.modal = ZeT.isx(true, opts.modal)
 
-  //~: user callback
-  if(!f) f = opts.fn
-  if(!f) f = function(yes)
-  {
-    if(yes && ZeT.isf(opts.yes))
-      return opts.yes.call(this)
+	//~: user callback
+	if(!f) f = opts.fn
+	if(!f) f = function(yes)
+	{
+		if(yes && ZeT.isf(opts.yes))
+			return opts.yes.call(this)
 
-    if(!yes && ZeT.isf(opts.no))
-      return opts.no.call(this)
-  }
+		if(!yes && ZeT.isf(opts.no))
+			return opts.no.call(this)
+	}
 
-  //~: lower callback
-  ZeT.assert(ZeT.isf(f))
-  p.fn = function(x)
-  {
-    //!: as buttons are swapped, 'no' is yes (true)
-    return f.call(this, (x === 'no'))
-  }
+	//~: lower callback
+	ZeT.assert(ZeT.isf(f))
+	p.fn = function(x)
+	{
+		//!: as buttons are swapped, 'no' is yes (true)
+		return f.call(this, (x === 'no'))
+	}
 
-  //!: create the dialog
-  var win = Ext.Msg.show(p)
+	//!: create the dialog
+	var win = Ext.Msg.show(p)
 
-  //~: place it
-  win.setPosition([box.x, box.y])
-  return win
+	//~: place it
+	win.setPosition([box.x, box.y])
+	return win
 }
 
 function retrade_yes_no_ask_warning(opts)
 {
-  ZeT.extend(ZeT.assertn(opts), {
-    cls: 'retrade-message-box-ask-warning',
-    icon: 'retrade-message-box-ask-warning-icon',
-    iconWidth: 48 + extjsf.pt(6), iconHeight: 48
-  })
+	ZeT.extend(ZeT.assertn(opts), {
+	  cls: 'retrade-message-box-ask-warning',
+	  icon: 'retrade-message-box-ask-warning-icon',
+	  iconWidth: 48 + extjsf.pt(6), iconHeight: 48
+	})
 
-  return retrade_yes_no.apply(this, arguments)
+	return retrade_yes_no.apply(this, arguments)
 }

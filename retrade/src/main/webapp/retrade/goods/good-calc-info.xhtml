@@ -26,6 +26,7 @@ ${v.checkModelRequestedWithRedirect}
       setTitle("#{z:jss(v.calcWindowTitle)}")
 
     retrade_toggle_web_link_tool(false, '${extDom}')
+    retrade_toggle_close_tool(("#{v.editing}" == 'false'), '${extDom}')
 
     ReTrade.desktop.prevsizeComp({ marker: 'calc-info',
       name: 'window', domain: '${extDom}'

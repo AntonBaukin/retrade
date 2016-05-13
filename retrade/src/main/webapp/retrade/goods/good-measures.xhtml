@@ -427,6 +427,8 @@
 
       //?: {editing} update items
       !isread && ZeT.each(controls, turnEditControl)
+
+      retrade_toggle_close_tool(isread && ("#{v.editing}" == 'false'), '${extDom}')
     }
 
     //~: toggle read-edit

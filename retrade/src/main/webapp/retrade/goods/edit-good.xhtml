@@ -820,6 +820,10 @@ ${v.checkModelRequestedWithRedirect}
 
   </x:form-panel>
 
+  <!-- set edit mode -->
+  <x:action-call coid = "${z:vid(v, 'set-edit-mode-script')}"
+    action = "#{v.doSetEditMode}" modelView = "#{v}"/>
+
   <!-- code exists checker -->
   <x:action-call coid = "${z:vid(v, 'check-code-exists-script')}"
     action = "#{v.doCheckCodeExists}" modelView = "#{v}"/>
@@ -879,6 +883,7 @@ ${v.checkModelRequestedWithRedirect}
     var nweight = extjsf.bind("${z:vid(v, 'net-weight')}", '${extDom}')
     var rvol    = extjsf.bind("${z:vid(v, 'rest-volume')}", '${extDom}')
     var addss   = extjsf.bind("${z:vid(v, 'add-to-selset')}", '${extDom}')
+    var setem   = extjsf.bind("${z:vid(v, 'set-edit-mode-script')}", '${extDom}')
 
 
     //~: go to the calculation
@@ -967,6 +972,9 @@ ${v.checkModelRequestedWithRedirect}
 
     function toggleReadWrite(isread)
     {
+      retrade_toggle_close_tool(isread, '${extDom}')
+      extjsf.handler(setem)({ params: { 'edit-mode': !isread }})
+
       //~: toggle the form fields
       form.isReadMode = isReadMode = isread
       extjsf.u.toggleReadWrite(form, isread)
