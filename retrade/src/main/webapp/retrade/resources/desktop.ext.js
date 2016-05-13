@@ -552,9 +552,9 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 		//~: remove it from the desktop
 		this.remove(false)
 
-		//?: {not a close model}
-		if(!(m && m.isModel === true))
-			m = undefined
+		//?: {is a close model}
+		if(m && m.isModel === true)
+			m = m.data
 
 		//~: search previous content
 		if(this.desktop().history)
@@ -586,11 +586,28 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 		l.minimize = copts && copts.minimize
 
 		//~: mark saving from manual close
-		l.autoclose = !this._tool_close_clicked
-		delete this._tool_close_clicked
+		l.autoclose = this.$is_autoclose()
 
 		//?: {desktop supports history}
-		return this.desktop().history.save(l, this)
+		return this.desktop().history.save(l, this) || l
+	},
+
+	$is_autoclose     : function()
+	{
+		//?: {close manually with the tool}
+		if(this._tool_close_clicked)
+		{
+			delete this._tool_close_clicked
+			return false
+		}
+
+		var copts = this._close_opts
+
+		//?: {desktop panel is loading}
+		if(copts && copts.loader)
+			return true
+
+		return false
 	},
 
 	$inserted_co      : function()
@@ -619,8 +636,8 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 	$auto_restore     : function(m)
 	{
 		//?: {model closed as auto} don't restore
-		var ac = (m && m.get('autoclose') === true)
-		var mi = (m && m.get('minimize')  === true)
+		var ac = (m && m.autoclose === true)
+		var mi = (m && m.minimize  === true)
 
 		//?: {close action is implicit | minimized}
 		if(ac || mi) return
@@ -751,8 +768,13 @@ ZeT.defineClass('extjsf.Desktop.History',
 	$is_save          : function(o, saver)
 	{
 		//?: {is manual close}
-		if(o.autoclose === false)
-			return false
+		var ac = (o.autoclose === false)
+
+		//?: {is minimize}
+		var mi = (o.minimize  === true)
+
+		//?: {not that}
+		if(ac && !mi) return false
 
 		//~: get the history task
 		var h = this.$history(o, saver)
@@ -977,13 +999,12 @@ ZeT.defineClass('extjsf.Desktop.History',
 	{
 		//~: take present controller of the panel
 		var xc = pc.desktop().panelController(pc.position())
-		var to = 0
 
 		//~: and close it
-		if(xc) { xc.close(); to = 250 }
+		if(xc) xc.close({ minimize: true })
 
 		//~: put the component back
-		ZeT.timeout(to, function()
+		ZeT.timeout(250, function()
 		{
 			pc.insert()
 			pc.bind().co().show()

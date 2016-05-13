@@ -632,6 +632,8 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 	 */
 	init             : function(opts)
 	{
+		var self = this
+
 		ZeT.assert(ZeT.iso(opts))
 		this.opts = opts
 
@@ -843,11 +845,18 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 	{
 		this._close_opts = opts
 
-		//?: {has panel component}
-		if(this.bind() && this.bind().co())
-			this.bind().co().close()
-		else
-			this.remove()
+		try
+		{
+			//?: {has panel component}
+			if(this.bind() && this.bind().co())
+				this.bind().co().close()
+			else
+				this.remove()
+		}
+		finally
+		{
+			delete this._close_opts
+		}
 	},
 
 	/**
