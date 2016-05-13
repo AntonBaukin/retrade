@@ -991,6 +991,9 @@ ${v.checkModelRequestedWithRedirect}
       if(isread) window.co().setTitle('${z:jss(v.infoWindowTitle)}')
       else window.co().setTitle('${z:jss(v.editWindowTitle)}')
 
+      //~: add link tool
+      retrade_toggle_web_link_tool(isread, '${extDom}')
+
       //~: set measure text value
       msures.co().load({callback: function()
       {

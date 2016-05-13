@@ -19,10 +19,12 @@ ${v.forceSecureModelEntity('view')}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
-    extjsf.bind('window', '${extDom}').
-      co().setTitle('${z:jss(v.windowTitleInfo)}')
+    extjsf.co('window', '${extDom}').
+      setTitle('${z:jss(v.windowTitleInfo)}')
 
+  //]]>
   </script>
 
   <f:facet name = "extjs-props">

@@ -22,8 +22,10 @@ ${v.checkModelRequested}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.bind('window', '${extDom}').
-      co().setTitle("#{z:jss(v.calcsHistoryWindowTitle)}")
+    extjsf.co('window', '${extDom}').
+      setTitle("#{z:jss(v.calcsHistoryWindowTitle)}")
+
+    retrade_toggle_web_link_tool(false, '${extDom}')
 
     ReTrade.desktop.prevsizeComp({ marker: 'calc-history',
       name: 'window', domain: '${extDom}'

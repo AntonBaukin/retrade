@@ -18,12 +18,15 @@ ${v.checkEntityRequested}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
-    extjsf.bind('window', '${extDom}').
-      co().setTitle('${z:jss(v.windowTitleInfo)}')
+    extjsf.co('window', '${extDom}').
+      setTitle('${z:jss(v.windowTitleInfo)}')
 
+    retrade_toggle_web_link_tool(true, '${extDom}')
     ReTrade.desktop.prevsizeComp({name: 'window', domain: '${extDom}'})
 
+  //]]>
   </script>
 
   <f:facet name = "extjs-props">

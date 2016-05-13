@@ -17,10 +17,14 @@ ${v.checkModelRequestedWithRedirect}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
-    extjsf.bind('window', '${extDom}').
-      co().setTitle('${z:jss(v.windowTitle)}')
+    extjsf.co('window', '${extDom}').
+      setTitle('${z:jss(v.windowTitle)}')
 
+    retrade_toggle_web_link_tool(false, '${extDom}')
+
+  //]]>
   </script>
 
 

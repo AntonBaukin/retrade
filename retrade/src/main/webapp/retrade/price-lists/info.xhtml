@@ -19,8 +19,10 @@ ${v.checkEntityRequested}
 
   <script type = "text/javascript">
 
-    extjsf.bind('window', '${extDom}').
-      co().setTitle('${z:jss(v.windowTitleInfo)}')
+    extjsf.co('window', '${extDom}').
+      setTitle('${z:jss(v.windowTitleInfo)}')
+
+    retrade_toggle_web_link_tool(true, '${extDom}')
 
   </script>
 

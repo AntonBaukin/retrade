@@ -18,10 +18,12 @@ ${v.checkModelRequestedWithRedirect}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
-    extjsf.bind('window', '${extDom}').
-      co().setTitle("Правила доступа п-ля ${z:jss(v.loginTitle)}")
+    extjsf.co('window', '${extDom}').
+      setTitle("Правила доступа п-ля ${z:jss(v.loginTitle)}")
 
+  //]]>
   </script>
 
 

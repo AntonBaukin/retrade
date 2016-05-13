@@ -17,10 +17,12 @@ ${v.checkModelRequestedWithRedirect}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
-    extjsf.bind('window', '${extDom}').
-      co().setTitle("Свойства персоны '${v.authLogin.code}'")
+    extjsf.co('window', '${extDom}').
+      setTitle("Свойства персоны '${v.authLogin.code}'")
 
+  //]]>
   </script>
 
   <f:facet name = "toolbar-props">

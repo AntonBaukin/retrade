@@ -22,8 +22,10 @@ ${v.checkModelRequested}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.bind('window', '${extDom}').
-      co().setTitle("#{z:jss(v.calcEditWindowTitle)}")
+    extjsf.co('window', '${extDom}').
+      setTitle("#{z:jss(v.calcEditWindowTitle)}")
+
+    retrade_toggle_web_link_tool(false, '${extDom}')
 
     ReTrade.desktop.prevsizeComp({ marker: 'calc-edit',
       name: 'window', domain: '${extDom}'

@@ -18,10 +18,14 @@ ${v.checkEntityRequested}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
-    extjsf.bind('window', '${extDom}').
-      co().setTitle('${z:jss(v.windowTitleHistory)}')
+    extjsf.co('window', '${extDom}').
+      setTitle('${z:jss(v.windowTitleHistory)}')
 
+    retrade_toggle_web_link_tool(false, '${extDom}')
+
+  //]]>
   </script>
 
   <f:facet name = "toolbar-props">

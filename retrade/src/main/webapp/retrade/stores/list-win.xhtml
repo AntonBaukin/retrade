@@ -20,10 +20,14 @@ ${v.checkModelRequestedWithRedirect}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
     extjsf.co('window', '${extDom}').
       setTitle('Склады')
 
+    retrade_toggle_web_link_tool(true, '${extDom}')
+
+  //]]>
   </script>
 
   <f:facet name = "extjs-props">

@@ -573,6 +573,9 @@ extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
     var window = extjsf.bind('window', '${extDom}').co()
     if(isread) window.setTitle('${z:jss(v.windowTitle)}')
     else window.setTitle('${z:jss(v.windowTitleEdit)}')
+
+    //~: add link tool
+    retrade_toggle_web_link_tool(isread, '${extDom}')
   }
 
 

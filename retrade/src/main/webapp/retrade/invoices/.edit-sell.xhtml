@@ -20,6 +20,8 @@ ${v.forceSecureEdit()}
     extjsf.co('window', '${extDom}').
       setTitle('${z:jss(v.windowTitleEdit)}')
 
+    retrade_toggle_web_link_tool(false, '${extDom}')
+
     //~: adjust window size
     if("#{v.altered}" == 'true') Ext.onReady(ZeT.timeouted(150, function()
     {

@@ -17,10 +17,12 @@ ${i.checkModelRequestedWithRedirect}
 <x:winmain coid = "${z:vid(i, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
     extjsf.co('window', '${extDom}').
       setTitle('${z:jss(i.windowTitleInvoices)}')
 
+  //]]>
   </script>
 
   <f:facet name = "extjs-props">
