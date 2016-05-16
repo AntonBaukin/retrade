@@ -44,10 +44,21 @@ ${v.forceSecure()}
         xtype: 'button', text: 'Отмена',
         cls: 'ux-btn-red', handler : function()
         {
-          extjsf.co('window', '${extDom}').close()
+          extjsf.handler("${z:vid(v, 'reload-window')}", '${extDom}')()
         }
       </f:facet>
     </x:component>
+
+
+    <!-- [reopen action] -->
+    <x:action-delegate coid = "${z:vid(v, 'reload-window')}"
+     action = "#{v.noAction}">
+
+      <f:facet name = "action-params">
+        method: 'GET', entity: '#{v.model.primaryKey}'
+      </f:facet>
+    </x:action-delegate>
+
 
     <!-- [close window button] -->
     <x:component coid = "${z:vid(v, 'close')}">
@@ -606,7 +617,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
       command: 'submit', success: function()
     {
       window.retradeEditSuccess = true
-      extjsf.handler("${z:vid(v, 'cancel-edit')}", '${extDom}')()
+      extjsf.handler("${z:vid(v, 'reload-window')}", '${extDom}')()
     }})
   })
 
