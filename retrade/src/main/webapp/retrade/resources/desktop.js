@@ -897,8 +897,7 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 	$add_tools       : function(tools)
 	{
 		//~: add tool to save web link
-		if(ZeT.isox(this.opts.webLink))
-			this.$add_link_tool(tools)
+		this.$add_link_tool(tools)
 
 		//~: add panel move left-right tools
 		this.$add_move_tools(tools)
@@ -919,12 +918,11 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 		//~: add move <<
 		tools.push(this.$new_move_tool('left'))
 
-		var m = extjsf.pts(0, 0, 0, 2)
-		if(this.bind().$raw()['closable'])
-			m = extjsf.pts(0, 8, 0, 2)
-
 		//~: add move >>
-		tools.push(this.$new_move_tool('right'))
+		var t; tools.push(t = this.$new_move_tool('right'))
+
+		if(!this.bind().$raw()['closable'])
+			t.margin = extjsf.pts(0, 0, 0, 2)
 	},
 
 	$move_tips       : {

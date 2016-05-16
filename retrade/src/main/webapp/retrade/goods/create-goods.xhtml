@@ -17,11 +17,13 @@ ${v.checkModelRequestedWithRedirect}
 
 <ui:define name = 'page-body'>
 
-<x:desktop-panel coid = "${z:vid(v, 'root-panel')}">
+<x:desktop-panel coid = "${z:vid(v, 'root-panel')}"
+  webLink = "false">
 
   <f:facet name = "extjs-props">
     title: 'Добавление товаров в табличной форме',
-    layout: 'fit', bodyCls: 'retrade-back-panel'
+    layout: 'fit', bodyCls: 'retrade-back-panel',
+    closable: false
   </f:facet>
 
   <f:facet name = "toolbar-props">

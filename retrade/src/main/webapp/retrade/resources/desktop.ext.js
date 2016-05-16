@@ -506,8 +506,8 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 		//~: add minimize tool
 		this.$add_min_tool(tools)
 
-		//?: {web link is suppoorted here}
-		if(!ZeT.iso(this.opts.webLink)) return
+		//?: {web link is supported here}
+		if(!ZeT.isox(this.opts.webLink)) return
 
 		tools.push({ xtype: 'tool', cls: 'retrade-web-link-tool',
 		  handler: ZeT.fbind(this.$web_link, this),
@@ -619,9 +619,9 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 	$hook_close       : function()
 	{
 		var sf = this, co = this.bind().co()
-		var to = ZeT.assertn(co.down('tool[type=close]'))
+		var to = co.down('tool[type=close]')
 
-		extjsf.u.wrap(to, 'handler', function()
+		to && extjsf.u.wrap(to, 'handler', function()
 		{
 			sf.$close_click()
 			this.$applySuper(arguments)
@@ -988,7 +988,6 @@ ZeT.defineClass('extjsf.Desktop.History',
 			}
 
 		ZeT.each(p, function(m) {
-			ZeT.log('Prune ', m)
 			s.remove(sf.$free_model(m))
 		})
 	},
