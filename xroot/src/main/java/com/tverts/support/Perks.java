@@ -4,12 +4,11 @@ package com.tverts.support;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.function.Consumer;
 
 /* com.tverts: support */
 
-import com.tverts.support.fs.Invokable;
-import com.tverts.support.fs.Taker;
+import com.tverts.support.fs.Callable;
+import com.tverts.support.fs.Acceptor;
 
 
 /**
@@ -40,16 +39,10 @@ public class Perks
 		return this.perks.contains(perk);
 	}
 
-	public Perks     when(Object perk, Invokable task)
+	public Perks     when(Object perk, Callable task)
 	{
-		if(this.perks.contains(perk)) try
-		{
-			task.invoke();
-		}
-		catch(Throwable e)
-		{
-			throw EX.wrap(e);
-		}
+		if(this.perks.contains(perk))
+			task.run();
 
 		return this;
 	}
@@ -66,19 +59,13 @@ public class Perks
 		return null;
 	}
 
-	public <P> Perks find(Class<P> perk, Taker<P> take)
+	public <P> Perks find(Class<P> perk, Acceptor<P> take)
 	{
 		EX.assertn(take);
 
 		P p = this.find(perk);
-		if(p != null) try
-		{
-			take.take(p);
-		}
-		catch(Throwable e)
-		{
-			throw EX.wrap(e);
-		}
+		if(p != null)
+			take.accept(p);
 
 		return this;
 	}

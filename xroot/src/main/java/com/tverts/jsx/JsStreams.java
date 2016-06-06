@@ -17,8 +17,8 @@ import javax.script.ScriptContext;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
-import com.tverts.support.IO;
 import com.tverts.support.streams.BytesStream;
+import com.tverts.support.streams.Streams.Closer;
 import com.tverts.support.streams.Streams.EmptyReader;
 import com.tverts.support.streams.Streams.NullWriter;
 import com.tverts.support.streams.Streams.ReadWrapper;
@@ -246,7 +246,7 @@ public class JsStreams implements AutoCloseable
 	 */
 	public void close()
 	{
-		new IO.Closer(input, output, error,
+		new Closer(input, output, error,
 		  outputBytes, errorBytes).close();
 	}
 

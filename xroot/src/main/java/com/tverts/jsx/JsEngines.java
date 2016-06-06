@@ -114,9 +114,11 @@ public class JsEngines
 			//~: return the engine back
 			synchronized(this)
 			{
-				LinkedList<JsEngine> es = (engines == null)?(null):(engines.get());
+				LinkedList<JsEngine> es =
+				  (engines == null)?(null):(engines.get());
+
 				if(es == null)
-					engines = new WeakReference<LinkedList<JsEngine>>(
+					engines = new WeakReference<>(
 					  es = new LinkedList<>());
 
 				es.addLast(engine);
@@ -149,9 +151,11 @@ public class JsEngines
 			//~: return them back
 			synchronized(this)
 			{
-				LinkedList<JsEngine> es = (engines == null)?(null):(engines.get());
+				LinkedList<JsEngine> es =
+				  (engines == null)?(null):(engines.get());
+
 				if(es == null)
-					engines = new WeakReference<LinkedList<JsEngine>>(
+					engines = new WeakReference<>(
 					  es = new LinkedList<>());
 
 				es.addAll(all);

@@ -39,7 +39,7 @@ public class JsFile implements AutoCloseable
 			{
 				f = new File(uri.getPath());
 			}
-			catch(Throwable x)
+			catch(Throwable ignore)
 			{}
 		}
 		finally
