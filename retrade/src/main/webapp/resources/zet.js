@@ -97,7 +97,7 @@ var ZeT = window.ZeT =
 	stack            : function(n)
 	{
 		var s = '' + new Error().stack
-		if(!ZeT.isi(n)) return s
+		if(!arguments.length) return s
 
 		//~: split & splice
 		if((s = s.split('\n')).length > n)
@@ -646,7 +646,7 @@ var ZeTS = ZeT.define('ZeT.S',
 		var x, b = 1, s = '', sep = arguments[0]
 
 		//?: {invoked with string 'this'}
-		if(ZeT.iss(this)) { b = 0; sep = this }
+		if(ZeTS != this) { b = 0; sep = this }
 
 		//c: for each argument
 		for(var i = b;(i < arguments.length);i++)

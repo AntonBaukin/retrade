@@ -58,36 +58,4 @@
          encoding = 'UTF-8'/>
 
   </target>
-  
-  <!--================================================
-   = support: SVN update                             =
-   =================================================-->
-
-  <target name = 'svn-update'>
-
-    <exec executable = 'svn' dir = 'auth'>
-      <arg value = 'update'/>
-      <arg value = '--accept'/>
-      <arg value = 'theirs-conflict'/>
-    </exec>
-
-    <exec executable = 'svn' dir = 'build'>
-      <arg value = 'update'/>
-      <arg value = '--accept'/>
-      <arg value = 'theirs-conflict'/>
-    </exec>
-
-    <exec executable = 'svn' dir = 'xroot'>
-      <arg value = 'update'/>
-      <arg value = '--accept'/>
-      <arg value = 'theirs-conflict'/>
-    </exec>
-
-    <exec executable = 'svn' dir = '.'>
-      <arg value = 'update'/>
-      <arg value = '--accept'/>
-      <arg value = 'theirs-conflict'/>
-    </exec>
-  </target>
-
 </project>

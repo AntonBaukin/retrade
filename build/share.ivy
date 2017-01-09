@@ -248,7 +248,7 @@
     <dependency transitive = 'false'
       org  = 'org.postgresql'
       name = 'postgresql'
-      rev  = '9.4-1201-jdbc41'
+      rev  = '9.4.1212'
       conf = 'sources; compile -> master'/>
 
 

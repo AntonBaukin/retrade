@@ -136,11 +136,19 @@ public class JsEngine
 	 */
 	public void   check()
 	{
+		Hash hash = new Hash();
+
+		//~: update the check time
 		this.checkTime = System.currentTimeMillis();
 
 		//c: search for changed script files
 		for(Map.Entry<JsFile, Hash> e : hashes.entrySet())
-			if(!e.getKey().hash().equals(e.getValue()))
+		{
+			//~: request hash of the actual content
+			e.getKey().content(hash);
+
+			//?: {hash had changed}
+			if(!hash.equals(e.getValue()))
 			{
 				if(e.getKey().equals(this.file))
 					LU.I(LU.cls(this), "updating modified script [",
@@ -155,6 +163,7 @@ public class JsEngine
 				this.invalidate();
 				return;
 			}
+		}
 	}
 
 	protected long checkTime;

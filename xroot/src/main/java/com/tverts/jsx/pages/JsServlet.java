@@ -108,6 +108,10 @@ public class JsServlet extends GenericServlet
 			{
 				throw new ServletException(e2);
 			}
+			finally
+			{
+				ctx.close();
+			}
 		}
 
 		//~: deliver the results
@@ -174,7 +178,7 @@ public class JsServlet extends GenericServlet
 		JsCtx ctx = new JsCtx();
 
 		//~: copy the request parameters into variable
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.putAll(req.getParameterMap());
 		ctx.put("params", params);
 
