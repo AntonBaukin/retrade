@@ -125,19 +125,19 @@
       conf = 'compile -> master'/>
 
 
-    <!-- Hibernate 4.3.x -->
+    <!-- Hibernate 5.2.x -->
 
     <dependency
       org  = 'org.hibernate'
       name = 'hibernate-core'
-      rev  = '4.3.9.Final'
+      rev  = '5.2.6.Final'
       conf = 'sources; compile -> compile, master; runtime -> runtime, master'>
 
       <!-- [manually provided] -->
 
-      <exclude conf = '*' org  = 'org.jboss.spec.javax.transaction'/>
+      <!--<exclude conf = '*' org  = 'org.jboss.spec.javax.transaction'/>
       <exclude conf = '*' org  = 'org.hibernate.javax.persistence'/>
-      <exclude conf = '*' org  = 'org.jboss' module = 'jandex'/>
+      <exclude conf = '*' org  = 'org.jboss' module = 'jandex'/>-->
     </dependency>
 
 

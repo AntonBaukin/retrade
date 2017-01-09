@@ -11,7 +11,7 @@ import java.sql.Types;
 /* Hibernate Persistence Layer */
 
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 
 /* com.tverts: support */
@@ -57,7 +57,8 @@ public class OxBytesType implements UserType
 		return (x == null)?(0):(check(x).hashCode());
 	}
 
-	public Object  nullSafeGet(ResultSet rs, String[] ns, SessionImplementor s, Object e)
+	public Object  nullSafeGet(ResultSet rs, String[] ns,
+	    SharedSessionContractImplementor session, Object owner)
 	  throws HibernateException, SQLException
 	{
 		//~: get the bytes array
@@ -68,7 +69,8 @@ public class OxBytesType implements UserType
 		return (bytes == null)?(null):(new OxBytes(bytes));
 	}
 
-	public void    nullSafeSet(PreparedStatement st, Object v, int i, SessionImplementor s)
+	public void    nullSafeSet(PreparedStatement st, Object v, int i,
+	    SharedSessionContractImplementor session)
 	  throws HibernateException, SQLException
 	{
 		byte[] bytes = (v == null)?(null):((OxBytes) check(v)).oxBytes();

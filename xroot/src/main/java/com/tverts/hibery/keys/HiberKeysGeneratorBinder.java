@@ -106,9 +106,9 @@ public class      HiberKeysGeneratorBinder
 		final String        NN    = PersistentIdentifierGenerator.IDENTIFIER_NORMALIZER;
 
 		//?: {has no name normalizer property} set it
-		if(!props.containsKey(NN))
-			props.put(NN, HiberSystem.config().createMappings().
-			  getObjectNameNormalizer());
+//		if(!props.containsKey(NN))
+//			props.put(NN, HiberSystem.config().createMappings().
+//			  getObjectNameNormalizer());
 
 		//~: create generator instance
 		try
@@ -117,7 +117,7 @@ public class      HiberKeysGeneratorBinder
 
 			if(hgen instanceof Configurable)
 				((Configurable)hgen).configure(
-				  getKeyType(), props, HiberSystem.dialect());
+				  getKeyType(), props, HiberSystem.serviceRegistry());
 		}
 		catch(Exception e)
 		{
@@ -131,7 +131,8 @@ public class      HiberKeysGeneratorBinder
 			  (PersistentIdentifierGenerator)hgen;
 
 			//!:  ------------> MUST
-			bean(TxBean.class).setNew().execute(new Runnable()			{
+			bean(TxBean.class).setNew().execute(new Runnable()
+			{
 				public void run()
 				{
 					try
@@ -148,8 +149,9 @@ public class      HiberKeysGeneratorBinder
 		}
 		catch(Throwable e)
 		{
-			LU.D(getLog(), "seemed exists primary keys sequence [",
-			  ((PersistentIdentifierGenerator)hgen).generatorKey().toString(), "]?..");
+			LU.D(getLog(), "exists primary keys sequence [",
+			  ((PersistentIdentifierGenerator)hgen).generatorKey().toString(),
+			  "] exists?");
 		}
 
 		return new HiberKeysGeneratorBridge(hgen);
@@ -195,7 +197,6 @@ public class      HiberKeysGeneratorBinder
 
 	/* private: the binder parameters */
 
-	private Properties      properties;
-	private Class<? extends IdentifierGenerator>
-	                        generatorClass;
+	private Properties properties;
+	private Class<? extends IdentifierGenerator> generatorClass;
 }

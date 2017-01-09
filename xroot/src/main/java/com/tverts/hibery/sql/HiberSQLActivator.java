@@ -4,7 +4,6 @@ package com.tverts.hibery.sql;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /* Hibernate Persistence Layer */
@@ -105,12 +104,10 @@ public class   HiberSQLActivator
 
 	protected List<String> searchFiles()
 	{
-		List<String>               res = new ArrayList<>(4);
-		Iterator<PersistentClass> icls = HiberSystem.config().getClassMappings();
-
-		while(icls.hasNext())
+		List<String> res = new ArrayList<>(4);
+		for(PersistentClass icls : HiberSystem.meta().getEntityBindings())
 		{
-			Class  cls = icls.next().getMappedClass();
+			Class  cls = icls.getMappedClass();
 			Object url = cls.getResource(cls.getSimpleName() + ".sql.xml");
 
 			if(url != null)

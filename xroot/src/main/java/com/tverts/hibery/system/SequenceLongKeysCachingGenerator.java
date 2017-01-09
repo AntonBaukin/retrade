@@ -8,9 +8,9 @@ import java.util.Properties;
 /* Hibernate Persistence Layer */
 
 import org.hibernate.MappingException;
-import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.id.SequenceGenerator;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.LongType;
 import org.hibernate.type.Type;
 
@@ -40,16 +40,16 @@ public final class SequenceLongKeysCachingGenerator
 	public static final String PARAM_INCR = "sequence_increment";
 
 
-	/* public: SequenceGenerator interface */
+	/* Sequence Generator */
 
-	public void configure(Type type, Properties params, Dialect dialect)
+	public void configure(Type type, Properties params, ServiceRegistry sr)
 	  throws MappingException
 	{
 		if(!LongType.class.isAssignableFrom(type.getClass()))
-			throw new MappingException(
-			  "SequenceLongKeysCachingGenerator supports only Long keys!");
+			throw new MappingException(getClass().getSimpleName() +
+			  " supports only Long keys!");
 
-		super.configure(type, params, dialect);
+		super.configure(type, params, sr);
 
 		//~: read sequence increment option
 		Object sseqinc = params.get(PARAM_INCR);

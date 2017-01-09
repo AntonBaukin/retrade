@@ -22,6 +22,7 @@ import org.hibernate.LockMode;
 import org.hibernate.LockOptions;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.EntityEntry;
@@ -47,6 +48,11 @@ import com.tverts.system.tx.TxPoint;
 
 import com.tverts.endure.NumericIdentity;
 import com.tverts.endure.keys.KeysContext;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+import org.hibernate.service.ServiceRegistry;
 
 
 /**
@@ -76,7 +82,7 @@ public class HiberSystem
 	@SuppressWarnings("deprecation")
 	public void setSessionFactory(SessionFactory sf)
 	{
-		this.sessionFactory  = sf;
+		this.sessionFactory = sf;
 
 		if(sf != null) try
 		{
@@ -88,9 +94,14 @@ public class HiberSystem
 		}
 	}
 
-	public void setConfiguration(Configuration config)
+	public void setMetadata(Metadata metadata)
 	{
-		this.configuration = config;
+		this.metadata = EX.assertn(metadata);
+	}
+
+	public void setServiceRegistry(ServiceRegistry serviceRegistry)
+	{
+		this.serviceRegistry = serviceRegistry;
 	}
 
 
@@ -343,14 +354,14 @@ public class HiberSystem
 	}
 
 
-	/* public: access hibernate configuration */
+	/* Access Hibernate Metadata */
 
-	public Configuration        getConfiguration()
+	public Metadata        getMetadata()
 	{
-		return configuration;
+		return metadata;
 	}
 
-	public Dialect              getDialect()
+	public Dialect         getDialect()
 	{
 		if(!(this.sessionFactory instanceof SessionFactoryImplementor))
 			return null;
@@ -358,23 +369,27 @@ public class HiberSystem
 		return ((SessionFactoryImplementor)this.sessionFactory).getDialect();
 	}
 
-	public static Dialect       dialect()
+	public ServiceRegistry getServiceRegistry()
 	{
-		Dialect dialect = HiberSystem.getInstance().getDialect();
-
-		if(dialect == null) throw new IllegalStateException(
-		  "Hibernate Dialect is not defined!");
-
-		return dialect;
+		return serviceRegistry;
 	}
 
-	public static Configuration config()
+	public static Dialect  dialect()
 	{
-		Configuration config = HiberSystem.getInstance().
-		  getConfiguration();
+		return EX.assertn(HiberSystem.getInstance().getDialect(),
+		  "Hibernate Dialect is not defined!");
+	}
 
-		if(config == null) throw new IllegalStateException();
-		return config;
+	public static Metadata meta()
+	{
+		return EX.assertn(HiberSystem.getInstance().getMetadata(),
+		  "Hibernate Metadata are not defined!");
+	}
+
+	public static ServiceRegistry serviceRegistry()
+	{
+		return EX.assertn(HiberSystem.getInstance().getServiceRegistry(),
+		  "Hibernate Service Registry are not defined!");
 	}
 
 
@@ -413,7 +428,7 @@ public class HiberSystem
 	public static Map<String, Integer>
 	                  debugContextStat(Session s, Boolean readOnly)
 	{
-		Map<String, Integer> res = new HashMap<String, Integer>(101);
+		Map<String, Integer> res = new HashMap<>(101);
 
 		//~: get the entries of the context
 		Entry<Object, EntityEntry>[] entries = ((SessionImplementor)s).
@@ -493,8 +508,9 @@ public class HiberSystem
 
 	/* private: hibernate system points */
 
-	private SessionFactory         sessionFactory;
-	private Configuration          configuration;
+	private SessionFactory  sessionFactory;
+	private ServiceRegistry serviceRegistry;
+	private Metadata        metadata;
 
 
 	/* private: hibernate system survey */

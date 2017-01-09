@@ -14,7 +14,7 @@ import java.util.zip.GZIPOutputStream;
 /* Hibernate Persistence Layer */
 
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 
 /* com.tverts: support */
@@ -26,15 +26,12 @@ import com.tverts.support.streams.BytesStream;
 /**
  * Hibernate type for UTF-8 encoded strings
  * that are stored in the database as
- * GZIP-compressed bte arrays.
+ * GZIP-compressed byte arrays.
  *
  * @author anton.baukin@gmail.com.
  */
 public class StrBytesType implements UserType
 {
-	private static final int[] SQL_TYPES =
-	  new int[] { Types.BINARY };
-
 	public boolean isMutable()
 	{
 		return false;
@@ -60,7 +57,8 @@ public class StrBytesType implements UserType
 		return (x == null)?(0):(x.hashCode());
 	}
 
-	public Object  nullSafeGet(ResultSet rs, String[] ns, SessionImplementor s, Object e)
+	public Object  nullSafeGet(ResultSet rs, String[] ns,
+	    SharedSessionContractImplementor session, Object owner)
 	  throws HibernateException, SQLException
 	{
 		//~: get the bytes array
@@ -83,7 +81,8 @@ public class StrBytesType implements UserType
 		}
 	}
 
-	public void    nullSafeSet(PreparedStatement st, Object v, int i, SessionImplementor s)
+	public void nullSafeSet(PreparedStatement st, Object v, int i,
+	    SharedSessionContractImplementor session)
 	  throws HibernateException, SQLException
 	{
 		//?: {has string undefined}
@@ -137,4 +136,7 @@ public class StrBytesType implements UserType
 	{
 		return v;
 	}
+
+	private static final int[] SQL_TYPES =
+	  new int[] { Types.BINARY };
 }
