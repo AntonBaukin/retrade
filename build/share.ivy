@@ -252,48 +252,48 @@
       conf = 'sources; compile -> master'/>
 
 
-    <!-- Logging (Log4J 2.3) -->
+    <!-- Logging (Log4j2 2.7) -->
 
     <dependency
       org  = 'org.apache.logging.log4j'
       name = 'log4j-api'
-      rev  = '2.3'
+      rev  = '2.7'
       conf = 'sources; compile -> compile, master; runtime -> runtime, master'/>
 
     <dependency
       org  = 'org.apache.logging.log4j'
       name = 'log4j-core'
-      rev  = '2.3'
+      rev  = '2.7'
       conf = 'sources; compile -> compile, master; runtime -> runtime, master'/>
 
     <dependency
       org  = 'org.apache.logging.log4j'
       name = 'log4j-web'
-      rev  = '2.3'
+      rev  = '2.7'
       conf = 'sources; compile -> compile, master; runtime -> runtime, master'/>
 
     <dependency
       org  = 'org.slf4j'
       name = 'slf4j-api'
-      rev  = '1.7.12'
+      rev  = '1.7.22'
       conf = 'sources; compile -> compile, master; runtime -> runtime, master'/>
 
     <dependency
       org  = 'org.apache.logging.log4j'
       name = 'log4j-slf4j-impl'
-      rev  = '2.3'
+      rev  = '2.7'
       conf = 'sources; compile -> compile, master; runtime -> runtime, master'/>
 
     <dependency
       org  = 'org.apache.logging.log4j'
       name = 'log4j-jcl'
-      rev  = '2.3'
+      rev  = '2.7'
       conf = 'sources; compile -> compile, master; runtime -> runtime, master'/>
 
     <dependency
       org  = 'org.apache.logging.log4j'
       name = 'log4j-jcl'
-      rev  = '2.3'
+      rev  = '2.7'
       conf = 'sources; compile -> compile, master; runtime -> runtime, master'/>
 
     <dependency

@@ -1,6 +1,6 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 
-<Configuration packages = 'com.tverts.support.log4j'>
+<Configuration packages = 'com.tverts.support.logs'>
 
   <Appenders>
 
@@ -55,12 +55,6 @@
       <PatternLayout pattern = '%-5p %d{HH:mm:ss.SSS} %c{1}: %m%n'/>
     </File>
 
-    <File name = 'debug.json' append = 'false' bufferSize = '2048'
-      fileName = '${sys:catalina.base}/logs/retrade_debug.json'>
-
-      <FastJSONLayout/>
-    </File>
-
     <File name = 'other' append = 'false' bufferSize = '512'
       fileName = '${sys:catalina.base}/logs/retrade_other.log'>
 
@@ -72,6 +66,7 @@
   </Appenders>
 
   <Loggers>
+
 
     <!-- Spring -->
 
@@ -139,7 +134,6 @@
 
       <AppenderRef ref = 'services'/>
       <AppenderRef ref = 'debug'/>
-      <AppenderRef ref = 'debug.json'/>
     </Logger>
 
     <Logger name = 'com.tverts.exec.service.ExecRunService'
@@ -147,7 +141,6 @@
 
       <AppenderRef ref = 'services'/>
       <AppenderRef ref = 'debug'/>
-      <AppenderRef ref = 'debug.json'/>
     </Logger>
 
     <Logger name = 'com.tverts.genesis.GenesisService'
@@ -155,9 +148,7 @@
 
       <AppenderRef ref = 'services'/>
       <AppenderRef ref = 'genesis'/>
-      <AppenderRef ref = 'genesis.json'/>
       <AppenderRef ref = 'debug'/>
-      <AppenderRef ref = 'debug.json'/>
     </Logger>
 
     <Logger name = 'com.tverts.system.services.SelfShuntService'
@@ -174,7 +165,6 @@
       level = 'DEBUG' additivity = 'false'>
 
       <AppenderRef ref = 'debug'/>
-      <AppenderRef ref = 'debug.json'/>
       <AppenderRef ref = 'other'/>
     </Logger>
 
@@ -185,14 +175,12 @@
       level = 'DEBUG' additivity = 'false'>
 
       <AppenderRef ref = 'debug'/>
-      <AppenderRef ref = 'debug.json'/>
     </Logger>
 
     <Logger name = 'com.tverts.secure'
       level = 'DEBUG' additivity = 'false'>
 
       <AppenderRef ref = 'debug'/>
-      <AppenderRef ref = 'debug.json'/>
       <AppenderRef ref = 'other'/>
     </Logger>
 
@@ -200,7 +188,6 @@
       level = 'DEBUG' additivity = 'false'>
 
       <AppenderRef ref = 'debug'/>
-      <AppenderRef ref = 'debug.json'/>
     </Logger>
 
 
@@ -210,14 +197,12 @@
       level = 'DEBUG' additivity = 'false'>
 
       <AppenderRef ref = 'debug'/>
-      <AppenderRef ref = 'debug.json'/>
     </Logger>
 
     <Logger name = 'com.tverts.timing'
       level = 'DEBUG' additivity = 'false'>
 
       <AppenderRef ref = 'debug'/>
-      <AppenderRef ref = 'debug.json'/>
     </Logger>
 
 

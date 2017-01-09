@@ -4,7 +4,6 @@ package com.tverts.support.logs;
 
 import java.nio.charset.Charset;
 import java.util.Calendar;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /* Logging for Java */
@@ -16,6 +15,7 @@ import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.impl.ThrowableProxy;
 import org.apache.logging.log4j.core.layout.AbstractStringLayout;
+import org.apache.logging.log4j.util.BiConsumer;
 
 /* com.tverts: support */
 
@@ -183,29 +183,34 @@ public class FastJSONLayout extends AbstractStringLayout
 	}
 
 	protected final AtomicReference<Calendar> calendar =
-	  new AtomicReference<Calendar>();
+	  new AtomicReference<>();
 
 	protected void mdc(StringBuilder s, LogEvent e)
 	{
-		if((e.getContextMap() == null) || e.getContextMap().isEmpty())
+		if(e.getContextData() == null || e.getContextData().isEmpty())
 			return;
 
 		tag(s, "mdc", '{');
 
+
 		//c: print each entry
-		boolean first = true;
-		for(Map.Entry<String, String> x : e.getContextMap().entrySet())
+		final boolean[] first = new boolean[]{ true };
+		e.getContextData().forEach(new BiConsumer<String, Object>()
 		{
-			if(!first) s.append(", ");
-			first = false;
+			public void accept(String k, Object v)
+			{
+				if(!first[0]) s.append(", ");
+				first[0] = false;
 
-			//~: key
-			s.append('"'); jss(s, x.getKey());
-			s.append("\": \"");
+				//~: key
+				s.append('"'); jss(s, k);
+				s.append("\": \"");
 
-			//~: value
-			jss(s, x.getValue()); s.append('"');
-		}
+				//~: value
+				jss(s, (v == null)?("null"):(v.toString()));
+				s.append('"');
+			}
+		});
 
 		s.append("}");
 	}
