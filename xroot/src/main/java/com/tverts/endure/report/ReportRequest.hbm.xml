@@ -85,10 +85,7 @@
 
       <type name = 'org.hibernate.type.EnumType'>
 
-        <param name = 'enumClass'>
-          com.tverts.data.ReportFormat
-        </param>
-
+        <param name = 'enumClass'>com.tverts.data.ReportFormat</param>
         <param name = 'useNamed'>true</param>
       </type>
     </property>

@@ -1,6 +1,6 @@
 package com.tverts.hibery.system;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +15,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+/* Java Persistence */
+
+import javax.persistence.metamodel.EntityType;
+
 /* Hibernate Persistence Layer */
 
 import org.hibernate.Hibernate;
@@ -23,7 +27,7 @@ import org.hibernate.LockOptions;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.Configuration;
+
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.EntityEntry;
 import org.hibernate.engine.spi.PersistenceContext;
@@ -33,6 +37,7 @@ import org.hibernate.engine.spi.Status;
 import org.hibernate.internal.util.collections.IdentitySet;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.service.ServiceRegistry;
 
 /* com.tverts: hibery */
 
@@ -52,7 +57,6 @@ import com.tverts.endure.keys.KeysContext;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
-import org.hibernate.service.ServiceRegistry;
 
 
 /**
@@ -455,26 +459,23 @@ public class HiberSystem
 	protected void processSessionFactory(SessionFactory sf)
 	  throws Exception
 	{
-		Collection<ClassMetadata> classesMetadata = sf.
-		  getAllClassMetadata().values();
-
-		ClassLoader               classLoader     = Thread.
-		  currentThread().getContextClassLoader();
+		//~: managed entities
+		Collection<EntityType<?>> entities = sf.getMetamodel().getEntities();
 
 		//~: define all entities classes
-		mappedClasses = new HashSet<Class>(classesMetadata.size());
-		for(ClassMetadata classMetadata : classesMetadata)
-			mappedClasses.add(classLoader.loadClass(classMetadata.getEntityName()));
+		mappedClasses = new HashSet<>(entities.size());
+		for(EntityType<?> entity : entities)
+			mappedClasses.add(entity.getBindableJavaType());
 
 		//~: create classes hierarchy closure
-		descendants = new HashMap<Class, Set<Class>>(mappedClasses.size());
+		descendants = new HashMap<>(mappedClasses.size());
 		for(Class mappedClass : mappedClasses)
-			descendants.put(mappedClass, new HashSet<Class>(1));
+			descendants.put(mappedClass, new HashSet<>(1));
 
 		//~: trace classes hierarchy
 		for(Class mappedClass : mappedClasses)
 		{
-			ArrayList<Class> ancestors = new ArrayList<Class>(1);
+			ArrayList<Class> ancestors = new ArrayList<>(1);
 
 			ancestors.add(mappedClass.getSuperclass());
 			ancestors.addAll(Arrays.asList(mappedClass.getInterfaces()));
@@ -491,7 +492,7 @@ public class HiberSystem
 				//~: add to it's descendants set
 				Set<Class> closure = descendants.get(ancestor);
 				if(closure == null)
-					descendants.put(ancestor, closure = new HashSet<Class>(3));
+					descendants.put(ancestor, closure = new HashSet<>(3));
 
 				closure.add(mappedClass);
 			}

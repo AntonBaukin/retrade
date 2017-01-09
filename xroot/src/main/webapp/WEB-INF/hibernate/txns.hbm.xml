@@ -19,8 +19,8 @@
       |
       +================================================-->
 
-    <property name = 'hibernate.transaction.factory_class'>
-      org.hibernate.engine.transaction.internal.jta.JtaTransactionFactory
+    <property name = 'hibernate.transaction.coordinator_class'>
+      jta
     </property>
 
     <property name = 'hibernate.transaction.jta.platform'>

@@ -17,10 +17,6 @@ import org.apache.logging.log4j.core.impl.ThrowableProxy;
 import org.apache.logging.log4j.core.layout.AbstractStringLayout;
 import org.apache.logging.log4j.util.BiConsumer;
 
-/* com.tverts: support */
-
-import com.tverts.support.EX;
-
 
 /**
  * Clear and fast direct printing writer.
@@ -292,7 +288,7 @@ public class FastJSONLayout extends AbstractStringLayout
 		}
 		catch(Throwable e)
 		{
-			throw EX.wrap(e);
+			throw new RuntimeException(e);
 		}
 	}
 

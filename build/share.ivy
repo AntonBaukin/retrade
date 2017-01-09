@@ -135,9 +135,7 @@
 
       <!-- [manually provided] -->
 
-      <!--<exclude conf = '*' org  = 'org.jboss.spec.javax.transaction'/>
-      <exclude conf = '*' org  = 'org.hibernate.javax.persistence'/>
-      <exclude conf = '*' org  = 'org.jboss' module = 'jandex'/>-->
+      <exclude conf = '*' org = 'org.hibernate.javax.persistence'/>
     </dependency>
 
 
@@ -147,18 +145,6 @@
       org  = 'org.hibernate.javax.persistence'
       name = 'hibernate-jpa-2.1-api'
       rev  = '1.0.0.Final'
-      conf = 'compile -> master'/>
-
-    <dependency
-      org  = 'org.jboss.spec.javax.transaction'
-      name = 'jboss-transaction-api_1.2_spec'
-      rev  = '1.0.0.Final'
-      conf = 'compile -> master'/>
-
-    <dependency
-      org  = 'org.jboss'
-      name = 'jandex'
-      rev  = '1.2.4.Final'
       conf = 'compile -> master'/>
 
 
