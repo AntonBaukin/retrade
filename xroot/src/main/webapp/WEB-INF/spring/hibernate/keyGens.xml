@@ -22,23 +22,22 @@
                     value = 'primary'/>
 
           <property name  = 'generatorClass'
-                    value = 'com.tverts.hibery.system.SequenceLongKeysCachingGenerator'/>
+                    value = 'org.hibernate.id.enhanced.SequenceStyleGenerator'/>
 
           <property name  = 'properties'>
             <props>
 
-              <prop key = 'sequence'>
+              <prop key = 'sequence_name'>
                 pkeys_sequence_primary
               </prop>
 
-              <prop key = 'sequence_increment'>
-                50
+              <prop key = 'increment_size'>
+                25 <!-- this value may be changed with care -->
               </prop>
 
-              <prop key = 'parameters'>
-                increment by 50 start with 1
+              <prop key = 'optimizer'>
+                pooled-lo
               </prop>
-
             </props>
           </property>
         </bean>
@@ -52,16 +51,16 @@
                     value = 'txn'/>
 
           <property name  = 'generatorClass'
-                    value = 'com.tverts.hibery.system.SequenceLongKeysCachingGenerator'/>
+                    value = 'org.hibernate.id.enhanced.SequenceStyleGenerator'/>
 
           <property name  = 'properties'>
             <props>
 
-              <prop key = 'sequence'>
+              <prop key = 'sequence_name'>
                 txn_sequence
               </prop>
 
-              <!--  ===============================================x
+              <!--=================================================
 
                 WARNING! Transaction numbers may be incremented
                   by value > 1 (cached) only when one application
@@ -70,16 +69,15 @@
                 As write transactions are rare, caching Tx numbers
                 has no performance gain, and it is better to be off.
 
-               x==================================================-->
+              ====================================================-->
 
-              <prop key = 'sequence_increment'>
-                1
+              <prop key = 'increment_size'>
+                1 <!-- this value may not be changed -->
               </prop>
 
-              <prop key = 'parameters'>
-                increment by 1 start with 1
+              <prop key = 'optimizer'>
+                none
               </prop>
-
             </props>
           </property>
         </bean>
@@ -93,23 +91,22 @@
                     value = 'other'/>
 
           <property name  = 'generatorClass'
-                    value = 'com.tverts.hibery.system.SequenceLongKeysCachingGenerator'/>
+                    value = 'org.hibernate.id.enhanced.SequenceStyleGenerator'/>
 
           <property name  = 'properties'>
             <props>
 
-              <prop key = 'sequence'>
+              <prop key = 'sequence_name'>
                 pkeys_sequence_other
               </prop>
 
-              <prop key = 'sequence_increment'>
+              <prop key = 'increment_size'>
                 100
               </prop>
 
-              <prop key = 'parameters'>
-                increment by 100 start with 1
+              <prop key = 'optimizer'>
+                pooled-lo
               </prop>
-
             </props>
           </property>
         </bean>
@@ -123,30 +120,26 @@
                     value = 'model'/>
 
           <property name  = 'generatorClass'
-                    value = 'com.tverts.hibery.system.SequenceLongKeysCachingGenerator'/>
+                    value = 'org.hibernate.id.enhanced.SequenceStyleGenerator'/>
 
           <property name  = 'properties'>
             <props>
 
-              <prop key = 'sequence'>
+              <prop key = 'sequence_name'>
                 pkeys_sequence_model
               </prop>
 
-              <prop key = 'sequence_increment'>
-                100
+              <prop key = 'increment_size'>
+                25
               </prop>
 
-              <prop key = 'parameters'>
-                increment by 100 start with 1
+              <prop key = 'optimizer'>
+                pooled-lo
               </prop>
-
             </props>
           </property>
         </bean>
-
       </list>
     </property>
   </bean>
-
-
 </beans>

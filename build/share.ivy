@@ -138,14 +138,12 @@
       <exclude conf = '*' org = 'org.hibernate.javax.persistence'/>
     </dependency>
 
-
-    <!-- Hibernate [manually provided] -->
-
+    <!-- [manually provided] -->
     <dependency
       org  = 'org.hibernate.javax.persistence'
       name = 'hibernate-jpa-2.1-api'
       rev  = '1.0.0.Final'
-      conf = 'compile -> master'/>
+      conf = 'sources; compile -> master'/>
 
 
     <!-- Servlet 3.1 + JSP 2.2 + EL 3 [server provided] -->

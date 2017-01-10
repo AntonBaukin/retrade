@@ -1,22 +1,19 @@
 package com.tverts.hibery.keys;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Properties;
 
 /* Hibernate Persistence Layer */
 
+import com.tverts.system.tx.TxBean;
+import com.tverts.system.tx.TxPoint;
+import org.hibernate.boot.model.relational.ExportableProducer;
 import org.hibernate.id.Configurable;
 import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.id.PersistentIdentifierGenerator;
 import org.hibernate.type.LongType;
-import org.hibernate.type.Type;
 
-/* com.tverts: (spring + tx) */
-
-import static com.tverts.spring.SpringPoint.bean;
-import com.tverts.system.tx.TxBean;
-import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: endure keys */
 
@@ -34,6 +31,8 @@ import com.tverts.support.LU;
 import com.tverts.support.OU;
 import com.tverts.support.SU;
 
+import static com.tverts.spring.SpringPoint.bean;
+
 
 /**
  * Access strategy wrapping Hibernate
@@ -44,7 +43,7 @@ import com.tverts.support.SU;
 public class      HiberKeysGeneratorBinder
        implements KeysGeneratorBinder
 {
-	/* public: KeysGeneratorBinder interface */
+	/* Keys Generator Binder */
 
 	public String        getGeneratorName()
 	{
@@ -58,145 +57,115 @@ public class      HiberKeysGeneratorBinder
 
 	public void          bindGenerator()
 	{
-		EX.assertx(getGeneratorBound() == null);
-		EX.assertn(getGeneratorClass());
+		EX.assertx(generatorBound == null);
+		EX.assertn(generatorClass);
 
 		this.generatorBound = createGenerator();
 	}
 
+	protected KeysGenerator generatorBound;
 
-	/* public: HiberKeysGeneratorBinder interface */
 
-	public void       setGeneratorName(String name)
+	/* Hibernate Keys Generator Binder */
+
+	public void setGeneratorName(String name)
 	{
 		EX.assertn(name = SU.s2s(name));
 		this.generatorName = name;
 	}
 
-	public Class<? extends IdentifierGenerator>
-	                  getGeneratorClass()
-	{
-		return generatorClass;
-	}
+	private String generatorName;
 
-	public void       setGeneratorClass
-	  (Class<? extends IdentifierGenerator> gclass)
+	public void setGeneratorClass(Class<? extends IdentifierGenerator> gclass)
 	{
 		this.generatorClass = gclass;
 	}
 
-	public Properties getProperties()
+	protected Class<? extends IdentifierGenerator> generatorClass;
+
+	public void setProperties(Properties props)
 	{
-		return (properties != null)?(properties):
-		  (properties = new Properties());
+		this.properties = props;
 	}
 
-	public void       setProperties(Properties props)
-	{
-		this.properties = OU.clone(props);
-	}
+	protected Properties properties;
 
 
 	/* protected: build generator */
 
-	protected KeysGenerator createGenerator()
+	protected KeysGenerator
+	                 createGenerator()
 	{
-		IdentifierGenerator hgen;
-		Properties          props = OU.clone(getProperties());
-		final String        NN    = PersistentIdentifierGenerator.IDENTIFIER_NORMALIZER;
+		//~: create the generator instance
+		IdentifierGenerator ig = createInstance();
 
-		//?: {has no name normalizer property} set it
-//		if(!props.containsKey(NN))
-//			props.put(NN, HiberSystem.config().createMappings().
-//			  getObjectNameNormalizer());
+		//~: initialize it
+		init(ig);
 
-		//~: create generator instance
+		return new HiberKeysGeneratorBridge(ig);
+	}
+
+	protected IdentifierGenerator
+	                 createInstance()
+	{
+		IdentifierGenerator ig;
+
 		try
 		{
-			hgen = getGeneratorClass().newInstance();
+			//~: a new instance
+			ig = generatorClass.newInstance();
 
-			if(hgen instanceof Configurable)
-				((Configurable)hgen).configure(
-				  getKeyType(), props, HiberSystem.serviceRegistry());
+			//?: {configurable} do it
+			if(ig instanceof Configurable)
+				((Configurable)ig).configure(
+				  LongType.INSTANCE, OU.clone(properties),
+				  HiberSystem.serviceRegistry()
+				);
 		}
-		catch(Exception e)
+		catch(Throwable e)
 		{
 			throw EX.wrap(e);
 		}
 
-		//~: schema updates to create generator in database
-		if(hgen instanceof PersistentIdentifierGenerator) try
-		{
-			final PersistentIdentifierGenerator pig =
-			  (PersistentIdentifierGenerator)hgen;
-
-			//!:  ------------> MUST
-			bean(TxBean.class).setNew().execute(new Runnable()
-			{
-				public void run()
-				{
-					try
-					{
-						ensureDatabaseTx(pig);
-					}
-					catch(Throwable e)
-					{
-						throw EX.wrap(e);
-					}
-				}
-			}
-			);
-		}
-		catch(Throwable e)
-		{
-			LU.D(getLog(), "exists primary keys sequence [",
-			  ((PersistentIdentifierGenerator)hgen).generatorKey().toString(),
-			  "] exists?");
-		}
-
-		return new HiberKeysGeneratorBridge(hgen);
+		return ig;
 	}
 
-	/**
-	 * WARNING: we do not check whether the sequence already exist.
-	 *   New transaction is required to ignore the error!
-	 */
-	protected void          ensureDatabaseTx(PersistentIdentifierGenerator hgen)
-	  throws Exception
+	protected void   init(IdentifierGenerator ig)
 	{
-		//~: create update queries
-		String[] qs = hgen.sqlCreateStrings(HiberSystem.dialect());
+		//~: initialize the query
+		if(ig instanceof ExportableProducer)
+			((ExportableProducer)ig).registerExportables(
+			  HiberSystem.meta().getDatabase());
+
+		//?: {not persistent} nothing more
+		if(!(ig instanceof PersistentIdentifierGenerator))
+			return;
+
+		//~: create database sequence
+		final String[] qs = ((PersistentIdentifierGenerator)ig).
+		  sqlCreateStrings(HiberSystem.dialect());
 
 		//~: execute DDL updates
-		for(String q : qs)
-			TxPoint.txSession().createSQLQuery(q).executeUpdate();
+		bean(TxBean.class).setNew().execute(() ->
+		{
+			try
+			{
+				for(String q : qs)
+					TxPoint.txSession().createNativeQuery(q).executeUpdate();
 
-		LU.I(getLog(), "successfully created primary keys sequence [",
-		  hgen.generatorKey().toString(), "]");
+				LU.I(getLog(), "created db keys sequence ",
+				  ((PersistentIdentifierGenerator)ig).generatorKey());
+			}
+			catch(Throwable e)
+			{
+				LU.I(getLog(), "found db keys sequence ",
+				  ((PersistentIdentifierGenerator)ig).generatorKey());
+			}
+		});
 	}
 
-	protected Type          getKeyType()
-	{
-		return LongType.INSTANCE;
-	}
-
-
-	/* protected: logging */
-
-	protected String        getLog()
+	protected String getLog()
 	{
 		return LU.getLogBased(HiberSystem.class, this);
 	}
-
-
-	/* private: the binder state */
-
-	private String          generatorName;
-	private KeysGenerator   generatorBound;
-
-
-	/* private: the binder parameters */
-
-	private Properties properties;
-	private Class<? extends IdentifierGenerator> generatorClass;
 }
