@@ -69,7 +69,7 @@ select i, ib, c from InvoiceBill ib right outer join ib.invoice i
 "  left outer join ib.contractor c where (i.id = :primaryKey)"
 
 		).
-		  setLong("primaryKey", primaryKey).
+		  setParameter("primaryKey", primaryKey).
 		  uniqueResult();
 	}
 

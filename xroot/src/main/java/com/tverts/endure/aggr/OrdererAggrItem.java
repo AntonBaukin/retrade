@@ -2,7 +2,7 @@ package com.tverts.endure.aggr;
 
 /* Hibernate Persistence Layer */
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 
 /* com.tverts: endure (ordering) */
 

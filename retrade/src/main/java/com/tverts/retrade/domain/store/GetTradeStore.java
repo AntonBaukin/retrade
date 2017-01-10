@@ -48,8 +48,8 @@ public class GetTradeStore extends GetObjectBase
 "  (ts.domain.id = :domain) and (ts.code = :code)"
 
 		).
-		  setLong  ("domain", domain).
-		  setString("code",   code).
+		  setParameter("domain", domain).
+		  setParameter("code", code).
 		  uniqueResult();
 	}
 
@@ -77,7 +77,7 @@ order by lower(ts.name)
 "order by lower(ts.name)"
 
 		).
-		  setLong("domain", domain).
+		  setParameter("domain", domain).
 		  list();
 	}
 
@@ -98,7 +98,7 @@ order by lower(ts.code)
 "order by lower(ts.code)"
 
 		).
-		  setLong("domain", domain).
+		  setParameter("domain", domain).
 		  setFirstResult(offset).
 		  setMaxResults(1).
 		  list();

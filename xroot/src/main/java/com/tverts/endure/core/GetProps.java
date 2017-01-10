@@ -65,9 +65,9 @@ from Property where (name = :name) and
 "  (area = :area) and (domain.id = :domain)"
 
 		).
-		  setString("name", name).
-		  setString("area", area).
-		  setLong("domain", domain).
+		  setParameter("name", name).
+		  setParameter("area", area).
+		  setParameter("domain", domain).
 		  uniqueResult();
 	}
 

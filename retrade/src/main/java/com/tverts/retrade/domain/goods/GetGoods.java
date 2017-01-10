@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 /* Hibernate Persistence Layer */
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 
 /* com.tverts: spring */
 
@@ -366,7 +366,7 @@ order by gu.id
 
 		for(Object[] r : res)
 		{
-			q.setLong("good", (Long)r[2]);
+			q.setParameter("good", (Long)r[2]);
 			r[2] = q.uniqueResult();
 		}
 
@@ -677,7 +677,7 @@ order by gu.id
 "from AggrValue where (owner.id = :gu) and (aggrType = :at)"
 
 		).
-		  setLong     ("gu",  gu).
+		  setParameter("gu", gu).
 		  setParameter("at",  Goods.aggrTypeRestCost()).
 		  uniqueResult();
 	}
@@ -708,8 +708,8 @@ from MeasureUnit mu where
 "  (mu.domain.id = :domain) and (mu.code = :code)"
 
 		).
-		  setLong  ("domain", domain).
-		  setString("code",   code).
+		  setParameter("domain", domain).
+		  setParameter("code", code).
 		  uniqueResult();
 	}
 
@@ -725,7 +725,7 @@ from MeasureUnit mu where
 "  from MeasureUnit where domain.id = :domain order by lower(code)"
 
 		).
-		  setLong("domain", domain).
+		  setParameter("domain", domain).
 		  list();
 	}
 

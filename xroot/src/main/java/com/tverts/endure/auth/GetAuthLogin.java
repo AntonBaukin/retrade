@@ -51,8 +51,8 @@ public class GetAuthLogin extends GetObjectBase
 "from AuthLogin where (domain.id = :domain) and (code = :code)"
 
 		).
-		  setLong  ("domain", domain).
-		  setString("code",   code).
+		  setParameter("domain", domain).
+		  setParameter("code",   code).
 		  uniqueResult();
 	}
 
@@ -120,9 +120,9 @@ public class GetAuthLogin extends GetObjectBase
 "     where (ss.name = :set) and (ss.login.id = :login))"
 
 		).
-		  setLong("domain", domain).
-		  setLong("login",  SecPoint.login()).
-		  setString("set",  selset).
+		  setParameter("domain", domain).
+		  setParameter("login",  SecPoint.login()).
+		  setParameter("set",  selset).
 		  list();
 	}
 
@@ -154,8 +154,8 @@ select p from AuthLogin al join al.person p where
 "  (al.domain.id = :domain) and (al.code = :login)"
 
 		).
-		  setLong  ("domain", domain).
-		  setString("login",  login).
+		  setParameter("domain", domain).
+		  setParameter("login",  login).
 		  uniqueResult();
 	}
 

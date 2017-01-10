@@ -8,7 +8,7 @@ import java.util.List;
 /* Hibernate Persistence Layer */
 
 import com.tverts.hibery.sql.QueryCache;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 
 /* com.tverts: hibery */

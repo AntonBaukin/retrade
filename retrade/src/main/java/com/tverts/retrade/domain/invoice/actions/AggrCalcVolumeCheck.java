@@ -140,7 +140,7 @@ public class AggrCalcVolumeCheck extends AggrCalcBase
 
 		).
 		  setParameter("aggrValue",  aggrValue(struct)).
-		  setLong     ("orderIndex", orderIndex).
+		  setParameter("orderIndex", orderIndex).
 		  setMaxResults(1).
 		  uniqueResult();
 	}
@@ -164,8 +164,8 @@ public class AggrCalcVolumeCheck extends AggrCalcBase
 "  (i.invoiceType = :type)"
 
 		).
-		  setLong     ("good",    good).
-		  setLong     ("invoice", invoice).
+		  setParameter("good",    good).
+		  setParameter("invoice", invoice).
 		  setParameter("type",    Invoices.typeVolumeCheck()).
 		  uniqueResult();
 	}

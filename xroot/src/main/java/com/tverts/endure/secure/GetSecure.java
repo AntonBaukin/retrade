@@ -52,7 +52,7 @@ public class GetSecure extends GetObjectBase
 		return (SecKey) Q(
 		  "from SecKey where (name = :name)"
 		).
-		  setString("name", name).
+		  setParameter("name", name).
 		  uniqueResult();
 	}
 
@@ -83,8 +83,8 @@ public class GetSecure extends GetObjectBase
 "from SecRule where (related.id = :related) and (force = :force)"
 
 		).
-		  setLong("related", related).
-		  setString("force", force).
+		  setParameter("related", related).
+		  setParameter("force", force).
 		  list();
 	}
 
@@ -103,8 +103,8 @@ public class GetSecure extends GetObjectBase
 "  (a.login.id = :login) and (s.id = :set)"
 
 		).
-		  setLong("login", login).
-		  setLong("set",   secSet).
+		  setParameter("login", login).
+		  setParameter("set",   secSet).
 		  list();
 	}
 
@@ -119,8 +119,8 @@ public class GetSecure extends GetObjectBase
 "  select a from SecAble a join a.set s where (a.login.id = :login) and (s.id = :set)"
 
 		).
-		  setLong("login", login).
-		  setLong("set",   secSet).
+		  setParameter("login", login).
+		  setParameter("set",   secSet).
 		  list();
 	}
 
@@ -144,10 +144,10 @@ public class GetSecure extends GetObjectBase
 "   where (ss.name = :set) and (ss.login.id = :xlogin))"
 
 		).
-		  setLong("login",  login).
-		  setLong("set",    secSet).
-		  setString("xset", selset).
-		  setLong("xlogin", SecPoint.login()).
+		  setParameter("login",  login).
+		  setParameter("set",    secSet).
+		  setParameter("xset", selset).
+		  setParameter("xlogin", SecPoint.login()).
 		  list();
 	}
 
@@ -170,9 +170,9 @@ public class GetSecure extends GetObjectBase
 "      where (ss.name = :xset) and (ss.login.id = :xlogin))"
 
 		).
-		  setLong("login",  login).
-		  setString("xset", selset).
-		  setLong("xlogin", SecPoint.login()).
+		  setParameter("login",  login).
+		  setParameter("xset", selset).
+		  setParameter("xlogin", SecPoint.login()).
 		  list();
 	}
 
@@ -194,9 +194,9 @@ public class GetSecure extends GetObjectBase
 "     where (ss.name = :set) and (ss.login.id = :login))"
 
 		).
-		  setLong("domain", domain).
-		  setLong("login",  SecPoint.login()).
-		  setString("set",  selset).
+		  setParameter("domain", domain).
+		  setParameter("login",  SecPoint.login()).
+		  setParameter("set",  selset).
 		  list();
 	}
 
@@ -220,9 +220,9 @@ public class GetSecure extends GetObjectBase
 "       where (ss.name = :set) and (ss.login.id = :login))"
 
 		).
-		  setLong("domain", domain).
-		  setLong("login",  SecPoint.login()).
-		  setString("set",  selset).
+		  setParameter("domain", domain).
+		  setParameter("login",  SecPoint.login()).
+		  setParameter("set",  selset).
 		  list();
 	}
 
@@ -246,9 +246,9 @@ public class GetSecure extends GetObjectBase
 "      where (ss.name = :set) and (ss.login.id = :login))"
 
 		).
-		  setLong("domain", domain).
-		  setLong("login",  SecPoint.login()).
-		  setString("set",  selset).
+		  setParameter("domain", domain).
+		  setParameter("login",  SecPoint.login()).
+		  setParameter("set",  selset).
 		  list();
 	}
 
@@ -270,9 +270,9 @@ public class GetSecure extends GetObjectBase
 "      where (ss.name = :set) and (ss.login.id = :login))"
 
 		).
-		  setLong("domain", domain).
-		  setLong("login",  SecPoint.login()).
-		  setString("set",  selset).
+		  setParameter("domain", domain).
+		  setParameter("login",  SecPoint.login()).
+		  setParameter("set",  selset).
 		  list();
 	}
 
@@ -294,8 +294,8 @@ public class GetSecure extends GetObjectBase
 		return (SecSet) Q(
 "  from SecSet where (domain.id = :domain) and (name = :name)"
 		).
-		  setLong("domain", domain).
-		  setString("name", name).
+		  setParameter("domain", domain).
+		  setParameter("name", name).
 		  uniqueResult();
 	}
 
@@ -347,9 +347,9 @@ public class GetSecure extends GetObjectBase
 "  (a.login.id = :l) and (s.id = :s)"
 
 		).
-		  setLong("r", rule).
-		  setLong("l", login).
-		  setLong("s", set).
+		  setParameter("r", rule).
+		  setParameter("l", login).
+		  setParameter("s", set).
 		  uniqueResult();
 	}
 
@@ -411,7 +411,7 @@ from SecLink sl where (sl.key = :k) and
 		).
 		  setParameter("k", k).
 		  setParameter("r", r).
-		  setLong     ("t", target).
+		  setParameter("t", target).
 		  uniqueResult();
 	}
 
@@ -446,8 +446,8 @@ from SecLink sl where (sl.key = :k) and
 
 		).
 		  setParameter("key",    key).
-		  setLong     ("target", target).
-		  setLong     ("login",  login).
+		  setParameter("target", target).
+		  setParameter("login",  login).
 		  uniqueResult();
 
 /*
@@ -467,8 +467,8 @@ select sl.id from SecLink sl join sl.rule sr, SecAble ab
 
 		).
 		  setParameter("key",    key).
-		  setLong     ("target", target).
-		  setLong     ("login",  login).
+		  setParameter("target", target).
+		  setParameter("login",  login).
 		  list());
 */
 
@@ -501,8 +501,8 @@ select sl.id from SecLink sl join sl.rule sr, SecAble ab
 
 		).
 		  setParameterList("keys", keys).
-		  setLong("target", target).
-		  setLong("login",  login).
+		  setParameter("target", target).
+		  setParameter("login",  login).
 		  list();
 
 		for(Object[] x : ns)
@@ -542,8 +542,8 @@ select sl.id from SecLink sl join sl.rule sr, SecAble ab
 
 		).
 		  setParameterList("keys", keys).
-		  setLong("target", target).
-		  setLong("login",  login).
+		  setParameter("target", target).
+		  setParameter("login",  login).
 		  list();
 
 		if(ns.size() != keys.size())

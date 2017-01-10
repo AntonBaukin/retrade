@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /* Hibernate Persistence Layer */
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 
 /* com.tverts: spring */

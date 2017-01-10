@@ -59,7 +59,7 @@ public class GetDomain extends GetObjectBase
 "from Domain where (codeux = :code)"
 
 		).
-		  setString("code", SU.sXs(code).toLowerCase()).
+		  setParameter("code", SU.sXs(code).toLowerCase()).
 		  uniqueResult();
 	}
 

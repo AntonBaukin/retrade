@@ -9,6 +9,8 @@ import java.util.Set;
 /* Hibernate Persistence Layer */
 
 import org.hibernate.SQLQuery;
+import org.hibernate.type.BinaryType;
+import org.hibernate.type.TimestampType;
 
 /* Spring Framework */
 
@@ -76,13 +78,13 @@ public class GetModelRecord extends GetObjectBase
 					u = session().createSQLQuery(U);
 
 				//[0]: bytes
-				u.setBinary(0, e.getValue());
+				u.setParameter(0, e.getValue(), BinaryType.INSTANCE);
 
 				//[1]: access time
-				u.setTimestamp(1, new Date(e.getKey().accessTime));
+				u.setParameter(1, new Date(e.getKey().accessTime), TimestampType.INSTANCE);
 
 				//[2]: primary key
-				u.setLong(2, key(e.getKey().key));
+				u.setParameter(2, key(e.getKey().key));
 
 				//?: {updated it} take the next
 				if(u.executeUpdate() == 1)
@@ -94,19 +96,19 @@ public class GetModelRecord extends GetObjectBase
 				i = session().createSQLQuery(I);
 
 			//[0]: primary key
-			i.setLong(0, key(e.getKey().key));
+			i.setParameter(0, key(e.getKey().key));
 
 			//[1]: access time
-			i.setTimestamp(1, new Date(e.getKey().accessTime));
+			i.setParameter(1, new Date(e.getKey().accessTime), TimestampType.INSTANCE);
 
 			//[2]: domain
-			i.setLong(2, e.getKey().domain);
+			i.setParameter(2, e.getKey().domain);
 
 			//[3]: login
-			i.setLong(3, e.getKey().login);
+			i.setParameter(3, e.getKey().login);
 
 			//[4]: bytes
-			i.setBinary(4, e.getValue());
+			i.setParameter(4, e.getValue(), BinaryType.INSTANCE);
 
 			//!: do insert it
 			i.executeUpdate();
@@ -122,7 +124,7 @@ public class GetModelRecord extends GetObjectBase
 
 		//c: for each key
 		for(String k : keys)
-			d.setLong(0, key(k)).executeUpdate();
+			d.setParameter(0, key(k)).executeUpdate();
 	}
 
 	/**

@@ -94,7 +94,7 @@ order by lower(pl.name)
 "order by lower(pl.name)"
 
 		).
-		  setLong("domain", domain).
+		  setParameter("domain", domain).
 		  list();
 	}
 
@@ -115,7 +115,7 @@ order by lower(pl.name)
 
 		).
 		  setMaxResults(1).
-		  setLong("domain", domain).
+		  setParameter("domain", domain).
 		  uniqueResult();
 	}
 
@@ -171,7 +171,7 @@ order by lower(pl.name)
 "order by lower(pl.name)"
 
 		).
-		  setLong("goodUnit", goodUnit).
+		  setParameter("goodUnit", goodUnit).
 		  list();
 	}
 
@@ -204,7 +204,7 @@ order by gu.id
 "order by gu.id"
 
 		).
-		  setLong("priceList", priceList).
+		  setParameter("priceList", priceList).
 		  list();
 	}
 
@@ -816,8 +816,8 @@ select gp.id from GoodPrice gp where
 "  (rd.domain.id = :domain) and (rd.code = :code)"
 
 		).
-		  setLong("domain", domain).
-		  setString("code",   code).
+		  setParameter("domain", domain).
+		  setParameter("code",   code).
 		  uniqueResult();
 	}
 

@@ -95,7 +95,7 @@ from CatItem ci where (ci.domain = :domain)
 		"CatItem", getItemClass()
 		).
 		  setParameter("domain", domain).
-		  setString   ("code",   item.getCode()).
+		  setParameter("code",   item.getCode()).
 		  uniqueResult();
 	}
 

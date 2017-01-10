@@ -15,7 +15,7 @@ import java.util.Set;
 
 /* Hibernate Persistence Layer */
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 
 /* com.tverts: self shunts */
 
@@ -150,10 +150,10 @@ public class ShuntInvoicesAggr extends ShuntPlain
 			for(Long good : goods)
 			{
 				//~: select all the invoices having good in store
-				List invs = QI.setLong("good", good).list();
+				List invs = QI.setParameter("good", good).list();
 
 				//~: select all aggregated volume components
-				List vits = QVI.setLong("good", good).list();
+				List vits = QVI.setParameter("good", good).list();
 
 				//?: {check the sizes are equal}
 				if(invs.size() != vits.size())
@@ -899,7 +899,7 @@ order by i.orderIndex
 			for(Long good : goods)
 			{
 				//~: select the items line
-				List<Object[]> items = (List<Object[]>)q.setLong("good", good).list();
+				List<Object[]> items = (List<Object[]>)q.setParameter("good", good).list();
 
 				//c: inspect them
 				for(int i = 1;(i < items.size());i++)
@@ -984,7 +984,7 @@ order by i.orderIndex
 			for(Long good : goods)
 			{
 				//~: select the items line
-				List<Object[]> items = (List<Object[]>)q.setLong("good", good).list();
+				List<Object[]> items = (List<Object[]>)q.setParameter("good", good).list();
 
 				BigDecimal sp = BigDecimal.ZERO;
 				BigDecimal sn = BigDecimal.ZERO;

@@ -7,7 +7,7 @@ import java.util.Collection;
 
 /* Hibernate Persistence Layer */
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.spi.PersistenceContext;
@@ -149,17 +149,7 @@ public class HiberPoint
 			else if(v instanceof Object[])
 				q.setParameterList(p, (Object[])v);
 			else if(v instanceof CharSequence)
-				q.setString(p, v.toString());
-			else if(v instanceof Long)
-				q.setLong(p, (Long)v);
-			else if(v instanceof Integer)
-				q.setInteger(p, (Integer)v);
-			else if(v instanceof BigDecimal)
-				q.setBigDecimal(p, (BigDecimal)v);
-			else if(v instanceof Boolean)
-				q.setBoolean(p, (Boolean)v);
-			else if(v instanceof Character)
-				q.setCharacter(p, (Character)v);
+				q.setParameter(p, v.toString());
 			else
 				q.setParameter(p, v);
 		}

@@ -10,7 +10,7 @@ import java.util.Set;
 
 /* Hibernate Persistence Layer */
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 
 /* com.tverts: hibery */
@@ -430,7 +430,7 @@ public class OrdererDefault extends OrdererBase
 "order by o.$orderIndex asc"
 
 		).
-		  setLong("target", odata.getRequest().getInstance().getPrimaryKey()).
+		  setParameter("target", odata.getRequest().getInstance().getPrimaryKey()).
 		  setMaxResults(1).
 		  list();
 
@@ -459,7 +459,7 @@ public class OrdererDefault extends OrdererBase
 "order by o.$orderIndex desc"
 
 		).
-		  setLong("target", odata.getRequest().getInstance().getPrimaryKey()).
+		  setParameter("target", odata.getRequest().getInstance().getPrimaryKey()).
 		  setMaxResults(1).
 		  list();
 
@@ -489,8 +489,8 @@ public class OrdererDefault extends OrdererBase
 "order by o.$orderIndex desc"
 
 		).
-		  setLong("orderIndex", reference(odata).getOrderIndex()).
-		  setLong("target",     odata.getRequest().getInstance().getPrimaryKey()).
+		  setParameter("orderIndex", reference(odata).getOrderIndex()).
+		  setParameter("target", odata.getRequest().getInstance().getPrimaryKey()).
 		  setMaxResults(1).
 		  list();
 
@@ -523,8 +523,8 @@ public class OrdererDefault extends OrdererBase
 "order by o.$orderIndex asc"
 
 		).
-		  setLong("orderIndex", reference(odata).getOrderIndex()).
-		  setLong("target",     odata.getRequest().getInstance().getPrimaryKey()).
+		  setParameter("orderIndex", reference(odata).getOrderIndex()).
+		  setParameter("target", odata.getRequest().getInstance().getPrimaryKey()).
 		  setMaxResults(1).
 		  list();
 
@@ -576,7 +576,7 @@ public class OrdererDefault extends OrdererBase
 "  ($orderIndex < :orderIndex) order by $orderIndex desc"
 
 		).
-		  setLong("orderIndex", odata.getLeft().getOrderIndex()).
+		  setParameter("orderIndex", odata.getLeft().getOrderIndex()).
 		  setMaxResults(getSpreadLimit());
 
 		List<Long> r = (List<Long>)q.list();
@@ -603,7 +603,7 @@ public class OrdererDefault extends OrdererBase
 "  ($orderIndex > :orderIndex) order by $orderIndex asc"
 
 		).
-		  setLong("orderIndex", odata.getRight().getOrderIndex()).
+		  setParameter("orderIndex", odata.getRight().getOrderIndex()).
 		  setMaxResults(getSpreadLimit());
 
 		r = (List<Long>)q.list();
@@ -675,9 +675,9 @@ public class OrdererDefault extends OrdererBase
 		//   range of [right, spread[spos])
 
 		Query q = indexQuery(odata, spreadReservePlaceRightQuery()).
-		  setLong("smove",      smove).
-		  setLong("startIndex", odata.getRight().getOrderIndex()).
-		  setLong("endIndex",   spread[spos]);
+		  setParameter("smove", smove).
+		  setParameter("startIndex", odata.getRight().getOrderIndex()).
+		  setParameter("endIndex", spread[spos]);
 
 		//!: execute update
 		q.executeUpdate();
@@ -741,9 +741,9 @@ public class OrdererDefault extends OrdererBase
 		//   range of (spread[spos], left]
 
 		Query q = indexQuery(odata, spreadReservePlaceLeftQuery()).
-		  setLong("smove",      smove).
-		  setLong("startIndex", spread[spos]).
-		  setLong("endIndex",   odata.getLeft().getOrderIndex());
+		  setParameter("smove", smove).
+		  setParameter("startIndex", spread[spos]).
+		  setParameter("endIndex", odata.getLeft().getOrderIndex());
 
 		//!: execute update
 		q.executeUpdate();
@@ -800,8 +800,8 @@ public class OrdererDefault extends OrdererBase
 	protected void      spreadMoveOrderRight(OrderData odata)
 	{
 		Query q = indexQuery(odata, spreadMoveOrderRightQuery()).
-		  setLong("insertStep", getInsertStep()).
-		  setLong("orderIndex", odata.getRight().getOrderIndex());
+		  setParameter("insertStep", getInsertStep()).
+		  setParameter("orderIndex", odata.getRight().getOrderIndex());
 
 		//!: execute update
 		q.executeUpdate();
@@ -939,7 +939,7 @@ public class OrdererDefault extends OrdererBase
 
 		//~: set order owner
 		if(Q.contains(":orderOwner"))
-			q.setLong("orderOwner", orderOwnerID(odata));
+			q.setParameter("orderOwner", orderOwnerID(odata));
 
 		//~: set order type
 		if(Q.contains(":orderType"))
@@ -991,7 +991,7 @@ public class OrdererDefault extends OrdererBase
 "select o.$orderIndex from OrderIndex o where (o.id = :pk)"
 
 		).
-		  setLong("pk", reference(odata).getPrimaryKey()).
+		  setParameter("pk", reference(odata).getPrimaryKey()).
 		  uniqueResult();
 
 		EX.assertn(oi);
@@ -1001,6 +1001,7 @@ public class OrdererDefault extends OrdererBase
 		));
 	}
 
+	@SuppressWarnings("unchecked")
 	protected OrderIndex   ensureOrderIndex(OrderData odata, Object[] row)
 	{
 		OrderIndex o = null;

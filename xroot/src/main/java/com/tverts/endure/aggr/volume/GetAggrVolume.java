@@ -85,8 +85,8 @@ public class GetAggrVolume extends GetObjectBase
 		).
 		  setParameter("aggrValue", aggrValue).
 		  setParameter("calcType",  calcType).
-		  setInteger  ("year",      year).
-		  setInteger  ("day",       day).
+		  setParameter("year",      year).
+		  setParameter("day",       day).
 		  uniqueResult();
 	}
 

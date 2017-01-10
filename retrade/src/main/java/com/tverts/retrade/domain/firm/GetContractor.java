@@ -78,10 +78,10 @@ public class GetContractor extends GetFirm
 	{
 		EX.assertn(firmKey);
 
-// from Contractor where (firm = :fe)
+// from Contractor where (firm.id = :fe)
 
 		final String Q =
-"  from Contractor where (firm = :fe)";
+"  from Contractor where (firm.id = :fe)";
 
 		return object(Contractor.class, Q, "fe", firmKey);
 	}

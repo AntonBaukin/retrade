@@ -634,11 +634,11 @@ public class AggregatorVolume extends AggregatorSingleBase
 				QP = QP.replace('+', '-');
 
 			aggrItemQ(struct, QP).
-			  setParameter ("aggrValue",  aggrValue(struct)).
-			  setBigDecimal("vp",         vp).
-			  setBigDecimal("vn",         vn).
-			  setLong      ("left",       li).
-			  setLong      ("right",      ri).
+			  setParameter("aggrValue",  aggrValue(struct)).
+			  setParameter("vp",         vp).
+			  setParameter("vn",         vn).
+			  setParameter("left",       li).
+			  setParameter("right",      ri).
 			  executeUpdate();
 		}
 		//~: {item is fixed history}
@@ -677,8 +677,8 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 			).
 			  setParameter("aggrValue",  aggrValue(struct)).
-			  setLong     ("left",       li).
-			  setLong     ("right",      ri).
+			  setParameter("left",       li).
+			  setParameter("right",      ri).
 			  list();
 
 			//c: for all helper history items
@@ -717,7 +717,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 		).
 		  setParameter("aggrValue",  aggrValue(struct)).
-		  setLong     ("orderIndex", orderIndex).
+		  setParameter("orderIndex", orderIndex).
 		  setMaxResults(1).
 		  uniqueResult();
 
@@ -744,7 +744,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 		).
 		  setParameter("aggrValue",  aggrValue(struct)).
-		  setLong     ("orderIndex", orderIndex).
+		  setParameter("orderIndex", orderIndex).
 		  setMaxResults(1).
 		  uniqueResult();
 
@@ -784,7 +784,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 		).
 		  setParameter("aggrValue",  aggrValue(struct)).
-		  setLong("l", l).setLong("r", r).
+		  setParameter("l", l).setParameter("r", r).
 		  list();
 
 		AggrItemVolume[] o = new AggrItemVolume[2];
@@ -819,7 +819,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 		).
 		  setParameter("aggrValue",  aggrValue(struct)).
-		  setLong     ("orderIndex", orderIndex).
+		  setParameter("orderIndex", orderIndex).
 		  setFirstResult(n).setMaxResults(1).
 		  uniqueResult();
 	}
@@ -843,8 +843,8 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 		).
 		  setParameter("aggrValue",  aggrValue(struct)).
-		  setLong     ("b",          b).
-		  setLong     ("e",          e).
+		  setParameter("b",          b).
+		  setParameter("e",          e).
 		  uniqueResult();
 
 		return new BigDecimal[] {
@@ -870,8 +870,8 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 		).
 		  setParameter("aggrValue",  aggrValue(struct)).
-		  setLong     ("b",          b).
-		  setLong     ("e",          e).
+		  setParameter("b",          b).
+		  setParameter("e",          e).
 		  uniqueResult()).intValue();
 	}
 

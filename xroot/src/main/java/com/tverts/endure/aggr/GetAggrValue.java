@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 /* Hibernate Persistence Layer */
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 
 /* com.tverts: hibery */
 
@@ -74,11 +74,11 @@ from AggrValue where (owner.id = :owner) and
 		//HINT: we expect 0 or 1 instances, but have to detect more.
 		q.setMaxResults(2);
 
-		q.setLong     ("owner",    owner);
+		q.setParameter("owner",    owner);
 		q.setParameter("aggrType", aggrType);
 
 		if(selectorKey != null)
-			q.setLong  ("selectorKey", selectorKey);
+			q.setParameter("selectorKey", selectorKey);
 
 		//~:
 		List         r = q.list();

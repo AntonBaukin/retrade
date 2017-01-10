@@ -138,8 +138,8 @@ public abstract class AggrCalcDatePeriodVolumeBase
 
 		).
 		  setParameter("aggrCalc", aggrCalc(struct)).
-		  setInteger("year", calcYear(struct)).
-		  setInteger("day", calcDay(struct)).
+		  setParameter("year", calcYear(struct)).
+		  setParameter("day", calcDay(struct)).
 		  uniqueResult();
 	}
 

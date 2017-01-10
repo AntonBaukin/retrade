@@ -81,7 +81,7 @@ select do from Domain do, ExecRequest er where
 "  (er.id = :pk) and (do.id = er.domain)"
 
 		).
-		  setLong("pk", requestKey).
+		  setParameter("pk", requestKey).
 		  uniqueResult();
 	}
 
@@ -102,7 +102,7 @@ select au from AuthSession au, ExecRequest er where
 "  (er.id = :pk) and (au.id = er.sessionId)"
 
 		).
-		  setLong("pk", requestKey).
+		  setParameter("pk", requestKey).
 		  uniqueResult();
 
 		if(sessionCache == null)

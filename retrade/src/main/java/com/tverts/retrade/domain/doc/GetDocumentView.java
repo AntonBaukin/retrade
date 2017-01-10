@@ -49,7 +49,7 @@ public class GetDocumentView extends GetObjectBase
 		return (DocumentView) Q(
 		  "from DocumentView dv where dv.viewOwner.id = :owner"
 		).
-		  setLong("owner", owner).
+		  setParameter("owner", owner).
 		  uniqueResult();
 	}
 

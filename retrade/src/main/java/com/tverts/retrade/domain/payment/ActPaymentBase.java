@@ -4,6 +4,10 @@ package com.tverts.retrade.domain.payment;
 
 import java.math.BigDecimal;
 
+/* Hibernate Persistence Layer */
+
+import org.hibernate.type.TimestampType;
+
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -171,7 +175,7 @@ public abstract class ActPaymentBase
 
 		).
 		  setParameter("domain", target(abr, Payment.class).getDomain()).
-		  setTimestamp("time",   target(abr, Payment.class).getTime()).
+		  setParameter("time", target(abr, Payment.class).getTime(), TimestampType.INSTANCE).
 		  setMaxResults(1).
 		  uniqueResult();
 	}

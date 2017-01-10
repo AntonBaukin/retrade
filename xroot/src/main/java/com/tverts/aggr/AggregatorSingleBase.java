@@ -10,7 +10,7 @@ import java.util.Set;
 
 /* Hibernate Persistence Layer */
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 
 /* com.tverts: spring */
 
@@ -143,7 +143,7 @@ order by orderIndex asc
 
 		).
 		  setParameter("aggrValue", aggrValue(struct)).
-		  setLong     ("sourceKey",  sourceKey).
+		  setParameter("sourceKey", sourceKey).
 		  list();
 	}
 
@@ -166,7 +166,7 @@ order by orderIndex asc
 
 		).
 		  setParameter("aggrValue", aggrValue(struct)).
-		  setLong     ("sourceKey",  sourceKey).
+		  setParameter("sourceKey", sourceKey).
 		  list();
 	}
 
@@ -226,7 +226,7 @@ order by orderIndex asc
 			Q = Q.replace("so.orderIndex", "so." + struct.task.getOrderPath());
 
 		Number sourceIndex = (Number) Q(struct, Q, "Source", sourceClass).
-		  setLong("sourceKey", struct.task.getSourceKey()).
+		  setParameter("sourceKey", struct.task.getSourceKey()).
 		  uniqueResult();
 
 		//?: {order index does not exist}
@@ -265,7 +265,7 @@ order by orderIndex asc
 		//~: execute the query
 		List list = aggrItemQ(struct, Q, "Source", sourceClass).
 		  setParameter("aggrValue",   aggrValue(struct)).
-		  setLong     ("sourceIndex", sourceIndex.longValue()).
+		  setParameter("sourceIndex", sourceIndex.longValue()).
 		  setMaxResults(1).
 		  list();
 

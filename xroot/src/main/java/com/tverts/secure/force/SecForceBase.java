@@ -8,7 +8,7 @@ import java.util.List;
 /* Hibernate Persistence Layer */
 
 import com.tverts.endure.secure.SecSet;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 
 /* com.tverts: hibery */

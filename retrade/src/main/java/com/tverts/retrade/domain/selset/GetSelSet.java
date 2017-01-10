@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 /* Hibernate Persistence Layer */
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 
 /* com.tverts: hibery */
 
@@ -61,7 +61,7 @@ order by ss.id asc
 			Q = Q.replace(" asc ", " desc");
 
 		return (List<String>) Q(Q).
-		  setLong("login", login).
+		  setParameter("login", login).
 		  list();
 	}
 
@@ -173,7 +173,7 @@ order by ss.id asc
 		for(Long obj : objects)
 			if(obj != null)
 			{
-				q.setLong("obj", obj);
+				q.setParameter("obj", obj);
 				q.executeUpdate();
 			}
 	}
@@ -192,7 +192,7 @@ order by ss.id asc
 		for(Long id : ids)
 			if(id != null)
 			{
-				q.setLong("iid", id);
+				q.setParameter("iid", id);
 				q.executeUpdate();
 			}
 	}

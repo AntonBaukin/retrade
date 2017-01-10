@@ -61,6 +61,7 @@ public class GetUnity extends GetObjectBase
 	 * Loads the actual instance having this
 	 * Unity object as it's unified mirror.
 	 */
+	@SuppressWarnings("unchecked")
 	public United getUnited(Long pk)
 	{
 		if(pk == null) return null;
@@ -77,7 +78,7 @@ select ut from Unity u join u.unityType ut
 "  where u.primaryKey = :primaryKey"
 
 		).
-		  setLong("primaryKey", pk).
+		  setParameter("primaryKey", pk).
 		  uniqueResult();
 
 		//?: {not found it}
@@ -98,6 +99,7 @@ select ut from Unity u join u.unityType ut
 		return (United) session().get(ut.getTypeClass(), pk);
 	}
 
+	@SuppressWarnings("unchecked")
 	public United getUnited(Unity u)
 	{
 		return (United) session().get(

@@ -12,7 +12,7 @@ import java.util.Random;
 /* Hibernate Persistence Layer */
 
 import com.tverts.endure.NumericIdentity;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 
 /* com.tverts: hibery */
 
@@ -444,7 +444,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 
 				//~: execute query to delete crosses coming through this folder
 				if(e && !n.getObjectKey().startsWith("$"))
-					query.setLong("folder", f.getPrimaryKey()).executeUpdate();
+					query.setParameter("folder", f.getPrimaryKey()).executeUpdate();
 
 				//~: update transaction number
 				TxPoint.txn(tx(), f);
@@ -599,7 +599,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 				for(TreeItem i : items)
 				{
 					//~: delete the crosses
-					query.setLong("item", i.getPrimaryKey()).executeUpdate();
+					query.setParameter("item", i.getPrimaryKey()).executeUpdate();
 
 					//~: delete the item itself
 					session().delete(i);

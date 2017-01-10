@@ -375,7 +375,7 @@ order by historyIndex desc
 
 		).
 		  setParameter("aggrValue",  aggrValue(struct)).
-		  setLong     ("orderIndex", orderIndex).
+		  setParameter("orderIndex", orderIndex).
 		  setMaxResults(1).
 		  list();
 
@@ -422,7 +422,7 @@ order by historyIndex asc
 
 		).
 		  setParameter("aggrValue", aggrValue(struct)).
-		  setLong("orderIndex", orderIndex).
+		  setParameter("orderIndex", orderIndex).
 		  setMaxResults(1).
 		  list();
 
@@ -450,7 +450,7 @@ order by historyIndex asc
 
 		).
 		  setParameter("aggrValue",  aggrValue(struct)).
-		  setLong     ("orderIndex", orderIndex).
+		  setParameter("orderIndex", orderIndex).
 		  list();
 	}
 
@@ -569,8 +569,8 @@ select sum(goodVolume) from AggrItem where
 
 		).
 		  setParameter("aggrValue",  aggrValue(struct)).
-		  setLong     ("leftIndex",  leftIndex).
-		  setLong     ("rightIndex", rightIndex).
+		  setParameter("leftIndex",  leftIndex).
+		  setParameter("rightIndex", rightIndex).
 		  uniqueResult();
 	}
 
@@ -593,7 +593,7 @@ select sum(goodVolume) from AggrItem where
 
 		).
 		  setParameter("aggrValue", aggrValue(struct)).
-		  setLong     ("rightIndex", rightIndex).
+		  setParameter("rightIndex", rightIndex).
 		  uniqueResult();
 	}
 

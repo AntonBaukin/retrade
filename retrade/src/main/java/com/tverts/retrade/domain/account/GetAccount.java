@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 /* Hibernate Persistence Layer */
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 
 /* com.tverts: secure */
 
@@ -74,12 +74,12 @@ public class GetAccount extends GetObjectBase
 "  (contractor.id = :contractor)";
 
 		Query q = Q((contractor == null)?(Q0):(Q1)).
-		  setString("code", code);
+		  setParameter("code", code);
 
 		if(contractor == null)
-			q.setLong("domain", domain);
+			q.setParameter("domain", domain);
 		else
-			q.setLong("contractor", contractor);
+			q.setParameter("contractor", contractor);
 
 		return (Account) q.uniqueResult();
 	}
@@ -225,7 +225,7 @@ public class GetAccount extends GetObjectBase
 		for(Object[] rec : res)
 		{
 			//~: restrict the account
-			q.setLong(SU.sXs(wa.getParamsPrefix()) + "account",
+			q.setParameter(SU.sXs(wa.getParamsPrefix()) + "account",
 			  ((Account)rec[0]).getPrimaryKey()
 			);
 
@@ -387,7 +387,7 @@ public class GetAccount extends GetObjectBase
 "from PaySelf where (account.domain.id = :domain)"
 
 		).
-		  setLong("domain", domain).
+		  setParameter("domain", domain).
 		  list();
 	}
 
@@ -422,7 +422,7 @@ public class GetAccount extends GetObjectBase
 "where (p.payWay = :payWay)"
 
 		).
-		  setLong("payWay", payWay).
+		  setParameter("payWay", payWay).
 		  setMaxResults(1).
 		  uniqueResult();
 	}
@@ -605,7 +605,7 @@ public class GetAccount extends GetObjectBase
 		for(Object[] rec : res)
 		{
 			//~: restrict the payment way
-			q.setLong(SU.sXs(ww.getParamsPrefix()) + "way",
+			q.setParameter(SU.sXs(ww.getParamsPrefix()) + "way",
 			  ((PayWay)rec[0]).getPrimaryKey()
 			);
 
@@ -684,7 +684,7 @@ public class GetAccount extends GetObjectBase
 "from Payment where (payOrder.id = :payOrder)"
 
 		).
-		  setLong("payOrder", payOrder).
+		  setParameter("payOrder", payOrder).
 		  list();
 	}
 

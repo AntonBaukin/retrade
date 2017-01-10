@@ -47,7 +47,7 @@ select count(ci.id) from CatItem ci where
 
 		  "CatItem", catItemClass
 		).
-		  setLong("domain", domain).
+		  setParameter("domain", domain).
 		  uniqueResult()).
 		  intValue();
 	}
@@ -70,8 +70,8 @@ from CatItem ci where (ci.domain = :domain)
 
 		  "CatItem", catItemClass
 		).
-		  setLong  ("domain", domain).
-		  setString("code",   code).
+		  setParameter("domain", domain).
+		  setParameter("code", code).
 		  uniqueResult();
 	}
 
@@ -87,7 +87,7 @@ from CatItem ci where (ci.domain = :domain)
 
 		  "CatItem", catItemClass
 		).
-		  setLong("domain", domain).
+		  setParameter("domain", domain).
 		  setFirstResult(offset).
 		  setMaxResults(1).
 		  uniqueResult();

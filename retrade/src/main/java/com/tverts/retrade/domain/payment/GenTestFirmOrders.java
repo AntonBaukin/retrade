@@ -9,6 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/* Hibernate Persistence Layer */
+
+import org.hibernate.type.DateType;
+
 /* com.tverts: hibery */
 
 import static com.tverts.hibery.HiberPoint.setPrimaryKey;
@@ -206,8 +210,8 @@ public class GenTestFirmOrders extends GenesisHiberPartBase
 
 		).
 		  setParameter("domain",  ctx.get(Domain.class)).
-		  setDate     ("minTime", DU.cleanTime(day)).
-		  setDate     ("maxTime", DU.lastTime(day)).
+		  setParameter("minTime", DU.cleanTime(day), DateType.INSTANCE).
+		  setParameter("maxTime", DU.lastTime(day), DateType.INSTANCE).
 		  uniqueResult()).intValue();
 
 		fo.setCode(SU.cats(

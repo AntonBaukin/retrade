@@ -68,7 +68,7 @@ public class GetReports extends GetObjectBase
 "  select rr.id from ReportRequest rr where (rr.template.id = :template)"
 
 		).
-		  setLong("template", template).
+		  setParameter("template", template).
 		  setMaxResults(1).
 		  list().isEmpty();
 	}

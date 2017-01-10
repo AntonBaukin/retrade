@@ -195,7 +195,7 @@ select ib.id from InvoiceBill ib where
 "  (ib.invoice.domain.id = :domain)"
 
 		).
-		  setLong("domain", ctx().getDomain()).
+		  setParameter("domain", ctx().getDomain()).
 		  list();
 
 		//~: contractor -> summary (buy-expense, sell-income) bills
@@ -248,7 +248,7 @@ select co.id from Contractor co where
 "  (co.domain.id = :domain)"
 
 		).
-		  setLong("domain", ctx().getDomain()).
+		  setParameter("domain", ctx().getDomain()).
 		  list();
 
 		GetAggrValue  gav = bean(GetAggrValue.class);

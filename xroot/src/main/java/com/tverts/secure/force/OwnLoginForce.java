@@ -152,7 +152,7 @@ public class OwnLoginForce extends DomainKeyForce
 "  (select r.related.id from SecRule r where r.force = :force)"
 
 		).
-		  setString("force", uid()).
+		  setParameter("force", uid()).
 		  list();
 	}
 }

@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 
 /* Hibernate Persistence Layer */
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 
 /* com.tverts: support */

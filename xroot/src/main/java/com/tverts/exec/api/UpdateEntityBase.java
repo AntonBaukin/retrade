@@ -71,6 +71,7 @@ public abstract class UpdateEntityBase extends ExecutorBase
 	 */
 	protected abstract void    update(Object entity, Object source);
 
+	@SuppressWarnings("unchecked")
 	protected Object           loadEntity(Holder h)
 	{
 		//?: {API class is not a standard}

@@ -37,7 +37,7 @@ public class GetLock extends GetObjectPrototypeBase
 "from Lock where (owner.id = :owner) and (lockType = :type)"
 
 		).
-		  setLong     ("owner", owner).
+		  setParameter("owner", owner).
 		  setParameter("type",  type).
 		  uniqueResult();
 	}

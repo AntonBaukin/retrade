@@ -4,7 +4,7 @@ package com.tverts.hibery.keys;
 
 import org.hibernate.Session;
 import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.id.SequenceGenerator;
+import org.hibernate.id.enhanced.SequenceStyleGenerator;
 
 /* com.tverts: endure keys */
 
@@ -64,8 +64,8 @@ public final class HiberKeysGeneratorBridge
 		  (SessionImplementor)session,
 		  context.getSavedInstance());
 
-		String seq = !(generator instanceof SequenceGenerator)?(null):
-		  ((SequenceGenerator)generator).getSequenceName();
+		String seq = !(generator instanceof SequenceStyleGenerator)?(null):
+		  ((SequenceStyleGenerator)generator).getDatabaseStructure().getName();
 
 		if(LU.isD(KeysGenerator.class.getName())) LU.D(
 		  KeysGenerator.class.getName(),

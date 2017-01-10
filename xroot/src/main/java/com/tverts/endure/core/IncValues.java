@@ -13,7 +13,7 @@ import com.tverts.system.tx.TxBean;
 
 import org.hibernate.LockMode;
 import org.hibernate.LockOptions;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 
 /* com.tverts: hibery */
 
