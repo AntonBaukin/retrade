@@ -130,6 +130,7 @@ public class      HiberKeysGeneratorBinder
 		return ig;
 	}
 
+	@SuppressWarnings("deprecation")
 	protected void   init(IdentifierGenerator ig)
 	{
 		//~: initialize the query
@@ -140,6 +141,8 @@ public class      HiberKeysGeneratorBinder
 		//?: {not persistent} nothing more
 		if(!(ig instanceof PersistentIdentifierGenerator))
 			return;
+
+		//TODO find better way to get sql to create db sequences
 
 		//~: create database sequence
 		final String[] qs = ((PersistentIdentifierGenerator)ig).

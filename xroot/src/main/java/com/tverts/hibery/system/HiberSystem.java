@@ -24,18 +24,19 @@ import javax.persistence.metamodel.EntityType;
 import org.hibernate.Hibernate;
 import org.hibernate.LockMode;
 import org.hibernate.LockOptions;
+import org.hibernate.Metamodel;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
-
 import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.engine.spi.EntityEntry;
 import org.hibernate.engine.spi.PersistenceContext;
-import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.engine.spi.Status;
 import org.hibernate.internal.util.collections.IdentitySet;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.metamodel.spi.MetamodelImplementor;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.service.ServiceRegistry;
 
@@ -83,7 +84,6 @@ public class HiberSystem
 
 	/* public: HiberSystem (bean) interface */
 
-	@SuppressWarnings("deprecation")
 	public void setSessionFactory(SessionFactory sf)
 	{
 		this.sessionFactory = sf;
@@ -187,7 +187,7 @@ public class HiberSystem
 	}
 
 	@SuppressWarnings("unchecked")
-	public Object      unproxyDeeply(SessionFactory f, Object e, Map closure)
+	public Object      unproxyDeeply(Session s, Object e, Map closure)
 	{
 		if(e == null) return null;
 
@@ -211,7 +211,7 @@ public class HiberSystem
 
 			for(Iterator i = ((Collection)e).iterator();(i.hasNext());)
 			{
-				Object v = unproxyDeeply(f, (x = i.next()), closure);
+				Object v = unproxyDeeply(s, (x = i.next()), closure);
 
 				if(v != x) y = true;
 				r.add(v);
@@ -234,10 +234,10 @@ public class HiberSystem
 			{
 				Map.Entry m = (Map.Entry) i.next();
 
-				Object    k = unproxyDeeply(f, (x = m.getKey()), closure);
+				Object k = unproxyDeeply(s, (x = m.getKey()), closure);
 				if(k != x) y = true;
 
-				Object    v = unproxyDeeply(f, (x = m.getValue()), closure);
+				Object v = unproxyDeeply(s, (x = m.getValue()), closure);
 				if(v != x) y = true;
 
 				r.put(k, v);
@@ -255,8 +255,10 @@ public class HiberSystem
 		x = unproxy(e); closure.put(e, x);
 		e = x;          closure.put(e, e);
 
-		ClassMetadata m = f.getClassMetadata(e.getClass());
-		if(m == null) return e;
+		//~: get class persistence metadata
+		ClassMetadata m = (ClassMetadata)
+		  ((MetamodelImplementor)s.getMetamodel()).
+		    entityPersister(e.getClass());
 
 		//c: for all the properties (not having dots: are system)
 		for(String p : m.getPropertyNames()) if(p.indexOf('.') == -1)
@@ -266,7 +268,7 @@ public class HiberSystem
 
 			//~: lookup the closure
 			if((x = closure.get(v)) == null)
-				x = unproxyDeeply(f, v, closure);
+				x = unproxyDeeply(s, v, closure);
 
 			//?: {instance was changed} update it
 			if(v != x)
@@ -360,56 +362,75 @@ public class HiberSystem
 
 	/* Access Hibernate Metadata */
 
-	public Metadata        getMetadata()
+	public Metadata         getMetadata()
 	{
 		return metadata;
 	}
 
-	public Dialect         getDialect()
+	public Metamodel        getMetamodel()
 	{
-		if(!(this.sessionFactory instanceof SessionFactoryImplementor))
+		if(sessionFactory == null)
 			return null;
 
-		return ((SessionFactoryImplementor)this.sessionFactory).getDialect();
+		return sessionFactory.getMetamodel();
 	}
 
-	public ServiceRegistry getServiceRegistry()
+	public Dialect          getDialect()
+	{
+		if(getServiceRegistry() == null)
+			return null;
+
+		JdbcServices jdbcs = getServiceRegistry().
+		  getService(JdbcServices.class);
+
+		return (jdbcs == null)?(null):(jdbcs.getDialect());
+	}
+
+	public ServiceRegistry  getServiceRegistry()
 	{
 		return serviceRegistry;
 	}
 
-	public static Dialect  dialect()
+	public static Dialect   dialect()
 	{
 		return EX.assertn(HiberSystem.getInstance().getDialect(),
 		  "Hibernate Dialect is not defined!");
 	}
 
-	public static Metadata meta()
+	public static Metadata  meta()
 	{
 		return EX.assertn(HiberSystem.getInstance().getMetadata(),
 		  "Hibernate Metadata are not defined!");
 	}
 
-	public static ServiceRegistry serviceRegistry()
+	public static Metamodel model()
+	{
+		return EX.assertn(HiberSystem.getInstance().getMetamodel(),
+		  "Hibernate Metamodel is not defined!");
+	}
+
+	public static ServiceRegistry
+	                        serviceRegistry()
 	{
 		return EX.assertn(HiberSystem.getInstance().getServiceRegistry(),
 		  "Hibernate Service Registry are not defined!");
 	}
 
 
-	/* public: hibernate system survey */
+	/* Hibernate System Survey */
 
-	public Set<Class>             getMappedClasses()
+	public Set<Class> getMappedClasses()
 	{
 		return mappedClasses;
 	}
 
-	public Map<Class, Set<Class>> getDescendants()
+	public Map<Class, Set<Class>>
+	                  getDescendants()
 	{
 		return descendants;
 	}
 
-	public boolean                hasDescendants(Class entityClass)
+	public boolean    hasDescendants(Class entityClass)
 	{
 		Set<Class> ds = descendants.get(entityClass);
 		return (ds != null) && !ds.isEmpty();

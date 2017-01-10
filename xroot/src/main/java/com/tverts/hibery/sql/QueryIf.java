@@ -37,8 +37,7 @@ public class QueryIf extends SQLTaskBase
 		super.configure(node);
 
 		//~: select <if> elements
-		for(Element n : node.getChildren("if"))
-			readIf(n);
+		node.getChildren("if").forEach(this::readIf);
 	}
 
 	protected void readIf(Element n)
@@ -66,7 +65,7 @@ public class QueryIf extends SQLTaskBase
 			boolean  empty  = empties.contains(i);
 
 			//~: execute select
-			List result = session.createSQLQuery(ifs.get(i)).list();
+			List result = session.createNativeQuery(ifs.get(i)).list();
 
 			//?: {not that emptiness}
 			if(result.isEmpty() != empty)
@@ -80,8 +79,8 @@ public class QueryIf extends SQLTaskBase
 	/* protected: task configuration */
 
 	protected List<String> ifs =
-	  new ArrayList<String>(1);
+	  new ArrayList<>(1);
 
 	protected Set<Integer> empties =
-	  new HashSet<Integer>(1);
+	  new HashSet<>(1);
 }

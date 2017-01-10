@@ -99,8 +99,8 @@ where (i.domain = :domain) and
 	@SelfShuntMethod(order = 1, critical = true)
 	public void testInvoiceBillsAmounts()
 	{
-		List bills = session().createCriteria(InvoiceBill.class).
-		  setProjection(org.hibernate.criterion.Projections.id()).
+		List bills = session().
+		  createQuery("select id from InvoiceBill").
 		  list();
 
 		for(Object id : bills)

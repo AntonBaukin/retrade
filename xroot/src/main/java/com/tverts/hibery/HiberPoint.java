@@ -188,9 +188,7 @@ public class HiberPoint
 	@SuppressWarnings("unchecked")
 	public static <E> E   unproxyDeeply(Session s, E e)
 	{
-		return (E) HiberSystem.getInstance().unproxyDeeply(
-		  s.getSessionFactory(), e, null
-		);
+		return (E) HiberSystem.getInstance().unproxyDeeply(s, e, null);
 	}
 
 	public static boolean isProxy(Object e)

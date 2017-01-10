@@ -8,7 +8,7 @@ import java.util.Set;
 
 /* Hibernate Persistence Layer */
 
-import org.hibernate.SQLQuery;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.type.BinaryType;
 import org.hibernate.type.TimestampType;
 
@@ -59,7 +59,7 @@ public class GetModelRecord extends GetObjectBase
 
 	public void   save(Map<ModelEntry, byte[]> es)
 	{
-		SQLQuery u = null, i = null;
+		NativeQuery u = null, i = null;
 
 		final String U =
 "update model_record set bean_bytes = ?, access_type = ? where (pk_bean_key = ?)";
@@ -75,7 +75,7 @@ public class GetModelRecord extends GetObjectBase
 			if(e.getKey().loaded)
 			{
 				if(u == null)
-					u = session().createSQLQuery(U);
+					u = session().createNativeQuery(U);
 
 				//[0]: bytes
 				u.setParameter(0, e.getValue(), BinaryType.INSTANCE);
@@ -93,7 +93,7 @@ public class GetModelRecord extends GetObjectBase
 
 			//~: proceed with insert
 			if(i == null)
-				i = session().createSQLQuery(I);
+				i = session().createNativeQuery(I);
 
 			//[0]: primary key
 			i.setParameter(0, key(e.getKey().key));
@@ -120,7 +120,7 @@ public class GetModelRecord extends GetObjectBase
 		final String D =
 "delete from model_record (pk_bean_key = ?)";
 
-		SQLQuery d = session().createSQLQuery(D);
+		NativeQuery d = session().createNativeQuery(D);
 
 		//c: for each key
 		for(String k : keys)

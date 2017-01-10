@@ -71,8 +71,8 @@ public class TxPoint
 		);
 
 		//?: {not a manual flush mode}
-		if(!FlushMode.MANUAL.equals(res.getFlushMode()))
-			res.setFlushMode(FlushMode.MANUAL);
+		if(!FlushMode.MANUAL.equals(res.getHibernateFlushMode()))
+			res.setHibernateFlushMode(FlushMode.MANUAL);
 
 		return res;
 	}

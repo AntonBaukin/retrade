@@ -72,7 +72,7 @@ public class SQLTaskBase implements SQLTask
 		for(String q : queries)
 		{
 			//~: execute update
-			session.createSQLQuery(q).executeUpdate();
+			session.createNativeQuery(q).executeUpdate();
 
 			//~: log the query
 			logQuery(q);

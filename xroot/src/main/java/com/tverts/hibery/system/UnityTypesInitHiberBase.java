@@ -1,13 +1,13 @@
 package com.tverts.hibery.system;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-/* Hibernate Persistence Layer */
+/* Java Persistence */
 
-import org.hibernate.SessionFactory;
+import javax.persistence.metamodel.EntityType;
 
 /* com.tverts: actions */
 
@@ -21,18 +21,14 @@ import com.tverts.endure.core.ActUnityType;
 import com.tverts.endure.types.UnityTypeStruct;
 import com.tverts.endure.types.UnityTypesInitBase;
 
-/* com.tverts: hibery */
-
-import com.tverts.hibery.HiberPoint;
-
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.LU;
-import com.tverts.support.SU;
 
 
 /**
@@ -44,14 +40,6 @@ import com.tverts.support.SU;
 public abstract class UnityTypesInitHiberBase
        extends        UnityTypesInitBase
 {
-	/* public: UnityTypesInitHiberBase interface */
-
-	public SessionFactory getSessionFactory()
-	{
-		return HiberPoint.getInstance().getSessionFactory();
-	}
-
-
 	/* protected: unity types storing */
 
 	/**
@@ -105,19 +93,12 @@ public abstract class UnityTypesInitHiberBase
 		}
 
 		//?: {has no type class found}
-		if(typeClass == null)
-			throw new IllegalStateException(String.format(
-			  "Can't ensure Unity Type of undefined class! " +
-			  "(Type name is '%s'.)", typeName
-			));
-
+		EX.assertn(typeClass, "Can't ensure Unity Type ",
+		  "of undefined class! (Type name is '", typeName, "'.)");
 
 		//?: {has no type name}
-		if(SU.sXe(typeName))
-			throw new IllegalStateException(String.format(
-			  "Can't ensure Unity Type of undefined type name! " +
-			  "Type class '%s'",  LU.cls(typeClass)
-			));
+		EX.asserts(typeName, "Can't ensure Unity Type ",
+		  "of undefined type name! Type class is ",  LU.cls(typeClass));
 	}
 
 	protected UnityType findUnityType(Object entry)
@@ -128,7 +109,7 @@ public abstract class UnityTypesInitHiberBase
 		if(entry instanceof UnityTypeStruct)
 			return findUnityType((UnityTypeStruct)entry);
 
-		throw new IllegalArgumentException();
+		throw EX.ass();
 	}
 
 	protected UnityType findUnityType(ParseEntry pe)
@@ -160,7 +141,7 @@ public abstract class UnityTypesInitHiberBase
 		if(entry instanceof UnityTypeStruct)
 			return createUnityType((UnityTypeStruct)entry);
 
-		throw new IllegalArgumentException();
+		throw EX.ass();
 	}
 
 	protected UnityType createUnityType(ParseEntry pe)
@@ -234,9 +215,6 @@ public abstract class UnityTypesInitHiberBase
 
 	protected void      handleEntry(ParseEntry pe)
 	{
-		if(getSessionFactory() == null)
-			throw new IllegalStateException();
-
 		findClassName(pe);
 		super.handleEntry(pe);
 	}
@@ -252,21 +230,20 @@ public abstract class UnityTypesInitHiberBase
 		//?: {have no simple name} nothing to do
 		if(pe.simpleName == null) return;
 
-		ArrayList<String> res = new ArrayList<String>(1);
+		ArrayList<String> res = new ArrayList<>(1);
 
+		//~: ending class name
 		String className = "." + pe.simpleName;
 
 		//~: search for the entities with the same simple name
-		for(String en : getSessionFactory().getAllClassMetadata().keySet())
-			if(en.equals(pe.className) || en.endsWith(className))
-				res.add(en);
+		for(EntityType<?> e : HiberSystem.model().getEntities())
+			if(e.getBindableJavaType().getName().endsWith(className))
+				res.add(e.getBindableJavaType().getName());
 
 		//?: {has more than one} warn in log
-		if(res.size() > 1) LU.W(getLog(), String.format(
-		  "Can't guess the full class name by it's simple name '%s': " +
-		  "there are more than one class mapped in Hibernate.",
-
-		  pe.simpleName));
+		if(res.size() > 1) LU.W(getLog(),
+		  "Can't guess the full class name by it's simple name [ ",
+		  pe.simpleName, "] as more than one class is mapped in Hibernate!");
 
 		if(res.size() == 1)
 			pe.className = res.get(0);
