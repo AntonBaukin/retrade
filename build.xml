@@ -2,8 +2,39 @@
 
 <project name = 'retrade-applications'>
 
-  <property name  = 'retrade-api-file'
-            value = 'retrade-api-0.0.zip'/>
+  <target name = 'zip' depends = 'clean'>
+
+    <zip destfile = '../tts.zip' basedir = '..'
+         includes = 'tts/**/*' defaultexcludes = 'false'
+         encoding = 'UTF-8'/>
+  </target>
+
+
+  <target name = 'init-dev'>
+
+    <ant dir = 'xroot' target = 'init-dev'
+         inheritAll = 'false'/>
+
+    <ant dir = 'auth' target = 'init-dev'
+         inheritAll = 'false'/>
+
+  </target>
+
+
+  <target name = 'api'>
+
+    <zip destfile = 'retrade-api-1.0.zip'
+         basedir  = 'xroot/src/main/java/'
+         includes = 'com/tverts/api/**/*'
+         update   = 'false'
+         encoding = 'UTF-8'/>
+
+    <zip destfile = 'retrade-api-0.0.zip'
+         basedir  = 'retrade/src/main/java/'
+         includes = 'com/tverts/api/**/*'
+         update   = 'true'
+         encoding = 'UTF-8'/>
+  </target>
 
 
   <target name = 'clean'>
@@ -23,39 +54,9 @@
   </target>
 
 
-  <target name = 'zip' depends = 'clean'>
+  <target name = 'clean-all' depends = 'clean'>
 
-    <zip destfile = '../tts.zip' basedir = '..'
-         includes = 'tts/**/*' defaultexcludes = 'false'
-         encoding = 'UTF-8'/>
-
-  </target>
-
-
-  <target name = 'init-dev'>
-
-    <ant dir = 'xroot' target = 'init-dev'
-         inheritAll = 'false'/>
-
-    <ant dir = 'auth' target = 'init-dev'
-         inheritAll = 'false'/>
-
-  </target>
-
-
-  <target name = 'api'>
-
-    <zip destfile = '${retrade-api-file}'
-         basedir  = 'xroot/src/main/java/'
-         includes = 'com/tverts/api/**/*'
-         update   = 'false'
-         encoding = 'UTF-8'/>
-
-    <zip destfile = '${retrade-api-file}'
-         basedir  = 'retrade/src/main/java/'
-         includes = 'com/tverts/api/**/*'
-         update   = 'true'
-         encoding = 'UTF-8'/>
-
+    <delete dir = 'build/.ivy-cache'
+      failonerror = 'false'/>
   </target>
 </project>
