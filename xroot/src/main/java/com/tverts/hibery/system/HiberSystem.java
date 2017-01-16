@@ -256,9 +256,15 @@ public class HiberSystem
 		e = x;          closure.put(e, e);
 
 		//~: get class persistence metadata
-		ClassMetadata m = (ClassMetadata)
-		  ((MetamodelImplementor)s.getMetamodel()).
-		    entityPersister(e.getClass());
+		ClassMetadata m; try
+		{
+			m = (ClassMetadata)((MetamodelImplementor)
+			  s.getMetamodel()).entityPersister(e.getClass());
+		}
+		catch(Throwable ignore)
+		{
+			return e; //<-- ignore entity not mapped
+		}
 
 		//c: for all the properties (not having dots: are system)
 		for(String p : m.getPropertyNames()) if(p.indexOf('.') == -1)

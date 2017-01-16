@@ -6,14 +6,15 @@ import java.util.Properties;
 
 /* Hibernate Persistence Layer */
 
-import com.tverts.system.tx.TxBean;
-import com.tverts.system.tx.TxPoint;
 import org.hibernate.boot.model.relational.ExportableProducer;
 import org.hibernate.id.Configurable;
 import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.id.PersistentIdentifierGenerator;
 import org.hibernate.type.LongType;
 
+/* com.tverts: springer */
+
+import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: endure keys */
 
@@ -24,14 +25,17 @@ import com.tverts.endure.keys.KeysGeneratorBinder;
 
 import com.tverts.hibery.system.HiberSystem;
 
+/* com.tverts: transactions */
+
+import com.tverts.system.tx.TxBean;
+import com.tverts.system.tx.TxPoint;
+
 /* com.tverts: support */
 
 import com.tverts.support.EX;
 import com.tverts.support.LU;
 import com.tverts.support.OU;
 import com.tverts.support.SU;
-
-import static com.tverts.spring.SpringPoint.bean;
 
 
 /**
