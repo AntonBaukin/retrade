@@ -1,36 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Basic//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd">
-<svg version="1.1" baseProfile="basic" id="Layer_1"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px"
-	 viewBox="0 0 16 16" xml:space="preserve">
-<path fill="#39A1FF" d="M7.5,13.5c0,1.1-0.9,2-2,2h-3c-1.1,0-2-0.9-2-2v-3c0-1.1,0.9-2,2-2h3c1.1,0,2,0.9,2,2V13.5z"/>
-<circle fill="#39A1FF" cx="2.5" cy="8.5" r="0.5"/>
-<circle fill="#39A1FF" cx="4.5" cy="8.5" r="0.5"/>
-<circle fill="#39A1FF" cx="7.5" cy="10.5" r="0.5"/>
-<circle fill="#39A1FF" cx="7.5" cy="12.5" r="0.5"/>
-<path fill="#5B5C5C" d="M15.5,13.5c0,1.1-0.9,2-2,2h-3c-1.1,0-2-0.9-2-2v-3c0-1.1,0.9-2,2-2h3c1.1,0,2,0.9,2,2V13.5z"/>
-<circle fill="#5B5C5C" cx="8.5" cy="11.5" r="0.5"/>
-<circle fill="#5B5C5C" cx="8.5" cy="13.5" r="0.5"/>
-<path fill="#5B5C5C" d="M5.5,0.5c1.1,0,2,0.9,2,2v3c0,1.1-0.9,2-2,2h-3c-1.1,0-2-0.9-2-2v-3c0-1.1,0.9-2,2-2H5.5z"/>
-<circle fill="#5B5C5C" cx="3.5" cy="7.5" r="0.5"/>
-<circle fill="#5B5C5C" cx="5.5" cy="7.5" r="0.5"/>
-<path fill="#5B5C5C" d="M13.5,0.5c1.1,0,2,0.9,2,2v3c0,1.1-0.9,2-2,2h-3c-1.1,0-2-0.9-2-2v-3c0-1.1,0.9-2,2-2H13.5z"/>
-<circle fill="#5B5C5C" cx="8.5" cy="5.5" r="0.5"/>
-<circle fill="#5B5C5C" cx="7.5" cy="4.5" r="0.5"/>
-<circle fill="#5B5C5C" cx="8.5" cy="3.5" r="0.5"/>
-<circle fill="#5B5C5C" cx="11.5" cy="7.5" r="0.5"/>
-<circle fill="#5B5C5C" cx="10.5" cy="8.5" r="0.5"/>
-<circle fill="#5B5C5C" cx="12.5" cy="8.5" r="0.5"/>
-<circle fill="#5B5C5C" cx="13.5" cy="7.5" r="0.5"/>
-<circle fill="#5B5C5C" cx="7.5" cy="2.5" r="0.5"/>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="21px" height="21px" viewBox="0 0 21 21" enable-background="new 0 0 21 21" xml:space="preserve">
+<path fill="#5C5E5F" d="M3.33-0.06C1.49-0.06,0,1.43,0,3.27v6.67h10v-10H3.33z"/>
+<path fill="#5C5E5F" d="M0,17.67C0,19.51,1.49,21,3.33,21H10V11H0V17.67z"/>
+<path fill="#5C5E5F" d="M21,3.27c0-1.84-1.49-3.33-3.33-3.33H11v10h10V3.27z"/>
+<path fill="#588FE0" d="M17.67,21c1.84,0,3.33-1.49,3.33-3.33V11H11v10H17.67z"/>
 </svg>
