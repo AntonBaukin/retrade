@@ -2,6 +2,9 @@ package com.tverts.retrade.domain.goods;
 
 /* com.tverts: actions */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.tverts.actions.ActionType;
 import static com.tverts.actions.ActionsPoint.actionRun;
 
@@ -28,6 +31,7 @@ import com.tverts.api.retrade.goods.GoodAttr;
 
 import com.tverts.support.EX;
 import com.tverts.support.LU;
+import com.tverts.support.SU;
 
 
 /**
@@ -47,6 +51,9 @@ public class GenGoodAttrTypes extends GenesisHiberPartBase
 		JsX.apply("domain/goods/GenGoodAttrTypes.js",
 		  "genGoodTypes", ctx, this
 		);
+
+		//~: log the results
+		logResults(ctx);
 	}
 
 
@@ -66,13 +73,36 @@ public class GenGoodAttrTypes extends GenesisHiberPartBase
 		//=: domain
 		type.setDomain(ctx.get(Domain.class));
 
-
 		//!: ensure the type
 		actionRun(ActionType.ENSURE, type);
 
-		LU.I(log(ctx), logsig(),
-		  (type.getPrimaryKey() == null)?(" found"):(" created"),
-		  " good attribute type: ", type.getName()
-		);
+		//~: save name to the logs
+		if(type.getPrimaryKey() == null)
+			logFound.add(type.getName());
+		else
+			logCreated.add(type.getName());
 	}
+
+
+	/* protected: support */
+
+	protected void logResults(GenCtx ctx)
+	{
+		logFound.sort(String::compareTo);
+		logCreated.sort(String::compareTo);
+
+		LU.I(log(ctx), logsig(), " found: ",
+		  logFound.isEmpty()?("none"):SU.scats(", ", logFound)
+		);
+
+		LU.I(log(ctx), logsig(), " created: ",
+		  logCreated.isEmpty()?("none"):SU.scats(", ", logCreated)
+		);
+
+		logFound.clear();
+		logCreated.clear();
+	}
+
+	protected List<String> logFound = new ArrayList<>();
+	protected List<String> logCreated = new ArrayList<>();
 }

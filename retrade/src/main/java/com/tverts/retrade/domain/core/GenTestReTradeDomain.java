@@ -242,7 +242,7 @@ public class GenTestReTradeDomain extends GenReTradeDomain
 			//~: attach to the genesis context
 			ctx.set(PayDesk[].class, desks.toArray(new PayDesk[desks.size()]));
 
-			LU.I(ctx.log(), "Found [", desks, "] Payments Desks");
+			LU.I(ctx.log(), "Found [", desks.size(), "] Payments Desks");
 			return;
 		}
 
@@ -343,7 +343,7 @@ public class GenTestReTradeDomain extends GenReTradeDomain
 			//~: attach to the genesis context
 			ctx.set(SellsDesk[].class, desks.toArray(new SellsDesk[desks.size()]));
 
-			LU.I(ctx.log(), "Found [", desks, "] Sells Desks (POS terminals)");
+			LU.I(ctx.log(), "Found [", desks.size(), "] Sells Desks (POS terminals)");
 			return;
 		}
 

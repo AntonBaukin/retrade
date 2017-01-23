@@ -23,22 +23,22 @@
             <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
              · Generates System Domain
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-            <bean class = 'com.tverts.system.services.events.EventRunOnSystemStart'>
+            <!--<bean class = 'com.tverts.system.services.events.EventRunOnSystemStart'>
 
               <property name = 'service' value = 'Genesis Service'/>
 
-              <!-- the event to send -->
+              &lt;!&ndash; the event to send &ndash;&gt;
               <property name = 'event'>
                 <bean class = 'com.tverts.genesis.GenesisEvent'>
 
-                  <!-- Genesis Spheres -->
+                  &lt;!&ndash; Genesis Spheres &ndash;&gt;
                   <property name = 'spheres'>
                     <list>
                       <value>System Domain</value>
                     </list>
                   </property>
 
-                  <!-- parameters -->
+                  &lt;!&ndash; parameters &ndash;&gt;
                   <property name = 'params'>
                     <map>
 
@@ -58,18 +58,19 @@
                   </property>
                 </bean>
               </property>
-            </bean>
+            </bean>-->
 
 
             <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
              · Generates Main Test Domain (after System Domain)
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-            <bean class = 'com.tverts.genesis.RunEventOnGenesisDone'>
+            <!--<bean class = 'com.tverts.genesis.RunEventOnGenesisDone'>-->
+            <bean class = 'com.tverts.system.services.events.EventRunOnSystemStart'>
 
               <property name = 'service'    value = 'Genesis Service'/>
 
               <!-- domain code to test -->
-              <property name = 'testDomain' value = 'System'/>
+              <!--<property name = 'testDomain' value = 'System'/>-->
 
               <!-- the event to send -->
               <property name = 'event'>
@@ -80,7 +81,7 @@
                     <list>
                       <value>Core Test</value>
                       <value>ReTrade Test Catalogs</value>
-                      <value>ReTrade Test Documents</value>
+                  <!--<value>ReTrade Test Documents</value>-->
                   <!--<value>ReTrade Test Invoices Fix</value>-->
                   <!--<value>ReTrade Test Payments</value>-->
                     </list>

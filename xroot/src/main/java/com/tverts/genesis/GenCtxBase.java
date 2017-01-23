@@ -90,17 +90,13 @@ public class GenCtxBase implements GenCtx
 		{
 			res = new GenCtxBase(owner, this);
 		}
-		
-		if(gen == null)    //<-- create it to share
-			gen = createGen(null);
 
-		//~: share gen
-		res.gen = gen;
-
-		if(params == null)   //<-- create them to share
+		//~: create parameters to share
+		if(params == null)
 			params = new HashMap(17);
 
-		if(exported == null) //<-- ...
+		//~: create exported to share
+		if(exported == null)
 			exported = new HashSet(3);
 
 		//~: share the parameters & exported

@@ -1,10 +1,11 @@
 package com.tverts.support;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
 
 /**
  * Various date utils.
@@ -339,7 +340,7 @@ public class DU
 
 	public static void   str2date(String s, Calendar cl)
 	{
-		if(cl == null) throw new IllegalArgumentException();
+		if(cl == null) throw EX.ass();
 		if((s = SU.s2s(s)) == null) return;
 
 		int d0 = s.indexOf('.');
@@ -370,12 +371,12 @@ public class DU
 	 */
 	public static void   str2time(String s, Calendar cl)
 	{
-		if(cl == null) throw new IllegalArgumentException();
+		if(cl == null) throw EX.ass();
 		if((s = SU.s2s(s)) == null) return;
 
 		int sl = s.length();
 		int c0 = s.indexOf(':');
-		if(c0 == -1) throw new IllegalArgumentException();
+		EX.assertx(c0 >= 0);
 
 		int c1 = s.indexOf(':', c0 + 1);
 		if(c1 == -1) c1 = sl;
@@ -453,6 +454,27 @@ public class DU
 
 		//~: month abbreviation
 		sb.append(' ').append(MONTHS_ABBR_RU[cl.get(Calendar.MONTH)]);
+	}
+
+	/**
+	 * Taking the time delta, formats it as: mm:ss.mss.
+	 */
+	public static String timeDiffMins(long dt)
+	{
+		StringBuilder s = new StringBuilder(10);
+
+		//~: minutes
+		lennum((int)(dt / 60000), 3, s);
+		s.append(':');
+
+		//~: seconds
+		lennum((int)(dt / 1000 % 60), 2, s);
+		s.append('.');
+
+		//~: milliseconds
+		lennum((int)(dt % 1000), 3, s);
+
+		return s.toString();
 	}
 
 	private static final String[] MONTHS_RU   =

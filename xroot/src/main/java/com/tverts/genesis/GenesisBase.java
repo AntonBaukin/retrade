@@ -1,6 +1,6 @@
 package com.tverts.genesis;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,10 +14,7 @@ import com.tverts.objects.ObjectParams;
 /* com.tverts: support */
 
 import com.tverts.support.LO;
-
-import static com.tverts.support.SU.s2s;
-import static com.tverts.support.SU.sLo;
-import static com.tverts.support.SU.sXe;
+import com.tverts.support.SU;
 
 
 /**
@@ -32,7 +29,7 @@ public abstract class GenesisBase
 
 	public GenesisBase()
 	{
-		this.name = sLo(this.getClass().getSimpleName());
+		this.name = SU.sLo(this.getClass().getSimpleName());
 	}
 
 
@@ -57,8 +54,9 @@ public abstract class GenesisBase
 
 	public String    getAbout(String lang)
 	{
-		if(LO.LANG_LO.equals(lang) && !sXe(getAboutLo()))
+		if(LO.LANG_LO.equals(lang) && !SU.sXe(getAboutLo()))
 			return getAboutLo();
+
 		return getAboutEn();
 	}
 
@@ -69,24 +67,28 @@ public abstract class GenesisBase
 	}
 
 
-	/* public: GenesisBase bean interface */
+	/* Genesis Base */
 
 	public void      setName(String name)
 	{
-		if((name = s2s(name)) == null)
-			name = sLo(this.getClass().getSimpleName());
+		if((name = SU.s2s(name)) == null)
+			name = SU.sLo(this.getClass().getSimpleName());
 
 		this.name = name;
 	}
+
+	private String name;
 
 	public String    getAboutEn()
 	{
 		return aboutEn;
 	}
 
+	private String aboutEn;
+
 	public void      setAboutEn(String aboutEn)
 	{
-		this.aboutEn = s2s(aboutEn);
+		this.aboutEn = SU.s2s(aboutEn);
 	}
 
 	public String    getAboutLo()
@@ -94,9 +96,11 @@ public abstract class GenesisBase
 		return aboutLo;
 	}
 
+	private String aboutLo;
+
 	public void      setAboutLo(String aboutLo)
 	{
-		this.aboutLo = s2s(aboutLo);
+		this.aboutLo = SU.s2s(aboutLo);
 	}
 
 
@@ -126,7 +130,7 @@ public abstract class GenesisBase
 	protected void      addNestedParameters
 	  (List<ObjectParam> dest, Genesis g)
 	{
-		List<ObjectParam> tmp = new ArrayList<ObjectParam>(4);
+		List<ObjectParam> tmp = new ArrayList<>(4);
 		StringBuilder     sb  = new StringBuilder(32);
 
 		//~: collect the parameters
@@ -169,20 +173,14 @@ public abstract class GenesisBase
 
 	protected String logsig(String lang)
 	{
-		return String.format((LO.LANG_RU.equals(lang))?
-		  ("Модуль генезиса {%s}"):("Genesis Unit {%s}"),
-		  getName());
+		if(LO.LANG_RU.equals(lang))
+			return SU.cats("Модуль генезиса {", getName(), "}");
+
+		return SU.cats("Genesis Unit {", getName(), "}");
 	}
 
 	protected String logsig()
 	{
 		return logsig(LO.LANG_EN);
 	}
-
-
-	/* private: parameters of this genesis unit */
-
-	private String name;
-	private String aboutEn;
-	private String aboutLo;
 }

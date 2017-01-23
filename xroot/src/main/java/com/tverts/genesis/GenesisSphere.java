@@ -8,6 +8,7 @@ import java.util.List;
 
 /* Hibernate Persistence Layer */
 
+import com.tverts.support.DU;
 import org.hibernate.Session;
 
 /* com.tverts: hibery */
@@ -261,6 +262,8 @@ public class      GenesisSphere
 		//~: invoke the genesis units
 		for(Genesis gen : this.objects) try
 		{
+			long ts = System.currentTimeMillis();
+
 			//!: clone the original (prototype) unit
 			gen = gen.clone();
 
@@ -273,7 +276,7 @@ public class      GenesisSphere
 			//~: flush the session
 			flush(ctx.session());
 
-			logGenGenerateSuccess(ctx, gen);
+			logGenGenerateSuccess(ctx, gen, ts);
 		}
 		catch(GenesisError e)
 		{
@@ -347,11 +350,10 @@ public class      GenesisSphere
 		LU.T(log(ctx), logsig(), " starting ", logsig(g));
 	}
 
-	protected void   logGenGenerateSuccess(GenCtx ctx, Genesis g)
+	protected void   logGenGenerateSuccess(GenCtx ctx, Genesis g, long ts)
 	{
-		if(!LU.isI(log(ctx))) return;
-
-		LU.T(log(ctx), logsig(), " success on ", logsig(g), "!");
+		LU.I(log(ctx), logsig(), " done ", logsig(g), " in ",
+		  DU.timeDiffMins(System.currentTimeMillis() - ts));
 	}
 
 	protected void   logGenGenerateError(GenCtx ctx, Genesis g, Throwable e)

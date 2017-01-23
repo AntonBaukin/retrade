@@ -43,11 +43,13 @@
       <PatternLayout pattern = '%-5p %d{HH:mm:ss.SSS} %c{1}: %m%n'/>
     </File>
 
+    <!--
     <File name = 'genesis.json' append = 'false' bufferSize = '1024'
       fileName = '${sys:catalina.base}/logs/retrade_genesis.json'>
 
       <FastJSONLayout/>
     </File>
+    -->
 
     <File name = 'debug' append = 'false' bufferSize = '2048'
       fileName = '${sys:catalina.base}/logs/retrade_debug.log'>
@@ -107,7 +109,7 @@
       level = 'OFF' additivity = 'false'>
 
       <AppenderRef ref = 'genesis'/>
-      <AppenderRef ref = 'genesis.json'/>
+  <!--<AppenderRef ref = 'genesis.json'/>-->
     </Logger>
 
 
@@ -117,7 +119,7 @@
       level = 'INFO' additivity = 'false'>
 
       <AppenderRef ref = 'genesis'/>
-      <AppenderRef ref = 'genesis.json'/>
+  <!--<AppenderRef ref = 'genesis.json'/>-->
     </Logger>
 
     <Logger name = 'com.tverts.shunts'
