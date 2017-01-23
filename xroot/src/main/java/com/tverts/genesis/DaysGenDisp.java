@@ -1,9 +1,10 @@
 package com.tverts.genesis;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
@@ -295,7 +296,16 @@ public class DaysGenDisp extends GenesisPartBase
 
 			//!: call the genesis unit
 			if(callGenesis(ctx, entries[ei]))
+			{
+				//~: update per-day counter
 				inds.put(entries[ei], i + 1);
+
+				//~: update total counter
+				if(total.containsKey(entries[ei]))
+					total.put(entries[ei], 1 + total.get(entries[ei]));
+				else
+					total.put(entries[ei], 1);
+			}
 
 			ctx.set(TIME, null);
 		}
@@ -359,9 +369,12 @@ public class DaysGenDisp extends GenesisPartBase
 			if(inds.get(e) != 0)
 				LU.I(log(ctx), DU.date2str(day),
 				  " genesis [", e.getGenesis().getName(),
-				  "] invoked times: ", inds.get(e)
+				  "] invoked ", inds.get(e), " times with ",
+				  total.get(e), " total"
 				);
 	}
+
+	protected Map<Entry, Integer> total = new HashMap<>();
 
 	protected int     genObjsNumber(GenCtx ctx)
 	{

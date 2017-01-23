@@ -13,11 +13,6 @@ import com.tverts.endure.NumericIdentity;
 import com.tverts.support.logs.LogLevel;
 import com.tverts.support.logs.LogPoint;
 
-/* com.tverts: support  */
-
-import static com.tverts.support.SU.cat;
-import static com.tverts.support.SU.lenum;
-
 
 /**
  * Logging support, utilities and wrappers.
@@ -89,49 +84,49 @@ public class LU
 	public static void D(String dest, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logMsg(LogLevel.DEBUG, dest, cat(msgs));
+		  logMsg(LogLevel.DEBUG, dest, SU.cat(msgs));
 	}
 
 	public static void D(String dest, Throwable err, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logErr(LogLevel.DEBUG, dest, cat(msgs), err);
+		  logErr(LogLevel.DEBUG, dest, SU.cat(msgs), err);
 	}
 
 	public static void I(String dest, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logMsg(LogLevel.INFO, dest, cat(msgs));
+		  logMsg(LogLevel.INFO, dest, SU.cat(msgs));
 	}
 
 	public static void I(String dest, Throwable err, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logErr(LogLevel.INFO, dest, cat(msgs), err);
+		  logErr(LogLevel.INFO, dest, SU.cat(msgs), err);
 	}
 
 	public static void W(String dest, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logMsg(LogLevel.WARN, dest, cat(msgs));
+		  logMsg(LogLevel.WARN, dest, SU.cat(msgs));
 	}
 
 	public static void W(String dest, Throwable err, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logErr(LogLevel.WARN, dest, cat(msgs), err);
+		  logErr(LogLevel.WARN, dest, SU.cat(msgs), err);
 	}
 
 	public static void E(String dest, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logMsg(LogLevel.ERROR, dest, cat(msgs));
+		  logMsg(LogLevel.ERROR, dest, SU.cat(msgs));
 	}
 
 	public static void E(String dest, Throwable err, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logErr(LogLevel.ERROR, dest, cat(msgs), err);
+		  logErr(LogLevel.ERROR, dest, SU.cat(msgs), err);
 	}
 
 
@@ -145,7 +140,7 @@ public class LU
 			return sig((NumericIdentity) obj);
 
 		return SU.cats(
-		  obj.getClass().getSimpleName(), '@',
+		  obj.getClass().getSimpleName(), '#',
 		  SU.i2h(System.identityHashCode(obj))
 		);
 	}
@@ -173,7 +168,7 @@ public class LU
 
 	public static String cls(Class cls)
 	{
-		return (cls == null)?("undefined"):(cls.getName());
+		return (cls == null)?("undefined"):(cls.getSimpleName());
 	}
 
 
@@ -212,13 +207,26 @@ public class LU
 		return LB(base, obj.getClass());
 	}
 
+	/**
+	 * Prints time delta in the format: mm:ss.mss.
+	 * Time relates to the current time.
+	 */
 	public static String td(long initial)
 	{
-		long   d = System.currentTimeMillis() - initial;
-		String z = lenum(3, d % 1000);
-		String s = lenum(2, (d / 1000) % 60);
-		String m = Long.toString(d / 60000);
+		StringBuilder s = new StringBuilder(10);
+		long dt = System.currentTimeMillis() - initial;
 
-		return m + ':' + s + '.' + z;
+		//~: minutes
+		SU.lennum((int)(dt / 60000), 3, s);
+		s.append(':');
+
+		//~: seconds
+		SU.lennum((int)(dt/1000%60), 2, s);
+		s.append('.');
+
+		//~: milliseconds
+		SU.lennum((int)(dt%1000), 3, s);
+
+		return s.toString();
 	}
 }

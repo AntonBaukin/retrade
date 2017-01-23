@@ -205,15 +205,15 @@ public class DU
 	public static void   date2str(StringBuilder sb, Calendar cl)
 	{
 		//~: day
-		lennum(cl.get(Calendar.DAY_OF_MONTH), 2, sb);
+		SU.lennum(cl.get(Calendar.DAY_OF_MONTH), 2, sb);
 		sb.append('.');
 
 		//~: month
-		lennum(cl.get(Calendar.MONTH) + 1, 2, sb);
+		SU.lennum(cl.get(Calendar.MONTH) + 1, 2, sb);
 		sb.append('.');
 
 		//~: year
-		lennum(cl.get(Calendar.YEAR), 4, sb);
+		SU.lennum(cl.get(Calendar.YEAR), 4, sb);
 	}
 
 	/**
@@ -226,13 +226,13 @@ public class DU
 		cl.setTime(d);
 
 		//~: year
-		lennum(cl.get(Calendar.YEAR), 4, sb);
+		SU.lennum(cl.get(Calendar.YEAR), 4, sb);
 
 		//~: month
-		lennum(cl.get(Calendar.MONTH) + 1, 2, sb);
+		SU.lennum(cl.get(Calendar.MONTH) + 1, 2, sb);
 
 		//~: day
-		lennum(cl.get(Calendar.DAY_OF_MONTH), 2, sb);
+		SU.lennum(cl.get(Calendar.DAY_OF_MONTH), 2, sb);
 
 		return sb.toString();
 	}
@@ -259,11 +259,11 @@ public class DU
 	public static void   time2str(StringBuilder sb, Calendar cl)
 	{
 		//~: hour
-		lennum(cl.get(Calendar.HOUR_OF_DAY), 2, sb);
+		SU.lennum(cl.get(Calendar.HOUR_OF_DAY), 2, sb);
 		sb.append(':');
 
 		//~: minute
-		lennum(cl.get(Calendar.MINUTE), 2, sb);
+		SU.lennum(cl.get(Calendar.MINUTE), 2, sb);
 	}
 
 	public static String timefull2str(Date d)
@@ -280,19 +280,19 @@ public class DU
 	public static void   timefull2str(StringBuilder sb, Calendar cl)
 	{
 		//~: hour
-		lennum(cl.get(Calendar.HOUR_OF_DAY), 2, sb);
+		SU.lennum(cl.get(Calendar.HOUR_OF_DAY), 2, sb);
 		sb.append(':');
 
 		//~: minute
-		lennum(cl.get(Calendar.MINUTE), 2, sb);
+		SU.lennum(cl.get(Calendar.MINUTE), 2, sb);
 		sb.append(':');
 
 		//~: seconds
-		lennum(cl.get(Calendar.SECOND), 2, sb);
+		SU.lennum(cl.get(Calendar.SECOND), 2, sb);
 		sb.append('.');
 
 		//~: milliseconds
-		lennum(cl.get(Calendar.MILLISECOND), 3, sb);
+		SU.lennum(cl.get(Calendar.MILLISECOND), 3, sb);
 	}
 
 	public static String datetime2str(Date d)
@@ -397,15 +397,6 @@ public class DU
 		cl.set(Calendar.MILLISECOND, ms);
 	}
 
-	private static void  lennum(int num, int len, StringBuilder sb)
-	{
-		String str = Integer.toString(num);
-
-		for(int i = str.length(); (i < len); i++)
-			sb.append('0');
-		sb.append(str);
-	}
-
 	/**
 	 * Writes month as a name. First word is a week day name.
 	 * Parameter 'ws' is used to insert whitespace string.
@@ -421,7 +412,7 @@ public class DU
 		   append(',').append(ws);
 
 		//~: day
-		lennum(cl.get(Calendar.DAY_OF_MONTH), 2, sb);
+		SU.lennum(cl.get(Calendar.DAY_OF_MONTH), 2, sb);
 		sb.append('.');
 
 		//~: month as name
@@ -430,7 +421,7 @@ public class DU
 		   append(ws);
 
 		//~: year
-		lennum(cl.get(Calendar.YEAR), 4, sb);
+		SU.lennum(cl.get(Calendar.YEAR), 4, sb);
 	}
 
 	/**
@@ -450,31 +441,10 @@ public class DU
 			sb.append(DAYSDIFF_RU[d]).append(' ');
 
 		//~: day
-		lennum(cl.get(Calendar.DAY_OF_MONTH), 2, sb);
+		SU.lennum(cl.get(Calendar.DAY_OF_MONTH), 2, sb);
 
 		//~: month abbreviation
 		sb.append(' ').append(MONTHS_ABBR_RU[cl.get(Calendar.MONTH)]);
-	}
-
-	/**
-	 * Taking the time delta, formats it as: mm:ss.mss.
-	 */
-	public static String timeDiffMins(long dt)
-	{
-		StringBuilder s = new StringBuilder(10);
-
-		//~: minutes
-		lennum((int)(dt / 60000), 3, s);
-		s.append(':');
-
-		//~: seconds
-		lennum((int)(dt / 1000 % 60), 2, s);
-		s.append('.');
-
-		//~: milliseconds
-		lennum((int)(dt % 1000), 3, s);
-
-		return s.toString();
 	}
 
 	private static final String[] MONTHS_RU   =

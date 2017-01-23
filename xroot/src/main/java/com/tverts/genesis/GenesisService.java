@@ -343,8 +343,7 @@ public class GenesisService extends ServiceBase
 	protected void   success(GenCtx ctx, GenesisEvent event, long ts)
 	{
 		//~: log the success with the time taken
-		LU.I(getLog(), logsig(), " genesis completed in ",
-		  DU.timeDiffMins(System.currentTimeMillis() - ts));
+		LU.I(getLog(), logsig(), " genesis completed in ", LU.td(ts));
 
 		//~: create & send done event
 		GenesisDone done = new GenesisDone();

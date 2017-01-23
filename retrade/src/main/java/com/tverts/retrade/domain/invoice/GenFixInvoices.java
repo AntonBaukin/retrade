@@ -1,9 +1,8 @@
 package com.tverts.retrade.domain.invoice;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -160,11 +159,13 @@ public class GenFixInvoices extends GenesisHiberPartBase
 
 	protected void fixInvoices(GenCtx ctx, List<Long> invoices)
 	{
-		int percent = 0;
+		long ts = System.currentTimeMillis();
+		int  px = 0; //<-- logged percent
+
 
 		for(int b = 0;(b < invoices.size());)
 		{
-			int e = b + 32;
+			int e = b + 2;
 			if(e > invoices.size()) e = invoices.size();
 
 			//~: fix invoices in batch in own small transaction
@@ -172,11 +173,12 @@ public class GenFixInvoices extends GenesisHiberPartBase
 			b = e; //<-- advance
 
 			//~: percent logging
-			int p = b*100/invoices.size();
-			if(p - percent > 5)
+			int p = b * 100 / invoices.size();
+			if(p - px >= 5)
 			{
-				LU.I(ctx.log(), getClass().getSimpleName(), ' ', p, '%');
-				percent = p;
+				px = p;
+				LU.I(ctx.log(), LU.cls(this), " done ",
+				  p, "% is ", e, " in ", LU.td(ts));
 			}
 		}
 	}
@@ -196,7 +198,7 @@ public class GenFixInvoices extends GenesisHiberPartBase
 	protected void fixInvoice(GenCtx ctx, Long id)
 	{
 		//~: fix the invoice
-		Invoice invoice = (Invoice) session().load(Invoice.class, id);
+		Invoice invoice = session().load(Invoice.class, id);
 		actionRun(Invoices.ACT_FIX, invoice, SYNCH_AGGR, true);
 	}
 
@@ -243,7 +245,7 @@ public class GenFixInvoices extends GenesisHiberPartBase
 			  "] fixing as fixed ones were found."
 			);
 
-			return Arrays.asList();
+			return Collections.emptyList();
 		}
 
 		List<Long> res = selectAllInvoices(ctx);
@@ -256,7 +258,7 @@ public class GenFixInvoices extends GenesisHiberPartBase
 			  nameInvoicesTypes(ctx), "]!"
 			);
 
-			return Arrays.asList();
+			return Collections.emptyList();
 		}
 
 		//~: choose random invoices of the all found
@@ -327,14 +329,14 @@ public class GenFixInvoices extends GenesisHiberPartBase
 
 
 		//~: create selection indices
-		List<Integer> tmp = new ArrayList<Integer>(invoices.size());
+		List<Integer> tmp = new ArrayList<>(invoices.size());
 		for(int i = 0;(i < invoices.size());i++) tmp.add(i);
 		Collections.shuffle(tmp, ctx.gen());
 		tmp = tmp.subList(0, n);
 		Collections.sort(tmp); //<-- to select in the invoices order
 
 		//~: select random invoices (in their order)
-		List<Long> res = new ArrayList<Long>(n);
+		List<Long> res = new ArrayList<>(n);
 		for(Integer i : tmp) res.add(invoices.get(i));
 
 		return res;

@@ -81,8 +81,8 @@
                     <list>
                       <value>Core Test</value>
                       <value>ReTrade Test Catalogs</value>
-                  <!--<value>ReTrade Test Documents</value>-->
-                  <!--<value>ReTrade Test Invoices Fix</value>-->
+                      <value>ReTrade Test Documents</value>
+                      <value>ReTrade Test Invoices Fix</value>
                   <!--<value>ReTrade Test Payments</value>-->
                     </list>
                   </property>
@@ -115,7 +115,7 @@
                       -->
 
                       <entry key   = 'Core Test : Domain (DaysBack)'
-                             value = '10'/>
+                             value = '9'/> <!-- 10 days total -->
 
 
                       <!-- (Test Domain) Catalogs -->
@@ -161,42 +161,42 @@
             <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
              · Shunts Main Test Domain
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-            <bean class = 'com.tverts.genesis.RunEventOnGenesisDone'>
+            <!--<bean class = 'com.tverts.genesis.RunEventOnGenesisDone'>
 
               <property name = 'service'    value = 'Self-Shunt Service'/>
 
-              <!-- domain code to test -->
+              &lt;!&ndash; domain code to test &ndash;&gt;
               <property name = 'testDomain' value = 'Test'/>
 
-              <!-- the event to send -->
+              &lt;!&ndash; the event to send &ndash;&gt;
               <property name = 'event'>
                 <bean class = 'com.tverts.shunts.service.SelfShuntGroupsEvent'>
 
-                  <!-- Shunt Groups -->
+                  &lt;!&ndash; Shunt Groups &ndash;&gt;
                   <property name = 'groups'>
                     <list>
 
-                      <!-- System Tests -->
+                      &lt;!&ndash; System Tests &ndash;&gt;
                       <value>system:shunts:success</value>
                       <value>system:tx:scopes</value>
                       <value>system:shunts:context</value>
 
 
-                      <!-- ReTrade Domain Tests -->
+                      &lt;!&ndash; ReTrade Domain Tests &ndash;&gt;
                       <value>retrade:goods</value>
-                      <!--
+                      &lt;!&ndash;
                       <value>retrade:invoices</value>
                       <value>retrade:aggr</value>
-                      -->
+                      &ndash;&gt;
 
-                      <!--
+                      &lt;!&ndash;
                       <value>retrade:payment</value>
-                      -->
+                      &ndash;&gt;
                     </list>
                   </property>
                 </bean>
               </property>
-            </bean>
+            </bean>-->
 
           </list>
         </property>

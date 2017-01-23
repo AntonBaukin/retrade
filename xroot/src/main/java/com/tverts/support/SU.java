@@ -582,6 +582,15 @@ public class SU
 		return s.toString();
 	}
 
+	public static void   lennum(int num, int len, StringBuilder sb)
+	{
+		String str = Integer.toString(num);
+
+		for(int i = str.length(); (i < len); i++)
+			sb.append('0');
+		sb.append(str);
+	}
+
 
 	/* Buffering */
 

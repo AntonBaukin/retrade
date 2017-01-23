@@ -91,6 +91,13 @@ public class GenCtxBase implements GenCtx
 			res = new GenCtxBase(owner, this);
 		}
 
+		//~: create shared generator
+		if(gen == null)
+			gen = createGen(null);
+
+		//~: share gen
+		res.gen = gen;
+
 		//~: create parameters to share
 		if(params == null)
 			params = new HashMap(17);
@@ -235,9 +242,13 @@ public class GenCtxBase implements GenCtx
 	protected Random  createGen(Long seed)
 	{
 		if(seed == null)
+		{
+			LU.I(log(), "created default seed = ", seed);
 			seed = System.currentTimeMillis();
+		}
+		else
+			LU.I(log(), "using seed = ", seed);
 
-		LU.I(log(), "using seed = ", seed);
 		return new Random(seed);
 	}
 

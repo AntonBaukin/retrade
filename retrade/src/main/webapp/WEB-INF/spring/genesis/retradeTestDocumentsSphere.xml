@@ -26,8 +26,8 @@
 
     <property name  = 'name'    value = 'Days'/>
 
-    <property name  = 'objMin'  value = '2'/>
-    <property name  = 'objMax'  value = '4'/>
+    <property name  = 'objMin'  value = '100'/>
+    <property name  = 'objMax'  value = '100'/>
     <property name  = 'dayTx'   value = 'true'/>
 
     <property name  = 'test'>
@@ -39,7 +39,7 @@
 
         <!-- Prices Change Documents -->
 
-        <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
+        <!--<bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
           <property name = 'weight' value = '8'/>
 
@@ -52,7 +52,7 @@
               <property name = 'maxGoods' value = '15'/>
             </bean>
           </property>
-        </bean>
+        </bean>-->
 
 
         <!-- Invoices Buy -->
@@ -90,7 +90,7 @@
 
         <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
-          <property name = 'weight' value = '50'/>
+          <property name = 'weight' value = '60'/>
 
           <property name = 'genesis'>
             <bean class = 'com.tverts.retrade.domain.invoice.gen.GenInvoiceSell'>
@@ -134,7 +134,7 @@
 
         <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
-          <property name = 'weight' value = '20'/>
+          <property name = 'weight' value = '25'/>
 
           <property name = 'genesis'>
             <bean class = 'com.tverts.retrade.domain.invoice.gen.GenInvoiceMove'>
@@ -163,7 +163,7 @@
 
         <!-- Produce Invoices (Manual and Auto Calculated)-->
 
-        <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
+        <!--<bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
           <property name = 'weight' value = '35'/>
 
@@ -188,17 +188,17 @@
               <property name  = 'volumeMax'
                         value = '25'/>
 
-              <!-- The percent of Invoices with auto-calculated production -->
+              &lt;!&ndash; The percent of Invoices with auto-calculated production &ndash;&gt;
               <property name  = 'autoPercent'
                         value = '75'/>
             </bean>
           </property>
-        </bean>
+        </bean>-->
 
 
         <!-- Volume Correction Invoices -->
 
-        <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
+        <!--<bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
           <property name = 'weight' value = '15'/>
 
@@ -225,12 +225,12 @@
 
             </bean>
           </property>
-        </bean>
+        </bean>-->
 
 
         <!-- Volume Check Documents -->
 
-        <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
+        <!--<bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
           <property name = 'weight' value = '10'/>
 
@@ -256,14 +256,12 @@
                         value = '300'/>
             </bean>
           </property>
-        </bean>
+        </bean>-->
 
 
-        <!--
+        <!-- Sells Sessions -->
 
-        &lt;!&ndash; Sells Sessions &ndash;&gt;
-
-        <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
+        <!--<bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
           <property name = 'weight' value = '30'/>
 
@@ -313,8 +311,7 @@
                         value = '3'/>
             </bean>
           </property>
-        </bean>
-        -->
+        </bean>-->
 
       </array>
     </property>
