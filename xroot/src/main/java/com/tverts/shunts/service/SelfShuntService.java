@@ -473,9 +473,7 @@ public class SelfShuntService extends ServiceBase
 
 		protected void logProtocolOpenBefore()
 		{
-			if(!LU.isT(getLog())) return;
-
-			LU.T(getLog(), logsig(),
+			LU.D(getLog(), logsig(),
 			  " is opening the shunt protocol...");
 		}
 
@@ -495,17 +493,13 @@ public class SelfShuntService extends ServiceBase
 
 		protected void logSendNextRequestBefore()
 		{
-			if(!LU.isT(getLog())) return;
-
-			LU.T(getLog(), logsig(),
+			LU.D(getLog(), logsig(),
 			  " is about to send the next shunt request...");
 		}
 
 		protected void logSendNextRequestSuccess()
 		{
-			if(!LU.isT(getLog())) return;
-
-			LU.T(getLog(), logsig(),
+			LU.D(getLog(), logsig(),
 			  " had successfully sent the next shunt request, ",
 			  "it will continue: ", !this.closed);
 		}
@@ -519,9 +513,7 @@ public class SelfShuntService extends ServiceBase
 
 		protected void logProtocolCloseBefore()
 		{
-			if(!LU.isT(getLog())) return;
-
-			LU.T(getLog(), logsig(),
+			LU.D(getLog(), logsig(),
 			  " is going to close the shunt protocol...");
 		}
 

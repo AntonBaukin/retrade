@@ -17,9 +17,6 @@ public abstract class SeShReportStringWriterBase
 {
 	/* protected: printing stream */
 
-	protected abstract void writeTrace(StringBuffer text)
-	  throws Exception;
-
 	protected abstract void writeDebug(StringBuffer text)
 	  throws Exception;
 
@@ -54,8 +51,6 @@ public abstract class SeShReportStringWriterBase
 
 		if     (isDebugLevel())
 			writeDebug(s);
-		else if(isTraceLevel())
-			writeTrace(s);
 		else if(isInfoLevel())
 			writeInfo(s);
 		else if(isWarnLevel())

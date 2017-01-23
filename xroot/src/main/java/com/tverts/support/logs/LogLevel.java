@@ -21,7 +21,7 @@ public enum LogLevel
 	{
 		public int level()
 		{
-			return 4;
+			return 3;
 		}
 	},
 
@@ -32,7 +32,7 @@ public enum LogLevel
 	{
 		public int level()
 		{
-			return 3;
+			return 2;
 		}
 	},
 
@@ -43,7 +43,7 @@ public enum LogLevel
 	{
 		public int level()
 		{
-			return 2;
+			return 1;
 		}
 	},
 
@@ -54,31 +54,10 @@ public enum LogLevel
 	{
 		public int level()
 		{
-			return 1;
-		}
-	},
-
-	/**
-	 * The application tells in details what it is doing.
-	 * It may also print the debug information here.
-	 *
-	 * This is the lowest logging priority.
-	 */
-	TRACE
-	{
-		public int level()
-		{
 			return 0;
 		}
 	};
 
-
-	/* public: log level integer value */
-
-	/**
-	 * The maximum possible logging level.
-	 */
-	public static final int        MAX_LEVEL = 4;
 
 	/**
 	 * Contains all the levels by their
@@ -86,7 +65,7 @@ public enum LogLevel
 	 */
 	public static final LogLevel[] LEVELS    =
 	{
-	  TRACE, DEBUG, INFO, WARN, ERROR
+	  DEBUG, INFO, WARN, ERROR
 	};
 
 	/**

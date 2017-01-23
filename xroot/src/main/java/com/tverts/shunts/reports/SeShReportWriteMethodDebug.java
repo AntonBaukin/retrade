@@ -27,7 +27,7 @@ import static com.tverts.support.SU.s2s;
  * @author anton.baukin@gmail.com
  */
 public class   SeShReportWriteMethodDebug
-       extends SeShReportWriteMethodTrace
+       extends SeShReportWriteMethodInfo
 {
 	/* public: Singleton */
 

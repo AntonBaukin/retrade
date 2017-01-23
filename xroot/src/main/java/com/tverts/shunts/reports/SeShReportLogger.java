@@ -20,12 +20,6 @@ public class   SeShReportLogger
 {
 	/* protected: SeShReportStringWriterBase interface */
 
-	protected void writeTrace(StringBuffer text)
-	  throws Exception
-	{
-		LU.T(getLog(), text);
-	}
-
 	protected void writeDebug(StringBuffer text)
 	  throws Exception
 	{
@@ -56,11 +50,6 @@ public class   SeShReportLogger
 	protected boolean isDebugLevel()
 	{
 		return LU.isD(getLog());
-	}
-
-	protected boolean isTraceLevel()
-	{
-		return LU.isT(getLog());
 	}
 
 	protected boolean isInfoLevel()

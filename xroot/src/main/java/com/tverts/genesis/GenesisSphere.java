@@ -328,26 +328,20 @@ public class      GenesisSphere
 
 	protected void   logGenerateBefore(GenCtx ctx)
 	{
-		if(!LU.isT(log(ctx))) return;
-
 		if(ctx.getOuter() == null)
-			LU.T(log(ctx), logsig(), " opening sphere in own Tx...");
+			LU.D(log(ctx), logsig(), " opening sphere in own Tx...");
 		else
-			LU.T(log(ctx), logsig(), " opening sphere in outer Tx...");
+			LU.D(log(ctx), logsig(), " opening sphere in outer Tx...");
 	}
 
 	protected void   logGenerateSuccess(GenCtx ctx)
 	{
-		if(!LU.isI(log(ctx))) return;
-
-		LU.T(log(ctx), logsig(), " closed sphere with success!");
+		LU.D(log(ctx), logsig(), " closed sphere with success!");
 	}
 
 	protected void   logGenGenerateBefore(GenCtx ctx, Genesis g)
 	{
-		if(!LU.isT(log(ctx))) return;
-
-		LU.T(log(ctx), logsig(), " starting ", logsig(g));
+		LU.D(log(ctx), logsig(), " starting ", logsig(g));
 	}
 
 	protected void   logGenGenerateSuccess(GenCtx ctx, Genesis g, long ts)

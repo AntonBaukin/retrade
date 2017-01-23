@@ -35,7 +35,7 @@ public class   LogStrategyLog4J
 	{
 		return new LogMethod[]
 		{
-		  new LMTrace(), new LMDebug(), new LMInfo(),
+		  new LMDebug(), new LMInfo(),
 		  new LMWarn(),  new LMError()
 		};
 	}
@@ -117,24 +117,6 @@ public class   LogStrategyLog4J
 		protected void    logErr(Logger logger, CharSequence m, Throwable e)
 		{
 			logger.debug(m, e);
-		}
-	}
-
-	protected class LMTrace extends LogMethodBase<Logger>
-	{
-		protected boolean isLevel(Logger logger)
-		{
-			return logger.isTraceEnabled();
-		}
-
-		protected void    logMsg(Logger logger, CharSequence m)
-		{
-			logger.trace(m);
-		}
-
-		protected void    logErr(Logger logger, CharSequence m, Throwable e)
-		{
-			logger.trace(m, e);
 		}
 	}
 }

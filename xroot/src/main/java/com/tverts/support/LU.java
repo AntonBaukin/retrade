@@ -26,24 +26,7 @@ import static com.tverts.support.SU.lenum;
  */
 public class LU
 {
-	/* define logging levels */
-
-	/**
-	 * The maximum possible logging level.
-	 * Just refers {@link LogLevel#MAX_LEVEL}.
-	 */
-	public static final int        MAX_LEVEL =
-	  LogLevel.MAX_LEVEL;
-
-	/**
-	 * Contains all the levels by their
-	 * {@link LogLevel#level()} index.
-	 */
-	public static final LogLevel[] LEVELS    =
-	  LogLevel.LEVELS;
-
-
-	/* special logging destinations */
+	/* Special Logging Destinations */
 
 	/**
 	 * Destination for debugging purposes.
@@ -58,7 +41,7 @@ public class LU
 	  "com.tverts.timing";
 
 
-	/* access logging levels */
+	/* Access Logging Levels */
 
 	/**
 	 * Finds the lowest (most detailed) logging level
@@ -71,15 +54,6 @@ public class LU
 	{
 		return LogPoint.getInstance().
 		  getLogStrategy().getMinLevel(dest);
-	}
-
-	/**
-	 * {@link LogLevel#TRACE} level is enabled?
-	 */
-	public static boolean  isT(String dest)
-	{
-		return LogPoint.getInstance().
-		  getLogStrategy().isLevel(LogLevel.TRACE, dest);
 	}
 
 	/**
@@ -111,32 +85,6 @@ public class LU
 
 
 	/* logging */
-
-	public static void L
-	  (LogLevel level, String dest, Object... msgs)
-	{
-		LogPoint.getInstance().getLogStrategy().
-		  logMsg(level, dest, cat(msgs));
-	}
-
-	public static void L
-	  (LogLevel level, String dest, Throwable err, Object... msgs)
-	{
-		LogPoint.getInstance().getLogStrategy().
-		  logErr(level, dest, cat(msgs), err);
-	}
-
-	public static void T(String dest, Object... msgs)
-	{
-		LogPoint.getInstance().getLogStrategy().
-		  logMsg(LogLevel.TRACE, dest, cat(msgs));
-	}
-
-	public static void T(String dest, Throwable err, Object... msgs)
-	{
-		LogPoint.getInstance().getLogStrategy().
-		  logErr(LogLevel.TRACE, dest, cat(msgs), err);
-	}
 
 	public static void D(String dest, Object... msgs)
 	{

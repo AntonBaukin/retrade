@@ -56,8 +56,6 @@ public abstract class SeShReportWriterBase
 
 	protected abstract boolean isDebugLevel();
 
-	protected abstract boolean isTraceLevel();
-
 	protected abstract boolean isInfoLevel();
 
 	protected abstract boolean isWarnLevel();
@@ -84,11 +82,6 @@ public abstract class SeShReportWriterBase
 		return SeShReportWriteMethodDebug.getInstance();
 	}
 
-	protected SeShReportWriteMethod getWriteMethodTrace()
-	{
-		return SeShReportWriteMethodTrace.getInstance();
-	}
-
 	protected SeShReportWriteMethod getWriteMethodInfo()
 	{
 		return SeShReportWriteMethodInfo.getInstance();
@@ -109,17 +102,12 @@ public abstract class SeShReportWriterBase
 			m = getWriteMethodDebug();
 		if(m != null) return m;
 
-		//?: {debug | trace level}
-		if(x || (x = isTraceLevel()))
-			m = getWriteMethodTrace();
-		if(m != null) return m;
-
-		//?: {debug | trace | info level}
+		//?: {debug | info level}
 		if(x || (x = isInfoLevel()))
 			m = getWriteMethodInfo();
 		if(m != null) return m;
 
-		//?: {debug | trace | info | warn level}
+		//?: {debug | info | warn level}
 		if(x || isWarnLevel())
 			m = getWriteMethodWarn();
 
