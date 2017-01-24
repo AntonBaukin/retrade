@@ -68,6 +68,8 @@ import com.tverts.support.misc.Pair;
  * the goods of the fixed Invoices. Every aggregation
  * is checked with alternate (plain) implementation.
  *
+ * TODO test calculations on the volumess
+ *
  * @author anton.baukin@gmail.com
  */
 @SelfShuntUnit
