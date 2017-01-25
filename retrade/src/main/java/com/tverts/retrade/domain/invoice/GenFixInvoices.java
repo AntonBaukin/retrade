@@ -159,9 +159,8 @@ public class GenFixInvoices extends GenesisHiberPartBase
 
 	protected void fixInvoices(GenCtx ctx, List<Long> invoices)
 	{
-		long ts = System.currentTimeMillis();
+		long ts = System.currentTimeMillis(), tx = ts;
 		int  px = 0; //<-- logged percent
-
 
 		for(int b = 0;(b < invoices.size());)
 		{
@@ -176,9 +175,13 @@ public class GenFixInvoices extends GenesisHiberPartBase
 			int p = b * 100 / invoices.size();
 			if(p - px >= 5)
 			{
-				px = p;
 				LU.I(ctx.log(), LU.cls(this), " done ",
-				  p, "% is ", e, " in ", LU.td(ts));
+				  p, "% is ", e, " in ", LU.td(ts),
+				  (ts == tx)?(""):(" delta " + LU.td(tx))
+				);
+
+				px = p;
+				tx = System.currentTimeMillis();
 			}
 		}
 	}
