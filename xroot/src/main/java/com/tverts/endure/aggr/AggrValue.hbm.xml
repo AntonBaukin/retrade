@@ -56,16 +56,6 @@
     </property>
 
 
-    <!-- Aggr Value Denominator -->
-
-    <property name = 'aggrDenom' type = 'big_decimal'>
-
-      <column name = 'aggr_denom' precision = '22' scale = '10'>
-        <comment>The aggregated value plain fraction denominator</comment>
-      </column>
-    </property>
-
-
     <!-- Aggr Value Positive -->
 
     <property name = 'aggrPositive' type = 'big_decimal'>

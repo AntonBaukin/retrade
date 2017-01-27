@@ -246,27 +246,9 @@ public class Goods
 
 	public static BigDecimal aggrValueRestCost(AggrValue cost)
 	{
-		if(cost == null) return null;
-
-		BigDecimal z = cost.getAggrValue();
-		BigDecimal w = cost.getAggrDenom();
-
-		if((z != null) && (BigDecimal.ZERO.compareTo(z) == 0))
-			z = w = null;
-
-		if((w != null) && (BigDecimal.ZERO.compareTo(w) == 0))
-			z = w = null;
-
-		if((z == null) || (w == null))
-			return null;
-
-		//HINT: aggregated value z = w * p, where
-		// w is (denominator) aggregated rest(!) volume,
-		// and p is the rest cost.
-		//
-		// Note that w is not the whole volume available!
-
-		return z.divide(w, 5, RoundingMode.HALF_EVEN);
+		return (cost == null)?(null):
+		  (cost.getAggrValue() == null)?(null):
+		  cost.getAggrValue().setScale(5, BigDecimal.ROUND_HALF_EVEN);
 	}
 
 

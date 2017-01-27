@@ -98,29 +98,6 @@ public class AggrValue extends Entity
 	}
 
 	/**
-	 * If aggregated value is not a plain decimal
-	 * {@link #getAggrValue()}, but a fraction (to save
-	 * the precision when divide), this values stores
-	 * the denominator part of the fraction.
-	 *
-	 * It is always defined, by default it is one.
-	 */
-	public BigDecimal getAggrDenom()
-	{
-		return aggrDenom;
-	}
-
-	public void setAggrDenom(BigDecimal v)
-	{
-		if((v != null) && (v.scale() != 10))
-			v = v.setScale(10);
-
-		this.aggrDenom = v;
-	}
-
-	private BigDecimal aggrDenom = BigDecimal.ONE;
-
-	/**
 	 * Component of the value with the positive income.
 	 * Undefined when the value is one-component.
 	 */

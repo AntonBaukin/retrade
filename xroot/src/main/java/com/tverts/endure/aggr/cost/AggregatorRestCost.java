@@ -614,9 +614,6 @@ select sum(goodVolume) from AggrItem where
 		if(s != null)
 			s = s.setScale(10, BigDecimal.ROUND_HALF_EVEN);
 		aggrValue(struct).setAggrValue(s);
-
-		//~: the denominator is always 1
-		aggrValue(struct).setAggrDenom(BigDecimal.ONE);
 	}
 
 	protected void        checkHistoryIndex(AggrItemRestCost item)
