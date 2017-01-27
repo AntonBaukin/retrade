@@ -15,7 +15,7 @@ import com.tverts.endure.UnityType;
  * General attribute of United object
  * having it's mirror, {@link Unity}.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class UnityAttr extends NumericBase
 {

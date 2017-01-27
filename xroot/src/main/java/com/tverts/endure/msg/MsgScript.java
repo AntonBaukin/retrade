@@ -4,7 +4,7 @@ package com.tverts.endure.msg;
  * Adapting interface of a formatter of
  * JavaScript associated with the message.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface MsgScript
 {

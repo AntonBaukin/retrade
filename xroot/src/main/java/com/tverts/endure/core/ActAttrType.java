@@ -18,7 +18,7 @@ import com.tverts.endure.ActionBuilderXRoot;
 /**
  * Actions on Unified Attribute Types.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class ActAttrType extends ActionBuilderXRoot
 {

@@ -36,7 +36,7 @@ import com.tverts.support.EX;
 
 
 /**
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model-data")
 @XmlType(propOrder = {"model", "count", "entities"})

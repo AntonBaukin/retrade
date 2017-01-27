@@ -27,7 +27,7 @@ import com.tverts.support.jaxb.DateTimeAdapter;
  * Basic message data object for embedding
  * into {@link MsgObj} database instances.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "message")
 @XmlType(name = "message", propOrder = {

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * Strategy to generate View Ids by
  * incrementing local variable.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @Component("genViewId")
 public class LocalViewIds implements GenViewId

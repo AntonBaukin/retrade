@@ -9,7 +9,7 @@ import com.tverts.support.OU;
  * Reacts on the events where the target
  * is-a configured class.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class EventTargetFilter implements Reactor
 {

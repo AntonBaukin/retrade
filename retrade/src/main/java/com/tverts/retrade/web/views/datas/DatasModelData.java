@@ -36,7 +36,7 @@ import com.tverts.endure.report.ReportTemplateView;
 /**
  * Data provider for {@link DatasModelBean}.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model-data")
 @XmlType(propOrder = {

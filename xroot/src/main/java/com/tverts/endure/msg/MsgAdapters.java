@@ -22,7 +22,7 @@ import com.tverts.support.SU;
  * Adapter must be thread-safe (reentable).
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class MsgAdapters
 {

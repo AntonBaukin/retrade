@@ -33,7 +33,7 @@ import com.tverts.support.misc.Hash;
  *
  * Warning: engine is not thread-safe!
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class JsEngine
 {

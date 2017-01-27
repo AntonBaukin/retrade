@@ -35,7 +35,7 @@ import com.tverts.support.EX;
  * XML Data provider for Invoices of the types:
  * Buy, not altered Sell, not altered Move.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class DatasInvoiceGeneral extends ExecutorBase
 {

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 /**
  * Helper class to marshall characters directly.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class CharAdapter extends XmlAdapter<String, Character>
 {

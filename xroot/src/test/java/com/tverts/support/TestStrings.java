@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * Tests of String Utilities.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class TestStrings
 {

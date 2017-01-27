@@ -20,7 +20,7 @@ import com.tverts.retrade.domain.firm.Contractor;
  * from the highest index wins.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class FirmPrices extends NumericBase
 {

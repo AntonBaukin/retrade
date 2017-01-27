@@ -20,7 +20,7 @@ import com.tverts.endure.core.ActUnity;
 /**
  * Actions to save and update Report Templates.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class ActReportTemplate extends ActionBuilderXRoot
 {

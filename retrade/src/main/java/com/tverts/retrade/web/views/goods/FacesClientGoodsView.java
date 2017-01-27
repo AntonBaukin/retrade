@@ -42,7 +42,7 @@ import com.tverts.support.EX;
  * The view of the Good Units table for
  * the current requesting client firm.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @ManagedBean @RequestScoped
 public class FacesClientGoodsView extends FacesGoodsView

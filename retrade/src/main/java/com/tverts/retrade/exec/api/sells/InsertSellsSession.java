@@ -28,7 +28,7 @@ import com.tverts.support.EX;
  * Creates and saves new Sells Session from
  * the given API object.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class InsertSellsSession extends InsertEntityBase
 {

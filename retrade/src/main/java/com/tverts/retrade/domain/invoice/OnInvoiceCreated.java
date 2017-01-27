@@ -24,7 +24,7 @@ import com.tverts.support.DU;
 /**
  * Reacts on an Invoice creation.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class OnInvoiceCreated implements Reactor
 {

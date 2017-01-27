@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * Data object embedded into a {@link MsgBoxObj}.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "message-box")
 @XmlType(name = "message-box")

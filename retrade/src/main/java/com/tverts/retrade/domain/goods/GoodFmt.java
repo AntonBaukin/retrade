@@ -9,7 +9,7 @@ import com.tverts.support.fmt.FmtCtx;
 /**
  * Formatter for Good Units.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class GoodFmt extends FmtBase
 {

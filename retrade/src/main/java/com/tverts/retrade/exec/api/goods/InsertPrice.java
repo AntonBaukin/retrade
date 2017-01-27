@@ -38,7 +38,7 @@ import com.tverts.support.EX;
 /**
  * Inserts or updates Good Price in a List.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class InsertPrice extends InsertEntityBase
 {

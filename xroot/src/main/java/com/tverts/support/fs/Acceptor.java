@@ -12,7 +12,7 @@ import com.tverts.support.EX;
 /**
  * Consumer that throws exception.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @FunctionalInterface
 public interface Acceptor<T> extends Consumer<T>

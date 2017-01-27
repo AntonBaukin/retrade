@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * Annotation to mark a Servlet Context Listener
  * to be added to the application start-stop sequence.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

@@ -16,7 +16,7 @@ import com.tverts.support.EX;
 /**
  * Dumps Sells Desks in teh same named API objects.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class DumpSellsDesks extends EntitiesDumperBase
 {

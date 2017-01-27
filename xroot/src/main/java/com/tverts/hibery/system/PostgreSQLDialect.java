@@ -10,7 +10,7 @@ import org.hibernate.type.StandardBasicTypes;
 /**
  * Extended support for PostgreSQL 9.5 database server.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class PostgreSQLDialect extends PostgreSQL95Dialect
 {

@@ -26,7 +26,7 @@ import com.tverts.support.SU;
  * Implementation base for catalogue items
  * having nested XML document.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public abstract class OxCatItemBase
        extends        CatItemBase

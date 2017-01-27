@@ -10,7 +10,7 @@ import com.tverts.endure.Unity;
  * This typed link subscribes a Message Box
  * to some Unity is being a messages destination.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class MsgLink extends NumericBase
 {

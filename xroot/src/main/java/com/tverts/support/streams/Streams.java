@@ -23,7 +23,7 @@ import com.tverts.support.EX;
 /**
  * Collection of simple tiny streams.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class Streams
 {

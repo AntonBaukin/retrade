@@ -17,7 +17,7 @@ import com.tverts.support.EX;
  * Cache applying Hash Map and linked list of the entries.
  * Prunes the last recently used items.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class      LinkedCacheModelsStore
        extends    ModelsStoreBase

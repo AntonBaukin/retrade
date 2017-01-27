@@ -8,7 +8,7 @@ import com.tverts.model.ModelBean;
 /**
  * UI Model that is for creating Report Requests.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface ReportModel extends ModelBean
 {

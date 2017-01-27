@@ -22,7 +22,7 @@ import java.util.Map;
  * The implementation is self-sufficient!
  * No additional class files are required.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class CSSEmbed
 {

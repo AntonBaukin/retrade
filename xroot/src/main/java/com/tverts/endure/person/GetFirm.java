@@ -20,7 +20,7 @@ import com.tverts.support.EX;
 /**
  * Loads {@link FirmEntity}.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @Component
 public class GetFirm extends GetObjectBase

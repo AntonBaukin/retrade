@@ -21,7 +21,7 @@ import com.tverts.data.ReportFormat;
 /**
  * Instance of report requested by a user.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class      ReportRequest
        extends    NumericBase

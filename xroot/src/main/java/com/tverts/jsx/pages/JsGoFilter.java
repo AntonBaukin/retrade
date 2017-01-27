@@ -19,7 +19,7 @@ import com.tverts.jsx.JsX;
 /**
  * Forwards go-requests processing to {@link JsServlet}.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @Component @PickFilter(order = { 5015 })
 public class JsGoFilter extends GoPageFilterBase

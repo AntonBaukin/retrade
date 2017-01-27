@@ -9,7 +9,7 @@ import java.util.Date;
  * Hibernate mapping class for a Models Store entry.
  * Primary key is the key of the Model Bean stored.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class ModelRecord
 {

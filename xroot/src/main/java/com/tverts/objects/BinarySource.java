@@ -15,7 +15,7 @@ import com.tverts.servlet.Download;
  * expose HTTP Servlet interfaces.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface BinarySource
 {

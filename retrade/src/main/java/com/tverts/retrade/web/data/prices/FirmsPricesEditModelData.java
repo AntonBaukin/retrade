@@ -49,7 +49,7 @@ import com.tverts.support.EX;
  * Contractor associated Price Lists edit form.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model-data")
 @XmlType(propOrder = {

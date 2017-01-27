@@ -36,7 +36,7 @@ import com.tverts.support.SU;
  * {@link PriceCross}es are properly linked.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @SelfShuntUnit
 @SelfShuntGroups({"retrade:goods", "retrade:goods:prices", "retrade:firms:prices"})

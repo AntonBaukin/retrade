@@ -39,7 +39,7 @@ import com.tverts.support.SU;
  * Relates each Contractor with the main
  * Price List and zero or more additional.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class GenTestFirmPrices extends GenesisHiberPartBase
 {

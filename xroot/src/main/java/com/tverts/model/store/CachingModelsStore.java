@@ -12,7 +12,7 @@ import com.tverts.model.ModelsStore;
 /**
  * Models Store with caching abilities.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface CachingModelsStore extends ModelsStore
 {

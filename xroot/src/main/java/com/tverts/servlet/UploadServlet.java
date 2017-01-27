@@ -57,7 +57,7 @@ import com.tverts.support.SU;
  * the model is the same user issuing the request.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class UploadServlet extends GenericServlet
 {

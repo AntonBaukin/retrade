@@ -12,7 +12,7 @@ import com.tverts.endure.cats.CatItem;
  * A combination of two items: Data Source
  * ID, and the reporting system binary file.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class      ReportTemplate
        extends    Entity

@@ -29,7 +29,7 @@ import com.tverts.support.misc.ClassLevels.Visitor;
  * (class levels down() invocation).
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class EventsDisp implements Reactor, ReactorRef
 {

@@ -21,7 +21,7 @@ import com.tverts.exec.api.EntitiesDumperBase;
 /**
  * Dumps {@link GoodPrice}s as {@link PriceItem}s.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class DumpPrices extends EntitiesDumperBase
 {

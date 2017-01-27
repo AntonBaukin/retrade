@@ -44,7 +44,7 @@ import com.tverts.support.SU;
 /**
  * Executes Self-Shunt requests made by System user.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class ExecSelfShunt extends ExecutorBase
 {

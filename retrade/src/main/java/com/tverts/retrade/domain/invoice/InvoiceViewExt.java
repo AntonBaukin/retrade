@@ -21,7 +21,7 @@ import com.tverts.retrade.domain.store.TradeStore;
 /**
  * Extended Invoice View.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "invoice")
 @XmlType(name = "invoice-view-ext")

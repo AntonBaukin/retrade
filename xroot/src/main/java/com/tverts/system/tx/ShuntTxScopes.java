@@ -37,7 +37,7 @@ import com.tverts.support.LU;
  * requests, so outer Tx already exists.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @Component @Scope("prototype")
 @SelfShuntUnit(single = true)

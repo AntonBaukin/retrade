@@ -22,7 +22,7 @@ import com.tverts.support.EX;
 /**
  * The context of accessing the data.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @SuppressWarnings("unchecked")
 public class DataCtx implements Serializable

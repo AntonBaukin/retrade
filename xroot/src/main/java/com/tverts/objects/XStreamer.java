@@ -38,7 +38,7 @@ import com.tverts.support.streams.BytesStream;
 /**
  * Wraps Spring OXM Marshaller invocation.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class XStreamer
 {

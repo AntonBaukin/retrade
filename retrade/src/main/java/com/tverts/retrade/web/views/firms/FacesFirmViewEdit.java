@@ -63,7 +63,7 @@ import com.tverts.support.SU;
  * {@link Contractor}s.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @ManagedBean @RequestScoped
 public class FacesFirmViewEdit extends UnityModelView

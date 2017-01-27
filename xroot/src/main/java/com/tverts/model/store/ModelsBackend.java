@@ -8,7 +8,7 @@ import java.util.Collection;
 /**
  * Strategy to permanently store UI Models.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface ModelsBackend
 {

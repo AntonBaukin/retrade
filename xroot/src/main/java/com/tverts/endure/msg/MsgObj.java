@@ -17,7 +17,7 @@ import com.tverts.support.EX;
  * ordering, and messages of test Domains
  * may not have negative keys!
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class MsgObj extends OxNumericBase implements OxSearch
 {

@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * for the details.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface Download
 {

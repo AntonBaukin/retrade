@@ -22,7 +22,7 @@ import com.tverts.support.EX;
  * Collections of Engines related to the
  * scripts defined by their files.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class JsEngines
 {

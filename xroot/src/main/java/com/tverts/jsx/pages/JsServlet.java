@@ -61,7 +61,7 @@ import com.tverts.support.streams.BytesStream;
  * server internal error 500 status.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class JsServlet extends GenericServlet
 {

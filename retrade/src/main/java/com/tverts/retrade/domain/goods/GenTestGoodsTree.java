@@ -47,7 +47,7 @@ import com.tverts.support.xml.SaxProcessor;
  * Adds test Good Units to the goods tree.
  * Reads 'GenTestGoodsTree.xml' file.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class GenTestGoodsTree extends GenesisHiberPartBase
 {

@@ -49,7 +49,7 @@ import com.tverts.support.SU;
  * Faces back bean to create and edit
  * Report Template Instances.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @ManagedBean @RequestScoped
 public class FacesReportTemplateEdit extends ModelView

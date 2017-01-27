@@ -12,7 +12,7 @@ import com.tverts.support.SU;
 /**
  * Abstraction of a Faces View (back bean).
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public abstract class ViewBase
 {

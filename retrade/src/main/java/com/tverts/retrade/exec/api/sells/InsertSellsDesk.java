@@ -42,7 +42,7 @@ import com.tverts.support.SU;
  * cash and bank operations, and Pay Desk.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class InsertSellsDesk extends InsertEntityBase
 {

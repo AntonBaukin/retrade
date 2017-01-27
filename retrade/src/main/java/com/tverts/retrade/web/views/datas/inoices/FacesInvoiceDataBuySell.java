@@ -57,7 +57,7 @@ import com.tverts.support.SU;
  * {@link AdaptedEntitiesSelected} model.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @ManagedBean @RequestScoped
 public class FacesInvoiceDataBuySell extends ModelView

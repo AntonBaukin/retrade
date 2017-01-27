@@ -9,7 +9,7 @@ import com.tverts.system.services.events.EventBase;
 /**
  * Internal event of Models Store Service.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class      ModelsStoreEvent
        extends    EventBase

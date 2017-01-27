@@ -56,7 +56,7 @@ import com.tverts.support.streams.BytesStream;
  * the model is the same user issuing the request.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class DownloadServlet extends GenericServlet
 {

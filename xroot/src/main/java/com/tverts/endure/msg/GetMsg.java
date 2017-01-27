@@ -35,7 +35,7 @@ import com.tverts.support.EX;
 /**
  * Get-queries for the database relate to the Messages.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @Component
 public class GetMsg extends GetObjectBase

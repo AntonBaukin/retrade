@@ -17,7 +17,7 @@ import com.tverts.support.EX;
  * Special object to store objects
  * XML-written into byte arrays.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class OxBytes implements Ox
 {

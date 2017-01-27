@@ -18,7 +18,7 @@ import com.tverts.api.support.EX;
 /**
  * Value object.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "value")
 @XmlType(name = "value", propOrder = {

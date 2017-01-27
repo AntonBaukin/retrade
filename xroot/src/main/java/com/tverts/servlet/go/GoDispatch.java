@@ -16,7 +16,7 @@ import com.tverts.support.EX;
 /**
  * Structure being a dispatch request.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class GoDispatch
 {

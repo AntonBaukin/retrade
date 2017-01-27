@@ -20,7 +20,7 @@ import com.tverts.support.SU;
 /**
  * Title formatter for documents.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public abstract class DocFmtBase extends FmtBase
 {

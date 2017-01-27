@@ -31,7 +31,7 @@ import com.tverts.retrade.domain.goods.MeasureUnitView;
 /**
  * Lists Measures of the Domain of the model.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model-data")
 @XmlType(propOrder = {"model", "measureUnits"})

@@ -15,7 +15,7 @@ import com.tverts.api.support.EX;
 /**
  * Class that simply stores JSON-encoding string.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "json-string")
 @XmlType(name = "json-string", propOrder = { "type", "json" })

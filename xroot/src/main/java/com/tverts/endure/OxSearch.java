@@ -8,7 +8,7 @@ package com.tverts.endure;
  * string with '\f' used as the separators.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface OxSearch
 {

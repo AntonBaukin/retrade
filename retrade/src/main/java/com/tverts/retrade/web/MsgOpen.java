@@ -19,7 +19,7 @@ import com.tverts.support.SU;
  * 'retrade_msg_open()' function with
  * the primary key of the entity.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class MsgOpen implements MsgAdapter, MsgScript
 {

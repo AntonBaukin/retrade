@@ -8,7 +8,7 @@ package com.tverts.endure;
  * compressed bytes stream.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface Ox
 {

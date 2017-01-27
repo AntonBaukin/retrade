@@ -44,7 +44,7 @@ import com.tverts.support.IO;
  * of the entities in the selection set provided.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
 @XmlType(name = "adapted-entities-selected-model")

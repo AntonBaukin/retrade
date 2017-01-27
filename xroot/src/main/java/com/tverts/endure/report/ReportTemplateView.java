@@ -19,7 +19,7 @@ import com.tverts.data.DataSource;
 /**
  * A view of Report Template (Catalogue Item).
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "report-template")
 @XmlType(name = "report-template-view")

@@ -33,7 +33,7 @@ import com.tverts.support.IO;
  * A model bean to edit the Price Lists
  * associated with one or more selected firms.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
 @XmlType(name = "firms-prices-edit-model")

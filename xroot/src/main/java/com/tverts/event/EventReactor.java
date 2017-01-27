@@ -8,7 +8,7 @@ import com.tverts.support.misc.Pair;
 /**
  * Pair of (Event class, Reactor instance).
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class EventReactor extends Pair<Class<? extends Event>, Reactor>
 {

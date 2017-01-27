@@ -4,7 +4,7 @@ package com.tverts.endure;
  * Simplification class that adds
  * support for Tx-indexed entities.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public abstract class OxNumericTxBase
        extends        OxNumericBase

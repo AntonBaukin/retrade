@@ -20,7 +20,7 @@ import com.tverts.support.EX;
 /**
  * Tests {@link JsX} implementation.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestJsX

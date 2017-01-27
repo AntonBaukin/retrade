@@ -12,7 +12,7 @@ import com.tverts.support.EX;
 /**
  * Adapts Invoice as extended Invoice View.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class InvoiceViewAdapter implements Adapter
 {

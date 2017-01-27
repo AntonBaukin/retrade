@@ -15,7 +15,7 @@ import jdk.nashorn.api.scripting.AbstractJSObject;
  * This is a simple map-object required
  * just to store properties.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public final class JsPlain extends AbstractJSObject
 {

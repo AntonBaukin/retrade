@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Adaptor must be a XML-compatible Java Bean.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface Adapter extends Serializable
 {

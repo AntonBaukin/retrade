@@ -28,7 +28,7 @@ import com.tverts.support.EX;
 /**
  * Actions for the Message Boxes.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class ActMsgBox extends ActionBuilderXRoot
 {

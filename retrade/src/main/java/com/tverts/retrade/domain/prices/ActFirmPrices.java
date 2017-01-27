@@ -43,7 +43,7 @@ import com.tverts.support.EX;
  * to the Contractor class. It handles
  * assigning Price Lists to the firms.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class ActFirmPrices extends ActionBuilderReTrade
 {

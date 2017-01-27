@@ -4,7 +4,7 @@ package com.tverts.endure.msg;
  * Message Adapter that writes some data
  * into a message is being adapted.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface MsgAdapter
 {

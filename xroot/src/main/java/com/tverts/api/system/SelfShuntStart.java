@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  * allowed via this request.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlType(name = "self-shunt-start", propOrder = {
   "logKey", "groups"

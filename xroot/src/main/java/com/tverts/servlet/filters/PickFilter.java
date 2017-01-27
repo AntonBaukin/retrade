@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * Annotation to mark a Filter to be added
  * to the processing chain of the application.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

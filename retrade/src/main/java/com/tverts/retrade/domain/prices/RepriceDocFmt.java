@@ -17,7 +17,7 @@ import com.tverts.support.fmt.FmtCtx;
 /**
  * Formatter for Price Change Documents.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class RepriceDocFmt extends DocFmtBase
 {

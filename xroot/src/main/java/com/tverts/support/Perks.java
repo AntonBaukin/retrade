@@ -15,7 +15,7 @@ import com.tverts.support.fs.Acceptor;
  * Support for perks: objective flags
  * or self-describing processing values.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class Perks
 {

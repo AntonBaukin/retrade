@@ -1,6 +1,6 @@
 package com.tverts.endure.aggr;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 
@@ -12,10 +12,13 @@ import com.tverts.endure.core.Entity;
 
 
 /**
- * Aggregated Value is a data facade standing for
- * a collection of aggregation components referring it.
+ * Aggregated Value entity is a facade for related
+ * database entities being the items of the value,
+ * or even data structures of else primary entities.
+ * The schema of the objects depend on the type of
+ * the aggregated value. Each type has own strategy
+ * to handle these objects.
  *
- * COMMENT complete comments on AggrValue
  *
  * @author anton.baukin@gmail.com
  */

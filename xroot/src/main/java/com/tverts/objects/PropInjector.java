@@ -9,7 +9,7 @@ import java.util.Map;
  * Injects properties into configuration
  * Map: String -> Object.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface PropInjector
 {

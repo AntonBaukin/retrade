@@ -18,7 +18,7 @@ import com.tverts.support.EX;
  * Implementation of Hibernate JTA Platform that
  * accesses already configured Spring Tx Manager.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class SpringBoundPlatform extends AbstractJtaPlatform
 {

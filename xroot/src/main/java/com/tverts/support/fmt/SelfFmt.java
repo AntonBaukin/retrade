@@ -8,7 +8,7 @@ import com.tverts.support.EX;
  * Deontes an object that implements
  * own formatting.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface SelfFmt extends FmtUni
 {

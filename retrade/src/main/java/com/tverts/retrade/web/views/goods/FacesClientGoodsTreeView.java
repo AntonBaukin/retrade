@@ -36,7 +36,7 @@ import com.tverts.support.EX;
  * The view of the Good Units tree for
  * the current requesting client firm.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @ManagedBean @RequestScoped
 public class FacesClientGoodsTreeView extends FacesGoodsTreeView

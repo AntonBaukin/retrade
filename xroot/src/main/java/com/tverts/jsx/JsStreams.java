@@ -29,7 +29,7 @@ import com.tverts.support.streams.Streams.WriteWrapper;
  * Collection of three streams of a scripting
  * context: input, output, and error.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class JsStreams implements AutoCloseable
 {

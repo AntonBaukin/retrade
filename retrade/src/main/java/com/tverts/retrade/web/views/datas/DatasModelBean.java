@@ -30,7 +30,7 @@ import com.tverts.support.IO;
  * A model to display Data Sources list
  * and select one of them.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
 @XmlType(name = "datas-model")

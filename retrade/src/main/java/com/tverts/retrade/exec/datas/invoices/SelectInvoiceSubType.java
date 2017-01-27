@@ -20,7 +20,7 @@ import com.tverts.support.SU;
  * sub-types. Intended to be used only for
  * {@link AdaptedEntitiesSelected} model'
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class SelectInvoiceSubType implements TuneQuery
 {

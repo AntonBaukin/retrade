@@ -14,7 +14,7 @@ import com.tverts.support.SU;
 /**
  * Implementation base for a Data Source.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public abstract class DataSourceBase
        implements     DataSource, DataSourceReference

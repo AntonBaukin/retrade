@@ -19,7 +19,7 @@ import com.tverts.support.SU;
 /**
  * Notifies System user on each login created.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class OnAuthLoginCreated implements Reactor
 {

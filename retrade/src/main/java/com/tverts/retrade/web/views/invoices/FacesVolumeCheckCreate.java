@@ -34,7 +34,7 @@ import com.tverts.retrade.domain.store.TradeStore;
 /**
  * Back bean to create model of Volume Check Invoices.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @ManagedBean @RequestScoped
 public class   FacesVolumeCheckCreate

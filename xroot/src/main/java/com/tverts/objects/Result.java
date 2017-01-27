@@ -4,7 +4,7 @@ package com.tverts.objects;
  * Container of return value from
  * a inline class body.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class Result<T>
 {

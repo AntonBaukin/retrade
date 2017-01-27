@@ -12,7 +12,7 @@ import org.hibernate.event.spi.PostLoadEvent;
  * Implementation base for listener
  * of various Hibernate events.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class OnHiberEventBase implements OnHiberEvent
 {

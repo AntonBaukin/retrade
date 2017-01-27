@@ -44,7 +44,7 @@ import com.tverts.support.SU;
 /**
  * Special processor of Attribute Types for Good Units.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class ActGoodAttrType extends ActionBuilderReTrade
 {

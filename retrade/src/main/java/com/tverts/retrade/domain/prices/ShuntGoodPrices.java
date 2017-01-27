@@ -28,7 +28,7 @@ import com.tverts.support.EX;
  * Checks various issues relating the Goods
  * and the prices in the Price Lists.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @SelfShuntUnit
 @SelfShuntGroups({"retrade:goods", "retrade:goods:prices"})

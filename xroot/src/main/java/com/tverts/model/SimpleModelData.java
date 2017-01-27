@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Data provider special for Simple Models.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface SimpleModelData extends ModelData, Serializable
 {

@@ -26,7 +26,7 @@ import com.tverts.servlet.RequestPoint;
  * General component to handle all the tags
  * of response.xsd related tag library.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class ResponseTag extends TagHandler
 {

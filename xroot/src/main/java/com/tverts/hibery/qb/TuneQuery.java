@@ -14,7 +14,7 @@ import java.io.Serializable;
  * is not required in the interface.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface TuneQuery extends Serializable
 {

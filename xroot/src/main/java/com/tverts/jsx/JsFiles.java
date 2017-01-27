@@ -18,7 +18,7 @@ import com.tverts.support.EX;
 /**
  * Container of script files.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class JsFiles
 {

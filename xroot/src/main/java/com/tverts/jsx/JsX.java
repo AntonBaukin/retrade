@@ -18,7 +18,7 @@ import com.tverts.support.SU;
  * Entry point to JavaScript execution layer
  * based on Oracle Nashorn implementation.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class JsX extends ServiceBase
 {

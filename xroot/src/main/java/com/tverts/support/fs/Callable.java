@@ -7,7 +7,7 @@ import com.tverts.support.EX;
 /**
  * Runnable that throws an exception.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @FunctionalInterface
 public interface Callable extends Runnable

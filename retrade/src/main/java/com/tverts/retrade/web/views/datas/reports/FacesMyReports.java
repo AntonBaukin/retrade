@@ -26,7 +26,7 @@ import com.tverts.support.SU;
  * Faces back bean for Report Requests table
  * created and available to download for a user.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @ManagedBean @RequestScoped
 public class FacesMyReports extends ModelView

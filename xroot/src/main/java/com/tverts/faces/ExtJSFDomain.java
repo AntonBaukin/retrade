@@ -14,7 +14,7 @@ import static com.tverts.spring.SpringPoint.bean;
  * Class-variable. Shortcut for
  * {@link RootView#getExtjsDomain()}.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @Component("extDom") @Scope("request")
 public class ExtJSFDomain

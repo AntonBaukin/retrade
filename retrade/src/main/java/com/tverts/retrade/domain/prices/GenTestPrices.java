@@ -68,7 +68,7 @@ import com.tverts.support.SU;
  * Change Documents {@link RepriceDoc}.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class GenTestPrices extends GenesisHiberPartBase
 {

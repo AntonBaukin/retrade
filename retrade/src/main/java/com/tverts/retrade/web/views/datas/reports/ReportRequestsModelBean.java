@@ -46,7 +46,7 @@ import com.tverts.support.EX;
 /**
  * Model with the Report Requests of the current user.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
 @XmlType(name = "report-requests-model")

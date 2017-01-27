@@ -21,7 +21,7 @@ import com.tverts.support.EX;
  * files for each package found during the
  * auto-discovery.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class   EclipseLinkOXMBuilder
        extends PropResourceReader

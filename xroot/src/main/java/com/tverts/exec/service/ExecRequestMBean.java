@@ -14,7 +14,7 @@ import com.tverts.system.services.ServicesPoint;
  * Listens for Execution Notifications Queue and
  * redirects to the Execution Plan Service.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class ExecRequestMBean implements MessageListener
 {

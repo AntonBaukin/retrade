@@ -18,7 +18,7 @@ import com.tverts.model.ModelBean;
  * the configuration via web-interface.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface DataSource
 {

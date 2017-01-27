@@ -35,7 +35,7 @@ import com.tverts.support.SU;
 /**
  * Messages processing utility with methods chaining.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class Msg
 {

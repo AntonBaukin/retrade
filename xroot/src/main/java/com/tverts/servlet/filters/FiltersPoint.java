@@ -27,7 +27,7 @@ import com.tverts.support.LU;
  * Collects all Filters registered as
  * Spring beans via @PickFilter.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @Component
 public class FiltersPoint

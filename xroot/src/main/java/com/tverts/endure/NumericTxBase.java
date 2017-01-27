@@ -4,7 +4,7 @@ package com.tverts.endure;
  * Extends basic identity class to support
  * transaction numbers.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public abstract class NumericTxBase
        extends        NumericBase

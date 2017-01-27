@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * A read view of a Data Source.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "data-source")
 public class DataSourceView implements Serializable

@@ -21,7 +21,7 @@ import com.tverts.support.EX;
 /**
  * Dumps Sell Receipts in the same named API objects.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class DumpSellReceipts extends EntitiesDumperBase
 {

@@ -23,7 +23,7 @@ import com.tverts.support.LU;
 /**
  * Record of a model in a store.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class ModelEntry implements Externalizable
 {

@@ -6,7 +6,7 @@ package com.tverts.endure;
  * with has code and equals method.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface AltIdentity
 {

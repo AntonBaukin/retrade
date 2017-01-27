@@ -22,7 +22,7 @@ import com.tverts.api.core.Value;
  * Attribute type of a Good combined with
  * value of attribute for concrete Good.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "good-attr")
 @XmlType(name = "good-attr", propOrder = {

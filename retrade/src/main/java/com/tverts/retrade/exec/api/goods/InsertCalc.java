@@ -48,7 +48,7 @@ import com.tverts.support.EX;
  * as the calculations are immutable after saving.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class InsertCalc extends InsertEntityBase
 {

@@ -14,7 +14,7 @@ import com.tverts.endure.ActionBuilderXRoot;
 /**
  * Action to save Report Requests.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class ActReportRequest extends ActionBuilderXRoot
 {

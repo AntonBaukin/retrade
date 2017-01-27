@@ -28,7 +28,7 @@ import com.tverts.support.EX;
  * The implementation is thread-safe.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public final class ClassLevels
 {

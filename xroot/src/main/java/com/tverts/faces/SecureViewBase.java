@@ -24,7 +24,7 @@ import com.tverts.support.SU;
 /**
  * Faces View that provides essential seciruty checks.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public abstract class SecureViewBase extends ViewBase
 {

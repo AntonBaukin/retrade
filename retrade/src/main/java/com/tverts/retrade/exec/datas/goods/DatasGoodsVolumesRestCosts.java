@@ -24,7 +24,7 @@ import com.tverts.support.EX;
  * volumes and the rest costs.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class DatasGoodsVolumesRestCosts extends DataSourceBase
 {

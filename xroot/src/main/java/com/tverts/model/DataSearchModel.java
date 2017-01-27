@@ -4,7 +4,7 @@ package com.tverts.model;
  * Denotes a model that searches the entities
  * by the strings array, or by selection set.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface DataSearchModel
 {

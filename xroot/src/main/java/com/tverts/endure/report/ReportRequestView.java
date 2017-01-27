@@ -21,7 +21,7 @@ import com.tverts.support.jaxb.DateTimeAdapter;
  * Read-only view on the report request
  * issued by a user.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "report-request")
 public class ReportRequestView implements Serializable

@@ -26,7 +26,7 @@ import com.tverts.retrade.domain.goods.GoodUnit;
  * the good prices!
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class PriceCross extends NumericBase
 {

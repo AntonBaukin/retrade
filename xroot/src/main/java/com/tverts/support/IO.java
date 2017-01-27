@@ -29,7 +29,7 @@ import com.tverts.support.streams.BytesStream;
 /**
  * Input-output helping functions.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class IO
 {

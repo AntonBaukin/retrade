@@ -26,7 +26,7 @@ import com.tverts.support.SU;
  * never changed after it.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class JsGlobal
 {

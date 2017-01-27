@@ -22,7 +22,7 @@ import com.tverts.api.core.XKeyPair;
  * tree folders only, but not for goods.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlType(name = "tree-item", propOrder = {
   "good", "folder", "parent", "XParent"

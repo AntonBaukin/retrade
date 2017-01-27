@@ -15,7 +15,7 @@ import com.tverts.support.EX;
 /**
  * Wraps execution into transaction scopes.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @Component @Scope("prototype")
 public class TxBean

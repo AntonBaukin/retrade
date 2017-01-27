@@ -20,7 +20,7 @@ import com.tverts.support.streams.BytesStream;
  * Encoding must be UTF-8.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class PropResourceReader implements PropInjector
 {

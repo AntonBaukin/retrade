@@ -34,7 +34,7 @@ import com.tverts.support.SU;
  * page set to the source instance.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class SingleEntityDataSource extends DataSourceBase
 {

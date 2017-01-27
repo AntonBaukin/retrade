@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
  * last self-shunting of the system.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlType(name = "self-shunt-results", propOrder = {
   "logKey", "results"

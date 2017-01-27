@@ -4,7 +4,7 @@ package com.tverts.endure;
  * This interface denotes that database
  * entity has remarks attribute.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface Remarkable
 {

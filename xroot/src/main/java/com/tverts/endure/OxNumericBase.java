@@ -23,7 +23,7 @@ import com.tverts.support.EX;
  * classes implementing the interface.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public abstract class OxNumericBase
        extends        NumericBase

@@ -21,7 +21,7 @@ import com.tverts.support.streams.BytesStream;
  * Denotes JavaScript thread-safe file
  * stored somewhere.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class JsFile implements AutoCloseable
 {

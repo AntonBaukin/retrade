@@ -19,7 +19,7 @@ import com.tverts.objects.BinarySource.Biny;
  * Spring Components.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface Upload
 {

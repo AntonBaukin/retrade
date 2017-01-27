@@ -30,7 +30,7 @@ import com.tverts.support.SU;
  * Collection of functions to load instances
  * related to report templates and requests.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @Component
 public class GetReports extends GetObjectBase

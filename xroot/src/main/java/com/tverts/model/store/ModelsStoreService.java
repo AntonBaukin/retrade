@@ -33,7 +33,7 @@ import com.tverts.support.LU;
  * Service that stores UI Model Beans applying
  * in-memory caching and persistence strategies.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class      ModelsStoreService
        extends    ServiceBase

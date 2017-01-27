@@ -25,7 +25,7 @@ import com.tverts.support.EX;
  * This special listener sets read-only
  * for the entities had been loaded.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class LoadReadOnly extends OnHiberEventBase
 {

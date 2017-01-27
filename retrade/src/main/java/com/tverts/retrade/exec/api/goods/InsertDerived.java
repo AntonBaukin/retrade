@@ -46,7 +46,7 @@ import com.tverts.support.SU;
  * Creates {@link GoodUnit} instance having derived
  * Calculation based on the given API {@link DerivedGood}.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class InsertDerived extends InsertGood
 {

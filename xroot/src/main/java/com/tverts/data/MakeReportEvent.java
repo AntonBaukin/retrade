@@ -13,7 +13,7 @@ import com.tverts.support.EX;
  * Event to send to {@link ReportsService} to
  * make the defined Report Request.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class MakeReportEvent extends EventBase
 {

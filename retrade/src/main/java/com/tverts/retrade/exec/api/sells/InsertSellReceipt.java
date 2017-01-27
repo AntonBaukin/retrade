@@ -51,7 +51,7 @@ import com.tverts.support.EX;
  * Sell Sessions updates further.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class InsertSellReceipt extends InsertEntityBase
 {

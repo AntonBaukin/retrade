@@ -31,7 +31,7 @@ import com.tverts.support.EX;
 /**
  * View on Good Unit Attributes.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @Component @Scope("request")
 public class FacesGoodAttrsView extends ModelView

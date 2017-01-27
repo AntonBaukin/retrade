@@ -19,7 +19,7 @@ import com.tverts.system.tx.TxBean;
  * Persistent backend for the UI Model Beans stored
  * in the database in the {@link ModelRecord} objects.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class HiberModelsStore extends ModelsBackendBase
 {

@@ -29,7 +29,7 @@ import com.tverts.support.LU;
  * Collects all {@link ServletContextListener} registered
  * as Spring beans with {@link PickListener} annotation.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @Component
 public class ContextListenersPoint

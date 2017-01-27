@@ -23,7 +23,7 @@ import com.tverts.support.streams.BytesStream;
  * This is a prototype Spring Bean.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class ReportClient
 {

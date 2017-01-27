@@ -31,7 +31,7 @@ import com.tverts.retrade.domain.prices.GoodPriceView;
  * Model data provider to display the Goods Tree
  * for the current requesting client firm.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model-data")
 public class ClientGoodsTreeModelData extends GoodsTreeModelData

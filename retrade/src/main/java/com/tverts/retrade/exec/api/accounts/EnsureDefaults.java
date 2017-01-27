@@ -46,7 +46,7 @@ import com.tverts.support.SU;
  * Finds or creates the default Accounts and the related
  * Payment Ways for the Contractor given, or for the Domain.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class EnsureDefaults
 {

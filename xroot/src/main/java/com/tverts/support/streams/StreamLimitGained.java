@@ -9,7 +9,7 @@ import java.io.IOException;
  * Thrown when {@link BytesStream} gains
  * the limit of the data bytes.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class StreamLimitGained extends IOException
 {

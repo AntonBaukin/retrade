@@ -23,7 +23,7 @@ import com.tverts.support.IO;
  * with the concrete values of attributes of
  * some Good Unit provided.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class GoodAttrsModelBean extends ModelBeanBase
 {

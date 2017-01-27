@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Data object related to single United instance.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class SingleEntity implements Serializable
 {

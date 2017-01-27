@@ -8,7 +8,7 @@ import com.tverts.endure.OxSearch;
 /**
  * Analogue of {@link OxSearch} for the Messages.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface MsgSearch
 {

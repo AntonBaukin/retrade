@@ -25,7 +25,7 @@ import com.tverts.support.EX;
  * Entity that stores it's state as
  * XML object of the predefined type.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public abstract class OxEntity
        extends        Entity

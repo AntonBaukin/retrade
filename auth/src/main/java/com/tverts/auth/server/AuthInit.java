@@ -31,7 +31,7 @@ import com.tverts.auth.server.support.SU;
 /**
  * Initializes the authentication application.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class AuthInit implements ServletContextListener
 {

@@ -15,7 +15,7 @@ import com.tverts.support.IO;
 /**
  * Model class that stores a view instance.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public abstract class ViewModelBeanBase extends ModelBeanBase
 {

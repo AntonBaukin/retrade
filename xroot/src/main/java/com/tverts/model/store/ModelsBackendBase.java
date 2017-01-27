@@ -22,7 +22,7 @@ import com.tverts.support.streams.BytesStream;
 /**
  * Implementation base for a UI Models Backend.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public abstract class ModelsBackendBase
        implements     ModelsBackend

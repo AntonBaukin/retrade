@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  * Used for JSON bindings. Forces Big Decimal
  * to be converted to string, not number.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class   BigDecimalAdapter
        extends XmlAdapter<String, BigDecimal>

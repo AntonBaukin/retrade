@@ -29,7 +29,7 @@ import com.tverts.endure.report.ReportRequestView;
 /**
  * Data of the model with Reports Requests.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model-data")
 @XmlType(propOrder = {

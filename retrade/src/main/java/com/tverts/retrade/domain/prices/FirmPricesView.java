@@ -25,7 +25,7 @@ import com.tverts.support.EX;
  * Displays Price Lists of the Contractor
  * denoted in the order of the association.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "firm-prices")
 public class FirmPricesView extends ContractorView

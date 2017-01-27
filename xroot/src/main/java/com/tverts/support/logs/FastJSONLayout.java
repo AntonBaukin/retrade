@@ -51,7 +51,7 @@ import org.apache.logging.log4j.util.BiConsumer;
  *  § line   line number.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @Plugin(name = "FastJSONLayout", category = Node.CATEGORY,
   elementType = Layout.ELEMENT_TYPE)

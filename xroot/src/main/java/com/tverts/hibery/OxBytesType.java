@@ -23,7 +23,7 @@ import com.tverts.support.EX;
  * Hibernate type for better storage
  * of byte arrays.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class OxBytesType implements UserType
 {

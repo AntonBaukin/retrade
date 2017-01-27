@@ -30,7 +30,7 @@ import com.tverts.support.fmt.SelfFmt;
  * Ox-object that is saved as a Selection Set
  * item to filter Good Units.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "goods-filter")
 @XmlType(name = "goods-filter", propOrder = {

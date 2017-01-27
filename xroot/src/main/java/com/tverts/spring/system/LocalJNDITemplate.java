@@ -22,7 +22,7 @@ import com.tverts.support.EX;
  * Template to create JNDI Context from
  * jndi.properties resource file.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class LocalJNDITemplate extends JndiTemplate
 {

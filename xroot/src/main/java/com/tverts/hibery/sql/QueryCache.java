@@ -31,7 +31,7 @@ import com.tverts.support.xml.SaxProcessor;
  * the query id requested.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public final class QueryCache
 {

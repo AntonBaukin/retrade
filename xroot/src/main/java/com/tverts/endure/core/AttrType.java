@@ -10,7 +10,7 @@ import com.tverts.endure.cats.NamedEntity;
 /**
  * Type of Unity Attribute.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class      AttrType
        extends    OxNumericBase

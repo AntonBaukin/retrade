@@ -36,7 +36,7 @@ import com.tverts.retrade.domain.goods.Goods;
  * Collects and returns the ordered list of
  * the distinct groups of the Domain Good Units.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model-data")
 @XmlType(propOrder = {"model", "goodGroups"})

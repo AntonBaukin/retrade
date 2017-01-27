@@ -63,7 +63,7 @@ import com.tverts.support.SU;
  * A controller of form to edit the Price Lists
  * associated with one or more selected firms.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @ManagedBean @RequestScoped
 public class FacesFirmsPricesEdit extends ModelView

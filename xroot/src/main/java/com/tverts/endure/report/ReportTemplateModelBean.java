@@ -49,7 +49,7 @@ import com.tverts.support.streams.BytesStream;
 /**
  * Model to create and edit a Report Template.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
 @XmlType(name = "report-template-model")

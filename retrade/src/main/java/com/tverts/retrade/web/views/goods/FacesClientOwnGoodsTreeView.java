@@ -32,7 +32,7 @@ import com.tverts.support.EX;
  * Back bean of the page with the Goods Tree
  * maintained by the client organization.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @ManagedBean @RequestScoped
 public class FacesClientOwnGoodsTreeView extends FacesClientGoodsTreeView

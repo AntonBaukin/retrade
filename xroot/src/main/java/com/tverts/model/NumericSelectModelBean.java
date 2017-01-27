@@ -11,7 +11,7 @@ import java.io.ObjectOutput;
  * Extends {@link NumericModelBean} adding
  * Data display interfaces support.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public abstract class NumericSelectModelBean
        extends        NumericModelBean

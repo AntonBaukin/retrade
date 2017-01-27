@@ -56,7 +56,7 @@ import com.tverts.support.SU;
  * entities recalculated.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class UpdateSellsSession extends UpdateEntityBase
 {

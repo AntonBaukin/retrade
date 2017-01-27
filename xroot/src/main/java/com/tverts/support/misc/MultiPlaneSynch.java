@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Demonstration all-in-single-file program
  * for Multi-Plane Synchronization concept.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class MultiPlaneSynch
 {

@@ -4,7 +4,7 @@ package com.tverts.faces;
  * Strategy to generate identificators
  * for the Faces Views.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface GenViewId
 {

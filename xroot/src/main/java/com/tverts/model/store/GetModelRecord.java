@@ -28,7 +28,7 @@ import com.tverts.support.EX;
 /**
  * Read and write Model Store records.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @Component
 public class GetModelRecord extends GetObjectBase

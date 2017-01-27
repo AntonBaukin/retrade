@@ -10,7 +10,7 @@ import com.tverts.system.services.events.EventBase;
  * Event that notifies {@link JsX} service
  * to act invalidation of cached scripts.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class      JsCheckEvent
        extends    EventBase

@@ -14,7 +14,7 @@ import com.tverts.system.tx.TxPoint;
 /**
  * Translates Post Load Event to the present Transaction Context.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class OnPostLoadEvent implements PostLoadEventListener
 {

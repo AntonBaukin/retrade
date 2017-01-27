@@ -42,7 +42,7 @@ import com.tverts.retrade.domain.goods.Goods;
  * Values are returned when concrete Good
  * Unit is defined in the model.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model-data")
 @XmlType(propOrder = { "model", "goodAttrs" })

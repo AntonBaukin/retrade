@@ -3,7 +3,7 @@ package com.tverts.data;
 /**
  * Supported formats of the report documents.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public enum ReportFormat
 {

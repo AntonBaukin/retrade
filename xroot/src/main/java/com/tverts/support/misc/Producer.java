@@ -12,7 +12,7 @@ import com.tverts.support.EX;
 /**
  * Analog of Supplier that can generate error.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public interface Producer<T> extends Supplier<T>
 {

@@ -46,7 +46,7 @@ import com.tverts.support.EX;
  * Collection of database routines to access
  * Price Lists and the related entities.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @Component
 public class GetPrices extends GetGoods

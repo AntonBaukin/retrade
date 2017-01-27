@@ -42,7 +42,7 @@ import com.tverts.support.xml.SaxProcessor;
  * Overwritten in ReTrade to create the
  * Contractors with the related Firms.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class GenTestFirms extends GenesisHiberPartBase
 {

@@ -45,7 +45,7 @@ import com.tverts.support.streams.BytesStream;
 /**
  * Servlet top access user interface models.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class ModelServlet extends GenericServlet
 {

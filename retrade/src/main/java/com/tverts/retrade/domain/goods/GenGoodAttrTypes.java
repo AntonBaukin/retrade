@@ -38,7 +38,7 @@ import com.tverts.support.SU;
  * Generates predefined attribute
  * types for Good Units.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class GenGoodAttrTypes extends GenesisHiberPartBase
 {

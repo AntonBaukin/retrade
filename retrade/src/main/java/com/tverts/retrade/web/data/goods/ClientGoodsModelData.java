@@ -33,7 +33,7 @@ import com.tverts.retrade.domain.prices.GoodPriceView;
  * for the Contractor specified in the model.
  *
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model-data")
 public class ClientGoodsModelData extends GoodsModelData

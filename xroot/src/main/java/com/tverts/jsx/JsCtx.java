@@ -23,7 +23,7 @@ import com.tverts.support.Perks;
  * Parameters and the results of
  * Script Execution.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class JsCtx implements AutoCloseable
 {

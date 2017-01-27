@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * Successive result of an operation.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 @XmlType(name = "okey")
 public class Okey implements Serializable

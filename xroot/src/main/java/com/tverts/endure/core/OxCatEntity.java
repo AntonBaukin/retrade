@@ -14,7 +14,7 @@ import com.tverts.support.SU;
  * Ox-Entity that is also a catalogue item.
  * The Ox-Object must be a {@link CatItem}.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public abstract class OxCatEntity
        extends        OxEntity

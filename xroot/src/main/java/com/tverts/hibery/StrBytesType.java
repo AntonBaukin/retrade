@@ -28,7 +28,7 @@ import com.tverts.support.streams.BytesStream;
  * that are stored in the database as
  * GZIP-compressed byte arrays.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class StrBytesType implements UserType
 {

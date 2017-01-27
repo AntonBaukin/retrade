@@ -10,7 +10,7 @@ import com.tverts.system.services.events.EventBase;
  * Event that Reports Service sends to itself
  * to do obsolete reports cleanups.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public class      ReportsServiceEvent
        extends    EventBase

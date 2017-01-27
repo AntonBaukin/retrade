@@ -4,7 +4,7 @@ package com.tverts.support.misc;
  * Implementation based on 128-bit Murmur Hash 3
  * function introduced by Austin Appleby.
  *
- * @author anton.baukin@gmail.com.
+ * @author anton.baukin@gmail.com
  */
 public final class Hash
 {
