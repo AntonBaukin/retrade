@@ -226,13 +226,13 @@ order by orderIndex asc
 			Q = Q.replace("so.orderIndex", "so." + struct.task.getOrderPath());
 
 		Number sourceIndex = (Number) Q(struct, Q, "Source", sourceClass).
-		  setParameter("sourceKey", struct.task.getSourceKey()).
+		  setParameter("sourceKey", struct.task.getSource()).
 		  uniqueResult();
 
 		//?: {order index does not exist}
 		if(sourceIndex == null)
 			throw EX.state(sourceClass.getSimpleName(), " instance [",
-			  struct.task.getSourceKey(), "] has no order index defined!"
+			  struct.task.getSource(), "] has no order index defined!"
 			);
 
 		//>: load the present order index of the source
@@ -277,11 +277,11 @@ order by orderIndex asc
 		if(struct.task.getSourceClass() != null)
 			return struct.task.getSourceClass();
 
-		if(struct.task.getSourceKey() == null)
+		if(struct.task.getSource() == null)
 			throw EX.state();
 
 		Unity u = bean(GetUnity.class).getUnity(
-		  struct.task.getSourceKey());
+		  struct.task.getSource());
 
 		return (u == null)?(null):(u.getUnityType().getTypeClass());
 	}

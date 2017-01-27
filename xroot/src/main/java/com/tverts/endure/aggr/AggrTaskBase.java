@@ -29,17 +29,17 @@ public abstract class AggrTaskBase implements AggrTask
 
 	/* public: AggrTask interface */
 
-	public Long    getAggrValueKey()
+	public Long getAggrValue()
 	{
 		return aggrValueID;
 	}
 
-	public void    setAggrValueKey(Long aggrValueID)
+	public void setAggrValue(Long aggrValueID)
 	{
 		this.aggrValueID = aggrValueID;
 	}
 
-	public Long    getSourceKey()
+	public Long getSource()
 	{
 		if(sourceKey != null)
 			return sourceKey;
@@ -50,7 +50,7 @@ public abstract class AggrTaskBase implements AggrTask
 		return sourceKey;
 	}
 
-	public void    setSourceKey(Long key)
+	public void setSource(Long key)
 	{
 		this.sourceKey = key;
 	}
@@ -137,7 +137,7 @@ public abstract class AggrTaskBase implements AggrTask
 	  throws java.io.IOException
 	{
 		//~: side-effect of the delayed source
-		getSourceKey();
+		getSource();
 		getSourceClass();
 
 		os.defaultWriteObject();

@@ -66,7 +66,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 	  throws Throwable
 	{
 		//?: {the source entity is undefined} do nothing
-		if(struct.task.getSourceKey() == null)
+		if(struct.task.getSource() == null)
 			throw EX.state("Source is undefined! ", logsig(struct));
 
 		//~: evict all the aggregated items currently present
@@ -85,7 +85,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 		item.setAggrValue(aggrValue(struct));
 
 		//~: set source key
-		item.setSourceKey(task.getSourceKey());
+		item.setSourceKey(task.getSource());
 
 		//~: the good volume
 		item.setGoodVolume(task.getGoodVolume());
@@ -130,14 +130,14 @@ public class AggregatorRestCost extends AggregatorSingleBase
 	  throws Throwable
 	{
 		//?: {the source entity is undefined} do nothing
-		if(struct.task.getSourceKey() == null)
+		if(struct.task.getSource() == null)
 			throw EX.state("Source is undefined! ", logsig(struct));
 
 		//~: evict all the aggregated items currently present
 		evictAggrItems(struct);
 
 		//~: load the items of the source
-		List<AggrItem> items = loadBySource(struct, struct.task.getSourceKey());
+		List<AggrItem> items = loadBySource(struct, struct.task.getSource());
 
 		//?: {there are none of them} nothing to do...
 		if(items.isEmpty())
@@ -663,7 +663,7 @@ select sum(goodVolume) from AggrItem where
 //		{
 //			throw new RuntimeException(String.format(
 //			  "Debug shunt at call %d for invoice %d!",
-//			  debugInvokeShuntI, struct.task.getSourceKey()
+//			  debugInvokeShuntI, struct.task.getSource()
 //			), e);
 //		}
 //	}

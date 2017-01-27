@@ -154,7 +154,7 @@ public class ActInvoiceBill extends ActionBuilderReTrade
 
 		//~: task source: this bill
 		task.setSourceClass(InvoiceBill.class);
-		task.setSourceKey(ib.getPrimaryKey());
+		task.setSource(ib.getPrimaryKey());
 		task.setOrderPath("invoice.orderIndex");
 
 		//~: assign request task & add it to the action
@@ -297,7 +297,7 @@ public class ActInvoiceBill extends ActionBuilderReTrade
 
 			//~: task source: this bill
 			task.setSourceClass(InvoiceBill.class);
-			task.setSourceKey(ib.getPrimaryKey());
+			task.setSource(ib.getPrimaryKey());
 			task.setOrderPath("invoice.orderIndex");
 
 			//~: set the volumes

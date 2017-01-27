@@ -38,7 +38,7 @@ public class AggrRequest extends NumericBase
 
 		if((this.aggrTask != null) && (source != null))
 		{
-			this.aggrTask.setSourceKey(EX.assertn(
+			this.aggrTask.setSource(EX.assertn(
 			  source.getPrimaryKey()));
 
 			this.aggrTask.setSourceClass(EX.assertn(
@@ -67,7 +67,7 @@ public class AggrRequest extends NumericBase
 		this.aggrValue = aggrValue;
 
 		if((this.aggrTask != null) && (aggrValue != null))
-			this.aggrTask.setAggrValueKey(aggrValue.getPrimaryKey());
+			this.aggrTask.setAggrValue(aggrValue.getPrimaryKey());
 	}
 
 	public AggrTask   getAggrTask()
@@ -92,11 +92,11 @@ public class AggrRequest extends NumericBase
 
 		//~: set aggregated value key
 		if((aggrTask != null) && (this.aggrValue != null))
-			aggrTask.setAggrValueKey(this.aggrValue.getPrimaryKey());
+			aggrTask.setAggrValue(this.aggrValue.getPrimaryKey());
 
 		//~: set the source key
 		if(aggrTask != null) if(this.source != null)
-			aggrTask.setSourceKey(EX.assertn(this.source.getPrimaryKey()));
+			aggrTask.setSource(EX.assertn(this.source.getPrimaryKey()));
 		else if((this.accessSource != null) && (aggrTask instanceof AggrTaskBase))
 			((AggrTaskBase)aggrTask).setSourceKey(this.accessSource);
 	}

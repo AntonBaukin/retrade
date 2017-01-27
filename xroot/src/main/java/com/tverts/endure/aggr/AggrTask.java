@@ -1,46 +1,42 @@
 package com.tverts.endure.aggr;
 
 /**
- * Aggregation task is that (serializable) object that
- * is created and initialized to affect the aggregated
- * value the task refers by the ID.
- *
- * Each aggregation value class and the related aggregator
- * implementation do expect some distinct types of a task
- * having specific fields (parameters).
- *
- * Aggregation task is not stored in the database directly.
- * It is wrapped into {@link AggrRequest} persisted object.
- *
- * Being serializable, task must also be Java Bean!
+ * Java Bean containing single request to the
+ * aggneration system to update the aggregated
+ * value. A task is stored in database as XML in
+ * the request created from it's attributes.
  *
  *
  * @author anton.baukin@gmail.com
  */
-public interface AggrTask extends java.io.Serializable
+public interface AggrTask
 {
-	/* public: AggrTask interface */
+	/* Aggregation Task */
 
 	/**
 	 * Primary key of the aggregated value this task is for.
 	 * {@link AggrRequest} automatically installs this value
 	 * to a task when attaching it.
 	 */
-	public Long    getAggrValueKey();
+	public Long   getAggrValue();
 
-	public void    setAggrValueKey(Long id);
+	public void   setAggrValue(Long id);
 
-	public Long    getSourceKey();
+	/**
+	 * Primary key of the entity originated this task.
+	 * Not required, but each aggregation task has it.
+	 */
+	public Long   getSource();
 
-	public void    setSourceKey(Long id);
+	public void   setSource(Long id);
 
 	/**
 	 * The (actual leaf) class of the source instance.
 	 * Must be defined if the source key is.
 	 */
-	public Class   getSourceClass();
+	public Class  getSourceClass();
 
-	public void    setSourceClass(Class sourceClass);
+	public void   setSourceClass(Class sourceClass);
 
 	/**
 	 * If the source instance has no own order index,
@@ -53,7 +49,7 @@ public interface AggrTask extends java.io.Serializable
 	 *
 	 * Note to omit prefix dot.
 	 */
-	public String  getOrderPath();
+	public String getOrderPath();
 
-	public void    setOrderPath(String path);
+	public void   setOrderPath(String path);
 }

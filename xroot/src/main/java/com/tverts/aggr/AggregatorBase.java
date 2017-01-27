@@ -410,8 +410,8 @@ public abstract class AggregatorBase
 		  (task.getSourceClass() == null)?("Undefined")
 		    :(task.getSourceClass().getSimpleName()),
 
-		  (task.getSourceKey() == null)?("?"):
-		    (task.getSourceKey().toString())
+		  (task.getSource() == null)?("?"):
+		    (task.getSource().toString())
 		);
 	}
 

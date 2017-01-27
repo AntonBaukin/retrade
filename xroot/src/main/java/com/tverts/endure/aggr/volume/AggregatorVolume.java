@@ -119,7 +119,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 	               createItem(AggrStruct struct)
 	{
 		//?: {the source entity is undefined} do nothing
-		if(struct.task.getSourceKey() == null)
+		if(struct.task.getSource() == null)
 			throw EX.state(logsig(struct), ": source is undefined!");
 
 
@@ -134,7 +134,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 		item.setAggrValue(aggrValue(struct));
 
 		//~: set source key
-		item.setSourceKey(task.getSourceKey());
+		item.setSourceKey(task.getSource());
 
 		//~: set volume positive
 		item.setVolumePositive(task.getVolumePositive());
@@ -363,11 +363,11 @@ public class AggregatorVolume extends AggregatorSingleBase
 	protected List<Long> findItemsToDelete(AggrStruct struct)
 	{
 		//?: {the source entity is undefined} do nothing
-		if(struct.task.getSourceKey() == null)
+		if(struct.task.getSource() == null)
 			throw EX.state(logsig(struct), ": source is undefined!");
 
 		//~: load the items of the source
-		return loadKeysBySource(struct, struct.task.getSourceKey());
+		return loadKeysBySource(struct, struct.task.getSource());
 	}
 
 	protected void       deleteItems(AggrStruct struct, List<Long> items)
