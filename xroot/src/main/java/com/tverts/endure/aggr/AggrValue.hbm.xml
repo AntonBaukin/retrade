@@ -32,7 +32,7 @@
     </many-to-one>
 
 
-    <!-- Selector ID -->
+    <!-- Selector Primary Key -->
 
     <property name = "selectorKey">
 
@@ -46,12 +46,12 @@
     </property>
 
 
-    <!-- Aggr Value -->
+    <!-- Aggregated Value -->
 
     <property name = 'aggrValue' type = 'big_decimal'>
 
       <column name = 'aggr_value' precision = '22' scale = '10'>
-        <comment>The aggregated value</comment>
+        <comment>Stores current combined value of the aggregation</comment>
       </column>
     </property>
 

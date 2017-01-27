@@ -24,50 +24,72 @@ import com.tverts.endure.core.Entity;
  */
 public class AggrValue extends Entity
 {
-	/* public: AggrValue bean interface */
+	/* Aggregated Value (entity bean) */
 
-	public Unity      getOwner()
+	/**
+	 * Unity of the instance owning this aggregated value.
+	 */
+	public Unity getOwner()
 	{
 		return owner;
 	}
 
-	public void       setOwner(Unity owner)
+	private Unity owner;
+
+	public void setOwner(Unity owner)
 	{
 		this.owner = owner;
 	}
 
 	/**
-	 * This read-only reference to the Unity Type of
-	 * this Aggregated Value. It is the same the it's
-	 * Unity' type.
+	 * Duplicate of Aggregate Value Unity Type reference.
 	 */
 	public UnityType  getAggrType()
 	{
 		return (aggrType != null)?(aggrType):
-		  (getUnity() == null)?(null):(aggrType = getUnity().getUnityType());
+		  (getUnity() == null)?(null):
+		  (aggrType = getUnity().getUnityType());
 	}
 
-	public void       setAggrType(UnityType aggrType)
+	private UnityType aggrType;
+
+	public void setAggrType(UnityType aggrType)
 	{
 		this.aggrType = aggrType;
 	}
 
-	public Long       getSelectorKey()
+	/**
+	 * Copy of the primary key of the selector of this
+	 * aggregated value. Selector is optional entity to
+	 * form triple link. It allows the same owner to have
+	 * multiple values of the same type, each having
+	 * unique selector key.
+	 */
+	public Long getSelectorKey()
 	{
 		return selectorKey;
 	}
 
-	public void       setSelectorKey(Long id)
+	private Long selectorKey;
+
+	public void setSelectorKey(Long id)
 	{
 		this.selectorKey = id;
 	}
 
+	/**
+	 * Stores current combined value of the aggregation.
+	 * This value is constructed from the positive and
+	 * the negative parts, thus may be negative.
+	 */
 	public BigDecimal getAggrValue()
 	{
 		return aggrValue;
 	}
 
-	public void       setAggrValue(BigDecimal v)
+	private BigDecimal aggrValue;
+
+	public void setAggrValue(BigDecimal v)
 	{
 		if((v != null) && (v.scale() != 10))
 			v = v.setScale(10);
@@ -88,7 +110,7 @@ public class AggrValue extends Entity
 		return aggrDenom;
 	}
 
-	public void       setAggrDenom(BigDecimal v)
+	public void setAggrDenom(BigDecimal v)
 	{
 		if((v != null) && (v.scale() != 10))
 			v = v.setScale(10);
@@ -96,12 +118,20 @@ public class AggrValue extends Entity
 		this.aggrDenom = v;
 	}
 
+	private BigDecimal aggrDenom = BigDecimal.ONE;
+
+	/**
+	 * Component of the value with the positive income.
+	 * Undefined when the value is one-component.
+	 */
 	public BigDecimal getAggrPositive()
 	{
 		return aggrPositive;
 	}
 
-	public void       setAggrPositive(BigDecimal v)
+	private BigDecimal aggrPositive;
+
+	public void setAggrPositive(BigDecimal v)
 	{
 		if((v != null) && (v.scale() != 10))
 			v = v.setScale(10);
@@ -109,31 +139,22 @@ public class AggrValue extends Entity
 		this.aggrPositive = v;
 	}
 
+	/**
+	 * Component of the value with the negative income.
+	 * Undefined when the value is one-component.
+	 */
 	public BigDecimal getAggrNegative()
 	{
 		return aggrNegative;
 	}
 
-	public void       setAggrNegative(BigDecimal v)
+	private BigDecimal aggrNegative;
+
+	public void setAggrNegative(BigDecimal v)
 	{
 		if((v != null) && (v.scale() != 10))
 			v = v.setScale(10);
 
 		this.aggrNegative = v;
 	}
-
-
-	/* persisted attributes: relations */
-
-	private Unity      owner;
-	private UnityType  aggrType;
-	private Long       selectorKey;
-
-
-	/* persisted attributes: aggregated value (copy) */
-
-	private BigDecimal aggrValue;
-	private BigDecimal aggrDenom = BigDecimal.ONE;
-	private BigDecimal aggrPositive;
-	private BigDecimal aggrNegative;
 }
