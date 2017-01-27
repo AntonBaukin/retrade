@@ -33,7 +33,7 @@ public class      AggregatorsRoot
 			return;
 
 		//~: set the transaction context
-		installAggrTx(job);
+		installTx(job);
 
 		//~: invoke the aggregators referred
 		for(Aggregator aggregator : getReference().dereferObjects())

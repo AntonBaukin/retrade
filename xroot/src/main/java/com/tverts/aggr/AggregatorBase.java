@@ -12,6 +12,7 @@ import java.util.Set;
 
 /* Hibernate Persistence Layer */
 
+import com.tverts.system.tx.Tx;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -326,9 +327,9 @@ public abstract class AggregatorBase
 
 	/* protected: access transaction context & Hibernate session */
 
-	protected AggrTx  tx(AggrStruct struct)
+	protected Tx tx(AggrStruct struct)
 	{
-		AggrTx tx = struct.job.aggrTx();
+		Tx tx = struct.job.aggrTx();
 
 		if(tx == null) throw new IllegalStateException(
 		  "Aggregator is not bound to any Transactional Context!"

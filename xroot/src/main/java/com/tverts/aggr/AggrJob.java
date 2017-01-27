@@ -13,6 +13,7 @@ import java.util.Set;
 import com.tverts.endure.aggr.AggrRequest;
 import com.tverts.endure.aggr.AggrTask;
 import com.tverts.endure.aggr.AggrValue;
+import com.tverts.system.tx.Tx;
 
 /* com.tverts: support */
 
@@ -45,12 +46,12 @@ public class AggrJob
 		return this;
 	}
 
-	public AggrTx     aggrTx()
+	public Tx aggrTx()
 	{
 		return aggrTx;
 	}
 
-	public AggrJob    aggrTx(AggrTx tx)
+	public AggrJob    aggrTx(Tx tx)
 	{
 		this.aggrTx = tx;
 		return this;
@@ -182,7 +183,7 @@ public class AggrJob
 	/* private: the job components */
 
 	private AggrValue  aggrValue;
-	private AggrTx     aggrTx;
+	private Tx     aggrTx;
 	private AggrTask[] aggrTasks;
 	private Set<Class> tasksClasses;
 	private String[]   errors;

@@ -9,6 +9,7 @@ import java.util.Set;
 
 /* Hibernate Persistence Layer */
 
+import com.tverts.system.tx.Tx;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -23,7 +24,6 @@ import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: aggregation */
 
-import com.tverts.aggr.AggrTx;
 import com.tverts.aggr.AggregatorBase.AggrStruct;
 import com.tverts.endure.aggr.calc.AggrCalc;
 
@@ -159,9 +159,9 @@ public abstract class AggrCalcBase
 
 	/* protected: access transaction context & Hibernate session */
 
-	protected AggrTx    tx(AggrStruct struct)
+	protected Tx tx(AggrStruct struct)
 	{
-		AggrTx tx = struct.job.aggrTx();
+		Tx tx = struct.job.aggrTx();
 
 		if(tx == null) throw new IllegalStateException(
 		  "Aggregation Calculator is not bound to any Transactional Context!"

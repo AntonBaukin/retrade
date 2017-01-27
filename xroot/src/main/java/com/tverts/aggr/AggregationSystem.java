@@ -17,28 +17,28 @@ public abstract class AggregationSystem
 {
 	/* protected: aggregation transaction context */
 
-	protected void installAggrTx(AggrJob job)
+	protected void installTx(AggrJob job)
 	{
 		//?: {has no transaction context} install the default one
 		if(job.aggrTx() == null)
-			installDefaultAggrTx(job);
+			installDefaultTx(job);
 	}
 
-	protected void installDefaultAggrTx(AggrJob job)
+	protected void installDefaultTx(AggrJob job)
 	{
-		job.aggrTx(new AggrTxContext(TxPoint.txContext()));
+		job.aggrTx(new TxContext(TxPoint.txContext()));
 	}
 
 
 	/* protected: aggregation transaction context implementation */
 
-	protected static class AggrTxContext
+	protected static class TxContext
 	          extends      TxWrapperBase
-	          implements   AggrTx
+	          implements   Tx
 	{
 		/* public: constructor */
 
-		public AggrTxContext(Tx tx)
+		public TxContext(Tx tx)
 		{
 			super(tx);
 		}
