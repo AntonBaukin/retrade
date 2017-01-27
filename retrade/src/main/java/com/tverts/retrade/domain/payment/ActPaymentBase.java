@@ -238,7 +238,7 @@ public abstract class ActPaymentBase
 
 		//~: task source: this payment
 		task.setSourceClass(HiberPoint.type(p));
-		task.setSourceKey(delayEntity(p));
+		task.setSource(delayEntity(p));
 
 		//~: assign request task & add it to the action
 		ar.setAggrTask(task);

@@ -142,14 +142,14 @@ public abstract class AggrCalcBase
 		return struct.calc();
 	}
 
-	protected Object    param(AggrStruct struct, Object name)
+	protected Object    param(AggrStruct struct, String name)
 	{
 		AggrTask task = aggrTask(struct);
 		return (!(task instanceof AggrTaskBase))?(null):
 		  ((AggrTaskBase)task).param(name);
 	}
 
-	protected <T> T     param(AggrStruct struct, Object name, Class<T> c1ass)
+	protected <T> T     param(AggrStruct struct, String name, Class<T> c1ass)
 	{
 		AggrTask task = aggrTask(struct);
 		return (!(task instanceof AggrTaskBase))?(null):

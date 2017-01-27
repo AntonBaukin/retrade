@@ -51,7 +51,7 @@ public class AggrRequest extends NumericBase
 		this.accessSource = access;
 
 		if((this.aggrTask instanceof AggrTaskBase) && (access != null))
-			((AggrTaskBase)this.aggrTask).setSourceKey(access);
+			((AggrTaskBase)this.aggrTask).setSource(access);
 	}
 
 
@@ -98,7 +98,7 @@ public class AggrRequest extends NumericBase
 		if(aggrTask != null) if(this.source != null)
 			aggrTask.setSource(EX.assertn(this.source.getPrimaryKey()));
 		else if((this.accessSource != null) && (aggrTask instanceof AggrTaskBase))
-			((AggrTaskBase)aggrTask).setSourceKey(this.accessSource);
+			((AggrTaskBase)aggrTask).setSource(this.accessSource);
 	}
 
 	public String     getAggrTaskXML()

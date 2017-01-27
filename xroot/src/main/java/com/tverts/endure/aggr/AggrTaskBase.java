@@ -1,8 +1,7 @@
 package com.tverts.endure.aggr;
 
-/* standard Java classes */
+/* Java */
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,27 +15,30 @@ import com.tverts.endure.DelayedEntity;
 import com.tverts.endure.NumericIdentity;
 import com.tverts.endure.Unity;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
 
 /**
- * Stores basic properties of an aggregation task.
+ * Base of an aggregation task.
  *
  * @author anton.baukin@gmail.com
  */
 public abstract class AggrTaskBase implements AggrTask
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: AggrTask interface */
+	/* Aggregation Task */
 
 	public Long getAggrValue()
 	{
-		return aggrValueID;
+		return aggrValue;
 	}
 
-	public void setAggrValue(Long aggrValueID)
+	private Long aggrValue;
+
+	public void setAggrValue(Long aggrValue)
 	{
-		this.aggrValueID = aggrValueID;
+		this.aggrValue = aggrValue;
 	}
 
 	public Long getSource()
@@ -44,31 +46,38 @@ public abstract class AggrTaskBase implements AggrTask
 		if(sourceKey != null)
 			return sourceKey;
 
+		//?: {is a delayed instance referred}
 		if(sourceDelayed != null)
 			sourceKey = sourceDelayed.accessEntity().getPrimaryKey();
 
 		return sourceKey;
 	}
 
+	private Long sourceKey;
+
 	public void setSource(Long key)
 	{
 		this.sourceKey = key;
 	}
 
-	public void    setSourceKey(DelayedEntity key)
+	private DelayedEntity sourceDelayed;
+
+	public void setSource(DelayedEntity key)
 	{
 		this.sourceDelayed = key;
 	}
 
-	public Class   getSourceClass()
+	public Class getSourceClass()
 	{
 		if(sourceClass != null)
 			return sourceClass;
 
+		//?: {is a delayed instance referred}
 		if(sourceDelayed != null)
 		{
 			NumericIdentity e = sourceDelayed.accessEntity();
 
+			//?: {source is referred by it's unity}
 			if(e instanceof Unity)
 				sourceClass = ((Unity)e).getUnityType().getTypeClass();
 			else if(e != null)
@@ -78,7 +87,9 @@ public abstract class AggrTaskBase implements AggrTask
 		return sourceClass;
 	}
 
-	public void    setSourceClass(Class sourceClass)
+	private Class sourceClass;
+
+	public void setSourceClass(Class sourceClass)
 	{
 		this.sourceClass = sourceClass;
 	}
@@ -88,7 +99,9 @@ public abstract class AggrTaskBase implements AggrTask
 		return orderPath;
 	}
 
-	public void    setOrderPath(String orderPath)
+	private String orderPath;
+
+	public void setOrderPath(String orderPath)
 	{
 		this.orderPath = orderPath;
 	}
@@ -96,61 +109,43 @@ public abstract class AggrTaskBase implements AggrTask
 
 	/* public: AggrTaskBase interface (parameters) */
 
-	@SuppressWarnings("unchecked")
-	public void    param(Serializable name, Serializable value)
+	public void    param(String name, Object value)
 	{
-		if(this.params == null)
-			this.params = new HashMap(3);
+		EX.asserts(name);
 
-		if(value == null)
-			this.params.remove(name);
-		else
-			this.params.put(name, value);
+		if(value != null)
+		{
+			if(params == null)
+				params = new HashMap<>();
+
+			params.put(name, value);
+		}
+		else if(params != null)
+			params.remove(name);
 	}
 
-	public Object  param(Object name)
+	private Map<String, Object> params;
+
+	public Object  param(String name)
 	{
-		return (this.params == null)?(null):
-		  this.params.get(name);
+		EX.asserts(name);
+		return (params == null)?(null):(params.get(name));
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T   param(Object name, Class<T> c1ass)
+	public <T> T   param(String name, Class<T> cls)
 	{
-		Object res = (this.params == null)?(null):
-		  this.params.get(name);
-		if((res == null) || (c1ass == null))
-			return (T)res;
+		EX.asserts(name);
+		EX.assertn(cls);
 
-		if(!c1ass.isAssignableFrom(res.getClass()))
-			throw new IllegalArgumentException(String.format(
-			  "Aggregation Task (raw) parameter '%s' is not an instance of '%s'!",
-			  name.toString(), c1ass.getName()));
+		Object res = param(name);
+		if(res == null) return null;
+
+		EX.assertx(cls.isAssignableFrom(res.getClass()),
+		  "Aggregation Task parameter [", name,
+		  "] is not an instance of ", cls.getName(), "!"
+		);
 
 		return (T)res;
 	}
-
-
-	/* private: Object interface */
-
-	private void writeObject(java.io.ObjectOutputStream os)
-	  throws java.io.IOException
-	{
-		//~: side-effect of the delayed source
-		getSource();
-		getSourceClass();
-
-		os.defaultWriteObject();
-	}
-
-
-	/* private: task properties */
-
-	private Long   aggrValueID;
-	private Long   sourceKey;
-	private Class  sourceClass;
-	private String orderPath;
-	private Map    params;
-
-	private transient DelayedEntity sourceDelayed;
 }
