@@ -30,7 +30,7 @@ public abstract class AggregationSystem
 	}
 
 
-	/* protected: aggregation transaction context implementation */
+	/* protected: aggregation transaction context */
 
 	protected static class TxContext
 	          extends      TxWrapperBase

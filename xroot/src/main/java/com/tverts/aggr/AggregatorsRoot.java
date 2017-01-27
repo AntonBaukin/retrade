@@ -1,15 +1,19 @@
 package com.tverts.aggr;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Collections;
 import java.util.List;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
 
 /**
  * Composite aggregator that holds a collection of
- * links to actual aggregators that are invoked.
- *
+ * links to actual aggregators that are invoked
+ * in the registration order.
  *
  * @author anton.baukin@gmail.com
  */
@@ -17,7 +21,7 @@ public class      AggregatorsRoot
        extends    AggregationSystem
        implements AggregatorReference
 {
-	/* public: AggregatorReference interface */
+	/* Aggregator Reference */
 
 	public List<Aggregator> dereferObjects()
 	{
@@ -29,8 +33,10 @@ public class      AggregatorsRoot
 
 	public void aggregate(AggrJob job)
 	{
-		if((getReference() == null) || job.complete())
-			return;
+		EX.assertn(getReference());
+
+		//?: {job is somehow complete}
+		EX.assertx(!job.complete());
 
 		//~: set the transaction context
 		installTx(job);
@@ -51,20 +57,17 @@ public class      AggregatorsRoot
 	}
 
 
-	/* public: AggregatorsRoot (bean) interface */
+	/* Aggregators Root */
 
 	public AggregatorReference getReference()
 	{
 		return reference;
 	}
 
+	private AggregatorReference reference;
+
 	public void setReference(AggregatorReference reference)
 	{
 		this.reference = reference;
 	}
-
-
-	/* private: reference to the aggregators */
-
-	private AggregatorReference reference;
 }

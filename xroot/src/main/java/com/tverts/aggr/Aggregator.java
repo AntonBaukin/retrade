@@ -1,10 +1,8 @@
 package com.tverts.aggr;
 
 /**
- * Aggregation strategy.
- *
- * COMMENT complete comments on Aggregator
- *
+ * Aggregation strategy that handles aggregation
+ * requests collected into the jobs.
  *
  * @author anton.baukin@gmail.com
  */

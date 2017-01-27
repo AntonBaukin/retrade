@@ -12,24 +12,9 @@ import com.tverts.aggr.AggregatorBase.AggrStruct;
  */
 public class AggrJobError extends RuntimeException
 {
-	/* public: constructors */
-
 	public AggrJobError(AggrJob aggrJob)
 	{
 		this.aggrJob = aggrJob;
-		this.aggrStruct = null;
-	}
-
-	public AggrJobError(AggrStruct aggrStruct)
-	{
-		this.aggrJob    = aggrStruct.job;
-		this.aggrStruct = aggrStruct;
-	}
-
-	public AggrJobError(Throwable cause, AggrJob aggrJob)
-	{
-		super(cause);
-		this.aggrJob    = aggrJob;
 		this.aggrStruct = null;
 	}
 
@@ -41,21 +26,19 @@ public class AggrJobError extends RuntimeException
 	}
 
 
-	/* public: AggrJobError interface */
+	/* Aggregation Job Error */
 
 	public AggrJob    getAggrJob()
 	{
 		return aggrJob;
 	}
 
+	protected final AggrJob aggrJob;
+
 	public AggrStruct getAggrStruct()
 	{
 		return aggrStruct;
 	}
 
-
-	/* protected: the aggregation job */
-
-	protected transient final AggrJob    aggrJob;
-	protected transient final AggrStruct aggrStruct;
+	protected final AggrStruct aggrStruct;
 }
