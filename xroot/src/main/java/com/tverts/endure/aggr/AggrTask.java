@@ -6,7 +6,6 @@ package com.tverts.endure.aggr;
  * value. A task is stored in database as XML in
  * the request created from it's attributes.
  *
- *
  * @author anton.baukin@gmail.com
  */
 public interface AggrTask

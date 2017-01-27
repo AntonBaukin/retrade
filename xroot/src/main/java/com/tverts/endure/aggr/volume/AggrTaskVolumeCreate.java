@@ -1,6 +1,6 @@
 package com.tverts.endure.aggr.volume;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 
@@ -10,55 +10,78 @@ import com.tverts.endure.aggr.AggrTaskBase;
 
 
 /**
- * Send this aggregation task to add volume to the
- * aggregated value with items of class {@link AggrItemVolume}.
- *
+ * Send this aggregation task to add volume to
+ * aggregated value with items of class
+ * {@link AggrItemVolume}.
  *
  * @author anton.baukin@gmail.com
  */
 public class AggrTaskVolumeCreate extends AggrTaskBase
 {
-	public static final long serialVersionUID = 0L;
+	/* Aggregation Task Volume Create */
 
-
-	/* public: AggrTaskVolumeCreate (bean) interface */
-
+	/**
+	 * Positive component of the value of
+	 * the aggregation item.
+	 */
 	public BigDecimal getVolumePositive()
 	{
 		return volumePositive;
 	}
 
-	public void       setVolumePositive(BigDecimal volumePositive)
+	private BigDecimal volumePositive;
+
+	public void setVolumePositive(BigDecimal volumePositive)
 	{
 		this.volumePositive = volumePositive;
 	}
 
+	/**
+	 * Negative component of the value of
+	 * the aggregation item. Note that the
+	 * value itself is not negative!
+	 */
 	public BigDecimal getVolumeNegative()
 	{
 		return volumeNegative;
 	}
 
-	public void       setVolumeNegative(BigDecimal volumeNegative)
+	private BigDecimal volumeNegative;
+
+	public void setVolumeNegative(BigDecimal volumeNegative)
 	{
 		this.volumeNegative = volumeNegative;
 	}
 
+	/**
+	 * Positive component of the value of
+	 * the aggregation item being historical
+	 * as it overwrites the preceeding items.
+	 */
 	public BigDecimal getAggrPositive()
 	{
 		return aggrPositive;
 	}
 
-	public void       setAggrPositive(BigDecimal aggrPositive)
+	private BigDecimal aggrPositive;
+
+	public void setAggrPositive(BigDecimal aggrPositive)
 	{
 		this.aggrPositive = aggrPositive;
 	}
 
+	/**
+	 * Negative component of the value of
+	 * the historical aggregation item.
+	 */
 	public BigDecimal getAggrNegative()
 	{
 		return aggrNegative;
 	}
 
-	public void       setAggrNegative(BigDecimal aggrNegative)
+	private BigDecimal aggrNegative;
+
+	public void setAggrNegative(BigDecimal aggrNegative)
 	{
 		this.aggrNegative = aggrNegative;
 	}
@@ -75,22 +98,15 @@ public class AggrTaskVolumeCreate extends AggrTaskBase
 	 *
 	 * @see  {@link AggrItemVolume#isAggrFixed()}.
 	 */
-	public boolean    isAggrFixed()
+	public boolean isAggrFixed()
 	{
 		return aggrFixed;
 	}
 
-	public void       setAggrFixed(boolean aggrFixed)
+	private boolean aggrFixed;
+
+	public void setAggrFixed(boolean aggrFixed)
 	{
 		this.aggrFixed = aggrFixed;
 	}
-
-
-	/* private: the volumes */
-
-	private BigDecimal volumePositive;
-	private BigDecimal volumeNegative;
-	private BigDecimal aggrPositive;
-	private BigDecimal aggrNegative;
-	private boolean    aggrFixed;
 }
