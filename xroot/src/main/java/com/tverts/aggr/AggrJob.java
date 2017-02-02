@@ -121,7 +121,7 @@ public class AggrJob
 	/**
 	 * Resulting set contains class of each task.
 	 */
-	public Set<Class<?>> classes()
+	public Set<Class<? extends AggrTask>> classes()
 	{
 		if(tasks == null || tasks.length == 0)
 			return Collections.emptySet();
@@ -129,13 +129,13 @@ public class AggrJob
 		if(classes != null)
 			return classes;
 
-		Set<Class<?>> cs = new HashSet<>(1);
+		Set<Class<? extends AggrTask>> cs = new HashSet<>(1);
 		for(AggrTask task : tasks) cs.add(task.getClass());
 
 		return classes = Collections.unmodifiableSet(cs);
 	}
 
-	protected Set<Class<?>> classes;
+	protected Set<Class<? extends AggrTask>> classes;
 
 
 	/* Aggregation Job (errors & completion) */

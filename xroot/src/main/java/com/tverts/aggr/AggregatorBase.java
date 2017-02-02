@@ -5,7 +5,6 @@ package com.tverts.aggr;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Collections;
 import java.util.Set;
@@ -93,7 +92,7 @@ public abstract class AggregatorBase
 		return calculators;
 	}
 
-	private AggrCalcReference calculators;
+	protected AggrCalcReference calculators;
 
 	public void setCalculators(AggrCalcReference calculators)
 	{
@@ -194,25 +193,11 @@ public abstract class AggregatorBase
 
 	protected boolean       isJobSupported(AggrJob job)
 	{
-		return getSupportedTasks().containsAll(job.classes());
+		return supportedTasks.containsAll(job.classes());
 	}
 
-	/**
-	 * Invoke this method from an aggregator constructor to define
-	 * the set of aggregation tasks classes that aggregator supports.
-	 */
-	protected void          setSupportedTasks(Class... tasks)
-	{
-		this.supportedTasks = Collections.unmodifiableSet(
-		  new HashSet<>(Arrays.asList(tasks)));
-	}
-
-	private Set<Class> supportedTasks = Collections.emptySet();
-
-	protected Set<Class>    getSupportedTasks()
-	{
-		return this.supportedTasks;
-	}
+	protected Set<Class<? extends AggrTask>> supportedTasks =
+	  Collections.emptySet();
 
 
 	/* Aggregation Structure */

@@ -14,7 +14,7 @@ import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 
 /* com.tverts: aggregation */
 
-import com.tverts.aggr.AggregatorSingleBase;
+import com.tverts.aggr.AggregatorHelper;
 
 /* com.tverts: endure (core + aggregation) */
 
@@ -31,19 +31,17 @@ import com.tverts.support.EX;
  *
  * @author anton.baukin@gmail.com
  */
-public class AggregatorRestCost extends AggregatorSingleBase
+public class AggregatorRestCost extends AggregatorHelper
 {
 	/* public: constructor */
 
 	public AggregatorRestCost()
 	{
-		setSupportedTasks(
-
+		super(
+		  AggrItemRestCost.class,
 		  AggrTaskRestCostCreate.class,
 		  AggrTaskRestCostDelete.class
 		);
-
-		setAggrItemClass(AggrItemRestCost.class);
 	}
 
 

@@ -1,9 +1,11 @@
 package com.tverts.aggr;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -18,14 +20,15 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: hibery */
 
-import static com.tverts.hibery.HiberPoint.flush;
+import com.tverts.hibery.HiberPoint;
 import com.tverts.hibery.system.HiberSystem;
 
-/* com.tverts: endure (core + aggregation + order) */
+/* com.tverts: endure (core, aggregation, order) */
 
 import com.tverts.endure.Unity;
-import com.tverts.endure.core.GetUnity;
 import com.tverts.endure.aggr.AggrItem;
+import com.tverts.endure.aggr.AggrTask;
+import com.tverts.endure.core.GetUnity;
 import com.tverts.endure.order.OrderIndex;
 import com.tverts.endure.order.OrderPoint;
 import com.tverts.endure.order.OrderRequest;
@@ -37,33 +40,37 @@ import com.tverts.support.SU;
 
 
 /**
- * The most of the aggregators do work with a single class
- * of aggregation items. This implementation contains the
- * common shared methods of them.
+ * Each aggregator supports only one type of aggregated
+ * value components (items). This implementation contains
+ * shared helping routines to process them.
  *
+ * TODO refactor after aggregating with stored procedures
  *
  * @author anton.baukin@gmail.com
  */
-public abstract class AggregatorSingleBase
+public abstract class AggregatorHelper
        extends        AggregatorBase
 {
+	@SafeVarargs
+	public AggregatorHelper(
+	  Class<? extends AggrItem> cls,
+	  Class<? extends AggrTask>... tasks
+	)
+	{
+		this.aggrItemClass = EX.assertn(cls);
+
+		EX.asserte(tasks);
+		this.supportedTasks = Collections.unmodifiableSet(
+		  new HashSet<>(Arrays.asList(tasks)));
+	}
+
+	/**
+	 * Class of the aggregated item persistent object.
+	 */
+	protected final Class<? extends AggrItem> aggrItemClass;
+
+
 	/* protected: aggregated items handling */
-
-	protected Class<? extends AggrItem>
-	                getAggrItemClass()
-	{
-		if(aggrItemClass == null) throw EX.state(
-		  "Aggregator ", this.getClass().getSimpleName(),
-		  " has no aggregation item class defined!"
-		);
-
-		return aggrItemClass;
-	}
-
-	protected void  setAggrItemClass(Class<? extends AggrItem> aggrItemClass)
-	{
-		this.aggrItemClass = aggrItemClass;
-	}
 
 	/**
 	 * Finds all the aggregated items in the session persistence
@@ -73,7 +80,7 @@ public abstract class AggregatorSingleBase
 	protected void  evictAggrItems(AggrStruct struct, Collection except)
 	{
 		Set items = HiberSystem.getInstance().
-		  findAttachedEntities(session(struct), getAggrItemClass());
+		  findAttachedEntities(session(struct), aggrItemClass);
 
 		if((except != null) && except.isEmpty())
 			except = null;
@@ -100,7 +107,7 @@ public abstract class AggregatorSingleBase
 			return;
 
 		//!: flush the session
-		flush(session(struct));
+		HiberPoint.flush(session(struct));
 
 		//~: evict all the items left
 		for(Object item : items)
@@ -119,7 +126,7 @@ public abstract class AggregatorSingleBase
 	  (AggrStruct struct, String hql, Object... replaces)
 	{
 		hql = SU.replace(hql, " AggrItem ",
-		  SU.cat(" ", getAggrItemClass().getSimpleName(), " "));
+		  SU.cat(" ", aggrItemClass.getSimpleName(), " "));
 
 		return Q(struct, hql, replaces);
 	}
@@ -285,84 +292,4 @@ order by orderIndex asc
 
 		return (u == null)?(null):(u.getUnityType().getTypeClass());
 	}
-
-//	protected String         debugSelectIndices(AggrStruct struct)
-//	{
-//
-///*
-//
-//select primaryKey, orderIndex, sourceKey from AggrItem where
-//  aggrValue = :aggrValue order by orderIndex
-//
-//*/
-//		List list =  aggrItemQ(struct,
-//
-//"select primaryKey, orderIndex, sourceKey from AggrItem where\n" +
-//"  aggrValue = :aggrValue order by orderIndex"
-//
-//		).
-//		  setParameter("aggrValue",   aggrValue(struct)).
-//		  setMaxResults(100).
-//		  list();
-//
-//		StringBuilder s = new StringBuilder(512);
-//
-//		for(Object row : list)
-//		{
-//			String pk = ((Object[])row)[0].toString().replace("-", "");
-//			String so = ((Object[])row)[2].toString().replace("-", "");
-//
-//			String oi = ((Object[])row)[1].toString();
-//			if(oi.indexOf('-') == -1) oi = "+" + oi;
-//
-//			s.append((s.length() != 0)?("  "):("")).
-//			  append(pk).append('@').append(so).append(oi);
-//		}
-//
-//		return s.toString();
-//	}
-
-//	protected String         debugSelectSources(AggrStruct struct)
-//	{
-//
-///*
-//
-//select so.id, so.orderIndex from AggrItem ai, Source so where
-//  (ai.aggrValue = :aggrValue) and (so.primaryKey = ai.sourceKey)
-//order by so.orderIndex
-//
-// */
-//
-//		List list =  aggrItemQ(struct,
-//
-//"select so.id, so.orderIndex from AggrItem ai, Source so where\n" +
-//"  (ai.aggrValue = :aggrValue) and (so.primaryKey = ai.sourceKey)\n" +
-//"order by so.orderIndex",
-//
-//		  "Source", struct.task.getSourceClass()
-//
-//		).
-//		  setParameter("aggrValue",   aggrValue(struct)).
-//		  setMaxResults(100).
-//		  list();
-//
-//		StringBuilder s = new StringBuilder(512);
-//
-//		for(Object row : list)
-//		{
-//			String pk = ((Object[])row)[0].toString().replace("-", "");
-//			String oi = ((Object[])row)[1].toString();
-//			if(oi.indexOf('-') == -1) oi = "+" + oi;
-//
-//			s.append((s.length() != 0)?("\n"):("")).
-//			  append(pk).append(oi);
-//		}
-//
-//		return s.toString();
-//	}
-
-
-	/* private: aggregation item class */
-
-	private Class<? extends AggrItem> aggrItemClass;
 }
