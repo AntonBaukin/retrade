@@ -56,8 +56,6 @@ public abstract class ActionBuilderBase
 
 	public static final String PREDICATE = ActionType.PREDICATE;
 
-	public static final String REVIEWSRC = ActionType.REVIEWSRC;
-
 
 	/* protected: nested actions invocation */
 

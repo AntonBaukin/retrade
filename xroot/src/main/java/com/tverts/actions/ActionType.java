@@ -73,14 +73,6 @@ public class ActionType
 	public static final String PREDICATE =
 	  ActionType.class.getName() + ": predicate";
 
-	/**
-	 * When building {@link #REVIEW} action this parameter
-	 * MUST be defined to refer the entity had caused the
-	 * views to be refreshed.
-	 */
-	public static final String REVIEWSRC =
-	  ActionType.class.getName() + ": review source";
-
 
 	/* public: constructors */
 

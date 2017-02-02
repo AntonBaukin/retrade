@@ -120,7 +120,7 @@ public abstract class AggrCalcBase
 
 	protected void          touchCalc(AggrStruct struct)
 	{
-		TxPoint.txn(tx(struct), struct.calc());
+		TxPoint.txn(tx(struct), struct.calc);
 	}
 
 
@@ -133,13 +133,13 @@ public abstract class AggrCalcBase
 
 	protected AggrTask  aggrTask(AggrStruct struct)
 	{
-		return struct.task();
+		return struct.task;
 	}
 
 	protected AggrCalc  aggrCalc(AggrStruct struct)
 	{
-		if(struct.calc() == null) throw new IllegalStateException();
-		return struct.calc();
+		if(struct.calc == null) throw new IllegalStateException();
+		return struct.calc;
 	}
 
 	protected Object    param(AggrStruct struct, String name)

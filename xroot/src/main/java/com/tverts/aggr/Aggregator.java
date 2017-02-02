@@ -8,7 +8,7 @@ package com.tverts.aggr;
  */
 public interface Aggregator
 {
-	/* public: Aggregator interface */
+	/* Aggregator */
 
 	public void aggregate(AggrJob job);
 }

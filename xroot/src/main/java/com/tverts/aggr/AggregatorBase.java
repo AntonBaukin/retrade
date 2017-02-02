@@ -1,6 +1,6 @@
 package com.tverts.aggr;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,10 +12,8 @@ import java.util.Set;
 
 /* Hibernate Persistence Layer */
 
-import com.tverts.system.tx.Tx;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 /* com.tverts: spring */
 
@@ -23,16 +21,12 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: system (tx) */
 
+import com.tverts.system.tx.Tx;
 import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: hibery */
 
 import com.tverts.hibery.HiberPoint;
-
-/* com.tverts: actions */
-
-import com.tverts.actions.ActionType;
-import static com.tverts.actions.ActionsPoint.actionOrNullRun;
 
 /* com.tverts: endure (aggregation) */
 
@@ -50,6 +44,7 @@ import com.tverts.aggr.calc.AggrCalculator;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -68,7 +63,7 @@ public abstract class AggregatorBase
 	}
 
 
-	/* public: Aggregator interface */
+	/* Aggregator */
 
 	public void aggregate(AggrJob job)
 	{
@@ -91,12 +86,14 @@ public abstract class AggregatorBase
 	}
 
 
-	/* public: AggregatorBase (bean) interface */
+	/* Aggregator Base (bean) */
 
 	public AggrCalcReference getCalculators()
 	{
 		return calculators;
 	}
+
+	private AggrCalcReference calculators;
 
 	public void setCalculators(AggrCalcReference calculators)
 	{
@@ -133,12 +130,10 @@ public abstract class AggregatorBase
 		}
 		catch(Throwable e)
 		{
-			Boolean r = handleTaskError(struct, e);
+			//~: assign the error to the job
+			struct.job.error(struct.task, EX.print(e));
 
-			//?: {the task is ordered to stop}
-			if(r != null)
-				return r;
-
+			//~: raise aggregation error
 			throw new AggrJobError(e, struct);
 		}
 
@@ -148,26 +143,29 @@ public abstract class AggregatorBase
 	protected void          calculations(AggrStruct struct)
 	{
 		//~: obtain the calculations strategies
-		List<AggrCalculator> acs = (getCalculators() == null)?(null):
+		List<AggrCalculator> acs =
+		  (getCalculators() == null)?(null):
 		  getCalculators().dereferObjects();
-		if((acs == null) || acs.isEmpty()) return;
 
+		//?: {there is no calculators}
+		if((acs == null) || acs.isEmpty())
+			return;
 
 		//~: get the related calculated values
 		if(struct.calcs == null)
 			struct.calcs = bean(GetAggrValue.class).
 			  getAggrCalcs(aggrValue(struct));
 
-		if(struct.calcs == null)
-			struct.calcs = Collections.emptyList();
-		if(struct.calcs.isEmpty()) return;
-
+		//?: {there is no calculations}
+		if(struct.calcs == null || struct.calcs.isEmpty())
+			return;
 
 		//~: invoke strategies on the related calculations
 		for(AggrCalc calc : struct.calcs)
 			for(AggrCalculator ac : acs)
 				ac.calculate(struct.calc(calc));
-		struct.calc(null);
+
+		struct.calc(null); //<-- clear
 	}
 
 	protected void          touchAggrValue(AggrStruct struct)
@@ -176,47 +174,22 @@ public abstract class AggregatorBase
 	}
 
 	protected void          updateAggrOwner(AggrStruct struct)
-	{
-		actionOrNullRun(ActionType.REVIEW,
-		  struct.job.aggrValue().getOwner(),
-		  ActionType.REVIEWSRC, struct.job.aggrValue()
-		);
-	}
+	{}
 
 	protected void          checkAggrJob(AggrStruct struct)
 	{
 		//?: {the aggregation value is not defined}
-		if(struct.job.aggrValue() == null)
-			throw new IllegalStateException(
-			  "Aggregated Value is not defined in the job!");
+		EX.assertn(struct.job.aggrValue(),
+		  "Aggregated Value is not defined in the job!");
 
 		//?: {the transaction context is not defined}
-		if(struct.job.aggrTx() == null)
-			throw new IllegalStateException(
-			  "Aggregation Tx Context is not defined!");
+		EX.assertn(struct.job.aggrTx(),
+		  "Aggregation Tx Context is not defined!");
 	}
 
 	protected AggrStruct    createStruct(AggrJob job)
 	{
 		return new AggrStruct(job);
-	}
-
-	/**
-	 * Handles the error occurred while aggregating. If the result is
-	 * undefined, the job processor will ignore it and continue with
-	 * the next task.
-	 *
-	 * The defined result is returned as the result of the job processor
-	 * {@link #aggregate(AggrStruct)}.
-	 *
-	 * Note that false result means the it is possible that some else
-	 * aggregator will take this job from it's beginning task, and this
-	 * aggregator must undo all the previous work.
-	 */
-	protected Boolean       handleTaskError(AggrStruct struct, Throwable e)
-	{
-		struct.job.error(struct.task, EX.print(e));
-		return null;
 	}
 
 	protected boolean       isJobSupported(AggrJob job)
@@ -231,8 +204,10 @@ public abstract class AggregatorBase
 	protected void          setSupportedTasks(Class... tasks)
 	{
 		this.supportedTasks = Collections.unmodifiableSet(
-		  new HashSet<Class>(Arrays.asList(tasks)));
+		  new HashSet<>(Arrays.asList(tasks)));
 	}
+
+	private Set<Class> supportedTasks = Collections.emptySet();
 
 	protected Set<Class>    getSupportedTasks()
 	{
@@ -240,9 +215,9 @@ public abstract class AggregatorBase
 	}
 
 
-	/* public: aggregation structure */
+	/* Aggregation Structure */
 
-	public class AggrStruct
+	public static class AggrStruct
 	{
 		/* public: constructor */
 
@@ -251,13 +226,12 @@ public abstract class AggregatorBase
 			this.job = aggrJob;
 		}
 
+		public final AggrJob job;
 
-		/* public: assigners */
 
-		public AggrTask       task()
-		{
-			return this.task;
-		}
+		/* Aggregation Structure (assign) */
+
+		public AggrTask task;
 
 		/**
 		 * Sets the new task. Clears all the objects
@@ -265,12 +239,13 @@ public abstract class AggregatorBase
 		 */
 		public AggrStruct     task(AggrTask task)
 		{
-			if(this.task == task) return this;
+			if(this.task == task)
+				return this;
+
+			//HINT: calculations relate to the value, not task
 
 			this.task  = task;
 			this.items = null;
-
-			//HINT: calculations relate to the value, not task
 
 			return this;
 		}
@@ -284,10 +259,12 @@ public abstract class AggregatorBase
 			   Collections.<AggrItem> emptyList();
 		}
 
+		protected List<AggrItem> items;
+
 		public AggrStruct     items(Collection<AggrItem> items)
 		{
 			this.items = (items == null)?(null):
-			  (new ArrayList<AggrItem>(items));
+			  (new ArrayList<>(items));
 
 			return this;
 		}
@@ -295,14 +272,9 @@ public abstract class AggregatorBase
 		public AggrStruct     items(AggrItem... items)
 		{
 			this.items = (items.length == 0)?(null):
-			  (new ArrayList<AggrItem>(Arrays.asList(items)));
+			  (new ArrayList<>(Arrays.asList(items)));
 
 			return this;
-		}
-
-		public AggrCalc       calc()
-		{
-			return this.calc;
 		}
 
 		/**
@@ -314,28 +286,18 @@ public abstract class AggregatorBase
 			return this;
 		}
 
+		public AggrCalc calc;
 
-		/* public: structure fields */
-
-		public final AggrJob  job;
-		public AggrTask       task;
-		public List<AggrItem> items;
-		public AggrCalc       calc;
 		public List<AggrCalc> calcs;
 	}
 
 
-	/* protected: access transaction context & Hibernate session */
+	/* protected: access tx-context & session */
 
-	protected Tx tx(AggrStruct struct)
+	protected Tx      tx(AggrStruct struct)
 	{
-		Tx tx = struct.job.aggrTx();
-
-		if(tx == null) throw new IllegalStateException(
-		  "Aggregator is not bound to any Transactional Context!"
-		);
-
-		return tx;
+		return EX.assertn(struct.job.aggrTx(),
+		  "Aggregator is not bound to any Transactional Context!");
 	}
 
 	/**
@@ -344,19 +306,15 @@ public abstract class AggregatorBase
 	 */
 	protected Session session(AggrStruct struct)
 	{
-		SessionFactory f = tx(struct).getSessionFactory();
-		Session        s = (f == null)?(null):(f.getCurrentSession());
-
-		if(s == null) throw new IllegalStateException(
-		  "Aggregator got undefined Hibernate session (or factroy)!");
-
-		return s;
+		return EX.assertn(
+		  tx(struct).getSessionFactory().getCurrentSession(),
+		  "Aggregator got undefined Hibernate session!");
 	}
 
 
-	/* protected: Hibernate querying */
+	/* protected: querying */
 
-	protected Query   Q(AggrStruct struct, String hql, Object... replaces)
+	protected Query Q(AggrStruct struct, String hql, Object... replaces)
 	{
 		return HiberPoint.query(session(struct), hql, replaces);
 	}
@@ -382,42 +340,27 @@ public abstract class AggregatorBase
 	protected String    logsig(AggrStruct struct)
 	{
 		if(struct.job == null)
-			return String.format("%s, Aggregation job undefined!", logsig());
+			return SU.cats(logsig(), " [aggr job undefined]");
 
 		if(struct.job.aggrValue() == null)
-			return String.format(
-			  "%s, Aggregated Value undefined, %s.",
-			  logsig(), logsig(struct.task));
+			return SU.cats(logsig(), " [aggr value undefined] ",
+			  logsig(struct.task));
 
-		return String.format(
-		  "%s, Aggregated Value [%d], %s",
-
-		  logsig(), struct.job.aggrValue().getPrimaryKey(),
-		  logsig(struct.task)
-		);
+		return SU.cats(logsig(), "[aggr value ",
+		  struct.job.aggrValue().getPrimaryKey(),
+		  "] ", logsig(struct.task));
 	}
 
 	protected String    logsig(AggrTask task)
 	{
 		if(task == null)
-			return "Aggregation Task undefined";
+			return "[aggr task undefined]";
 
-		return String.format(
-		  "Aggregation Task %s for source %s [%s]!",
-
-		  task.getClass().getSimpleName(),
-
-		  (task.getSourceClass() == null)?("Undefined")
-		    :(task.getSourceClass().getSimpleName()),
-
-		  (task.getSource() == null)?("?"):
-		    (task.getSource().toString())
+		return SU.cats(
+		  "[aggr task ", task.getClass().getSimpleName(),
+		  " for source ", (task.getSourceClass() == null)?
+		  ("undefined"):(task.getSourceClass().getSimpleName()),
+		  " [", task.getSource(), "]"
 		);
 	}
-
-
-	/* private: aggregator support data */
-
-	private Set<Class>        supportedTasks = Collections.emptySet();
-	private AggrCalcReference calculators;
 }
