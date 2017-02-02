@@ -75,7 +75,7 @@ public class HiberSystem
 		return INSTANCE;
 	}
 
-	private static final HiberSystem INSTANCE =
+	public static final HiberSystem INSTANCE =
 	  new HiberSystem();
 
 	protected HiberSystem()

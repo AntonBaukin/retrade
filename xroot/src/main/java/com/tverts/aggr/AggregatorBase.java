@@ -222,7 +222,7 @@ public abstract class AggregatorBase
 		 * Sets the new task. Clears all the objects
 		 * related to the previous one.
 		 */
-		public AggrStruct     task(AggrTask task)
+		public AggrStruct task(AggrTask task)
 		{
 			if(this.task == task)
 				return this;
@@ -238,15 +238,15 @@ public abstract class AggregatorBase
 		/**
 		 * Returns the list of items affected by the task.
 		 */
-		public List<AggrItem> items()
+		public List<? extends AggrItem> items()
 		{
 			return (this.items != null)?(items):
 			   Collections.<AggrItem> emptyList();
 		}
 
-		protected List<AggrItem> items;
+		protected List<? extends AggrItem> items;
 
-		public AggrStruct     items(Collection<AggrItem> items)
+		public AggrStruct items(Collection<? extends AggrItem> items)
 		{
 			this.items = (items == null)?(null):
 			  (new ArrayList<>(items));
@@ -254,7 +254,7 @@ public abstract class AggregatorBase
 			return this;
 		}
 
-		public AggrStruct     items(AggrItem... items)
+		public AggrStruct items(AggrItem... items)
 		{
 			this.items = (items.length == 0)?(null):
 			  (new ArrayList<>(Arrays.asList(items)));
@@ -265,7 +265,7 @@ public abstract class AggregatorBase
 		/**
 		 * Assigns the calculation for temporary needs.
 		 */
-		public AggrStruct     calc(AggrCalc calc)
+		public AggrStruct calc(AggrCalc calc)
 		{
 			this.calc = calc;
 			return this;

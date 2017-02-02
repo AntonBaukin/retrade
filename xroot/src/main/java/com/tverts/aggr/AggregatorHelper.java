@@ -122,7 +122,7 @@ public abstract class AggregatorHelper
 
 	/* protected: queries + order index handling */
 
-	protected Query          aggrItemQ
+	protected Query      aggrItemQ
 	  (AggrStruct struct, String hql, Object... replaces)
 	{
 		hql = SU.replace(hql, " AggrItem ",
@@ -131,8 +131,8 @@ public abstract class AggregatorHelper
 		return Q(struct, hql, replaces);
 	}
 
-	@SuppressWarnings("unchecked")
-	protected List<AggrItem> loadBySource(AggrStruct struct, long sourceKey)
+	@SuppressWarnings("rawtypes")
+	protected List       loadBySource(AggrStruct struct, long sourceKey)
 	{
 /*
 
@@ -142,7 +142,7 @@ order by orderIndex asc
 
 
 */
-		return (List<AggrItem>) aggrItemQ(struct,
+		return aggrItemQ(struct,
 
 "from AggrItem where\n" +
 "  (aggrValue = :aggrValue) and (sourceKey = :sourceKey)\n" +
@@ -154,30 +154,7 @@ order by orderIndex asc
 		  list();
 	}
 
-	@SuppressWarnings("unchecked")
-	protected List<Long>     loadKeysBySource(AggrStruct struct, long sourceKey)
-	{
-/*
-
- select id from AggrItem where
-   (aggrValue = :aggrValue) and (sourceKey = :sourceKey)
- order by orderIndex asc
-
-
-*/
-		return (List<Long>) aggrItemQ(struct,
-
-"select id from AggrItem where\n" +
-"  (aggrValue = :aggrValue) and (sourceKey = :sourceKey)\n" +
-"order by orderIndex asc"
-
-		).
-		  setParameter("aggrValue", aggrValue(struct)).
-		  setParameter("sourceKey", sourceKey).
-		  list();
-	}
-
-	protected void           setOrderIndex
+	protected void       setOrderIndex
 	  (AggrStruct struct, OrderIndex instance)
 	{
 		OrderIndex reference = findOrderIndexAggrItemReference(struct);
@@ -187,7 +164,7 @@ order by orderIndex asc
 		);
 	}
 
-	protected void           setOrderIndex
+	protected void       setOrderIndex
 	  (AggrStruct struct, OrderIndex instance, OrderIndex referenceBefore)
 	{
 		// HINT:  find reference function returns aggr item
@@ -213,7 +190,7 @@ order by orderIndex asc
 	 * order after this source instance. (Set before-after
 	 * false to insert before the reference, or as the first.)
 	 */
-	protected OrderIndex     findOrderIndexAggrItemReference(AggrStruct struct)
+	protected OrderIndex findOrderIndexAggrItemReference(AggrStruct struct)
 	{
 		Class sourceClass = findSourceClass(struct);
 
@@ -279,7 +256,7 @@ order by orderIndex asc
 		return (list.isEmpty())?(null):((OrderIndex)list.get(0));
 	}
 
-	protected Class          findSourceClass(AggrStruct struct)
+	protected Class      findSourceClass(AggrStruct struct)
 	{
 		if(struct.task.getSourceClass() != null)
 			return struct.task.getSourceClass();

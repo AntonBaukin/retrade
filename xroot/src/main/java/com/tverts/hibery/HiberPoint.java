@@ -2,8 +2,8 @@ package com.tverts.hibery;
 
 /* standard Java classes */
 
-import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.List;
 
 /* Hibernate Persistence Layer */
 
@@ -12,7 +12,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.spi.PersistenceContext;
 import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.proxy.HibernateProxy;
 
 /* com.tverts: endure (core) */
 
@@ -81,7 +80,7 @@ public class HiberPoint
 
 	/* public static: basic tasks support */
 
-	public static Query   query(Session session, String hql, Object... replaces)
+	public static Query      query(Session session, String hql, Object... replaces)
 	{
 		StringBuilder s = new StringBuilder(hql);
 
@@ -132,7 +131,7 @@ public class HiberPoint
 		}
 	}
 
-	public static Query   params(Query q, Object... params)
+	public static Query      params(Query q, Object... params)
 	{
 		EX.assertx((params.length & 1) == 0);
 
@@ -160,15 +159,14 @@ public class HiberPoint
 	/**
 	 * Returns the actual class of the instance.
 	 */
-	public static Class   type(Object obj)
+	public static Class      type(Object obj)
 	{
 		return (obj == null)?(null):
 		  HiberSystem.getInstance().findActualClass(obj);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <E extends NumericIdentity> E
-	                      reload(E e)
+	public static <E extends NumericIdentity> E reload(E e)
 	{
 		if(e == null) return null;
 
@@ -180,20 +178,24 @@ public class HiberPoint
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <E> E   unproxy(E e)
+	public static <E> E       unproxy(E e)
 	{
 		return (E) HiberSystem.getInstance().unproxy(e);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <E> E   unproxyDeeply(Session s, E e)
+	public static <E> List<E> unproxy(List<E> es)
 	{
-		return (E) HiberSystem.getInstance().unproxyDeeply(s, e, null);
+		for(int i = 0;(i < es.size());i++)
+			es.set(i, (E) HiberSystem.getInstance().unproxy(es.get(i)));
+
+		return es;
 	}
 
-	public static boolean isProxy(Object e)
+	@SuppressWarnings("unchecked")
+	public static <E> E       unproxyDeeply(Session s, E e)
 	{
-		return (e instanceof HibernateProxy);
+		return (E) HiberSystem.getInstance().unproxyDeeply(s, e, null);
 	}
 
 

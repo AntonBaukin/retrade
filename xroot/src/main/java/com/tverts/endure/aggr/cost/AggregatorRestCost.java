@@ -124,6 +124,7 @@ public class AggregatorRestCost extends AggregatorHelper
 
 	/* protected: aggregate delete task */
 
+	@SuppressWarnings("unchecked")
 	protected void aggregateTaskDelete(AggrStruct struct)
 	  throws Throwable
 	{

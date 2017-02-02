@@ -155,7 +155,7 @@ public class AggrJob
 
 	public boolean  error()
 	{
-		return errors.isEmpty();
+		return !errors.isEmpty();
 	}
 
 	protected final Map<Integer, String> errors = new HashMap<>();

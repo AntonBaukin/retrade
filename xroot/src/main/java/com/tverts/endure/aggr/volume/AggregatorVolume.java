@@ -3,7 +3,6 @@ package com.tverts.endure.aggr.volume;
 /* standard Java classes */
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 /* com.tverts: hibery */
@@ -15,10 +14,6 @@ import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 /* com.tverts: aggregation */
 
 import com.tverts.aggr.AggregatorHelper;
-
-/* com.tverts: endure (aggregation) */
-
-import com.tverts.endure.aggr.AggrItem;
 
 /* com.tverts: support */
 
@@ -111,7 +106,7 @@ public class AggregatorVolume extends AggregatorHelper
 		updateAggrValueCreate(struct, item);
 
 		//~: update helper history items
-		updateHelperHistoryItems(struct, (AggrItemVolume)item, true);
+		updateHelperHistoryItems(struct, item, true);
 	}
 
 	protected AggrItemVolume
@@ -350,7 +345,7 @@ public class AggregatorVolume extends AggregatorHelper
 	  throws Throwable
 	{
 		//~: find items to delete
-		List<Long> items = findItemsToDelete(struct);
+		List<AggrItemVolume> items = findItemsToDelete(struct);
 
 		//?: {there are none of them} nothing to do...
 		if(items.isEmpty()) return;
@@ -359,46 +354,41 @@ public class AggregatorVolume extends AggregatorHelper
 		deleteItems(struct, items);
 	}
 
-	protected List<Long> findItemsToDelete(AggrStruct struct)
+	@SuppressWarnings("unchecked")
+	protected List<AggrItemVolume> findItemsToDelete(AggrStruct struct)
 	{
-		//?: {the source entity is undefined} do nothing
-		if(struct.task.getSource() == null)
-			throw EX.state(logsig(struct), ": source is undefined!");
+		//?: {the source entity is undefined}
+		EX.assertn(struct.task.getSource(),
+		  logsig(struct), ": source is undefined!");
 
 		//~: load the items of the source
-		return loadKeysBySource(struct, struct.task.getSource());
+		return (List<AggrItemVolume>) loadBySource(
+		  struct, struct.task.getSource());
 	}
 
-	protected void       deleteItems(AggrStruct struct, List<Long> items)
+	protected void       deleteItems(AggrStruct struct, List<AggrItemVolume> items)
 	{
-		List<AggrItem> a = new ArrayList<AggrItem>(items.size());
-
 		//c: proceed item-by-item
-		for(Long key : items)
+		for(AggrItemVolume item : items)
 		{
-			AggrItemVolume item = (AggrItemVolume) session(struct).
-			  load(AggrItemVolume.class, key);
-
 			//!: delete that item first
 			session(struct).delete(item);
 			flush(session(struct));
 			session(struct).evict(item);
 
-			a.add(item);
-
 			//~: update the aggregated value
-			updateAggrValueDelete(struct, (AggrItemVolume) item);
+			updateAggrValueDelete(struct, item);
 
 			//~: update helper history items
-			updateHelperHistoryItems(struct, (AggrItemVolume) item, false);
+			updateHelperHistoryItems(struct, item, false);
 
 			//~: evict all the aggregated items currently present
 			flush(session(struct));
 			evictAggrItems(struct);
 		}
 
-		//~: link the item for the calculations
-		struct.items(a);
+		//~: link the items for the calculations
+		struct.items(items);
 	}
 
 	protected void       updateAggrValueDelete(AggrStruct struct, AggrItemVolume z)
@@ -685,7 +675,7 @@ public class AggregatorVolume extends AggregatorHelper
 			{
 				BigDecimal     sp = x(item[1]);
 				BigDecimal     sn = x(item[2]);
-				AggrItemVolume vi = (AggrItemVolume) session(struct).
+				AggrItemVolume vi = session(struct).
 				  load(AggrItemVolume.class, (Long) item[0]);
 
 				//~: update the aggregated volume
@@ -846,10 +836,7 @@ public class AggregatorVolume extends AggregatorHelper
 		  setParameter("e",          e).
 		  uniqueResult();
 
-		return new BigDecimal[] {
-		  x((BigDecimal) res[0]),
-		  x((BigDecimal) res[1])
-		};
+		return new BigDecimal[] { x(res[0]), x(res[1]) };
 	}
 
 	protected int              countItems(AggrStruct struct, long b, long e)
