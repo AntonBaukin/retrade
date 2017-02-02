@@ -49,6 +49,7 @@ import com.tverts.retrade.domain.invoice.Invoices;
 /* com.tverts: support */
 
 import com.tverts.support.DU;
+import com.tverts.support.EX;
 import com.tverts.support.LU;
 
 
@@ -72,7 +73,7 @@ public class ShuntInvoicesBuySell extends ShuntPlain
 	/* shunting constants  */
 
 	public static double DEF_PERCENT = 25.0; //<-- 25%
-	public static long   DEF_INVMAX  = 500;
+	public static int    DEF_INVMAX  = 500;
 
 
 	/* public: ShuntInvoicesBuySell (parameters access) */
@@ -111,15 +112,15 @@ public class ShuntInvoicesBuySell extends ShuntPlain
 	 * The maximum number of the invoices to change the state.
 	 * By default is unlimited.
 	 */
-	public long    getInvmax()
+	public int     getInvmax()
 	{
 		return invmax;
 	}
 
-	public void    setInvmax(long invmax)
+	public void    setInvmax(int invmax)
 	{
 		if(invmax <  0L) throw new IllegalArgumentException();
-		if(invmax == 0L) invmax = Long.MAX_VALUE;
+		if(invmax == 0L) invmax = Integer.MAX_VALUE;
 		this.invmax = invmax;
 	}
 
@@ -193,66 +194,36 @@ public class ShuntInvoicesBuySell extends ShuntPlain
 			return;
 		}
 
-		long isize = genInvoicesToggleNumber();
+		long ts = System.currentTimeMillis(), tx = ts;
+		int  px = 0; //<-- logged percent
 
-		LU.I(getLog(), "Toggling states of ", isize, " Buy-Sell Invoices...");
+		//~: get the number of invoices to toggle
+		int  in = genInvoicesToggleNumber();
 
-		long timestamp = System.currentTimeMillis();
-		long percent   = 0;
-
-		//~: main invoice' state toggle cycle
-		for(long itest = 0L;(itest < isize);)
+		//~: toggle invoces, each in own transaction
+		for(int i = 0;(i < in);i++)
 		{
-			itest += toggleInvoiceState(isize - itest);
+			//~: toggle state of single random invoice
+			bean(TxBean.class).execute(() ->
+			  toggleInvoiceState(EX.assertn(selectNextInvoice())));
 
-			long p = itest*100/isize;
-			if(p - percent > 5)
+			//~: percent logging
+			int p = i * 100 / in;
+			if(p - px >= 5)
 			{
-				LU.I(getLog(), ' ', p, '%');
-				percent = p;
+				LU.I(getLog(), "  toggle done ",
+				  p, "% is ", i, " in ", LU.td(ts),
+				  (ts == tx)?(""):(" delta " + LU.td(tx))
+				);
+
+				px = p;
+				tx = System.currentTimeMillis();
 			}
 		}
-
-		LU.I(getLog(), "... done in [",
-		  (System.currentTimeMillis() - timestamp)/1000, "] seconds!"
-		);
 	}
 
 
 	/* protected: test supporting routines */
-
-	protected long      toggleInvoiceState(final long imax)
-	{
-		final long[] res = new long[1];
-
-		bean(TxBean.class).execute(new Runnable()
-		{
-			public void run()
-			{
-				res[0] = toggleInvoiceStateTx(imax);
-			}
-		});
-
-		return res[0];
-	}
-
-	protected long      toggleInvoiceStateTx(long imax)
-	{
-		long i; if(imax > 25) imax = 25;
-
-		for(i = 0;(i < imax);i++)
-		{
-			//~: select the next random invoice
-			Invoice invoice = selectNextInvoice();
-			if(invoice == null) throw new IllegalStateException(
-			  "Unable to select next Buy-Sell Invoice!");
-
-			//!: toggle the state
-			toggleInvoiceState(invoice);
-		}
-
-		return i;
-	}
 
 	protected void      toggleInvoiceState(Invoice invoice)
 	{
@@ -317,8 +288,7 @@ public class ShuntInvoicesBuySell extends ShuntPlain
 
 	protected Invoice   reload(Invoice invoice)
 	{
-		return (Invoice) session().
-		  load(Invoice.class, invoice.getPrimaryKey());
+		return session().load(Invoice.class, invoice.getPrimaryKey());
 	}
 
 	/**
@@ -344,7 +314,7 @@ public class ShuntInvoicesBuySell extends ShuntPlain
 
 	}
 
-	protected long      findNumberOfInvoices()
+	protected int       findNumberOfInvoices()
 	{
 /*
 
@@ -362,15 +332,15 @@ select count(inv.id) from Invoice inv where
 		  setParameter    ("domain",       domain()).
 		  setParameterList("invoiceTypes", getInvoiceTypes()).
 		  uniqueResult())).
-		  longValue();
+		  intValue();
 	}
 
 	protected Invoice   selectNextInvoice()
 	{
 		int offest = 0;
 
-		if((int)invoicesNumber > 0)
-			offest = gen.nextInt((int)invoicesNumber);
+		if(invoicesNumber > 0)
+			offest = gen.nextInt(invoicesNumber);
 
 /*
 
@@ -391,15 +361,13 @@ from Invoice where (domain = :domain) and
 		  uniqueResult();
 	}
 
-	protected long      genInvoicesToggleNumber()
+	protected int       genInvoicesToggleNumber()
 	{
-		long res = (long)(percent * 0.01 * invoicesNumber);
-
-		return (res <= 0L)?(1L):(res > invmax)?(invmax):(res);
+		int res = (int)(percent * 0.01 * invoicesNumber);
+		return (res <= 0)?(1):(res > invmax)?(invmax):(res);
 	}
 
-	protected Collection<UnityType>
-	                    getInvoiceTypes()
+	protected Collection<UnityType> getInvoiceTypes()
 	{
 		return Arrays.asList(
 		  Invoices.typeInvoiceBuy(),
@@ -412,12 +380,12 @@ from Invoice where (domain = :domain) and
 
 	private Long      seed;
 	private double    percent = DEF_PERCENT;
-	private long      invmax  = DEF_INVMAX;
+	private int       invmax  = DEF_INVMAX;
 	private boolean   redate;
 
 
 	/* protected: the runtime state of the shunt unit */
 
 	protected Random  gen;
-	protected long    invoicesNumber;
+	protected int     invoicesNumber;
 }
