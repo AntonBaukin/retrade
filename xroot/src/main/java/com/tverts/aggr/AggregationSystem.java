@@ -20,7 +20,7 @@ public abstract class AggregationSystem
 	protected void installTx(AggrJob job)
 	{
 		//?: {has no transaction context} install the default one
-		if(job.aggrTx() == null)
+		if(job.aggrTx == null)
 			installDefaultTx(job);
 	}
 

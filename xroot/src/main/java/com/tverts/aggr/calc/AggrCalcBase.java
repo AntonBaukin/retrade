@@ -128,7 +128,7 @@ public abstract class AggrCalcBase
 
 	protected AggrValue aggrValue(AggrStruct struct)
 	{
-		return struct.job.aggrValue();
+		return struct.job.aggrValue;
 	}
 
 	protected AggrTask  aggrTask(AggrStruct struct)
@@ -161,7 +161,7 @@ public abstract class AggrCalcBase
 
 	protected Tx tx(AggrStruct struct)
 	{
-		Tx tx = struct.job.aggrTx();
+		Tx tx = struct.job.aggrTx;
 
 		if(tx == null) throw new IllegalStateException(
 		  "Aggregation Calculator is not bound to any Transactional Context!"

@@ -1,11 +1,12 @@
 package com.tverts.aggr;
 
-/* standard Java classes */
+/* Java */
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /* com.tverts: endure (aggregation) */
@@ -13,179 +14,187 @@ import java.util.Set;
 import com.tverts.endure.aggr.AggrRequest;
 import com.tverts.endure.aggr.AggrTask;
 import com.tverts.endure.aggr.AggrValue;
+
+/* com.tverts: system (transactions) */
+
 import com.tverts.system.tx.Tx;
 
 /* com.tverts: support */
 
-import static com.tverts.support.AU.indexOfRef;
+import com.tverts.support.AU;
+import com.tverts.support.CMP;
+import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
- * Record of aggregation strategy invocation. Represents
- * a collection of aggregation requests that may be
- * safely executed on the level of the database.
+ * Record of aggregation strategy invocation.
+ *
+ * Represents a collection of aggregation requests
+ * that may be executed in a bunch.
  *
  * Each aggregation request (task) forming the job
- * must be for the same aggregated value.
+ * is for the same aggregated value.
  *
  *
  * @author anton.baukin@gmail.com
  */
 public class AggrJob
 {
-	/* public: AggrJob interface */
-
-	public AggrValue  aggrValue()
+	public AggrJob(AggrValue aggrValue)
 	{
-		return aggrValue;
+		this.aggrValue = EX.assertn(aggrValue);
 	}
 
-	public AggrJob    aggrValue(AggrValue aggrValue)
+	/**
+	 * Aggregated value of this job.
+	 */
+	public final AggrValue aggrValue;
+
+
+	/* Static Constructors */
+
+	public static AggrJob create(AggrRequest request)
 	{
-		this.aggrValue = aggrValue;
-		return this;
+		return create(Collections.singletonList(request));
 	}
 
-	public Tx aggrTx()
+	public static AggrJob create(List<AggrRequest> requests)
 	{
-		return aggrTx;
+		//?: {are requests defined}
+		EX.asserte(requests);
+		requests.forEach(r -> EX.assertn(r));
+
+		//~: create job by the first task
+		AggrJob job = new AggrJob(requests.get(0).getAggrValue());
+
+		//=: target tasks array
+		job.tasks = new AggrTask[requests.size()];
+
+		//c: for each request create the task
+		for(int i = 0;(i < requests.size());i++)
+		{
+			AggrRequest r = requests.get(i);
+
+			//?: {is value assigned}
+			EX.assertn(r.getAggrValue());
+
+			//?: {is task assigned}
+			EX.assertn(r.getAggrTask());
+
+			//?: {is the same value}
+			EX.assertx(CMP.eq(job.aggrValue, r.getAggrValue()));
+
+			//=: task of the request
+			job.tasks[i] = r.getAggrTask();
+		}
+
+		return job;
 	}
 
-	public AggrJob    aggrTx(Tx tx)
+
+	/* Aggregation Job (access) */
+
+	/**
+	 * Transactional context of the aggregation.
+	 */
+	public Tx aggrTx;
+
+	public AggrJob  aggrTx(Tx tx)
 	{
 		this.aggrTx = tx;
 		return this;
 	}
 
-	public int        size()
+	public int      size()
 	{
-		return (aggrTasks == null)?(0):(aggrTasks.length);
+		return (tasks == null)?(0):(tasks.length);
 	}
 
-	public AggrTask   task(int i)
+	public AggrTask task(int i)
 	{
-		return ((i < 0) | (i >= aggrTasks.length))?(null):(aggrTasks[i]);
+		return ((i < 0) | (i >= tasks.length))?(null):(tasks[i]);
 	}
 
-	public AggrJob    tasks(List<AggrTask> tasks)
+	protected AggrTask[] tasks;
+
+	/**
+	 * Resulting set contains class of each task.
+	 */
+	public Set<Class<?>> classes()
 	{
-		this.aggrTasks    = tasks.toArray(new AggrTask[tasks.size()]);
-		this.tasksClasses = new HashSet<Class>(3);
+		if(tasks == null || tasks.length == 0)
+			return Collections.emptySet();
 
-		for(AggrTask task : tasks)
-			this.tasksClasses.add(task.getClass());
+		if(classes != null)
+			return classes;
 
-		return this;
+		Set<Class<?>> cs = new HashSet<>(1);
+		for(AggrTask task : tasks) cs.add(task.getClass());
+
+		return classes = Collections.unmodifiableSet(cs);
 	}
 
-	public AggrJob    requests(List<AggrRequest> requests)
-	{
-		ArrayList<AggrTask> tasks = new ArrayList<AggrTask>(requests.size());
+	protected Set<Class<?>> classes;
 
-		for(AggrRequest request : requests)
-		{
-			AggrValue value = request.getAggrValue();
-			AggrTask  task  = request.getAggrTask();
 
-			//?: {the aggregated value is not defined}
-			if((value == null) | (task == null))
-				throw new IllegalArgumentException();
+	/* Aggregation Job (errors & completion) */
 
-			//~: assign aggregated value to this job
-			if(aggrValue() == null)
-				aggrValue(value);
-
-			//?: {aggregated value differs}
-			if(!aggrValue().equals(value))
-				throw new IllegalStateException();
-
-			//!: add the task
-			tasks.add(task);
-		}
-
-		return this.tasks(tasks);
-	}
-
-	public AggrJob    request(AggrRequest request)
-	{
-		return requests(Collections.singletonList(request));
-	}
-
-	public Set<Class> tasksClasses()
-	{
-		return tasksClasses;
-	}
-
-	public boolean    error()
-	{
-		if(errors == null)
-			return false;
-
-		for(String error : errors)
-			if(error != null)
-				return true;
-
-		return false;
-	}
-
-	public String     error(int i)
-	{
-		return (errors == null)?(null):
-		  ((i < 0) | (i >= errors.length))?(null):(errors[i]);
-	}
-
-	public String     error(AggrTask task)
-	{
-		return error(indexOfRef(aggrTasks, task));
-	}
-
-	public AggrJob    error(int i, String error)
-	{
-		if((errors == null) && (aggrTasks == null))
-			throw new IllegalStateException();
-
-		if(errors == null)
-			errors = new String[aggrTasks.length];
-
-		if((i >= 0) & (i < errors.length))
-			errors[i] = error;
-
-		return this;
-	}
-
-	public AggrJob    error(AggrTask task, String error)
-	{
-		return error(indexOfRef(aggrTasks, task), error);
-	}
-
-	public boolean    complete()
+	public boolean complete()
 	{
 		return complete;
 	}
 
-	public AggrJob    complete(boolean complete)
+	private boolean complete;
+
+	public AggrJob complete(boolean complete)
 	{
 		this.complete = complete;
 		return this;
 	}
 
-
-	/* public: Object interface */
-
-	public String     toString()
+	public boolean  error()
 	{
-		return String.format(
-		  "Aggregation Job for AggrValue [%d] with aggregation tasks of classes: %s",
-		  aggrValue().getPrimaryKey(), tasksClasses().toString());
+		return errors.isEmpty();
+	}
+
+	protected final Map<Integer, String> errors = new HashMap<>();
+
+	public String   error(int i)
+	{
+		return errors.get(i);
+	}
+
+	public String   error(AggrTask task)
+	{
+		return error(AU.indexOfRef(tasks, task));
+	}
+
+	public AggrJob  error(int i, String error)
+	{
+		EX.assertx(i >= 0 && i < tasks.length);
+
+		if(error == null)
+			errors.remove(i);
+		else
+			errors.put(i, error);
+
+		return this;
+	}
+
+	public AggrJob  error(AggrTask task, String error)
+	{
+		return error(AU.indexOfRef(tasks, task), error);
 	}
 
 
-	/* private: the job components */
+	/* Object */
 
-	private AggrValue  aggrValue;
-	private Tx     aggrTx;
-	private AggrTask[] aggrTasks;
-	private Set<Class> tasksClasses;
-	private String[]   errors;
-	private boolean    complete;
+	public String toString()
+	{
+		return SU.cats(
+		  "Aggregation job for value [", aggrValue.getPrimaryKey(),
+		  "] with tasks {", SU.scats(", ", classes()), "}"
+		);
+	}
 }

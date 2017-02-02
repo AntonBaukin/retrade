@@ -93,7 +93,7 @@ public class AggrPoint
 	 */
 	public void runAggrRequest(AggrRequest request)
 	{
-		this.runAggrRequest(new AggrJob().request(request));
+		this.runAggrRequest(AggrJob.create(request));
 	}
 
 	/**

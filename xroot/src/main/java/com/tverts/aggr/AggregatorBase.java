@@ -170,7 +170,7 @@ public abstract class AggregatorBase
 
 	protected void          touchAggrValue(AggrStruct struct)
 	{
-		TxPoint.txn(struct.job.aggrTx(), struct.job.aggrValue());
+		TxPoint.txn(struct.job.aggrTx, struct.job.aggrValue);
 	}
 
 	protected void          updateAggrOwner(AggrStruct struct)
@@ -179,11 +179,11 @@ public abstract class AggregatorBase
 	protected void          checkAggrJob(AggrStruct struct)
 	{
 		//?: {the aggregation value is not defined}
-		EX.assertn(struct.job.aggrValue(),
+		EX.assertn(struct.job.aggrValue,
 		  "Aggregated Value is not defined in the job!");
 
 		//?: {the transaction context is not defined}
-		EX.assertn(struct.job.aggrTx(),
+		EX.assertn(struct.job.aggrTx,
 		  "Aggregation Tx Context is not defined!");
 	}
 
@@ -194,7 +194,7 @@ public abstract class AggregatorBase
 
 	protected boolean       isJobSupported(AggrJob job)
 	{
-		return getSupportedTasks().containsAll(job.tasksClasses());
+		return getSupportedTasks().containsAll(job.classes());
 	}
 
 	/**
@@ -296,7 +296,7 @@ public abstract class AggregatorBase
 
 	protected Tx      tx(AggrStruct struct)
 	{
-		return EX.assertn(struct.job.aggrTx(),
+		return EX.assertn(struct.job.aggrTx,
 		  "Aggregator is not bound to any Transactional Context!");
 	}
 
@@ -324,7 +324,7 @@ public abstract class AggregatorBase
 
 	protected AggrValue aggrValue(AggrStruct struct)
 	{
-		return struct.job.aggrValue();
+		return struct.job.aggrValue;
 	}
 
 	protected String    getLog()
@@ -342,12 +342,8 @@ public abstract class AggregatorBase
 		if(struct.job == null)
 			return SU.cats(logsig(), " [aggr job undefined]");
 
-		if(struct.job.aggrValue() == null)
-			return SU.cats(logsig(), " [aggr value undefined] ",
-			  logsig(struct.task));
-
 		return SU.cats(logsig(), "[aggr value ",
-		  struct.job.aggrValue().getPrimaryKey(),
+		  struct.job.aggrValue.getPrimaryKey(),
 		  "] ", logsig(struct.task));
 	}
 
