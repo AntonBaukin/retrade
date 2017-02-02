@@ -1,16 +1,16 @@
 package com.tverts.shunts;
 
-/* standard Java classes */
+/* Java */
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+
 /**
- * Marks a method of {@link SelfShunt} to run when
- * the test instance is invoked.
+ * Marks a method of {@link SelfShunt} to run
+ * when the test instance is invoked.
  *
  * @author anton.baukin@gmail.com
  */
@@ -42,6 +42,14 @@ public @interface SelfShuntMethod
 	 * By default is set to {@code false}.
 	 */
 	boolean inherit()     default false;
+
+	/**
+	 * Tells whether this test affects global state
+	 * of the database, thus may be used for test
+	 * domains only, not the real. Editing methods
+	 * are not invoked on read-only domains.
+	 */
+	boolean editing()     default false;
 
 	/**
 	 * Defines the order in which the methods are

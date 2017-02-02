@@ -16,6 +16,7 @@ import com.tverts.system.tx.TxPoint;
 
 import static com.tverts.support.EX.e2en;
 import static com.tverts.support.EX.e2lo;
+import com.tverts.support.LU;
 import static com.tverts.support.SU.s2s;
 import static com.tverts.support.SU.sLo;
 
@@ -101,7 +102,7 @@ public abstract class SelfShuntBase
 				SelfShuntTaskReport mr = createReport(m);
 
 				//1: do before tasks
-				if(!beforeMethod(m, mr))
+				if(!beforeMethod(ctx, m, mr))
 					continue; //<-- this method must be skipped
 
 				//~: add to the tasks report
@@ -259,9 +260,24 @@ public abstract class SelfShuntBase
 	 * Performs tasks before the method invocation.
 	 * Tells whether the method must be invoked.
 	 */
-	protected boolean beforeMethod(Method m, SelfShuntTaskReport report)
+	protected boolean beforeMethod (
+	    SelfShuntCtx        ctx,
+	    Method              m,
+	    SelfShuntTaskReport report
+	  )
 	  throws Exception
 	{
+		//?: {context is read only}
+		if(ctx.isReadonly())
+			//?: {shunt is editing}
+			if(report.isEditing())
+			{
+				LU.W(getLog(), "skip task [", report.getTaskName(),
+				  "], or it would edit read-only context");
+
+				return false;
+			}
+
 		return true;
 	}
 
@@ -352,6 +368,11 @@ public abstract class SelfShuntBase
 			report.setErrorTextEn(e2en(report.getError()));
 			report.setErrorTextLo(e2lo(report.getError()));
 		}
+	}
+
+	protected String  getLog()
+	{
+		return this.getClass().getName();
 	}
 
 

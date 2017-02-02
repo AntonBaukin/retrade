@@ -180,18 +180,9 @@ public class ShuntInvoicesType extends ShuntPlain
 		);
 	}
 
-	@SelfShuntMethod(order = 2, critical = true)
+	@SelfShuntMethod(order = 2, critical = true, editing = true)
 	public void testToggleInvoicesStates()
 	{
-		//?: {is read-only} skip this test
-		if(ctx().isReadonly())
-		{
-			LU.I(getLog(), " [Read-Only] Toggling states of '",
-			  getTypeName(), "' Invoices cancelled!");
-			return;
-		}
-
-
 		long isize = genInvoicesToggleNumber();
 
 		LU.I(getLog(), " Toggling states of ", isize,

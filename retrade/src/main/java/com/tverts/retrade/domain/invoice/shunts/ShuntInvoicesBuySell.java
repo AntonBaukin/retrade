@@ -181,21 +181,15 @@ public class ShuntInvoicesBuySell extends ShuntPlain
 		));
 	}
 
-	@SelfShuntMethod(order = 2, critical = true)
+	@SelfShuntMethod(order = 2, critical = true, editing = true)
 	public void testToggleInvoicesStates()
 	{
-		//?: {is read-only} skip this test
-		if(ctx().isReadonly())
-		{
-			LU.I(getLog(), " [Read-Only] Toggling states of Buy-Sell Invoices cancelled!");
-			return;
-		}
-
 		//?: {GenFixBuySellInvoices took place}
 		if(ctx().getGenCtx().containsKey(GenFixInvoices.class))
 		{
-			LU.I(getLog(), "GenFixBuySellInvoices took place in this run," +
-			  " toggling skipped for now...");
+			LU.I(getLog(), "GenFixBuySellInvoices took place ",
+			  "in this run — toggle is skipped for now...");
+
 			return;
 		}
 

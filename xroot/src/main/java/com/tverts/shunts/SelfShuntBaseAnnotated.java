@@ -113,6 +113,10 @@ public abstract class SelfShuntBaseAnnotated
 		if(a != null)
 			r.setCritical(a.critical());
 
+		//~: editing flag
+		if(a != null)
+			r.setEditing(a.editing());
+
 		//~: task name (overwrites the method name)
 		if((a != null) && !sXe(a.name()))
 			r.setTaskName(s2s(a.name()));

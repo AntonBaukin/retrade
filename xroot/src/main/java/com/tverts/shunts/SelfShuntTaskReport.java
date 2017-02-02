@@ -98,6 +98,22 @@ public class      SelfShuntTaskReport
 	}
 
 	/**
+	 * Tells whether this test affects global state
+	 * of the database, thus may be used for test
+	 * domains only, not the real. Editing methods
+	 * are not invoked on read-only domains.
+	 */
+	public boolean   isEditing()
+	{
+		return editing;
+	}
+
+	public void      setEditing(boolean editing)
+	{
+		this.editing = editing;
+	}
+
+	/**
 	 * Optional error defined what was wrong.
 	 */
 	public Throwable getError()
@@ -179,4 +195,5 @@ public class      SelfShuntTaskReport
 	private long      endTime;
 	private boolean   success;
 	private boolean   critical;
+	private boolean   editing;
 }
