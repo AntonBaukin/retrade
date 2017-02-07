@@ -42,7 +42,7 @@ public class OrdererAggrItem extends OrdererDefault
 
 	public OrdererAggrItem()
 	{
-		setOrderOwnerIDProp(DEF_AGGRITEM_OWNERID_PROP);
+		setOrderOwnerIdProp(DEF_AGGRITEM_OWNERID_PROP);
 	}
 
 

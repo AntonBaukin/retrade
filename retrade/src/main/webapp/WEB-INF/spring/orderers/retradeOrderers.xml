@@ -25,7 +25,7 @@
           <property name = 'orderer'>
             <bean class = 'com.tverts.endure.order.OrdererDefault'>
 
-              <property name = 'orderOwnerIDProp' value = 'domain.id'/>
+              <property name = 'orderOwnerIdProp' value = 'domain.id'/>
 
             </bean>
           </property>
@@ -43,7 +43,7 @@
           <property name = 'orderer'>
             <bean class = 'com.tverts.endure.order.OrdererDefault'>
 
-              <property name = 'orderOwnerIDProp' value = 'domain.id'/>
+              <property name = 'orderOwnerIdProp' value = 'domain.id'/>
 
             </bean>
           </property>

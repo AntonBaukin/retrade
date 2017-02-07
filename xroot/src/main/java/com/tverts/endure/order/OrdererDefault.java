@@ -1,6 +1,6 @@
 package com.tverts.endure.order;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,37 +35,88 @@ import com.tverts.support.SU;
  * check the type of the income request and always says
  * {@link #isThatRequest(OrderRequest)} {@code true}.
  *
- * Has two parameters:
- *  · insert step;
- *  · spread limit.
+ * Has two parameters: insert step, and spread limit.
  *
- * When new item is inserted as the first of the last one
+ * When new item is inserted as the first or the last one
  * it's index is distanced from the closest item by the
  * insert step.
  *
- * When inserting item in the middle, and there is no
- * free space between the left and the right borders
- * of insert, that borders are moved aside. The number
- * of items to move in one side (left or right) is
- * defined by spread limit parameter.
+ * When inserting item in the middle, and there is no free
+ * space between the left and the right borders of insert,
+ * that borders are moved aside. The number of items to move
+ * in one side (left or right) is defined by spread limit.
  *
  *
  * @author anton.baukin@gmail.com
  */
 public class OrdererDefault extends OrdererBase
 {
-	/* public: parameters defaults */
+	/* Orderer Default (strategy configuration) */
 
-	public static final String DEF_ORDER_OWNERID_PROP = "orderOwner.id";
-	public static final String DEF_ORDER_TYPE_PROP    = "orderType";
-	public static final String DEF_ORDER_INDEX_PROP   = "orderIndex";
+	public String getOrderOwnerIdProp()
+	{
+		return orderOwnerIdProp;
+	}
 
-	public static final long   DEF_INSERT_STEP        = 256;
+	private String orderOwnerIdProp = "orderOwner.id";
 
-	public static final int    DEF_SPREAD_LIMIT       = 8; //<-- 16 + 1 for both sides
+	public void setOrderOwnerIdProp(String p)
+	{
+		this.orderOwnerIdProp = EX.asserts(p);
+	}
+
+	public String getOrderTypeProp()
+	{
+		return orderTypeProp;
+	}
+
+	private String orderTypeProp = "orderType";
+
+	public void   setOrderTypeProp(String p)
+	{
+		this.orderTypeProp = EX.asserts(p);
+	}
+
+	public String getOrderIndexProp()
+	{
+		return orderIndexProp;
+	}
+
+	private String orderIndexProp = "orderIndex";
+
+	public void   setOrderIndexProp(String p)
+	{
+		this.orderIndexProp = EX.asserts(p);
+	}
+
+	public int    getInsertStep()
+	{
+		return insertStep;
+	}
+
+	private int insertStep = 256;
+
+	public void   setInsertStep(int step)
+	{
+		EX.assertx(step >= 1);
+		this.insertStep = step;
+	}
+
+	public int    getSpreadLimit()
+	{
+		return spreadLimit;
+	}
+
+	private int spreadLimit = 8; //<-- 16 + 1 for both sides
+
+	public void   setSpreadLimit(int limit)
+	{
+		EX.assertx(limit >= 1);
+		this.spreadLimit = limit;
+	}
 
 
-	/* protected: OrdererBase interface */
+	/* protected: orderer base */
 
 	/**
 	 * This strategy does not check the type of the request
@@ -79,122 +130,64 @@ public class OrdererDefault extends OrdererBase
 	protected void    order(OrderRequest request)
 	{
 		//~: create order strategy' data
-		OrderData odata = createOrderData(request);
+		OrderData od = createOrderData(request);
 
 		//!: flush the objects to the database
-		HiberPoint.flush(session(odata));
+		HiberPoint.flush(session(od));
 
 		//~: find the insert borders
-		findInsertBorders(odata);
+		findInsertBorders(od);
 
 		//?: {insert as the first}
-		if(odata.getLeft() == null)
+		if(od.getLeft() == null)
 		{
-			insertFirst(odata);
+			insertFirst(od);
 			return;
 		}
 
 		//?: {insert as the last}
-		if(odata.getRight() == null)
+		if(od.getRight() == null)
 		{
-			insertLast(odata);
+			insertLast(od);
 			return;
 		}
 
 		//!: insert in the middle
-		insertMiddle(odata);
+		insertMiddle(od);
 	}
 
 
-	/* public: access strategy parameters */
+	/* Strategy Request Data */
 
-	public String getOrderOwnerIDProp()
+	public static class OrderData
 	{
-		return orderOwnerIDProp;
-	}
-
-	public void   setOrderOwnerIDProp(String p)
-	{
-		if((p = SU.s2s(p)) == null) throw new IllegalArgumentException();
-		this.orderOwnerIDProp = p;
-	}
-
-	public String getOrderTypeProp()
-	{
-		return orderTypeProp;
-	}
-
-	public void   setOrderTypeProp(String p)
-	{
-		if((p = SU.s2s(p)) == null) throw new IllegalArgumentException();
-		this.orderTypeProp = p;
-	}
-
-	public String getOrderIndexProp()
-	{
-		return orderIndexProp;
-	}
-
-	public void   setOrderIndexProp(String p)
-	{
-		if((p = SU.s2s(p)) == null) throw new IllegalArgumentException();
-		this.orderIndexProp = p;
-	}
-
-	public long   getInsertStep()
-	{
-		return insertStep;
-	}
-
-	public void   setInsertStep(long insertStep)
-	{
-		if(insertStep < 1L) throw new IllegalArgumentException();
-		this.insertStep = insertStep;
-	}
-
-	public int    getSpreadLimit()
-	{
-		return spreadLimit;
-	}
-
-	public void   setSpreadLimit(int spreadLimit)
-	{
-		if(spreadLimit < 0) throw new IllegalArgumentException();
-		this.spreadLimit = spreadLimit;
-	}
-
-
-	/* protected: strategy request */
-
-	protected class OrderData
-	{
-		/* public: constructor */
-
 		public OrderData(OrderRequest request)
 		{
-			if(request == null) throw new IllegalArgumentException();
-
-			this.request = request;
+			this.request = EX.assertn(request);
 		}
 
+		public final OrderRequest request;
 
-		/* public: access order data */
+
+		/* Order Data */
 
 		public OrderRequest getRequest()
 		{
 			return request;
 		}
 
-		public Class        getIndexClass()
+		public Class<?>     getIndexClass()
 		{
 			return (indexClass != null)?(indexClass):
 			  (request.getIndexClass() != null)?(request.getIndexClass()):
 			  (indexClass = HiberPoint.type(getRequest().getInstance()));
 		}
 
-		public OrderData    setIndexClass(Class indexClass)
+		private Class<?> indexClass;
+
+		public OrderData    setIndexClass(Class<?> cls)
 		{
-			this.indexClass = indexClass;
+			this.indexClass = cls;
 			return this;
 		}
 
@@ -202,13 +195,16 @@ public class OrdererDefault extends OrdererBase
 		/* public: order borders */
 
 		/**
-		 * Returns the instance with closest smaller index.
-		 * May be undefined: the instance to insert would be the first.
+		 * Returns the instance with closest smaller
+		 * index. May be undefined: the instance
+		 * to insert would be the first.
 		 */
 		public OrderIndex   getLeft()
 		{
 			return left;
 		}
+
+		private OrderIndex   left;
 
 		public OrderData    setLeft(OrderIndex left)
 		{
@@ -217,13 +213,16 @@ public class OrdererDefault extends OrdererBase
 		}
 
 		/**
-		 * Returns the instance with closest bigger index.
-		 * May be undefined: the instance to insert would be the last.
+		 * Returns the instance with closest bigger i
+		 * ndex. May be undefined: the instance
+		 * to insert would be the last.
 		 */
 		public OrderIndex   getRight()
 		{
 			return right;
 		}
+
+		private OrderIndex right;
 
 		public OrderData    setRight(OrderIndex right)
 		{
@@ -243,6 +242,8 @@ public class OrdererDefault extends OrdererBase
 			return leftSpread;
 		}
 
+		private Long[] leftSpread;
+
 		public OrderData    setLeftSpread(Long[] spread)
 		{
 			this.leftSpread = spread;
@@ -258,6 +259,8 @@ public class OrdererDefault extends OrdererBase
 			return rightSpread;
 		}
 
+		private Long[] rightSpread;
+
 		public OrderData    setRightSpread(Long[] spread)
 		{
 			this.rightSpread = spread;
@@ -269,29 +272,12 @@ public class OrdererDefault extends OrdererBase
 			return (reference != null)?(reference):(request.getReference());
 		}
 
+		private OrderIndex reference;
+
 		public void         setReference(OrderIndex reference)
 		{
 			this.reference = reference;
 		}
-
-
-		/* private: ordering data */
-
-		private OrderRequest request;
-		private OrderIndex   reference;
-		private Class        indexClass;
-
-
-		/* private: insert borders */
-
-
-		private OrderIndex   left;
-		private OrderIndex   right;
-
-		/* private: spread lines */
-
-		private Long[]       leftSpread;
-		private Long[]       rightSpread;
 	}
 
 
@@ -302,116 +288,114 @@ public class OrdererDefault extends OrdererBase
 		return new OrderData(request);
 	}
 
-	protected void      insertSingle(OrderData odata)
+	protected void      insertSingle(OrderData od)
 	{
 		//~: just set 0 index
-		instance(odata).setOrderIndex(0L);
+		instance(od).setOrderIndex(0L);
 	}
 
-	protected void      insertFirst(OrderData odata)
+	protected void      insertFirst(OrderData od)
 	{
 		//?: {there is no right (lowest) item} insert single
-		if(odata.getRight() == null)
+		if(od.getRight() == null)
 		{
-			insertSingle(odata);
+			insertSingle(od);
 			return;
 		}
 
 		//~: just decrement by the insert step
-		instance(odata).setOrderIndex(
-		  odata.getRight().getOrderIndex() - getInsertStep()
-		);
+		instance(od).setOrderIndex(
+		  od.getRight().getOrderIndex() - insertStep);
 	}
 
-	protected void      insertLast(OrderData odata)
+	protected void      insertLast(OrderData od)
 	{
 		//?: {there is no left (biggest) item} insert single
-		if(odata.getLeft() == null)
+		if(od.getLeft() == null)
 		{
-			insertSingle(odata);
+			insertSingle(od);
 			return;
 		}
 
 		//~: just increment by the insert step
-		instance(odata).setOrderIndex(
-		  odata.getLeft().getOrderIndex() + getInsertStep()
-		);
+		instance(od).setOrderIndex(
+		  od.getLeft().getOrderIndex() + insertStep);
 	}
 
 	/**
 	 * Inserts the index between defined the left and the right
 	 * index borders.
 	 */
-	protected void      insertMiddle(OrderData odata)
+	protected void      insertMiddle(OrderData od)
 	{
-		long oileft  = odata.getLeft().getOrderIndex();
-		long oiright = odata.getRight().getOrderIndex();
+		long l  = od.getLeft().getOrderIndex();
+		long r = od.getRight().getOrderIndex();
 
 		//?: {there is enough space to insert}
-		if(oileft + 1 < oiright)
-			insertMiddleNormal(odata);
+		if(l + 1 < r)
+			insertMiddleNormal(od);
 		//!: there is no space left -> do spread
 		else
-			insertMiddleSpread(odata);
+			insertMiddleSpread(od);
 	}
 
 	/**
 	 * Selects the index between the left and the right
 	 * borders when there is enough space there.
 	 */
-	protected void      insertMiddleNormal(OrderData odata)
+	protected void      insertMiddleNormal(OrderData od)
 	{
-		long oileft  = odata.getLeft().getOrderIndex();
-		long oiright = odata.getRight().getOrderIndex();
+		long oileft  = od.getLeft().getOrderIndex();
+		long oiright = od.getRight().getOrderIndex();
 
 		//~: just set the index in the middle
-		instance(odata).setOrderIndex((oileft + oiright)/2);
+		instance(od).setOrderIndex((oileft + oiright)/2);
 	}
 
-	protected void      insertMiddleSpread(OrderData odata)
+	protected void      insertMiddleSpread(OrderData od)
 	{
 		//!: do spread order indices
-		spreadOrderIndices(odata);
+		spreadOrderIndices(od);
 
 		//~: insert in the middle as normal
-		insertMiddleNormal(odata);
+		insertMiddleNormal(od);
 	}
 
 
 	/* protected: insert borders selection */
 
-	protected void      findInsertBorders(OrderData odata)
+	protected void      findInsertBorders(OrderData od)
 	{
 		//?: {reference is undefined} insert as the first or the last
-		if(reference(odata) == null)
+		if(reference(od) == null)
 		{
 			//?: {beforeAfter = true} as the last
-			if(request(odata).isBeforeAfter())
-				findInsertBorderRight(odata);
+			if(request(od).isBeforeAfter())
+				findInsertBorderRight(od);
 			//!: {beforeAfter = false} as the first
 			else
-				findInsertBorderLeft(odata);
+				findInsertBorderLeft(od);
 
 			return;
 		}
 
-		EX.assertn(reference(odata).getOrderIndex(),
-		  "Order reference ", odata.getIndexClass().getSimpleName(),
-		  " [", reference(odata).getPrimaryKey(), "] has order index undefined!"
+		EX.assertn(reference(od).getOrderIndex(),
+		  "Order reference ", od.getIndexClass().getSimpleName(),
+		  " [", reference(od).getPrimaryKey(), "] has order index undefined!"
 		);
 
 		//!: ensure the order index of the reference
-		ensureReferenceOrderIndex(odata);
+		ensureReferenceOrderIndex(od);
 
 		//?: {before the reference}
-		if(request(odata).isBeforeAfter())
-			findInsertBorderAfter(odata);
+		if(request(od).isBeforeAfter())
+			findInsertBorderAfter(od);
 		else
-			findInsertBorderBefore(odata);
+			findInsertBorderBefore(od);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void      findInsertBorderLeft(OrderData odata)
+	protected void      findInsertBorderLeft(OrderData od)
 	{
 
 /*
@@ -422,7 +406,7 @@ public class OrdererDefault extends OrdererBase
  order by o.$orderIndex asc
 
  */
-		List<Object[]> r = (List<Object[]>) indexQuery(odata,
+		List<Object[]> r = (List<Object[]>) indexQuery(od,
 
 "select o, o.$orderIndex from OrderIndex o where\n" +
 "  (o.$orderOwner = :orderOwner) and (o.id <> :target)\n" +
@@ -430,17 +414,17 @@ public class OrdererDefault extends OrdererBase
 "order by o.$orderIndex asc"
 
 		).
-		  setParameter("target", odata.getRequest().getInstance().getPrimaryKey()).
+		  setParameter("target", od.request.getInstance().getPrimaryKey()).
 		  setMaxResults(1).
 		  list();
 
 		//?: {has right (smallest) border}
 		if(!r.isEmpty())
-			odata.setRight(ensureOrderIndex(odata, r.get(0)));
+			od.setRight(ensureOrderIndex(od, r.get(0)));
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void      findInsertBorderRight(OrderData odata)
+	protected void      findInsertBorderRight(OrderData od)
 	{
 
 /*
@@ -451,7 +435,7 @@ public class OrdererDefault extends OrdererBase
  order by o.$orderIndex desc
 
  */
-		List<Object[]> r = (List<Object[]>) indexQuery(odata,
+		List<Object[]> r = (List<Object[]>) indexQuery(od,
 
 "select o, o.$orderIndex from OrderIndex o where\n" +
 "  (o.$orderOwner = :orderOwner) and (o.id <> :target)\n" +
@@ -459,17 +443,17 @@ public class OrdererDefault extends OrdererBase
 "order by o.$orderIndex desc"
 
 		).
-		  setParameter("target", odata.getRequest().getInstance().getPrimaryKey()).
+		  setParameter("target", od.request.getInstance().getPrimaryKey()).
 		  setMaxResults(1).
 		  list();
 
 		//?: {has left (biggest) border}
 		if(!r.isEmpty())
-			odata.setLeft(ensureOrderIndex(odata, r.get(0)));
+			od.setLeft(ensureOrderIndex(od, r.get(0)));
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void      findInsertBorderBefore(OrderData odata)
+	protected void      findInsertBorderBefore(OrderData od)
 	{
 
 /*
@@ -481,7 +465,7 @@ public class OrdererDefault extends OrdererBase
 
  */
 
-		List<Object[]> r = (List<Object[]>) indexQuery(odata,
+		List<Object[]> r = (List<Object[]>) indexQuery(od,
 
 "select o, o.$orderIndex from OrderIndex o where\n" +
 "  (o.$orderOwner = :orderOwner) and (o.id <> :target)\n" +
@@ -489,21 +473,21 @@ public class OrdererDefault extends OrdererBase
 "order by o.$orderIndex desc"
 
 		).
-		  setParameter("orderIndex", reference(odata).getOrderIndex()).
-		  setParameter("target", odata.getRequest().getInstance().getPrimaryKey()).
+		  setParameter("orderIndex", reference(od).getOrderIndex()).
+		  setParameter("target", od.request.getInstance().getPrimaryKey()).
 		  setMaxResults(1).
 		  list();
 
 		//?: {has left border}
 		if(!r.isEmpty())
-			odata.setLeft(ensureOrderIndex(odata, r.get(0)));
+			od.setLeft(ensureOrderIndex(od, r.get(0)));
 
 		//~: right border is the reference
-		odata.setRight(reference(odata));
+		od.setRight(reference(od));
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void      findInsertBorderAfter(OrderData odata)
+	protected void      findInsertBorderAfter(OrderData od)
 	{
 
 /*
@@ -515,7 +499,7 @@ public class OrdererDefault extends OrdererBase
 
  */
 
-		List<Object[]> r = (List<Object[]>) indexQuery(odata,
+		List<Object[]> r = (List<Object[]>) indexQuery(od,
 
 "select o, o.$orderIndex from OrderIndex o where\n" +
 "  (o.$orderOwner = :orderOwner) and (o.id <> :target)\n" +
@@ -523,30 +507,30 @@ public class OrdererDefault extends OrdererBase
 "order by o.$orderIndex asc"
 
 		).
-		  setParameter("orderIndex", reference(odata).getOrderIndex()).
-		  setParameter("target", odata.getRequest().getInstance().getPrimaryKey()).
+		  setParameter("orderIndex", reference(od).getOrderIndex()).
+		  setParameter("target", od.request.getInstance().getPrimaryKey()).
 		  setMaxResults(1).
 		  list();
 
 		//?: {has right border}
 		if(!r.isEmpty())
-			odata.setRight(ensureOrderIndex(odata, r.get(0)));
+			od.setRight(ensureOrderIndex(od, r.get(0)));
 
 		//~: left border is the reference
-		odata.setLeft(reference(odata));
+		od.setLeft(reference(od));
 	}
 
 
 	/* protected: spread order indices */
 
-	protected void      spreadOrderIndices(OrderData odata)
+	protected void      spreadOrderIndices(OrderData od)
 	{
 		//~: load indices before and after the border
-		loadSpreadLines(odata);
+		loadSpreadLines(od);
 
 		//?: {there was no space in the spread loaded} do total move
-		if(!spreadReservePlace(odata))
-			spreadMoveOrder(odata);
+		if(!spreadReservePlace(od))
+			spreadMoveOrder(od);
 	}
 
 	/**
@@ -558,7 +542,7 @@ public class OrdererDefault extends OrdererBase
 	 * belongs to the border itself.
 	 */
 	@SuppressWarnings("unchecked")
-	protected void      loadSpreadLines(OrderData odata)
+	protected void      loadSpreadLines(OrderData od)
 	{
 
 /*
@@ -569,24 +553,24 @@ public class OrdererDefault extends OrdererBase
 
  */
 
-		Query      q = indexQuery(odata,
+		Query      q = indexQuery(od,
 
 "select $orderIndex from OrderIndex where\n" +
 "  ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
 "  ($orderIndex < :orderIndex) order by $orderIndex desc"
 
 		).
-		  setParameter("orderIndex", odata.getLeft().getOrderIndex()).
+		  setParameter("orderIndex", od.getLeft().getOrderIndex()).
 		  setMaxResults(getSpreadLimit());
 
 		List<Long> r = (List<Long>)q.list();
 		Long[]     a = new Long[r.size() + 1];
 
-		a[0] = odata.getLeft().getOrderIndex();
+		a[0] = od.getLeft().getOrderIndex();
 		for(int i = 0;(i < r.size());i++)
 			a[i + 1] = r.get(i);
 
-		odata.setLeftSpread(a);
+		od.setLeftSpread(a);
 
 
 /*
@@ -596,24 +580,24 @@ public class OrdererDefault extends OrdererBase
    ($orderIndex > :orderIndex) order by $orderIndex asc
 
  */
-		q = indexQuery(odata,
+		q = indexQuery(od,
 
 "select $orderIndex from OrderIndex where\n" +
 "  ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
 "  ($orderIndex > :orderIndex) order by $orderIndex asc"
 
 		).
-		  setParameter("orderIndex", odata.getRight().getOrderIndex()).
+		  setParameter("orderIndex", od.getRight().getOrderIndex()).
 		  setMaxResults(getSpreadLimit());
 
 		r = (List<Long>)q.list();
 		a = new Long[r.size() + 1];
 
-		a[0] = odata.getRight().getOrderIndex();
+		a[0] = od.getRight().getOrderIndex();
 		for(int i = 0;(i < r.size());i++)
 			a[i + 1] = r.get(i);
 
-		odata.setRightSpread(a);
+		od.setRightSpread(a);
 	}
 
 	/**
@@ -624,13 +608,13 @@ public class OrdererDefault extends OrdererBase
 	 * If there was no free place on both the sides a total
 	 * move is performed on all the index order.
 	 */
-	protected boolean   spreadReservePlace(OrderData odata)
+	protected boolean   spreadReservePlace(OrderData od)
 	{
 		//HINT: we reserve in each spread half not to allow
 		//  the distribution to slip into one direction.
 
-		boolean r = spreadReservePlaceRight(odata);
-		boolean l = spreadReservePlaceLeft(odata);
+		boolean r = spreadReservePlaceRight(od);
+		boolean l = spreadReservePlaceLeft(od);
 
 		return r | l;
 	}
@@ -652,9 +636,9 @@ public class OrdererDefault extends OrdererBase
 
 	}
 
-	protected boolean   spreadReservePlaceRight(OrderData odata)
+	protected boolean   spreadReservePlaceRight(OrderData od)
 	{
-		Long[] spread = odata.getRightSpread();
+		Long[] spread = od.getRightSpread();
 
 		//~: select space position
 		long   smove  = 0L;
@@ -674,9 +658,9 @@ public class OrdererDefault extends OrdererBase
 		//~: issue UPDATE moving right all the items in the
 		//   range of [right, spread[spos])
 
-		Query q = indexQuery(odata, spreadReservePlaceRightQuery()).
+		Query q = indexQuery(od, spreadReservePlaceRightQuery()).
 		  setParameter("smove", smove).
-		  setParameter("startIndex", odata.getRight().getOrderIndex()).
+		  setParameter("startIndex", od.getRight().getOrderIndex()).
 		  setParameter("endIndex", spread[spos]);
 
 		//!: execute update
@@ -684,8 +668,8 @@ public class OrdererDefault extends OrdererBase
 
 
 		//~: set the index of the right border
-		odata.getRight().setOrderIndex(
-		  odata.getRight().getOrderIndex() + smove
+		od.getRight().setOrderIndex(
+		  od.getRight().getOrderIndex() + smove
 		);
 
 		//~: update the selected spread line in the range
@@ -693,8 +677,8 @@ public class OrdererDefault extends OrdererBase
 			spread[i] += smove;
 
 		//~: reload the indices of the updated rows
-		reloadUpdatedOrderIndices(odata,
-		  odata.getRight().getOrderIndex(), spread[spos] - 1);
+		reloadUpdatedOrderIndices(od,
+		  od.getRight().getOrderIndex(), spread[spos] - 1);
 
 		return true;
 	}
@@ -716,9 +700,9 @@ public class OrdererDefault extends OrdererBase
 
 	}
 
-	protected boolean   spreadReservePlaceLeft(OrderData odata)
+	protected boolean   spreadReservePlaceLeft(OrderData od)
 	{
-		Long[] spread = odata.getLeftSpread();
+		Long[] spread = od.getLeftSpread();
 
 		//~: select space position
 		long   smove  = 0L;
@@ -740,18 +724,18 @@ public class OrdererDefault extends OrdererBase
 		//~: issue UPDATE moving left all the items in the
 		//   range of (spread[spos], left]
 
-		Query q = indexQuery(odata, spreadReservePlaceLeftQuery()).
+		Query q = indexQuery(od, spreadReservePlaceLeftQuery()).
 		  setParameter("smove", smove).
 		  setParameter("startIndex", spread[spos]).
-		  setParameter("endIndex", odata.getLeft().getOrderIndex());
+		  setParameter("endIndex", od.getLeft().getOrderIndex());
 
 		//!: execute update
 		q.executeUpdate();
 
 
 		//~: set the index of the right border
-		odata.getLeft().setOrderIndex(
-		  odata.getLeft().getOrderIndex() - smove
+		od.getLeft().setOrderIndex(
+		  od.getLeft().getOrderIndex() - smove
 		);
 
 		//~: update the selected spread line in the range
@@ -759,8 +743,8 @@ public class OrdererDefault extends OrdererBase
 			spread[i] -= smove;
 
 		//~: reload the indices of the updated rows
-		reloadUpdatedOrderIndices(odata,
-		  spread[spos] + 1, odata.getLeft().getOrderIndex());
+		reloadUpdatedOrderIndices(od,
+		  spread[spos] + 1, od.getLeft().getOrderIndex());
 
 		return true;
 	}
@@ -773,10 +757,10 @@ public class OrdererDefault extends OrdererBase
 	 * Note that in present implementation only the right
 	 * half is actually moved.
 	 */
-	protected void      spreadMoveOrder(OrderData odata)
+	protected void      spreadMoveOrder(OrderData od)
 	{
 		//~: move the right half
-		spreadMoveOrderRight(odata);
+		spreadMoveOrderRight(od);
 	}
 
 	protected String    spreadMoveOrderRightQuery()
@@ -797,35 +781,35 @@ public class OrdererDefault extends OrdererBase
 
 	}
 
-	protected void      spreadMoveOrderRight(OrderData odata)
+	protected void      spreadMoveOrderRight(OrderData od)
 	{
-		Query q = indexQuery(odata, spreadMoveOrderRightQuery()).
-		  setParameter("insertStep", getInsertStep()).
-		  setParameter("orderIndex", odata.getRight().getOrderIndex());
+		Query q = indexQuery(od, spreadMoveOrderRightQuery()).
+		  setParameter("insertStep", insertStep).
+		  setParameter("orderIndex", od.getRight().getOrderIndex());
 
 		//!: execute update
 		q.executeUpdate();
 
 		//~: update the selected spread line
-		Long[] spread = odata.getRightSpread();
+		Long[] spread = od.getRightSpread();
 		for(int i = 0;(i < spread.length);i++)
-			spread[i] += getInsertStep();
+			spread[i] += insertStep;
 
 		//~: reload the indices of the updated rows
-		reloadUpdatedOrderIndices(odata,
-		  odata.getRight().getOrderIndex(), null);
+		reloadUpdatedOrderIndices(od,
+		  od.getRight().getOrderIndex(), null);
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void      reloadUpdatedOrderIndices
-	  (OrderData odata, Long left, Long right)
+	  (OrderData od, Long left, Long right)
 	{
 		//~: get the instances in the persistence context
 		Set entities = HiberSystem.getInstance().
-		  findAttachedEntities(session(odata), odata.getIndexClass());
+		  findAttachedEntities(session(od), od.getIndexClass());
 
 		//~: remove our goal instance (it is set later)
-		entities.remove(instance(odata));
+		entities.remove(instance(od));
 
 		//~: remove instances that are on the left
 		for(Iterator i = entities.iterator();(i.hasNext());)
@@ -856,7 +840,7 @@ public class OrdererDefault extends OrdererBase
 
 		//~: map the ids of the instances to update
 		HashMap<Long, OrderIndex> updates =
-		  new HashMap<Long, OrderIndex>(entities.size());
+		  new HashMap<>(entities.size());
 
 		for(Object e : entities)
 			updates.put(((OrderIndex)e).getPrimaryKey(), (OrderIndex)e);
@@ -868,14 +852,14 @@ public class OrdererDefault extends OrdererBase
 
  */
 
-		Query           query = indexQuery(odata,
+		Query           query = indexQuery(od,
 
 "select oi.id, oi.$orderIndex from OrderIndex oi\n" +
 "  where oi.id in (:orderIndices)"
 
 		);
 
-		ArrayList<Long> qkeys = new ArrayList<Long>(10);
+		ArrayList<Long> qkeys = new ArrayList<>(10);
 		Set<Long>       ukeys = updates.keySet();
 		List            inds;
 
@@ -918,32 +902,32 @@ public class OrdererDefault extends OrdererBase
 	protected final String _AND_ORDER_TYPE_EQ_ =
 	  "$and$orderType=:orderType$";
 
-	protected Query        indexQuery(OrderData odata, String hql)
+	protected Query        indexQuery(OrderData od, String hql)
 	{
 		String  Q = hql;
 		//?: query has OrderIndex alias 'o'
 		boolean A = hql.contains("o.$orderIndex");
 
-		Q = SU.replace(Q, "$orderOwner", getOrderOwnerIDProp());
+		Q = SU.replace(Q, "$orderOwner", getOrderOwnerIdProp());
 		Q = SU.replace(Q, "$orderIndex", getOrderIndexProp());
 
 		//?: {has order type defined}
-		if(orderType(odata) == null)
+		if(orderType(od) == null)
 			Q = SU.replace(Q, _AND_ORDER_TYPE_EQ_, "");
 		else
 			Q = SU.replace(Q, _AND_ORDER_TYPE_EQ_, String.format(
 			  "and (%s%s = :orderType)", A?("o."):(""), getOrderTypeProp()));
 
-		Query q = HiberPoint.query(session(request(odata)), Q,
-		  "OrderIndex", odata.getIndexClass());
+		Query q = HiberPoint.query(session(request(od)), Q,
+		  "OrderIndex", od.getIndexClass());
 
 		//~: set order owner
 		if(Q.contains(":orderOwner"))
-			q.setParameter("orderOwner", orderOwnerID(odata));
+			q.setParameter("orderOwner", orderOwnerID(od));
 
 		//~: set order type
 		if(Q.contains(":orderType"))
-			q.setParameter("orderType", orderType(odata));
+			q.setParameter("orderType", orderType(od));
 
 		return q;
 	}
@@ -951,58 +935,58 @@ public class OrdererDefault extends OrdererBase
 
 	/* protected: support functions */
 
-	protected OrderRequest request(OrderData odata)
+	protected OrderRequest request(OrderData od)
 	{
-		return odata.getRequest();
+		return od.getRequest();
 	}
 
-	protected OrderIndex   instance(OrderData odata)
+	protected OrderIndex   instance(OrderData od)
 	{
-		return odata.getRequest().getInstance();
+		return od.request.getInstance();
 	}
 
-	protected OrderIndex   reference(OrderData odata)
+	protected OrderIndex   reference(OrderData od)
 	{
-		return odata.getReference();
+		return od.getReference();
 	}
 
-	protected Session      session(OrderData odata)
+	protected Session      session(OrderData od)
 	{
-		return session(odata.getRequest());
+		return session(od.getRequest());
 	}
 
-	protected Long         orderOwnerID(OrderData odata)
+	protected Long         orderOwnerID(OrderData od)
 	{
-		return request(odata).getOrderOwner().getPrimaryKey();
+		return request(od).getOrderOwner().getPrimaryKey();
 	}
 
-	protected UnityType    orderType(OrderData odata)
+	protected UnityType    orderType(OrderData od)
 	{
-		return request(odata).getOrderType();
+		return request(od).getOrderType();
 	}
 
-	protected void         ensureReferenceOrderIndex(OrderData odata)
+	protected void         ensureReferenceOrderIndex(OrderData od)
 	{
 
 // select o.$orderIndex from OrderIndex o where (o.id = :pk)
 
-		Long oi = (Long) indexQuery(odata,
+		Long oi = (Long) indexQuery(od,
 
 "select o.$orderIndex from OrderIndex o where (o.id = :pk)"
 
 		).
-		  setParameter("pk", reference(odata).getPrimaryKey()).
+		  setParameter("pk", reference(od).getPrimaryKey()).
 		  uniqueResult();
 
 		EX.assertn(oi);
 
-		odata.setReference(ensureOrderIndex(odata,
-		  new Object[] { reference(odata), oi }
+		od.setReference(ensureOrderIndex(od,
+		  new Object[] { reference(od), oi }
 		));
 	}
 
 	@SuppressWarnings("unchecked")
-	protected OrderIndex   ensureOrderIndex(OrderData odata, Object[] row)
+	protected OrderIndex   ensureOrderIndex(OrderData od, Object[] row)
 	{
 		OrderIndex o = null;
 		Long       i = null;
@@ -1022,21 +1006,11 @@ public class OrdererDefault extends OrdererBase
 			return o;
 
 		//~: evict those instance
-		HiberPoint.flush(session(odata));
-		session(odata).evict(o);
+		HiberPoint.flush(session(od));
+		session(od).evict(o);
 
 		//!: reload it
-		return (OrderIndex) session(odata).load(
-		  odata.getIndexClass(), o.getPrimaryKey());
+		return (OrderIndex) session(od).load(
+		  od.getIndexClass(), o.getPrimaryKey());
 	}
-
-
-	/* private: parameters of the strategy */
-
-	private String orderOwnerIDProp = DEF_ORDER_OWNERID_PROP;
-	private String orderTypeProp    = DEF_ORDER_TYPE_PROP;
-	private String orderIndexProp   = DEF_ORDER_INDEX_PROP;
-
-	private long insertStep         = DEF_INSERT_STEP;
-	private int  spreadLimit        = DEF_SPREAD_LIMIT;
 }
