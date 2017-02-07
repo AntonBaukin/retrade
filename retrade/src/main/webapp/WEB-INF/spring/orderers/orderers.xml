@@ -27,7 +27,7 @@
     <property name = 'references'>
       <list>
 
-        <ref bean = "retradeOrderers"/>
+        <ref bean = 'retradeOrderers'/>
         <ref bean = 'xrootOrderers'/>
 
       </list>

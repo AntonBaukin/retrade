@@ -13,17 +13,17 @@ package com.tverts.endure.order;
  */
 public interface Orderer
 {
-	/* public: Orderer interface */
+	/* Orderer */
 
 	/**
 	 * Selects the order index for the instance in the request.
 	 *
-	 * WARNING! Ordering strategy works in the level of the database.
-	 *   It issues update HQL queries. The Hibernate Session must be
-	 *   flashed and cleared before and after the processing!
-	 *
-	 *   You must reload the instances stored in the session
-	 *   as they would become detached!
+	 * WARNING! Ordering strategy works on the database level.
+	 *  It issues update HQL queries. The Hibernate Session must
+	 *  be flashed and cleared before and after the processing!
+
+	 *  You must reload the instances stored in the session
+	 *  as they would become detached!
 	 */
 	public void setOrderIndex(OrderRequest request);
 }

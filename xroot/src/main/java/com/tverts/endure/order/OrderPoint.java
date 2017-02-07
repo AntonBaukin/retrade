@@ -1,5 +1,10 @@
 package com.tverts.endure.order;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
+
 /**
  * Point to access {@link Orderer} strategies.
  *
@@ -9,65 +14,61 @@ public class OrderPoint
 {
 	/* public: Singleton */
 
+	public static final OrderPoint INSTANCE =
+	  new OrderPoint();
+
 	public static OrderPoint getInstance()
 	{
 		return INSTANCE;
 	}
 
-	private static final OrderPoint INSTANCE =
-	  new OrderPoint();
-
-	protected OrderPoint()
+	private OrderPoint()
 	{}
 
-	/* public: OrderPoint interface */
+
+	/* Order Point */
+
+	public static void order(OrderRequest request)
+	{
+		INSTANCE.setOrderIndex(request);
+	}
+
+	public static void orderBefore(OrderIndex instance, OrderIndex reference)
+	{
+		INSTANCE.setOrderIndex(new OrderRequest(
+		  instance, reference).setBeforeAfter(false));
+	}
+
+	public static void orderAfter(OrderIndex instance, OrderIndex reference)
+	{
+		INSTANCE.setOrderIndex(new OrderRequest(
+		  instance, reference).setBeforeAfter(true));
+	}
 
 	public void        setOrderIndex(OrderRequest request)
 	{
-		if(request == null) throw new IllegalArgumentException();
+		EX.assertn(request);
 
 		//~: invoke the root orderer
 		getOrderer().setOrderIndex(request);
 
 		//?: {no strategy found}
-		if(!request.isComplete()) throw new IllegalStateException(
-		  "No order index strategy found for the request: " +
-		  request.toString()
-		);
+		EX.assertx(request.isComplete(), "No order index strategy ",
+		  "found for the request: ", request.toString());
 	}
 
-	public static void order(OrderRequest request)
-	{
-		getInstance().setOrderIndex(request);
-	}
 
-	public static void orderBefore(OrderIndex instance, OrderIndex reference)
-	{
-		getInstance().setOrderIndex(
-		  new OrderRequest(instance, reference).setBeforeAfter(false));
-	}
-
-	public static void orderAfter(OrderIndex instance, OrderIndex reference)
-	{
-		getInstance().setOrderIndex(
-		  new OrderRequest(instance, reference).setBeforeAfter(true));
-	}
-
-	/* public: OrderPoint (bean) interface */
+	/* Order Point (bean) */
 
 	public Orderer getOrderer()
 	{
 		return orderer;
 	}
 
-	public void    setOrderer(Orderer orderer)
-	{
-		if(orderer == null) throw new IllegalArgumentException();
-		this.orderer = orderer;
-	}
-
-
-	/* private: root ordering strategy */
-
 	private volatile Orderer orderer;
+
+	public void setOrderer(Orderer orderer)
+	{
+		this.orderer = EX.assertn(orderer);
+	}
 }

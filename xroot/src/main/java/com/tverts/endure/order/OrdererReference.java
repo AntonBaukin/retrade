@@ -6,8 +6,7 @@ import com.tverts.objects.ObjectsReference;
 
 
 /**
- * COMMENT OrdererReference
- *
+ * Collection of references to the Orderers.
  *
  * @author anton.baukin@gmail.com
  */

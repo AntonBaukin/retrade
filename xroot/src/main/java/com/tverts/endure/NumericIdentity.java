@@ -8,11 +8,12 @@ package com.tverts.endure;
  * generator, but all the instances of the same
  * [leaf] class share the same generator instance.
  *
+ *
  * @author anton.baukin@gmail.com
  */
 public interface NumericIdentity
 {
-	/* public: NumericIdentity interface */
+	/* Entity with Numeric Identity */
 
 	public Long getPrimaryKey();
 

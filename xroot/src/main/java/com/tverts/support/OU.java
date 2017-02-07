@@ -23,6 +23,10 @@ import java.util.zip.GZIPOutputStream;
 import com.tverts.objects.ObjectAccess;
 import com.tverts.objects.ObjectAccessRef;
 
+/* com.tverts: endure */
+
+import com.tverts.endure.NumericIdentity;
+
 /* com.tverts: support */
 
 import com.tverts.support.streams.BigDecimalXMLEncoderPersistenceDelegate;
@@ -455,7 +459,8 @@ public class OU
 
 			//~: read the class
 			Class cls = IO.cls(is);
-			EX.assertx(Externalizable.class.isAssignableFrom(cls));
+			EX.assertx(cls != null &&
+			  Externalizable.class.isAssignableFrom(cls));
 
 			//~: create new instance
 			O o = (O) cls.newInstance();
@@ -504,6 +509,11 @@ public class OU
 	{
 		return (a == b) || !((a == null) || (b == null)) &&
 		  a.getClass().getName().equals(b.getClass().getName());
+	}
+
+	public static boolean eq(NumericIdentity a, Object b)
+	{
+		return OU.eqcls(a, b) && CMP.eq(a, (NumericIdentity)b);
 	}
 
 	@SuppressWarnings("unchecked")

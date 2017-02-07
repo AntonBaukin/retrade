@@ -12,10 +12,10 @@ import com.tverts.endure.UnityType;
  * the interface following.
  *
  * Entities of the same class (in the same table),
- * may have different order type, that's in general
+ * may have different order types, that's in general
  * depends on the entity type and else matters.
  *
- * Order owner is an entity (such as a Domain instance)
+ * Order owner is an entity (such as a Domain)
  * that defined a namespace of the order.
  *
  *
@@ -23,7 +23,7 @@ import com.tverts.endure.UnityType;
  */
 public interface OrderIndex
 {
-	/* public: OrderIndex interface */
+	/* Order Index */
 
 	public Long      getPrimaryKey();
 
@@ -33,7 +33,6 @@ public interface OrderIndex
 	 * Returns the type of the order. Each order owner
 	 * may have several lines of order, each having
 	 * it's own distinct type.
-	 *
 	 *
 	 * WARNING!  Note that it is allowed the type to be
 	 *  undefined. If it is so, the type is not checked

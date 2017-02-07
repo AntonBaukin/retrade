@@ -109,7 +109,8 @@ public class CMP
 	public static boolean eq(NumericIdentity a, NumericIdentity b)
 	{
 		return ((a == null) & (b == null)) | (a == b) ||
-		  !((a == null) | (b == null)) && CMP.eq(a.getPrimaryKey(), b.getPrimaryKey());
+		  !((a == null) | (b == null)) && CMP.eq(
+		    a.getPrimaryKey(), b.getPrimaryKey());
 	}
 
 	public static boolean eq(NumericIdentity a, Long b)

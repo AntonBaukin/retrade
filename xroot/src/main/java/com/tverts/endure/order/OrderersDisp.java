@@ -1,6 +1,6 @@
 package com.tverts.endure.order;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +32,7 @@ public class      OrderersDisp
 	}
 
 
-	/* public: OrdererReference interface */
+	/* Orderer Reference */
 
 	public List<Orderer> dereferObjects()
 	{
@@ -40,13 +40,14 @@ public class      OrderersDisp
 	}
 
 
-	/* public: OrderersDisp (bean) interface */
+	/* Orderer Dispatcher (bean) */
 
-	public OrdererReference
-	            getReference()
+	public OrdererReference getReference()
 	{
 		return reference;
 	}
+
+	protected volatile OrdererReference reference;
 
 	public void setReference(OrdererReference reference)
 	{
@@ -59,11 +60,11 @@ public class      OrderersDisp
 
 	protected Orderer[] getOrderers()
 	{
-		//~: access the orderers accumulated
-		Orderer[] res = this.orderers;
-		if(res != null) return res;
+		//~: access the array accumulated
+		if(this.orderers != null)
+			return this.orderers;
 
-		//~: derefer the orders
+		//~: de-refer the orders
 		OrdererReference ref = this.reference;
 		List<Orderer>    lst = Collections.emptyList();
 
@@ -71,13 +72,9 @@ public class      OrderersDisp
 			lst = ref.dereferObjects();
 
 		//~: create cache store
-		this.orderers = res = lst.toArray(new Orderer[lst.size()]);
-		return res;
+		return this.orderers =
+		  lst.toArray(new Orderer[lst.size()]);
 	}
 
-
-	/* protected: orderers reference + accumulated */
-
-	protected volatile OrdererReference reference;
-	protected volatile Orderer[]        orderers;
+	protected volatile Orderer[] orderers;
 }

@@ -180,6 +180,7 @@ order by orderIndex asc
 		  setBeforeAfter(referenceBefore == null)
 		);
 
+		//?: {the order index was somehow not set}
 		if(instance.getOrderIndex() == null)
 			throw EX.state(logsig(struct), ": order index is undefined!");
 	}

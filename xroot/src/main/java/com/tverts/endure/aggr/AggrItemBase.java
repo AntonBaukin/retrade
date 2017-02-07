@@ -7,7 +7,7 @@ import com.tverts.endure.UnityType;
 
 /* com.tverts: support */
 
-import static com.tverts.support.OU.eqcls;
+import com.tverts.support.OU;
 
 
 /**
@@ -22,25 +22,30 @@ import static com.tverts.support.OU.eqcls;
  */
 public abstract class AggrItemBase implements AggrItem
 {
-	/* public: NumericIdentity interface */
+	/* Entity with Numeric Identity */
 
-	public Long      getPrimaryKey()
+	public Long getPrimaryKey()
 	{
 		return primaryKey;
 	}
 
-	public void      setPrimaryKey(Long primaryKey)
+	private Long primaryKey;
+
+	public void setPrimaryKey(Long primaryKey)
 	{
 		this.primaryKey = primaryKey;
 	}
 
 
-	/* public: AggrItem interface */
+	/* Aggregation Item */
 
 	public AggrValue getAggrValue()
 	{
 		return aggrValue;
 	}
+
+	private AggrValue aggrValue;
+
 
 	public void      setAggrValue(AggrValue aggrValue)
 	{
@@ -57,13 +62,15 @@ public abstract class AggrItemBase implements AggrItem
 		return sourceKey;
 	}
 
+	private Long sourceKey;
+
 	public void      setSourceKey(Long id)
 	{
 		this.sourceKey = id;
 	}
 
 
-	/* public: OrderIndex interface */
+	/* Order Index */
 
 	public Unity     getOrderOwner()
 	{
@@ -80,6 +87,8 @@ public abstract class AggrItemBase implements AggrItem
 	{
 		return this.orderIndex;
 	}
+
+	private Long orderIndex;
 
 	public void      setOrderIndex(Long oi)
 	{
@@ -100,42 +109,24 @@ public abstract class AggrItemBase implements AggrItem
 		return historyIndex;
 	}
 
+	private Long historyIndex;
+
 	public void      setHistoryIndex(Long historyIndex)
 	{
 		this.historyIndex = historyIndex;
 	}
 
 
-	/* public: Object interface */
+	/* Object */
 
 	public boolean   equals(Object o)
 	{
-		if(this == o) return true;
-		if(!eqcls(this, o)) return false;
-
-		Long k0 = this.getPrimaryKey();
-		Long k1 = ((AggrItemBase)o).getPrimaryKey();
-
-		return (k0 != null) && k0.equals(k1);
+		return OU.eq(this, o);
 	}
 
 	public int       hashCode()
 	{
 		Long k0 = this.getPrimaryKey();
-
 		return (k0 == null)?(0):(k0.hashCode());
 	}
-
-
-	/* persisted attributes */
-
-	private Long      primaryKey;
-	private AggrValue aggrValue;
-	private Long      sourceKey;
-
-
-	/* persisted attributes: order indices */
-
-	private Long      orderIndex;
-	private Long      historyIndex;
 }
