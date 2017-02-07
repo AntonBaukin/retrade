@@ -1,8 +1,17 @@
 package com.tverts.endure.order;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.HiberPoint;
+
+/* com.tverts: endure */
+
+import com.tverts.endure.UnityType;
+import com.tverts.endure.UnityTypes;
+
 /* com.tverts: support  */
 
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.SU;
 
 
 /**
@@ -39,7 +48,7 @@ public class OrdererTypeChecker extends OrdererChecker
 
 	public void   setOrderTypeName(String orderTypeName)
 	{
-		this.orderTypeName = s2s(orderTypeName);
+		this.orderTypeName = SU.s2s(orderTypeName);
 	}
 
 	public Class  getOwnerTypeClass()
@@ -59,7 +68,7 @@ public class OrdererTypeChecker extends OrdererChecker
 
 	public void   setOwnerTypeName(String ownerTypeName)
 	{
-		this.ownerTypeName = s2s(ownerTypeName);
+		this.ownerTypeName = SU.s2s(ownerTypeName);
 	}
 
 
@@ -93,6 +102,28 @@ public class OrdererTypeChecker extends OrdererChecker
 		return isOrderType(request, c, n);
 	}
 
+	@SuppressWarnings("unchecked")
+	protected boolean    isOrderType
+	  (OrderRequest request, Class typeClass, String typeName)
+	{
+		if(typeClass == null) return false;
+
+		if((typeName = SU.s2s(typeName)) == null)
+		{
+			UnityType ot = request.getOrderType();
+
+			if(ot != null)
+				return typeClass.equals(request.getOrderType().getTypeClass());
+
+			Class     oc = HiberPoint.type(request.getInstance());
+
+			return typeClass.isAssignableFrom(oc);
+		}
+
+		UnityType t = UnityTypes.unityType(typeClass, typeName);
+		return (t != null) && t.equals(request.getOrderType());
+	}
+
 	protected Boolean isThatOwnerType(OrderRequest request)
 	{
 		Class  c = getOwnerTypeClass();
@@ -102,6 +133,19 @@ public class OrdererTypeChecker extends OrdererChecker
 			return null;
 
 		return isOwnerType(request, c, n);
+	}
+
+	protected boolean isOwnerType
+	  (OrderRequest request, Class typeClass, String typeName)
+	{
+		if(typeClass == null) return false;
+
+		if((typeName = SU.s2s(typeName)) == null)
+			return typeClass.equals(request.getOrderOwner().
+			  getUnityType().getTypeClass());
+
+		UnityType t = UnityTypes.unityType(typeClass, typeName);
+		return (t != null) && t.equals(request.getOrderOwner().getUnityType());
 	}
 
 

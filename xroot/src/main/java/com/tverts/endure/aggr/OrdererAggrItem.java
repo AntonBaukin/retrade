@@ -4,6 +4,10 @@ package com.tverts.endure.aggr;
 
 import org.hibernate.query.Query;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.HiberPoint;
+
 /* com.tverts: endure (ordering) */
 
 import com.tverts.endure.order.OrdererDefault;
@@ -60,7 +64,8 @@ public class OrdererAggrItem extends OrdererDefault
 
 	protected boolean isThatRequest(OrderRequest request)
 	{
-		return AggrItemBase.class.isAssignableFrom(orderClass(request));
+		return AggrItemBase.class.isAssignableFrom(
+		  HiberPoint.type(request.getInstance()));
 	}
 
 	protected String  spreadReservePlaceRightQuery()

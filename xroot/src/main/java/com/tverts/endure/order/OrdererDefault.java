@@ -973,12 +973,12 @@ public class OrdererDefault extends OrdererBase
 
 	protected Long         orderOwnerID(OrderData odata)
 	{
-		return orderOwnerID(request(odata));
+		return request(odata).getOrderOwner().getPrimaryKey();
 	}
 
 	protected UnityType    orderType(OrderData odata)
 	{
-		return orderType(request(odata));
+		return request(odata).getOrderType();
 	}
 
 	protected void         ensureReferenceOrderIndex(OrderData odata)
