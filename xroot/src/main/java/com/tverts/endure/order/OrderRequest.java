@@ -1,10 +1,5 @@
 package com.tverts.endure.order;
 
-/* standard Java classes */
-
-import java.util.HashMap;
-import java.util.Map;
-
 /* com.tverts: endure */
 
 import com.tverts.endure.Unity;
@@ -16,7 +11,10 @@ import com.tverts.system.tx.Tx;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
+import com.tverts.support.EX;
 import com.tverts.support.LU;
+import com.tverts.support.SU;
 
 
 /**
@@ -26,8 +24,6 @@ import com.tverts.support.LU;
  */
 public class OrderRequest
 {
-	/* public: constructor */
-
 	/**
 	 * Creates the order request for the instance defined.
 	 * The order index of the instance would be updated.
@@ -47,8 +43,12 @@ public class OrderRequest
 		assignState();
 	}
 
+	protected final OrderIndex instance;
 
-	/* public: OrderRequest interface */
+	protected final OrderIndex reference;
+
+
+	/* Order Request */
 
 	/**
 	 * The instance to set the order. Is always defined.
@@ -80,6 +80,8 @@ public class OrderRequest
 		return beforeAfter;
 	}
 
+	private boolean beforeAfter;
+
 	public OrderRequest setBeforeAfter(boolean beforeAfter)
 	{
 		this.beforeAfter = beforeAfter;
@@ -90,47 +92,44 @@ public class OrderRequest
 	 * Provides optional transaction context. If not specified,
 	 * the global one would be used as default.
 	 */
-	public Tx getTx()
+	public Tx           getTx()
 	{
 		return tx;
 	}
 
+	private Tx tx;
+
+	/**
+	 * TODO assign tx-context on each Order Request created.
+	 */
 	public OrderRequest setTx(Tx tx)
 	{
 		this.tx = tx;
 		return this;
 	}
 
-	public Map          getParams()
-	{
-		return (params != null)?(params):
-		  (params = new HashMap(3));
-	}
-
-	public OrderRequest setParams(Map params)
-	{
-		this.params = params;
-		return this;
-	}
-
-	public Class        getIndexClass()
+	public Class<?>     getIndexClass()
 	{
 		return indexClass;
 	}
 
-	public OrderRequest setIndexClass(Class indexClass)
+	private Class<?> indexClass;
+
+	public OrderRequest setIndexClass(Class<?> cls)
 	{
-		this.indexClass = indexClass;
+		this.indexClass = cls;
 		return this;
 	}
 
 
-	/* public: OrderRequest (state) interface */
+	/* Order Request (state) */
 
 	public boolean      isComplete()
 	{
 		return complete;
 	}
+
+	private boolean complete;
 
 	public OrderRequest setComplete()
 	{
@@ -143,20 +142,23 @@ public class OrderRequest
 		return orderOwner;
 	}
 
+	private Unity orderOwner;
+
 	public UnityType    getOrderType()
 	{
 		return orderType;
 	}
+
+	private UnityType  orderType;
 
 
 	/* public: Object interface */
 
 	public String       toString()
 	{
-		return String.format(
-		  "Order Index request for instance [%s] %s reference [%s]",
-
-		  LU.sig(getInstance()), LU.sig(getReference()),
+		return SU.cats("Order Index Request for [",
+		  LU.sig(getInstance()), "] reference [",
+		  LU.sig(getReference()), "] insert ",
 		  (isBeforeAfter())?("after"):("before")
 		);
 	}
@@ -164,65 +166,44 @@ public class OrderRequest
 
 	/* protected: order request internals */
 
-	protected void      checkIndices()
+	protected void checkIndices()
 	{
 		//?: {instance is not defined}
-		if(getInstance() == null) throw new IllegalArgumentException(
-		  "Order Request may not be created on undefined instance!"
+		EX.assertn(getInstance(), "Order Request ",
+		  "may not be created on undefined instance!");
+
+		//?: {owner is not defined}
+		EX.assertn(getInstance().getOrderOwner(),
+		  "Order Request may not be created on instance ",
+		  LU.sig(getInstance()), " with undefined order owner!"
 		);
 
-		//~: check the order owner
-		Unity owner = getInstance().getOrderOwner();
-
-		if(owner == null) throw new IllegalArgumentException(
-		  "Order Request may not be created on instance having " +
-		  "undefined order owner!"
-		);
-
-		//?: {there is no reference} skip other checks
-		if(getReference() == null) return;
+		//?: {there is no reference} skip
+		if(getReference() == null)
+			return;
 
 		//?: {reference order owner is not the same}
-		if(!owner.equals(getReference().getOrderOwner()))
-			throw new IllegalArgumentException(
-			  "Order Request may not be created on instance and " +
-			  "reference are not with the same order owner!"
-			);
+		EX.assertx(CMP.eq(getInstance().getOrderOwner(),
+		  getReference().getOrderOwner()),
+		  "Order Request may not be created on instance ",
+		  LU.sig(getInstance()), " and reference ",
+		  LU.sig(getReference()), " that are not ",
+		  "of the same order owner!"
+		);
 
 		//~: check the order type equals
-		UnityType itype = getInstance().getOrderType();
-		UnityType rtype = getReference().getOrderType();
-
-		//?: {reference order type is not the same}
-		if(((itype == null) && (rtype != null)) ||
-		   ((itype != null) && !itype.equals(rtype))
-		  )
-			throw new IllegalArgumentException(
-			  "Order Request may not be created on instance and " +
-			  "reference are not with the same order type!"
-			);
+		EX.assertx(CMP.eq(getInstance().getOrderType(),
+		  getReference().getOrderType()),
+		  "Order Request may not be created on instance ",
+		  LU.sig(getInstance()), " and reference ",
+		  LU.sig(getReference()), " that are not ",
+		  "of the same order type!"
+		);
 	}
 
-	protected void      assignState()
+	protected void assignState()
 	{
 		this.orderOwner = getInstance().getOrderOwner();
 		this.orderType  = getInstance().getOrderType();
 	}
-
-
-	/* private: order request parameters */
-
-	private OrderIndex instance;
-	private OrderIndex reference;
-	private Tx         tx;
-	private Map        params;
-	private boolean    beforeAfter;
-
-
-	/* private: order request state */
-
-	private Unity      orderOwner;
-	private UnityType  orderType;
-	private Class      indexClass;
-	private boolean    complete;
 }
