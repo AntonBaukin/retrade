@@ -87,29 +87,45 @@
       <AppenderRef ref = 'hibernate'/>
     </Logger>
 
-    <Logger name = 'com.tverts.hibery'
-      level = 'INFO' additivity = 'false'>
-
-      <AppenderRef ref = 'hibernate'/>
-    </Logger>
-
-    <Logger name = 'com.tverts.hibery.sql'
-      level = 'INFO' additivity = 'false'>
-
-      <AppenderRef ref = 'hibernate'/>
-    </Logger>
-
     <Logger name = 'org.hibernate.SQL'
       level = 'OFF' additivity = 'false'>
 
       <AppenderRef ref = 'hibernate'/>
     </Logger>
 
-    <Logger name = 'com.tverts.endure.keys.KeysGenerator'
-      level = 'OFF' additivity = 'false'>
+    <Logger name = 'com.tverts.hibery'
+      level = 'INFO' additivity = 'false'>
+
+      <AppenderRef ref = 'hibernate'/>
+    </Logger>
+
+    <!--
+    <Logger name = 'com.tverts.hibery.sql'
+      level = 'INFO' additivity = 'false'>
+
+      <AppenderRef ref = 'hibernate'/>
+    </Logger>
+    -->
+
+    <Logger name = 'com.tverts.endure.keys'
+      level = 'INFO' additivity = 'false'>
 
       <AppenderRef ref = 'genesis'/>
-  <!--<AppenderRef ref = 'genesis.json'/>-->
+      <AppenderRef ref = 'debug'/>
+    </Logger>
+
+    <Logger name = 'com.tverts.endure.locks'
+      level = 'INFO' additivity = 'false'>
+
+      <AppenderRef ref = 'genesis'/>
+      <AppenderRef ref = 'debug'/>
+    </Logger>
+
+    <Logger name = 'com.tverts.spring.system.SpringTransactionManager'
+      level = 'INFO' additivity = 'false'>
+
+      <AppenderRef ref = 'genesis'/>
+      <AppenderRef ref = 'other'/>
     </Logger>
 
 
@@ -174,7 +190,7 @@
     <!-- Events and Secure, and Messages -->
 
     <Logger name = 'com.tverts.event'
-      level = 'DEBUG' additivity = 'false'>
+      level = 'INFO' additivity = 'false'>
 
       <AppenderRef ref = 'debug'/>
     </Logger>
@@ -186,11 +202,13 @@
       <AppenderRef ref = 'other'/>
     </Logger>
 
+    <!--
     <Logger name = 'com.tverts.endure.msg.Msg'
       level = 'DEBUG' additivity = 'false'>
 
       <AppenderRef ref = 'debug'/>
     </Logger>
+    -->
 
 
     <!-- Debugging -->
@@ -211,9 +229,10 @@
     <!-- Other -->
 
     <Logger name = 'com.tverts'
-      level = 'INFO' additivity = 'false'>
+      level = 'DEBUG' additivity = 'false'>
 
       <AppenderRef ref = 'other'/>
+      <AppenderRef ref = 'debug'/>
     </Logger>
 
     <Root level = 'INFO'>

@@ -430,8 +430,14 @@ public class ReportsService extends ServiceBase
 
 	protected void   cleanup()
 	{
-		int n = bean(GetReports.class).cleanup(1000L * 60 * cleanupTimeout);
-		LU.I(getLog(), logsig(), ": cleaned up loadaed reports, removed [", n, "] records");
+		//~: invoke the cleanup procedure
+		int n = bean(GetReports.class).
+		  cleanup(1000L * 60 * cleanupTimeout);
+
+		//?: {has something}
+		if(n != 0) LU.I(getLog(), logsig(),
+		  ": cleaned up loadaed reports, removed [",
+		  n, "] records");
 	}
 
 	protected void   erase()

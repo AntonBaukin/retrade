@@ -208,7 +208,7 @@ public class ShuntInvoicesBuySell extends ShuntPlain
 			  toggleInvoiceState(EX.assertn(selectNextInvoice())));
 
 			//~: percent logging
-			int p = i * 100 / in;
+			int p = (i + 1) * 100 / in;
 			if(p - px >= 5)
 			{
 				LU.I(getLog(), "  toggle done ",

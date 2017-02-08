@@ -33,12 +33,12 @@ public class AggrJobError extends RuntimeException
 		return aggrJob;
 	}
 
-	protected final AggrJob aggrJob;
+	protected final transient AggrJob aggrJob;
 
 	public AggrStruct getAggrStruct()
 	{
 		return aggrStruct;
 	}
 
-	protected final AggrStruct aggrStruct;
+	protected final transient AggrStruct aggrStruct;
 }

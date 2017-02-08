@@ -61,7 +61,7 @@ public abstract class ActionBase implements Action
 			long    td = System.currentTimeMillis();
 			boolean ok = isPredicate();
 
-			if(System.currentTimeMillis() - td > 150L) LU.D(LU.LOGT,
+			if(System.currentTimeMillis() - td > 250L) LU.D(LU.LOGT,
 			  getClass().getSimpleName(), " evaluation of predicate ",
 			  (getPredicate() == null)?(""):(getPredicate().getClass().getSimpleName()),
 			  " took ", LU.td(td), '!');
@@ -294,16 +294,15 @@ public abstract class ActionBase implements Action
 
 	protected void   logTriggerStarted()
 	{
-		if(LU.isD(getLog())) LU.D(getLog(),
-		  "started trigger of ", logsig()
-		);
+		//if(LU.isD(getLog())) LU.D(getLog(),
+		//  "started trigger of ", logsig());
 	}
 
 	protected void   logTriggerDone(Throwable error)
 	{
 		//?: {has no error}
-		if(LU.isD(getLog()) && (error == null))
-			LU.D(getLog(), "successfully triggered ", logsig());
+		//if(LU.isD(getLog()) && (error == null))
+		//	LU.D(getLog(), "successfully triggered ", logsig());
 
 		//?: {not critical action error}
 		if((error instanceof ActionError) &&

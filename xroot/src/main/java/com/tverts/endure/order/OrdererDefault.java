@@ -7,11 +7,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /* Hibernate Persistence Layer */
 
-import org.hibernate.query.Query;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
+import org.hibernate.type.LongType;
 
 /* com.tverts: hibery */
 
@@ -21,11 +23,11 @@ import com.tverts.hibery.system.HiberSystem;
 /* com.tverts: endure */
 
 import com.tverts.endure.UnityType;
-import org.hibernate.type.LongType;
 
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.LU;
 import com.tverts.support.SU;
 
 
@@ -60,7 +62,7 @@ public class OrdererDefault extends OrdererBase
 
 	private String orderOwnerIdProp = "orderOwner.id";
 
-	public void setOrderOwnerIdProp(String p)
+	public void   setOrderOwnerIdProp(String p)
 	{
 		this.orderOwnerIdProp = EX.asserts(p);
 	}
@@ -107,7 +109,7 @@ public class OrdererDefault extends OrdererBase
 		return spreadLimit;
 	}
 
-	private int spreadLimit = 8; //<-- 16 + 1 for both sides
+	private int spreadLimit = 4; //<-- 8 + 1 for both sides
 
 	public void   setSpreadLimit(int limit)
 	{
@@ -328,7 +330,7 @@ public class OrdererDefault extends OrdererBase
 	 */
 	protected void      insertMiddle(OrderData od)
 	{
-		long l  = od.getLeft().getOrderIndex();
+		long l = od.getLeft().getOrderIndex();
 		long r = od.getRight().getOrderIndex();
 
 		//?: {there is enough space to insert}
@@ -350,16 +352,36 @@ public class OrdererDefault extends OrdererBase
 
 		//~: just set the index in the middle
 		instance(od).setOrderIndex((oileft + oiright)/2);
+		middleNormal.getAndIncrement();
 	}
+
+	protected final AtomicInteger middleNormal =
+	  new AtomicInteger();
 
 	protected void      insertMiddleSpread(OrderData od)
 	{
+		final long ts = System.currentTimeMillis();
+
 		//!: do spread order indices
 		spreadOrderIndices(od);
 
+		//~: update the timings
+		middleSpread.getAndIncrement();
+		middleSpreadTs.addAndGet(
+		  (int)(System.currentTimeMillis() - ts));
+
 		//~: insert in the middle as normal
 		insertMiddleNormal(od);
+
+		LU.D(getLog(), "spread ", middleSpread, " of total ",
+		  middleNormal, " in ", middleSpreadTs, " ms");
 	}
+
+	protected final AtomicInteger middleSpread =
+	  new AtomicInteger();
+
+	protected final AtomicInteger middleSpreadTs =
+	  new AtomicInteger();
 
 
 	/* protected: insert borders selection */
@@ -784,7 +806,7 @@ public class OrdererDefault extends OrdererBase
 	protected void      spreadMoveOrderRight(OrderData od)
 	{
 		Query q = indexQuery(od, spreadMoveOrderRightQuery()).
-		  setParameter("insertStep", insertStep).
+		  setParameter("insertStep", (long) insertStep).
 		  setParameter("orderIndex", od.getRight().getOrderIndex());
 
 		//!: execute update

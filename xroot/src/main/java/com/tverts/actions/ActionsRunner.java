@@ -353,17 +353,17 @@ public class ActionsRunner implements ActionTrigger
 
 	protected void   logRunStart()
 	{
-		if(LU.isD(getLog())) LU.D(getLog(),
-		  "started ", logsig(), " with ",
-		  logsig(getActionContext().getChain())
-		);
+		//if(LU.isD(getLog())) LU.D(getLog(),
+		//  "started ", logsig(), " with ",
+		//  logsig(getActionContext().getChain())
+		//);
 	}
 
 	protected void   logRunDone()
 	{
-		if(LU.isD(getLog())) LU.D(getLog(),
-		  "successfully done ", logsig()
-		);
+		//if(LU.isD(getLog())) LU.D(getLog(),
+		//  "successfully done ", logsig()
+		//);
 	}
 
 	protected String logsig()

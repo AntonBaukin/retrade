@@ -98,4 +98,9 @@ public abstract class OrdererBase
 
 
 	/* protected: helping methods */
+
+	protected String getLog()
+	{
+		return this.getClass().getName();
+	}
 }
