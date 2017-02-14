@@ -98,15 +98,25 @@ public class AggregatorVolume extends AggregatorHelper
 	protected void aggregateTaskCreate(AggrStruct struct)
 	  throws Throwable
 	{
-		//~: create and save aggregated value item
+		long ntx, nt = System.nanoTime();
+
+		//~: create aggregation item
 		AggrItemVolume item = createItem(struct);
+		sampler.inc("create-item", nt);
+
+		//~: and save it
 		saveItem(struct, item);
 
 		//~: recalculate the aggregated value
+		ntx = System.nanoTime();
 		updateAggrValueCreate(struct, item);
+		sampler.inc("update-create", ntx);
 
 		//~: update helper history items
+		ntx = System.nanoTime();
 		updateHelperHistoryItems(struct, item, true);
+		sampler.inc("history-create", ntx);
+		sampler.inc("create-all", nt);
 	}
 
 	protected AggrItemVolume
@@ -187,11 +197,19 @@ public class AggregatorVolume extends AggregatorHelper
 		struct.items(item);
 	}
 
+	/**
+	 * Flushes the session and evicts side-effect items.
+	 */
 	protected void clearCachedItems(AggrStruct struct, AggrItemVolume item)
 	{
-		//~: flush the session and evict side-effect items
+		long nt = System.nanoTime();
+
 		flush(session(struct));
+		sampler.inc("clear-flush", nt);
+
+		nt = System.nanoTime();
 		evictAggrItems(struct, item);
+		sampler.inc("clear-evict", nt);
 	}
 
 	protected void updateAggrValueCreate(AggrStruct struct, AggrItemVolume z)
@@ -344,14 +362,18 @@ public class AggregatorVolume extends AggregatorHelper
 	protected void       aggregateTaskDelete(AggrStruct struct)
 	  throws Throwable
 	{
+		final long nt = System.nanoTime();
+
 		//~: find items to delete
 		List<AggrItemVolume> items = findItemsToDelete(struct);
+		sampler.inc("delete-find", nt);
 
 		//?: {there are none of them} nothing to do...
 		if(items.isEmpty()) return;
 
 		//~: recalculate the aggregated value
 		deleteItems(struct, items);
+		sampler.inc("delete-all", nt);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -371,16 +393,22 @@ public class AggregatorVolume extends AggregatorHelper
 		//c: proceed item-by-item
 		for(AggrItemVolume item : items)
 		{
+			long ntx, nt = System.nanoTime();
+
 			//!: delete that item first
 			session(struct).delete(item);
 			flush(session(struct));
 			session(struct).evict(item);
 
 			//~: update the aggregated value
+			ntx = System.nanoTime();
 			updateAggrValueDelete(struct, item);
+			sampler.inc("update-delete", ntx);
 
 			//~: update helper history items
+			ntx = System.nanoTime();
 			updateHelperHistoryItems(struct, item, false);
+			sampler.inc("history-delete", ntx);
 
 			//~: evict all the aggregated items currently present
 			flush(session(struct));

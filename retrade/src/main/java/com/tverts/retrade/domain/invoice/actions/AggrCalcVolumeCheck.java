@@ -45,13 +45,21 @@ public class AggrCalcVolumeCheck extends AggrCalcBase
 
 	protected void calc(AggrStruct struct)
 	{
+		final long tx = System.nanoTime();
+
 		if(aggrTask(struct) instanceof AggrTaskVolumeCreate)
 			if(!struct.items().isEmpty())
+			{
 				calc(struct, true);
+				sampler.inc("create", tx);
+			}
 
 		if(aggrTask(struct) instanceof AggrTaskVolumeDelete)
 			if(!struct.items().isEmpty())
+			{
 				calc(struct, false);
+				sampler.inc("delete", tx);
+			}
 	}
 
 

@@ -44,13 +44,21 @@ public abstract class AggrCalcDatePeriodVolumeBase
 
 	protected void calc(AggrStruct struct)
 	{
+		final long tx = System.nanoTime();
+
 		if(aggrTask(struct) instanceof AggrTaskVolumeCreate)
 			if(!struct.items().isEmpty())
+			{
 				calcCreate(struct);
+				sampler.inc("create", tx);
+			}
 
 		if(aggrTask(struct) instanceof AggrTaskVolumeDelete)
 			if(!struct.items().isEmpty())
+			{
 				calcDelete(struct);
+				sampler.inc("delete", tx);
+			}
 	}
 
 

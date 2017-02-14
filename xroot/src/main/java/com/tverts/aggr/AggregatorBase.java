@@ -44,6 +44,7 @@ import com.tverts.aggr.calc.AggrCalculator;
 
 import com.tverts.support.EX;
 import com.tverts.support.SU;
+import com.tverts.support.misc.Sampler;
 
 
 /**
@@ -307,6 +308,7 @@ public abstract class AggregatorBase
 
 	/* protected: helper functions */
 
+	@Deprecated
 	protected AggrValue aggrValue(AggrStruct struct)
 	{
 		return struct.job.aggrValue;
@@ -316,6 +318,8 @@ public abstract class AggregatorBase
 	{
 		return this.getClass().getName();
 	}
+
+	protected final Sampler sampler = new Sampler(getLog());
 
 	protected String    logsig()
 	{

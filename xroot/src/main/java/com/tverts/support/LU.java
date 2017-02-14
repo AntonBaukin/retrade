@@ -214,8 +214,16 @@ public class LU
 	public static String td(long initial)
 	{
 		StringBuilder s = new StringBuilder(10);
-		long dt = System.currentTimeMillis() - initial;
+		td(s, System.currentTimeMillis() - initial);
+		return s.toString();
+	}
 
+	/**
+	 * Prints time delta in the format: mm:ss.mss.
+	 * The time expected is delta time.
+	 */
+	public static void   td(StringBuilder s, long dt)
+	{
 		//~: minutes
 		SU.lennum((int)(dt / 60000), 3, s);
 		s.append(':');
@@ -226,7 +234,5 @@ public class LU
 
 		//~: milliseconds
 		SU.lennum((int)(dt%1000), 3, s);
-
-		return s.toString();
 	}
 }

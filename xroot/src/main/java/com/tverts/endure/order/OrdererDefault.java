@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /* Hibernate Persistence Layer */
 
@@ -27,7 +26,6 @@ import com.tverts.endure.UnityType;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
-import com.tverts.support.LU;
 import com.tverts.support.SU;
 
 
@@ -352,11 +350,7 @@ public class OrdererDefault extends OrdererBase
 
 		//~: just set the index in the middle
 		instance(od).setOrderIndex((oileft + oiright)/2);
-		middleNormal.getAndIncrement();
 	}
-
-	protected final AtomicInteger middleNormal =
-	  new AtomicInteger();
 
 	protected void      insertMiddleSpread(OrderData od)
 	{
@@ -365,23 +359,9 @@ public class OrdererDefault extends OrdererBase
 		//!: do spread order indices
 		spreadOrderIndices(od);
 
-		//~: update the timings
-		middleSpread.getAndIncrement();
-		middleSpreadTs.addAndGet(
-		  (int)(System.currentTimeMillis() - ts));
-
 		//~: insert in the middle as normal
 		insertMiddleNormal(od);
-
-		LU.D(getLog(), "spread ", middleSpread, " of total ",
-		  middleNormal, " in ", middleSpreadTs, " ms");
 	}
-
-	protected final AtomicInteger middleSpread =
-	  new AtomicInteger();
-
-	protected final AtomicInteger middleSpreadTs =
-	  new AtomicInteger();
 
 
 	/* protected: insert borders selection */

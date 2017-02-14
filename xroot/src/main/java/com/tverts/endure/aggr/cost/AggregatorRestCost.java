@@ -50,11 +50,11 @@ public class AggregatorRestCost extends AggregatorHelper
 	protected void aggregateTask(AggrStruct struct)
 	  throws Throwable
 	{
-		if(struct.task instanceof AggrTaskRestCostCreate)
-			aggregateTaskCreate(struct);
-
-		if(struct.task instanceof AggrTaskRestCostDelete)
-			aggregateTaskDelete(struct);
+//		if(struct.task instanceof AggrTaskRestCostCreate)
+//			aggregateTaskCreate(struct);
+//
+//		if(struct.task instanceof AggrTaskRestCostDelete)
+//			aggregateTaskDelete(struct);
 	}
 
 

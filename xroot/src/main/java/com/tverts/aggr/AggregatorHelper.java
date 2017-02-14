@@ -157,11 +157,14 @@ order by orderIndex asc
 	protected void       setOrderIndex
 	  (AggrStruct struct, OrderIndex instance)
 	{
+		final long nt = System.nanoTime();
+
+		//~: find the reference
 		OrderIndex reference = findOrderIndexAggrItemReference(struct);
 
-		setOrderIndex(struct, instance,
-		  findOrderIndexAggrItemReference(struct)
-		);
+		//~: assign the order
+		setOrderIndex(struct, instance, reference);
+		sampler.inc("order", nt);
 	}
 
 	protected void       setOrderIndex

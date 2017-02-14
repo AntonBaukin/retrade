@@ -1,6 +1,6 @@
 package com.tverts.aggr.calc;
 
-/* Hibernate Persistence Layer */
+/* Java */
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -9,13 +9,13 @@ import java.util.Set;
 
 /* Hibernate Persistence Layer */
 
-import com.tverts.system.tx.Tx;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 /* com.tverts: system (tx) */
 
+import com.tverts.system.tx.Tx;
 import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: hibery */
@@ -36,6 +36,10 @@ import com.tverts.endure.aggr.AggrValue;
 /* com.tverts: objects */
 
 import com.tverts.objects.StringsReference;
+
+/* com.tverts: support */
+
+import com.tverts.support.misc.Sampler;
 
 
 /**
@@ -197,6 +201,8 @@ public abstract class AggrCalcBase
 	{
 		return this.getClass().getName();
 	}
+
+	protected final Sampler sampler = new Sampler(getLog());
 
 
 	/* private: parameters of the strategy */
