@@ -31,7 +31,6 @@ import com.tverts.exec.api.UpdateEntityBase;
 
 import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
-import static com.tverts.endure.ActionBuilderXRoot.SYNCH_AGGR;
 
 /* com.tverts: retrade domain (*) */
 
@@ -134,10 +133,7 @@ public abstract class UpdateInvoiceBase extends UpdateEntityBase
 			return;
 
 		//!: execute edit action
-		ActionsPoint.actionRun(
-		  Invoices.ACT_EDIT, i,
-		  SYNCH_AGGR, true
-		);
+		ActionsPoint.actionRun(Invoices.ACT_EDIT, i);
 	}
 
 	protected void        fixInvoice(Invoice i, BuySell bs)
@@ -149,10 +145,7 @@ public abstract class UpdateInvoiceBase extends UpdateEntityBase
 		//HiberPoint.flush(session());
 
 		//!: execute fix action
-		ActionsPoint.actionRun(
-		  Invoices.ACT_FIX, i,
-		  SYNCH_AGGR, true
-		);
+		ActionsPoint.actionRun(Invoices.ACT_FIX, i);
 	}
 
 	protected InvoiceEdit createInvoiceEdit(Invoice i, BuySell bs)

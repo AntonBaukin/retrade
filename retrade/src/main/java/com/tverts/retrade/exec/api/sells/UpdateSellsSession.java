@@ -203,8 +203,7 @@ public class UpdateSellsSession extends UpdateEntityBase
 				TradeStore ts = bean(GetTradeStore.class).getTradeStore(tspk);
 
 				ActionsPoint.actionRun(ActionType.UPDATE, d,
-				  ActSellsSession.PARAM_STORE, ts,
-				  ActionsPoint.SYNCH_AGGR, true
+				  ActSellsSession.PARAM_STORE, ts
 				);
 
 				if(LU.isD(LU.LOGT)) LU.D(LU.LOGT,

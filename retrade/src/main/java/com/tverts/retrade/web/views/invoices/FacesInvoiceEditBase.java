@@ -33,10 +33,6 @@ import com.tverts.system.tx.TxPoint;
 
 import static com.tverts.actions.ActionsPoint.actionRun;
 
-/* com.tverts: endure */
-
-import static com.tverts.endure.ActionBuilderXRoot.SYNCH_AGGR;
-
 /* com.tverts: model */
 
 import com.tverts.model.ModelBean;
@@ -146,7 +142,7 @@ public abstract class FacesInvoiceEditBase extends ModelView
 		);
 
 		//!: issue edit action
-		actionRun(Invoices.ACT_UPDATE, invoice, SYNCH_AGGR, true,
+		actionRun(Invoices.ACT_UPDATE, invoice,
 		  Invoices.INVOICE_EDIT, getModel().getInvoice()
 		);
 

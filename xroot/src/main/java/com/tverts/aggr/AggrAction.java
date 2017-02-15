@@ -1,6 +1,6 @@
 package com.tverts.aggr;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,8 +21,8 @@ import com.tverts.endure.aggr.AggrRequest;
 
 
 /**
- * Action to send one or more aggregation requests.
- *
+ * Action to send one or more aggregation requests
+ * for the delayed execution by the service.
  *
  * @author anton.baukin@gmail.com
  */
@@ -36,7 +36,7 @@ public class AggrAction extends ActionWithTxBase
 	}
 
 
-	/* public: AggrAction (parameters access) interface */
+	/* Aggregate Action */
 
 	public AggrAction add(AggrRequest... requests)
 	{
@@ -55,19 +55,11 @@ public class AggrAction extends ActionWithTxBase
 		return this.requests.isEmpty();
 	}
 
-	public boolean    isSynchronous()
-	{
-		return synch;
-	}
-
-	public AggrAction setSynchronous(boolean synch)
-	{
-		this.synch = synch;
-		return this;
-	}
+	protected final List<AggrRequest> requests =
+	  new ArrayList<>(2);
 
 
-	/* public: Action interface (the state access) */
+	/* Action */
 
 	public Object     getResult()
 	{
@@ -75,7 +67,7 @@ public class AggrAction extends ActionWithTxBase
 	}
 
 
-	/* protected: ActionBase interface */
+	/* protected: Action Base */
 
 	protected void    execute()
 	  throws Throwable
@@ -84,14 +76,6 @@ public class AggrAction extends ActionWithTxBase
 
 		//~: sequentially add all the requests
 		for(AggrRequest request : this.requests)
-			AggrPoint.aggr(request, synch);
+			AggrPoint.aggr(request);
 	}
-
-
-	/* protected: action parameters */
-
-	protected final List<AggrRequest> requests =
-	  new ArrayList<AggrRequest>(8);
-
-	protected boolean                 synch;
 }

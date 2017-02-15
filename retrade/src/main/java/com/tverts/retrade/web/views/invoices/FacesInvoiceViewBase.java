@@ -12,10 +12,6 @@ import com.tverts.faces.UnityModelView;
 
 import static com.tverts.actions.ActionsPoint.actionRun;
 
-/* com.tverts: endure */
-
-import static com.tverts.endure.ActionBuilderXRoot.SYNCH_AGGR;
-
 /* com.tverts: model */
 
 import com.tverts.model.ModelBean;
@@ -56,7 +52,7 @@ public abstract class FacesInvoiceViewBase
 
 	public String  doFixInvoice()
 	{
-		actionRun(Invoices.ACT_FIX, getEntity(), SYNCH_AGGR, true);
+		actionRun(Invoices.ACT_FIX, getEntity());
 		return "fixed";
 	}
 

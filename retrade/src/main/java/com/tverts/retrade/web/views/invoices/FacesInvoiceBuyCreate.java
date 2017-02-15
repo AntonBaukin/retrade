@@ -25,7 +25,6 @@ import com.tverts.model.ModelBean;
 
 import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
-import static com.tverts.endure.ActionBuilderXRoot.SYNCH_AGGR;
 
 /* com.tverts: retrade (firm + store + invoice) */
 
@@ -72,7 +71,7 @@ public class FacesInvoiceBuyCreate
 		  getContractor(getModel().getInvoice().getContractor()));
 
 		//!: issue save+edit action
-		actionRun(Invoices.ACT_SAVE, invoice, SYNCH_AGGR, true,
+		actionRun(Invoices.ACT_SAVE, invoice,
 		  Invoices.INVOICE_TYPE, getInvoiceType(),
 		  Invoices.INVOICE_STATE_TYPE, Invoices.typeInvoiceStateEdited(),
 		  Invoices.INVOICE_EDIT, getModel().getInvoice(),

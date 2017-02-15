@@ -34,10 +34,7 @@ public class ActionsPoint
 	{}
 
 
-	/* shared parameters of the actions */
-
-	public static final String SYNCH_AGGR =
-	  ActionsPoint.class.getName() + ": synchronous aggregation";
+	/* Shared Parameters of the Actions */
 
 	public static final String NO_FLUSH   =
 	  ActionsPoint.class.getName() + ": skip session flush";

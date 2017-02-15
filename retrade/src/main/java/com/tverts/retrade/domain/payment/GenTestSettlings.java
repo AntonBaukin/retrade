@@ -26,7 +26,6 @@ import com.tverts.actions.ActionType;
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.UnityType;
-import static com.tverts.endure.ActionBuilderXRoot.SYNCH_AGGR;
 import com.tverts.endure.core.Domain;
 
 /* com.tverts: retrade domain (accounts) */
@@ -178,8 +177,7 @@ public class GenTestSettlings extends GenesisHiberPartBase
 
 		//!: save the settling
 		actionRun(ActionType.SAVE, s,
-		  Payments.PAYMENT_AUTO_ORDER, true,
-		  SYNCH_AGGR, true
+		  Payments.PAYMENT_AUTO_ORDER, true
 		);
 	}
 

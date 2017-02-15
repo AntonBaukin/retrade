@@ -29,7 +29,6 @@ import com.tverts.exec.api.InsertEntityBase;
 
 import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
-import static com.tverts.endure.ActionBuilderXRoot.SYNCH_AGGR;
 
 /* com.tverts: retrade domain (*) */
 
@@ -137,10 +136,7 @@ public abstract class InsertInvoiceBase extends InsertEntityBase
 		//HiberPoint.flush(session());
 
 		//!: execute fix action
-		ActionsPoint.actionRun(
-		  Invoices.ACT_FIX, i,
-		  SYNCH_AGGR, true
-		);
+		ActionsPoint.actionRun(Invoices.ACT_FIX, i);
 	}
 
 	protected UnityType   getInvoiceType()

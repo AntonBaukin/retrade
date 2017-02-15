@@ -6,7 +6,6 @@ import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: system (tx) */
 
-import com.tverts.system.tx.TxBean;
 import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: spring */
@@ -37,7 +36,7 @@ public class AggrPoint
 		return INSTANCE;
 	}
 
-	private static final AggrPoint INSTANCE =
+	public static final AggrPoint INSTANCE =
 	  new AggrPoint();
 
 	protected AggrPoint()
@@ -54,19 +53,11 @@ public class AggrPoint
 	}
 
 
-	/* public: end user interface */
+	/* Aggregation Point (aggregation) */
 
 	public static void aggr(AggrRequest request)
 	{
-		getInstance().postAggrRequest(request);
-	}
-
-	public static void aggr(AggrRequest request, boolean synch)
-	{
-		if(synch)
-			getInstance().runAggrRequest(request);
-		else
-			getInstance().postAggrRequest(request);
+		INSTANCE.postAggrRequest(request);
 	}
 
 
@@ -93,37 +84,7 @@ public class AggrPoint
 
 		//!: do save the object
 		TxPoint.txSession().save(request);
-	}
 
-	/**
-	 * Does synchronous execution of the aggregation request
-	 * invoking related aggregation strategy.
-	 *
-	 * Aggregation service does not call this method directly,
-	 * but {@link #runAggrRequest(AggrJob)}. This implementation
-	 * wraps the request into the job before that call.
-	 *
-	 * WARNING! Do not call this method until you fully sure
-	 *   that concurrent requests on update the same aggregated
-	 *   value are possible. Aggregated value is locked on the
-	 *   database level, but still...
-	 */
-	protected void runAggrRequest(AggrRequest request)
-	{
-		this.runAggrRequest(AggrJob.create(request));
-	}
-
-	/**
-	 * Does synchronous execution of the aggregation job.
-	 */
-	protected void runAggrRequest(AggrJob job)
-	{
-		//!: invoke the root aggregator
-		aggregator.aggregate(job);
-
-		//?: {the job was not completed}
-		EX.assertx(job.complete(), "Aggregation Subsystem",
-		  " was unable to find strategy able to execute ", job
-		);
+		//TODO notify aggregation service on request
 	}
 }

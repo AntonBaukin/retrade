@@ -13,10 +13,6 @@ import com.tverts.faces.ModelViewBase;
 
 import static com.tverts.actions.ActionsPoint.actionRun;
 
-/* com.tverts: endure (core) */
-
-import static com.tverts.endure.ActionBuilderXRoot.SYNCH_AGGR;
-
 /* com.tverts: retrade (invoices) */
 
 import com.tverts.retrade.domain.invoice.Invoice;
@@ -47,7 +43,7 @@ public class FacesInvoiceAskEdit extends ModelViewBase
 
 	public String  doEditInvoice()
 	{
-		actionRun(Invoices.ACT_EDIT, getViewInvoice(), SYNCH_AGGR, true);
+		actionRun(Invoices.ACT_EDIT, getViewInvoice());
 		return "edit-" + getGotoCode();
 	}
 

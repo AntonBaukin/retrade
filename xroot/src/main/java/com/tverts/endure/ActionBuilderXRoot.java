@@ -50,21 +50,6 @@ import com.tverts.support.LU;
 public abstract class ActionBuilderXRoot
        extends        ActionBuilderWithTxBase
 {
-	/* parameters of the actions */
-
-	/**
-	 * Send this parameter to do aggregation synchronous.
-	 *
-	 * WARNING! Be careful with this feature! Synchronous
-	 *   aggregation overpasses the aggregation services,
-	 *   and is not blocked / synchronized. Also, the
-	 *   module issuing this action must have proper
-	 *   registered.
-	 */
-	public static final String SYNCH_AGGR =
-	  ActionsPoint.SYNCH_AGGR;
-
-
 	/* protected: aggregated values support */
 
 	/**
@@ -96,20 +81,6 @@ public abstract class ActionBuilderXRoot
 
 		xnest(abr, ActAggrValue.CREATE, target(abr),
 		  ps.toArray(new Object[ps.size()]));
-	}
-
-	/**
-	 * Tells whether the aggregation request must be issued
-	 * as synchronous. See {@link #SYNCH_AGGR} parameter,
-	 * by default it is false.
-	 *
-	 * This parameter is checked recursively for the nested
-	 * tasks. You do not need to pass is into the each
-	 * nested task until you want to overwrite it.
-	 */
-	protected boolean isAggrSynch(ActionBuildRec abr)
-	{
-		return flagRecursive(abr, SYNCH_AGGR);
 	}
 
 

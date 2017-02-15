@@ -139,10 +139,6 @@ public abstract class ActInvoiceAggrBase extends ActInvoiceBase
 		//~: create the aggregation requests
 		aggrCreateFixedState(x);
 
-		//?: {is synchronous}
-		if(isAggrSynch(abr))
-			x.action.setSynchronous(true);
-
 		//!: add the action
 		chain(abr).first(x.action);
 
@@ -245,10 +241,6 @@ public abstract class ActInvoiceAggrBase extends ActInvoiceBase
 
 		//~: collect the good units and delete the items
 		aggrDeleteAggrItems(x);
-
-		//?: {is synchronous}
-		if(isAggrSynch(abr))
-			x.action.setSynchronous(true);
 
 		//!: add the action
 		chain(abr).first(x.action);

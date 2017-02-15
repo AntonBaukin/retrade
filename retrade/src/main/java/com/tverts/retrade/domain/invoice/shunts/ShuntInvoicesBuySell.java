@@ -37,7 +37,6 @@ import static com.tverts.actions.ActionsPoint.actionRun;
 
 import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
-import static com.tverts.endure.ActionBuilderXRoot.SYNCH_AGGR;
 
 /* com.tverts: retrade domain (invoices) */
 
@@ -249,7 +248,7 @@ public class ShuntInvoicesBuySell extends ShuntPlain
 				editDate(invoice);
 
 			//!: fix the invoice
-			actionRun(Invoices.ACT_FIX, invoice, SYNCH_AGGR, true);
+			actionRun(Invoices.ACT_FIX, invoice);
 			assertInvoiceState(invoice, Invoices.TYPE_INVSTATE_FIXED);
 
 			return;
@@ -259,7 +258,7 @@ public class ShuntInvoicesBuySell extends ShuntPlain
 		//?: {this invoice is in Fixed state} edit it
 		if(Invoices.isInvoiceFixed(invoice))
 		{
-			actionRun(Invoices.ACT_EDIT, invoice, SYNCH_AGGR, true);
+			actionRun(Invoices.ACT_EDIT, invoice);
 			assertInvoiceState(invoice, Invoices.TYPE_INVSTATE_EDIT);
 		}
 	}

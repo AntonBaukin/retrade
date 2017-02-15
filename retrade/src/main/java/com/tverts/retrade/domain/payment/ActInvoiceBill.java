@@ -94,8 +94,7 @@ public class ActInvoiceBill extends ActionBuilderReTrade
 		checkTargetClass(abr, InvoiceBill.class);
 
 		//~: set effective flag
-		chain(abr).first(new EffectAction(task(abr), true).
-		  setSynch(isAggrSynch(abr)));
+		chain(abr).first(new EffectAction(task(abr), true));
 
 		complete(abr);
 	}
@@ -121,10 +120,6 @@ public class ActInvoiceBill extends ActionBuilderReTrade
 	protected void defectContractorDebt(ActionBuildRec abr)
 	{
 		AggrAction action = new AggrAction(task(abr));
-
-		//?: {is synchronous}
-		if(isAggrSynch(abr))
-			action.setSynchronous(true);
 
 		//~: remove contractor debt
 		deleteContractorDebt(abr, action);
@@ -173,15 +168,6 @@ public class ActInvoiceBill extends ActionBuilderReTrade
 		{
 			super(task);
 			this.effective = effective;
-		}
-
-
-		/* public: EffectAction interface */
-
-		public EffectAction setSynch(boolean synch)
-		{
-			this.synch = synch;
-			return this;
 		}
 
 
@@ -312,7 +298,7 @@ public class ActInvoiceBill extends ActionBuilderReTrade
 			  ib.getInvoice().getInvoiceDate());
 
 			//!: run it
-			AggrPoint.aggr(ar, synch);
+			AggrPoint.aggr(ar);
 		}
 
 
@@ -336,6 +322,5 @@ public class ActInvoiceBill extends ActionBuilderReTrade
 		/* protected: effective parameter */
 
 		protected final boolean effective;
-		protected boolean       synch;
 	}
 }

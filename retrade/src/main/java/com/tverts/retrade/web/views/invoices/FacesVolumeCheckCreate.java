@@ -56,7 +56,6 @@ public class   FacesVolumeCheckCreate
 
 		//!: issue save+edit action
 		ActionsPoint.actionRun(Invoices.ACT_SAVE, invoice,
-		  ActionsPoint.SYNCH_AGGR, true,
 		  Invoices.INVOICE_TYPE, getInvoiceType(),
 		  Invoices.INVOICE_STATE_TYPE, Invoices.typeInvoiceStateEdited(),
 		  Invoices.INVOICE_EDIT, getModel().getInvoice()

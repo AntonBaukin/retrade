@@ -494,8 +494,7 @@ public class ActSellsSession extends ActionBuilderReTrade
 	{
 		//~: save the payment with auto-ordering by the timestamp
 		xnest(abr, ActionType.SAVE, pay,
-		  ActSellsPay.ORDER_AUTO, true,
-		  ActSellsPay.SYNCH_AGGR, true
+		  ActSellsPay.ORDER_AUTO, true
 		);
 	}
 

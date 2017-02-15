@@ -19,7 +19,6 @@ import static com.tverts.spring.SpringPoint.bean;
 /* com.tverts: actions */
 
 import static com.tverts.actions.ActionsPoint.actionRun;
-import static com.tverts.actions.ActionsPoint.SYNCH_AGGR;
 import com.tverts.actions.ActionType;
 
 /* com.tverts: hibery */
@@ -273,7 +272,7 @@ public class      GenSells
 
 	protected void       save(GenCtx ctx, SellsSession s)
 	{
-		actionRun(ActionType.SAVE, s, SYNCH_AGGR, true);
+		actionRun(ActionType.SAVE, s);
 	}
 
 	protected Date       genCloseTime(GenCtx ctx, SellsSession s)

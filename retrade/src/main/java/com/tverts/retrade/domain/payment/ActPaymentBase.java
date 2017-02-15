@@ -200,10 +200,6 @@ public abstract class ActPaymentBase
 
 		AggrAction action = new AggrAction(task(abr));
 
-		//?: {is synchronous}
-		if(isAggrSynch(abr))
-			action.setSynchronous(true);
-
 		//~: remove contractor debt
 		aggrPayIt(abr, it, action);
 

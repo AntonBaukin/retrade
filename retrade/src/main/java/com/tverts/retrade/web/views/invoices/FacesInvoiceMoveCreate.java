@@ -28,7 +28,6 @@ import com.tverts.model.ModelBean;
 /* com.tverts: endure */
 
 import com.tverts.endure.UnityType;
-import static com.tverts.endure.ActionBuilderXRoot.SYNCH_AGGR;
 
 /* com.tverts: retrade (trade stores + invoices) */
 
@@ -69,7 +68,7 @@ public class   FacesInvoiceMoveCreate
 		invoice.setOrderIndex(Long.MAX_VALUE);
 
 		//!: issue save+edit action
-		actionRun(Invoices.ACT_SAVE, invoice, SYNCH_AGGR, true,
+		actionRun(Invoices.ACT_SAVE, invoice,
 		  Invoices.INVOICE_TYPE, getInvoiceType(),
 		  Invoices.INVOICE_STATE_TYPE, Invoices.typeInvoiceStateEdited(),
 		  Invoices.INVOICE_EDIT, getModel().getInvoice()

@@ -23,7 +23,6 @@ import com.tverts.objects.Param;
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.UnityType;
-import static com.tverts.endure.ActionBuilderXRoot.SYNCH_AGGR;
 import com.tverts.endure.core.Domain;
 
 /* com.tverts: support */
@@ -202,7 +201,7 @@ public class GenFixInvoices extends GenesisHiberPartBase
 	{
 		//~: fix the invoice
 		Invoice invoice = session().load(Invoice.class, id);
-		actionRun(Invoices.ACT_FIX, invoice, SYNCH_AGGR, true);
+		actionRun(Invoices.ACT_FIX, invoice);
 	}
 
 
