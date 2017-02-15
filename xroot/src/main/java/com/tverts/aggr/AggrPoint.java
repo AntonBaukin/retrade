@@ -2,15 +2,25 @@ package com.tverts.aggr;
 
 /* com.tverts: hibery */
 
-import static com.tverts.hibery.HiberPoint.setPrimaryKey;
+import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: system (tx) */
 
-import static com.tverts.system.tx.TxPoint.txSession;
+import com.tverts.system.tx.TxBean;
+import com.tverts.system.tx.TxPoint;
+
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: endure (aggregation) */
 
 import com.tverts.endure.aggr.AggrRequest;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
 
 
 /**
@@ -20,7 +30,7 @@ import com.tverts.endure.aggr.AggrRequest;
  */
 public class AggrPoint
 {
-	/* AggrPoint Singleton */
+	/* Aggregation Point Singleton */
 
 	public static AggrPoint getInstance()
 	{
@@ -32,6 +42,16 @@ public class AggrPoint
 
 	protected AggrPoint()
 	{}
+
+
+	/* Aggregation Point (bean) */
+
+	protected Aggregator aggregator = new AggregatorsRoot();
+
+	public void setAggregator(Aggregator aggregator)
+	{
+		this.aggregator = EX.assertn(aggregator);
+	}
 
 
 	/* public: end user interface */
@@ -62,20 +82,17 @@ public class AggrPoint
 	 */
 	public void postAggrRequest(AggrRequest request)
 	{
-		if(request.getAggrValue() == null)
-			throw new IllegalArgumentException();
-
-		if(request.getAggrTask() == null)
-			throw new IllegalArgumentException();
+		EX.assertn(request.getAggrValue());
+		EX.assertn(request.getAggrTask());
 
 		//HINT: aggregation requests for test purposes
 		//  still have positive primary key!
 
 		//~: set the primary key
-		setPrimaryKey(txSession(), request);
+		HiberPoint.setPrimaryKey(TxPoint.txSession(), request);
 
 		//!: do save the object
-		txSession().save(request);
+		TxPoint.txSession().save(request);
 	}
 
 	/**
@@ -91,7 +108,7 @@ public class AggrPoint
 	 *   value are possible. Aggregated value is locked on the
 	 *   database level, but still...
 	 */
-	public void runAggrRequest(AggrRequest request)
+	protected void runAggrRequest(AggrRequest request)
 	{
 		this.runAggrRequest(AggrJob.create(request));
 	}
@@ -99,25 +116,14 @@ public class AggrPoint
 	/**
 	 * Does synchronous execution of the aggregation job.
 	 */
-	public void runAggrRequest(AggrJob job)
+	protected void runAggrRequest(AggrJob job)
 	{
 		//!: invoke the root aggregator
 		aggregator.aggregate(job);
 
 		//?: {the job was not completed}
-		if(!job.complete()) throw new IllegalStateException(
-		  "Aggregation Subsystem was unable to find strategy able to execute " +
-		  job.toString() + "!");
+		EX.assertx(job.complete(), "Aggregation Subsystem",
+		  " was unable to find strategy able to execute ", job
+		);
 	}
-
-	public void setAggregator(Aggregator aggregator)
-	{
-		if(aggregator == null) throw new IllegalArgumentException();
-		this.aggregator = aggregator;
-	}
-
-
-	/* private: the aggregator strategy reference */
-
-	private Aggregator aggregator = new AggregatorsRoot();
 }
