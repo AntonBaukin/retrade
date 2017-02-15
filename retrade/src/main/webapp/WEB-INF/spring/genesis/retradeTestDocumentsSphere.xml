@@ -26,8 +26,8 @@
 
     <property name  = 'name'    value = 'Days'/>
 
-    <property name  = 'objMin'  value = '50'/>
-    <property name  = 'objMax'  value = '50'/>
+    <property name  = 'objMin'  value = '5'/>
+    <property name  = 'objMax'  value = '15'/>
     <property name  = 'dayTx'   value = 'true'/>
 
     <property name  = 'test'>

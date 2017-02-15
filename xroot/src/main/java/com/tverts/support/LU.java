@@ -150,9 +150,9 @@ public class LU
 		if(obj == null) return "null";
 
 		return SU.cats(
-		  HiberSystem.getInstance().findActualClass(obj).getSimpleName(), '{',
-		  (obj.getPrimaryKey() == null)?("NO KEY"):(obj.getPrimaryKey().toString()),
-		  "}@", SU.i2h(System.identityHashCode(obj))
+		  HiberSystem.getInstance().findActualClass(obj).getSimpleName(), "[",
+		  (obj.getPrimaryKey() == null)?("?"):(obj.getPrimaryKey().toString()),
+		  "]@", SU.i2h(System.identityHashCode(obj))
 		);
 	}
 

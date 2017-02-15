@@ -12,7 +12,7 @@
     <id name = 'primaryKey' column = 'pk_lock'/>
 
 
-    <!-- Lock Owner reference -->
+    <!-- Lock Owner Reference -->
 
     <many-to-one name = 'owner' foreign-key = 'fk_lock_owner'>
 
@@ -24,7 +24,7 @@
     </many-to-one>
 
 
-    <!-- Lock Type reference -->
+    <!-- Lock Type Reference -->
 
     <many-to-one name = 'lockType' foreign-key = 'fk_lock_type'>
 

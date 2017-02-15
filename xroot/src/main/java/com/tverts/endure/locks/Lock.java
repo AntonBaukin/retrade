@@ -8,7 +8,9 @@ import com.tverts.endure.UnityType;
 
 /* com.tverts: support */
 
-import static com.tverts.support.LU.sig;
+import com.tverts.support.OU;
+import com.tverts.support.LU;
+import com.tverts.support.SU;
 
 
 /**
@@ -27,22 +29,26 @@ public class Lock implements NumericIdentity
 {
 	/* public: Lock (bean) interface */
 
-	public Long      getPrimaryKey()
+	public Long getPrimaryKey()
 	{
 		return primaryKey;
 	}
 
-	public void      setPrimaryKey(Long primaryKey)
+	private Long primaryKey;
+
+	public void setPrimaryKey(Long primaryKey)
 	{
 		this.primaryKey = primaryKey;
 	}
 
-	public Unity     getOwner()
+	public Unity getOwner()
 	{
 		return owner;
 	}
 
-	public void      setOwner(Unity owner)
+	private Unity owner;
+
+	public void setOwner(Unity owner)
 	{
 		this.owner = owner;
 	}
@@ -52,7 +58,9 @@ public class Lock implements NumericIdentity
 		return lockType;
 	}
 
-	public void      setLockType(UnityType lockType)
+	private UnityType lockType;
+
+	public void setLockType(UnityType lockType)
 	{
 		this.lockType = lockType;
 	}
@@ -62,38 +70,19 @@ public class Lock implements NumericIdentity
 
 	public boolean equals(Object o)
 	{
-		if(this == o)
-			return true;
-
-		if(!(o instanceof Lock))
-			return false;
-
-		Long k0 = this.getPrimaryKey();
-		Long k1 = ((Lock)o).getPrimaryKey();
-
-		return (k0 != null) && k0.equals(k1);
+		return OU.eq(this, o);
 	}
 
 	public int     hashCode()
 	{
-		Long k0 = this.getPrimaryKey();
-
-		return (k0 == null)?(0):(k0.hashCode());
+		return (primaryKey == null)?(0):(primaryKey.hashCode());
 	}
-	
+
 	public String  toString()
 	{
-		return String.format(
-		  "Lock %s owned by [%s]",
-		  (getLockType() == null)?("undefined"):(getLockType().toString()),
-		  sig(getOwner())
+		return SU.cats("Lock ",
+		  (getLockType() == null)?("Undefined"):getLockType(),
+		  "owned by [", LU.sig(getOwner()), "]"
 		);
 	}
-
-
-	/* persisted attributes */
-	
-	private Long      primaryKey;
-	private Unity     owner;
-	private UnityType lockType;
 }
