@@ -132,10 +132,10 @@ public class AggregatorVolume extends AggregatorHelper
 
 		//~: set item primary key
 		setPrimaryKey(session(struct), item,
-		  isTestInstance(aggrValue(struct)));
+		  isTestInstance(struct.job.aggrValue));
 
 		//~: set aggregated value
-		item.setAggrValue(aggrValue(struct));
+		item.setAggrValue(struct.job.aggrValue);
 
 		//~: set source key
 		item.setSourceKey(task.getSource());
@@ -217,8 +217,8 @@ public class AggregatorVolume extends AggregatorHelper
 		clearCachedItems(struct, z);
 
 		//~: current value
-		BigDecimal     p = x(aggrValue(struct).getAggrPositive());
-		BigDecimal     n = x(aggrValue(struct).getAggrNegative());
+		BigDecimal     p = x(struct.job.aggrValue.getAggrPositive());
+		BigDecimal     n = x(struct.job.aggrValue.getAggrNegative());
 
 		//~: find fixed item on the right
 		AggrItemVolume r = findFixedItemRight(struct, z.getOrderIndex());
@@ -348,9 +348,9 @@ public class AggregatorVolume extends AggregatorHelper
 		}
 
 		//~: assign the value components
-		aggrValue(struct).setAggrPositive(x(p));
-		aggrValue(struct).setAggrNegative(x(n));
-		aggrValue(struct).setAggrValue(p.subtract(n));
+		struct.job.aggrValue.setAggrPositive(x(p));
+		struct.job.aggrValue.setAggrNegative(x(n));
+		struct.job.aggrValue.setAggrValue(p.subtract(n));
 
 		//~: update helper history items
 		updateHelperHistoryItems(struct, z, r, true);
@@ -422,8 +422,8 @@ public class AggregatorVolume extends AggregatorHelper
 	protected void       updateAggrValueDelete(AggrStruct struct, AggrItemVolume z)
 	{
 		//~: current value
-		BigDecimal     p = x(aggrValue(struct).getAggrPositive());
-		BigDecimal     n = x(aggrValue(struct).getAggrNegative());
+		BigDecimal     p = x(struct.job.aggrValue.getAggrPositive());
+		BigDecimal     n = x(struct.job.aggrValue.getAggrNegative());
 
 		//~: find fixed item on the right
 		AggrItemVolume r = findFixedItemRight(struct, z.getOrderIndex());
@@ -466,9 +466,9 @@ public class AggregatorVolume extends AggregatorHelper
 		if(!CMP.greZero(n)) {p = p.subtract(n); n = BigDecimal.ZERO;}
 
 		//~: assign the value components
-		aggrValue(struct).setAggrPositive(p);
-		aggrValue(struct).setAggrNegative(n);
-		aggrValue(struct).setAggrValue(p.subtract(n));
+		struct.job.aggrValue.setAggrPositive(p);
+		struct.job.aggrValue.setAggrNegative(n);
+		struct.job.aggrValue.setAggrValue(p.subtract(n));
 
 		//~: update helper history items
 		updateHelperHistoryItems(struct, z, r, false);
@@ -539,10 +539,10 @@ public class AggregatorVolume extends AggregatorHelper
 
 		//~: set item primary key
 		setPrimaryKey(session(struct), item,
-		  isTestInstance(aggrValue(struct)));
+		  isTestInstance(struct.job.aggrValue));
 
 		//~: set aggregated value
-		item.setAggrValue(aggrValue(struct));
+		item.setAggrValue(struct.job.aggrValue);
 
 		//~: set order index by the reference
 		long           b = (l != null)?(l.getHistoryIndex()):(Long.MIN_VALUE);
@@ -651,7 +651,7 @@ public class AggregatorVolume extends AggregatorHelper
 				QP = QP.replace('+', '-');
 
 			aggrItemQ(struct, QP).
-			  setParameter("aggrValue",  aggrValue(struct)).
+			  setParameter("aggrValue",  struct.job.aggrValue).
 			  setParameter("vp",         vp).
 			  setParameter("vn",         vn).
 			  setParameter("left",       li).
@@ -693,7 +693,7 @@ public class AggregatorVolume extends AggregatorHelper
 "group by g.id"
 
 			).
-			  setParameter("aggrValue",  aggrValue(struct)).
+			  setParameter("aggrValue",  struct.job.aggrValue).
 			  setParameter("left",       li).
 			  setParameter("right",      ri).
 			  list();
@@ -733,7 +733,7 @@ public class AggregatorVolume extends AggregatorHelper
 "order by historyIndex desc"
 
 		).
-		  setParameter("aggrValue",  aggrValue(struct)).
+		  setParameter("aggrValue",  struct.job.aggrValue).
 		  setParameter("orderIndex", orderIndex).
 		  setMaxResults(1).
 		  uniqueResult();
@@ -760,7 +760,7 @@ public class AggregatorVolume extends AggregatorHelper
 "order by historyIndex asc"
 
 		).
-		  setParameter("aggrValue",  aggrValue(struct)).
+		  setParameter("aggrValue",  struct.job.aggrValue).
 		  setParameter("orderIndex", orderIndex).
 		  setMaxResults(1).
 		  uniqueResult();
@@ -800,7 +800,7 @@ public class AggregatorVolume extends AggregatorHelper
 ")"
 
 		).
-		  setParameter("aggrValue",  aggrValue(struct)).
+		  setParameter("aggrValue",  struct.job.aggrValue).
 		  setParameter("l", l).setParameter("r", r).
 		  list();
 
@@ -835,7 +835,7 @@ public class AggregatorVolume extends AggregatorHelper
 " order by orderIndex"
 
 		).
-		  setParameter("aggrValue",  aggrValue(struct)).
+		  setParameter("aggrValue",  struct.job.aggrValue).
 		  setParameter("orderIndex", orderIndex).
 		  setFirstResult(n).setMaxResults(1).
 		  uniqueResult();
@@ -859,7 +859,7 @@ public class AggregatorVolume extends AggregatorHelper
 "  (historyIndex is null)"
 
 		).
-		  setParameter("aggrValue",  aggrValue(struct)).
+		  setParameter("aggrValue",  struct.job.aggrValue).
 		  setParameter("b",          b).
 		  setParameter("e",          e).
 		  uniqueResult();
@@ -883,7 +883,7 @@ public class AggregatorVolume extends AggregatorHelper
 "  and (orderIndex > :b) and (orderIndex < :e)"
 
 		).
-		  setParameter("aggrValue",  aggrValue(struct)).
+		  setParameter("aggrValue",  struct.job.aggrValue).
 		  setParameter("b",          b).
 		  setParameter("e",          e).
 		  uniqueResult()).intValue();

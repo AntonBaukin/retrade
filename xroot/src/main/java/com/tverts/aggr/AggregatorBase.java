@@ -154,7 +154,7 @@ public abstract class AggregatorBase
 		//~: get the related calculated values
 		if(struct.calcs == null)
 			struct.calcs = bean(GetAggrValue.class).
-			  getAggrCalcs(aggrValue(struct));
+			  getAggrCalcs(struct.job.aggrValue);
 
 		//?: {there is no calculations}
 		if(struct.calcs == null || struct.calcs.isEmpty())
@@ -307,12 +307,6 @@ public abstract class AggregatorBase
 
 
 	/* protected: helper functions */
-
-	@Deprecated
-	protected AggrValue aggrValue(AggrStruct struct)
-	{
-		return struct.job.aggrValue;
-	}
 
 	protected String    getLog()
 	{

@@ -91,7 +91,7 @@ public abstract class AggregatorHelper
 			AggrItem item = (AggrItem)i.next();
 
 			//?: {aggregated value of that item differs}
-			if(!aggrValue(struct).equals(item.getAggrValue()))
+			if(!struct.job.aggrValue.equals(item.getAggrValue()))
 			{
 				i.remove();
 				continue;
@@ -149,7 +149,7 @@ order by orderIndex asc
 "order by orderIndex asc"
 
 		).
-		  setParameter("aggrValue", aggrValue(struct)).
+		  setParameter("aggrValue", struct.job.aggrValue).
 		  setParameter("sourceKey", sourceKey).
 		  list();
 	}
@@ -252,7 +252,7 @@ order by orderIndex asc
 
 		//~: execute the query
 		List list = aggrItemQ(struct, Q, "Source", sourceClass).
-		  setParameter("aggrValue",   aggrValue(struct)).
+		  setParameter("aggrValue",   struct.job.aggrValue).
 		  setParameter("sourceIndex", sourceIndex.longValue()).
 		  setMaxResults(1).
 		  list();

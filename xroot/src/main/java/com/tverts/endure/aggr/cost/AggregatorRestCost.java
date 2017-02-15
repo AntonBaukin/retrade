@@ -77,10 +77,10 @@ public class AggregatorRestCost extends AggregatorHelper
 
 		//~: set item primary key
 		setPrimaryKey(session(struct), item,
-		  isTestInstance(aggrValue(struct)));
+		  isTestInstance(struct.job.aggrValue));
 
 		//~: set aggregated value
-		item.setAggrValue(aggrValue(struct));
+		item.setAggrValue(struct.job.aggrValue);
 
 		//~: set source key
 		item.setSourceKey(task.getSource());
@@ -190,7 +190,7 @@ public class AggregatorRestCost extends AggregatorHelper
 	 */
 	protected void       recalcFromLeft(AggrStruct struct, long orderIndex)
 	{
-		//debug(struct, "==== recalc (", aggrValue(struct), ", ", orderIndex, ")");
+		//debug(struct, "==== recalc (", struct.job.aggrValue, ", ", orderIndex, ")");
 
 		AggrItemRestCost p, c;
 		BigDecimal       s, w;
@@ -373,7 +373,7 @@ order by historyIndex desc
 "order by historyIndex desc"
 
 		).
-		  setParameter("aggrValue",  aggrValue(struct)).
+		  setParameter("aggrValue",  struct.job.aggrValue).
 		  setParameter("orderIndex", orderIndex).
 		  setMaxResults(1).
 		  list();
@@ -397,7 +397,7 @@ order by historyIndex asc
 		                      "order by historyIndex asc"
 
 		).
-		  setParameter("aggrValue", aggrValue(struct)).
+		  setParameter("aggrValue", struct.job.aggrValue).
 		  setMaxResults(1).
 		  list();
 
@@ -420,7 +420,7 @@ order by historyIndex asc
 "order by historyIndex asc"
 
 		).
-		  setParameter("aggrValue", aggrValue(struct)).
+		  setParameter("aggrValue", struct.job.aggrValue).
 		  setParameter("orderIndex", orderIndex).
 		  setMaxResults(1).
 		  list();
@@ -448,14 +448,14 @@ order by historyIndex asc
 "order by historyIndex asc"
 
 		).
-		  setParameter("aggrValue",  aggrValue(struct)).
+		  setParameter("aggrValue",  struct.job.aggrValue).
 		  setParameter("orderIndex", orderIndex).
 		  list();
 	}
 
 	protected void       recalcDeltaCenter(AggrStruct struct, long orderIndex)
 	{
-		//debug(struct, "==== recalc delta center(", aggrValue(struct), ", ", orderIndex, ")");
+		//debug(struct, "==== recalc delta center(", struct.job.aggrValue, ", ", orderIndex, ")");
 
 		AggrItemRestCost r = (AggrItemRestCost)findRightItem(struct, orderIndex);
 		if(r != null) checkHistoryIndex(r);
@@ -513,7 +513,7 @@ order by historyIndex asc
 
 	protected void       recalcDeltaRight(AggrStruct struct, long orderIndex)
 	{
-		//debug(struct, "==== recalc delta right(", aggrValue(struct), ", ", orderIndex, ")");
+		//debug(struct, "==== recalc delta right(", struct.job.aggrValue, ", ", orderIndex, ")");
 
 		AggrItemRestCost r = (AggrItemRestCost)findRightItem(struct, orderIndex);
 		if(r != null) checkHistoryIndex(r);
@@ -567,7 +567,7 @@ select sum(goodVolume) from AggrItem where
 "  (orderIndex > :leftIndex) and (orderIndex < :rightIndex)"
 
 		).
-		  setParameter("aggrValue",  aggrValue(struct)).
+		  setParameter("aggrValue",  struct.job.aggrValue).
 		  setParameter("leftIndex",  leftIndex).
 		  setParameter("rightIndex", rightIndex).
 		  uniqueResult();
@@ -591,7 +591,7 @@ select sum(goodVolume) from AggrItem where
 		                              "  (orderIndex < :rightIndex)"
 
 		).
-		  setParameter("aggrValue", aggrValue(struct)).
+		  setParameter("aggrValue", struct.job.aggrValue).
 		  setParameter("rightIndex", rightIndex).
 		  uniqueResult();
 	}
@@ -612,7 +612,7 @@ select sum(goodVolume) from AggrItem where
 	{
 		if(s != null)
 			s = s.setScale(10, BigDecimal.ROUND_HALF_EVEN);
-		aggrValue(struct).setAggrValue(s);
+		struct.job.aggrValue.setAggrValue(s);
 	}
 
 	protected void        checkHistoryIndex(AggrItemRestCost item)
@@ -654,7 +654,7 @@ select sum(goodVolume) from AggrItem where
 //
 //			shunt.getMethod("testRestCost", com.tverts.endure.aggr.AggrValue.class,
 //			  org.hibernate.Session.class).invoke(shunt.newInstance(),
-//			    aggrValue(struct), session(struct));
+//			    struct.job.aggrValue, session(struct));
 //
 //			debugInvokeShuntI++;
 //		}
@@ -704,7 +704,7 @@ select sum(goodVolume) from AggrItem where
 //"order by orderIndex asc"
 //
 //		).
-//		  setParameter("aggrValue",  aggrValue(struct)).
+//		  setParameter("aggrValue",  struct.job.aggrValue).
 //		  list();
 //
 //		String[]      r = new String[items.size()];

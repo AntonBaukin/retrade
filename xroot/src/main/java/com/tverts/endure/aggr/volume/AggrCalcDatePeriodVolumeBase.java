@@ -108,7 +108,7 @@ public abstract class AggrCalcDatePeriodVolumeBase
 			  "DatePeriodVolumeCalcLink was not created for AggrItemVolume [",
 			  item.getPrimaryKey(), "] in AggrCalc [",
 			  aggrCalc(struct).getPrimaryKey(), "] of AggrValue [",
-			  aggrValue(struct).getPrimaryKey(), "]!"
+			  struct.job.aggrValue.getPrimaryKey(), "]!"
 			);
 
 			//~: recalculate the item
@@ -245,7 +245,7 @@ public abstract class AggrCalcDatePeriodVolumeBase
 		if((cn < 0) || (cp < 0)) throw EX.state(
 		  "DatePeriodVolumeCalcItem [", item.getPrimaryKey(),
 		  "] in AggrCalc [", aggrCalc(struct).getPrimaryKey(),
-		  "] of AggrValue [", aggrValue(struct).getPrimaryKey(),
+		  "] of AggrValue [", struct.job.aggrValue.getPrimaryKey(),
 		  "] has negative aggregated volumes!"
 		);
 

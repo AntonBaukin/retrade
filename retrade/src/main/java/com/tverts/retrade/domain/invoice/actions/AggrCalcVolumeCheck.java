@@ -94,7 +94,7 @@ public class AggrCalcVolumeCheck extends AggrCalcBase
 	protected void feedback(AggrStruct struct, AggrItemVolume item)
 	{
 		StoreGood g = findStoreGood(struct, item.getSourceKey(),
-		  aggrValue(struct).getSelectorKey()
+		  struct.job.aggrValue.getSelectorKey()
 		);
 
 		//?: {not of our case}
@@ -147,7 +147,7 @@ public class AggrCalcVolumeCheck extends AggrCalcBase
 "order by historyIndex asc"
 
 		).
-		  setParameter("aggrValue",  aggrValue(struct)).
+		  setParameter("aggrValue",  struct.job.aggrValue).
 		  setParameter("orderIndex", orderIndex).
 		  setMaxResults(1).
 		  uniqueResult();
