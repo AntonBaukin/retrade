@@ -18,7 +18,7 @@ import com.tverts.actions.ActionWithTxBase;
 
 /* com.tverts: aggregation */
 
-import com.tverts.aggr.AggrPoint;
+import com.tverts.aggr.AggrService;
 
 /* com.tverts: endure (aggregation) */
 
@@ -298,7 +298,7 @@ public class ActInvoiceBill extends ActionBuilderReTrade
 			  ib.getInvoice().getInvoiceDate());
 
 			//!: run it
-			AggrPoint.aggr(ar);
+			AggrService.aggr(ar);
 		}
 
 

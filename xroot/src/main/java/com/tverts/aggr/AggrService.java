@@ -27,23 +27,23 @@ import com.tverts.support.EX;
  *
  * @author anton.baukin@gmail.com
  */
-public class AggrPoint
+public class AggrService
 {
-	/* Aggregation Point Singleton */
+	/* Aggregation Service Singleton */
 
-	public static AggrPoint getInstance()
+	public static AggrService getInstance()
 	{
 		return INSTANCE;
 	}
 
-	public static final AggrPoint INSTANCE =
-	  new AggrPoint();
+	public static final AggrService INSTANCE =
+	  new AggrService();
 
-	protected AggrPoint()
+	protected AggrService()
 	{}
 
 
-	/* Aggregation Point (bean) */
+	/* Aggregation Service (configuration) */
 
 	protected Aggregator aggregator = new AggregatorsRoot();
 

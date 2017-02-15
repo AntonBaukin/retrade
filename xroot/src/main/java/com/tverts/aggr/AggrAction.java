@@ -76,6 +76,6 @@ public class AggrAction extends ActionWithTxBase
 
 		//~: sequentially add all the requests
 		for(AggrRequest request : this.requests)
-			AggrPoint.aggr(request);
+			AggrService.aggr(request);
 	}
 }
