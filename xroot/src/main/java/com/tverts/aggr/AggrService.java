@@ -16,6 +16,7 @@ import com.tverts.hibery.HiberPoint;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
 import com.tverts.system.services.events.SystemReady;
+import com.tverts.system.tx.TxBean;
 import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: spring */
@@ -66,6 +67,7 @@ public class AggrService extends ServiceBase
 	/**
 	 * Set the number of milliseconds between the scans
 	 * for the requests saved to the database.
+	 * Defaults to 10 seconds.
 	 */
 	public void setScanPeriod(long sp)
 	{
@@ -75,17 +77,25 @@ public class AggrService extends ServiceBase
 
 	protected long scanPeriod = 10000L;
 
+	/**
+	 * Small delay no postpone aggregation request.
+	 * It's required to decouple transaction issuing
+	 * the aggregation request. Defaults to 1 second.
+	 */
+	public void setNotifyDelay(long nd)
+	{
+		EX.assertx(nd > 0L);
+		this.notifyDelay = nd;
+	}
+
+	protected long notifyDelay = 1000L;
+
 
 	/* Aggregation Service */
 
 	public static void aggr(AggrRequest request)
 	{
-		//~: save the request
-		INSTANCE.post(request);
-
-		//~: notify about the new request
-		INSTANCE.self(new AggrEvent().setAggrValue(
-		  request.getAggrValue().getPrimaryKey()));
+		INSTANCE.accept(request);
 	}
 
 	public void        service(Event e)
@@ -113,11 +123,29 @@ public class AggrService extends ServiceBase
 	/* public: aggregation request post routines */
 
 	/**
-	 * This call saves the aggregation request given to
-	 * the database for further background execution by
-	 * the aggregation service.
+	 * Saves the request and makes notification.
+	 * Does this in separate transaction.
 	 */
-	protected void post(AggrRequest request)
+	protected void   accept(AggrRequest request)
+	{
+		EX.assertn(request);
+		EX.assertn(request.getAggrValue());
+
+		bean(TxBean.class).setNew().execute(() ->
+		{
+			//~: save the request
+			save(request);
+
+			//~: notify about the new request
+			notifyValue(request.getAggrValue().getPrimaryKey(), null);
+		});
+	}
+
+	/**
+	 * Saves the aggregation request given to the database
+	 * for further background execution by the service.
+	 */
+	protected void   save(AggrRequest request)
 	{
 		EX.assertn(request.getAggrValue());
 		EX.assertn(request.getAggrTask());
@@ -132,7 +160,7 @@ public class AggrService extends ServiceBase
 		TxPoint.txSession().save(request);
 	}
 
-	protected void schedule()
+	protected void   schedule()
 	{
 		self(new AggrEvent().setEventDelay(scanPeriod));
 	}
@@ -141,36 +169,33 @@ public class AggrService extends ServiceBase
 	 * Finds all requests in the database and creates
 	 * service events for each of them
 	 */
-	protected void findAllAndSchedule()
+	protected void   findAllAndSchedule()
 	{
 		//~: find values of all pending requests
 		List<Long> reqs = bean(GetAggrValue.class).
 		  getAggrRequests();
 
-		LU.D(getLog(), logsig(), " found [", reqs.size(),
-		  "] values with pending requestss");
+		LU.D(getLog(), " found [", reqs.size(), "] pending values");
 
 		//c: create event for each value
 		reqs.forEach(this::aggregateValue);
+
+		//~: schedule own invocation
+		schedule();
 	}
 
 	/**
 	 * Tries to execute the given value now, or
 	 * schedules the event for the nearest future.
 	 */
-	protected void aggregateValue(Long aggrValue)
+	protected void   aggregateValue(Long aggrValue)
 	{
 		//~: obtain a lock for this value
-		final ValueLock lock = lock(aggrValue);
+		ValueLock lock = lock(aggrValue);
 
-		//~: try obtain status (0 -> 1)
-		if(lock.status.compareAndSet(0, 1))
-		{
-			//~: send event to itself
-			self(new AggrEvent().setAggrValue(aggrValue));
-			LU.D(getLog(), logsig(), " planning aggregation of [", aggrValue, "]");
+		//?: {just notified the value}
+		if(notifyValue(aggrValue, lock))
 			return;
-		}
 
 		//~: try obtain status (1 -> 2)
 		if(lock.status.compareAndSet(1, 2)) try
@@ -180,15 +205,38 @@ public class AggrService extends ServiceBase
 		finally
 		{
 			//!: free the lock (2 -> 0)
-			lock.status.compareAndSet(2, 0);
+			//lock.status.compareAndSet(2, 0);
 		}
 	}
 
-	protected void doAggregateTx(Long aggrValue)
+	protected boolean notifyValue(Long aggrValue, ValueLock lock)
+	{
+		//~: obtain a lock for this value
+		if(lock == null)
+			lock = lock(aggrValue);
+
+		//?: {failed obtain status (0 -> 1)}
+		if(!lock.status.compareAndSet(0, 1))
+			return false;
+
+		//~: send event to itself
+		self(new AggrEvent().setAggrValue(aggrValue).
+		  setEventDelay(notifyDelay));
+
+		LU.D(getLog(), " planning for [", aggrValue, "]");
+		return true;
+	}
+
+	protected void   doAggregateTx(Long aggrValue)
 	{
 		//~: select all the requests for this value
 
-		LU.D(getLog(), logsig(), " aggregating [", aggrValue, "]");
+		LU.D(getLog(), "aggregating [", aggrValue, "]");
+	}
+
+	protected String getLog()
+	{
+		return this.getClass().getName();
 	}
 
 
@@ -222,8 +270,7 @@ public class AggrService extends ServiceBase
 
 	protected ValueLock lock(Long aggrValue)
 	{
-		return locks.computeIfAbsent(aggrValue,
-		  av -> new ValueLock(av));
+		return locks.computeIfAbsent(aggrValue, ValueLock::new);
 	}
 
 	protected final Map<Long, ValueLock> locks =
