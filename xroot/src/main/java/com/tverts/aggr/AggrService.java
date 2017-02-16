@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /* com.tverts: hibery */
 
+import com.tverts.genesis.GenesisDone;
 import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: system (services, tx) */
@@ -104,6 +105,7 @@ public class AggrService extends ServiceBase
 		//?: {system is ready}
 		if(e instanceof SystemReady)
 		{
+			LU.I(getLog(), "starting periodic scan for the requests");
 			schedule();
 			return;
 		}
@@ -176,7 +178,7 @@ public class AggrService extends ServiceBase
 		List<Long> vals = bean(GetAggrValue.class).
 		  getAggrRequests();
 
-		//if(!vals.isEmpty())
+		if(!vals.isEmpty())
 			LU.D(getLog(), "found [", vals.size(), "] pending values");
 
 		//c: create event for each value

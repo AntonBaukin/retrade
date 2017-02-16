@@ -48,7 +48,8 @@ public class OxBytesType implements UserType
 	public boolean equals(Object x, Object y)
 	  throws HibernateException
 	{
-		return (x != null) && ((OxBytes)check(x)).equals((OxBytes) check(y));
+		return (x == null && y == null) ||
+		  (x != null) && check(x).equals(check(y));
 	}
 
 	public int     hashCode(Object x)
@@ -73,7 +74,7 @@ public class OxBytesType implements UserType
 	    SharedSessionContractImplementor session)
 	  throws HibernateException, SQLException
 	{
-		byte[] bytes = (v == null)?(null):((OxBytes) check(v)).oxBytes();
+		byte[] bytes = (v == null)?(null):(check(v).oxBytes());
 
 		if(bytes == null)
 			st.setNull(i, Types.BINARY);
@@ -84,7 +85,7 @@ public class OxBytesType implements UserType
 	public Object  deepCopy(Object v)
 	  throws HibernateException
 	{
-		return (v == null)?(null):(new OxBytes((OxBytes) check(v)));
+		return (v == null)?(null):(new OxBytes(check(v)));
 	}
 
 	public Object  replace(Object original, Object target, Object owner)
@@ -96,7 +97,7 @@ public class OxBytesType implements UserType
 	public Serializable disassemble(Object v)
 	  throws HibernateException
 	{
-		return (v == null)?(null):(((OxBytes) check(v)).oxBytes());
+		return (v == null)?(null):(check(v).oxBytes());
 	}
 
 	public Object       assemble(Serializable v, Object owner)
@@ -110,10 +111,10 @@ public class OxBytesType implements UserType
 		return new OxBytes((byte[]) v);
 	}
 
-	protected Object    check(Object v)
+	protected OxBytes   check(Object v)
 	{
 		if((v != null) && !OxBytes.class.equals(v.getClass()))
 			throw EX.ass("Not an OxBytes property value!");
-		return v;
+		return (OxBytes)v;
 	}
 }

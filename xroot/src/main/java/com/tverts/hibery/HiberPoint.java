@@ -218,7 +218,7 @@ public class HiberPoint
 			long td = System.currentTimeMillis();
 			s.flush();
 
-			if(System.currentTimeMillis() - td > 150L)
+			if(System.currentTimeMillis() - td > LU.XTD)
 				LU.D(LU.LOGT, "session.flush() took ", LU.td(td), '!');
 		}
 

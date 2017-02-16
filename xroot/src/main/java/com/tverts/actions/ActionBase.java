@@ -61,7 +61,7 @@ public abstract class ActionBase implements Action
 			long    td = System.currentTimeMillis();
 			boolean ok = isPredicate();
 
-			if(System.currentTimeMillis() - td > 250L) LU.D(LU.LOGT,
+			if(System.currentTimeMillis() - td > LU.XTD) LU.D(LU.LOGT,
 			  getClass().getSimpleName(), " evaluation of predicate ",
 			  (getPredicate() == null)?(""):(getPredicate().getClass().getSimpleName()),
 			  " took ", LU.td(td), '!');
@@ -72,7 +72,7 @@ public abstract class ActionBase implements Action
 				td = System.currentTimeMillis();
 				execute();
 
-				if(System.currentTimeMillis() - td > 250L) LU.D(LU.LOGT,
+				if(System.currentTimeMillis() - td > LU.XTD) LU.D(LU.LOGT,
 				  getClass().getSimpleName(), " execution took ", LU.td(td), '!');
 			}
 		}

@@ -123,7 +123,7 @@ public class ActionsPoint
 		  setTarget(target).setParams(params);
 		ActionTrigger trigger = getInstance().actionOrNull(task);
 
-		if((System.currentTimeMillis() - td > 100L) && LU.isD(LU.LOGT))
+		if((System.currentTimeMillis() - td > LU.XTD) && LU.isD(LU.LOGT))
 			LU.D(LU.LOGT, "build action [", atype.getActionName(), "] on target [",
 			  LU.sig(target), "] took ", LU.td(td), '!');
 
@@ -137,7 +137,7 @@ public class ActionsPoint
 		td = System.currentTimeMillis();
 		trigger.run();
 
-		if((System.currentTimeMillis() - td > 250L) && LU.isD(LU.LOGT))
+		if((System.currentTimeMillis() - td > LU.XTD) && LU.isD(LU.LOGT))
 			LU.D(LU.LOGT, "run action [", atype.getActionName(), "] on target [",
 			  LU.sig(target), "] took ", LU.td(td), '!');
 

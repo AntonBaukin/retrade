@@ -35,6 +35,12 @@ public class LU
 	public static final String LOGT =
 	  "com.tverts.timing";
 
+	/**
+	 * The maximum run time of a small operation
+	 * to log the exeeding timing.
+	 */
+	public static final long   XTD  = 400L;
+
 
 	/* Access Logging Levels */
 

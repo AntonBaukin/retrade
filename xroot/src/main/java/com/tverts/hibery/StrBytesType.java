@@ -49,7 +49,8 @@ public class StrBytesType implements UserType
 
 	public boolean equals(Object x, Object y)
 	{
-		return (x != null) && x.equals(y);
+		return (x == null && y == null) ||
+		  (x != null) && x.equals(y);
 	}
 
 	public int     hashCode(Object x)
@@ -131,7 +132,7 @@ public class StrBytesType implements UserType
 		return (String)v;
 	}
 
-	public Object       assemble(Serializable v, Object owner)
+	public Object  assemble(Serializable v, Object owner)
 	  throws HibernateException
 	{
 		return v;
