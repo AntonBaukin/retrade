@@ -20,9 +20,10 @@
   <bean name  = 'aggrService' factory-method = 'getInstance'
         class = 'com.tverts.aggr.AggrService'>
 
+    <property name = 'UID' value = 'Aggregation Service'/>
+
     <property name = 'aggregator'>
       <bean class = 'com.tverts.aggr.AggregatorsRoot'>
-
         <property name = 'reference' ref = 'rootAggregatorReferences'/>
       </bean>
     </property>

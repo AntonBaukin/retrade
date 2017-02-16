@@ -159,8 +159,8 @@ public abstract class ServiceBase
 		if(logsig != null)
 			return logsig;
 
-		return logsig = uid().toLowerCase().contains("service")?(uid()):
-		  String.format("Service [%s]", uid());
+		return logsig = uid().toLowerCase().contains("service")?
+		  uid():String.format("Service [%s]", uid());
 	}
 
 	private volatile String logsig;

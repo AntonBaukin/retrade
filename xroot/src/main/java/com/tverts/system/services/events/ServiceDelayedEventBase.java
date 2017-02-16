@@ -4,6 +4,10 @@ package com.tverts.system.services.events;
 
 import com.tverts.system.services.DelayedEvent;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
 
 /**
  * Service event with possible delay effect.
@@ -17,7 +21,7 @@ public class      ServiceDelayedEventBase
 	public static final long serialVersionUID = 0L;
 
 
-	/* public: DelayedEvent interface */
+	/* Delayed Event */
 
 	public long getEventTime()
 	{
@@ -29,11 +33,12 @@ public class      ServiceDelayedEventBase
 		this.eventTime = eventTime;
 	}
 
-	public void setEventDelay(long delay)
+	public EventBase setEventDelay(long delay)
 	{
-		if(delay < 0L) throw new IllegalArgumentException();
+		EX.assertx(delay >= 0L);
 		this.eventTime = (delay == 0L)?(0L):
 		  System.currentTimeMillis() + delay;
+		return this;
 	}
 
 
