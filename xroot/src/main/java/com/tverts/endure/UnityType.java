@@ -2,12 +2,13 @@ package com.tverts.endure;
 
 /* com.tverts: support */
 
-import static com.tverts.support.LU.cls;
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.SU;
 
 
 /**
  * COMMENT UnityType
+ *
+ * TODO remove Unity Type flags and refactor
  *
  * @author anton.baukin@gmail.com
  */
@@ -35,7 +36,7 @@ public class UnityType implements PrimaryIdentity
 
 	public void   setTypeName(String typeName)
 	{
-		if((typeName = s2s(typeName)) == null)
+		if((typeName = SU.s2s(typeName)) == null)
 			throw new IllegalArgumentException();
 		this.typeName = typeName;
 	}
@@ -181,12 +182,7 @@ public class UnityType implements PrimaryIdentity
 
 	public String    toString()
 	{
-		return String.format(
-		  "Unity Type [%c%c] '%s' class '%s'",
-
-		  getSystemFlag(), getTypeFlag(),
-		  getTypeName(), getTypeClass().getSimpleName()
-		);
+		return SU.cats("UnityType-[", getTypeName(), "]");
 	}
 
 	/* private: persistent attributes */

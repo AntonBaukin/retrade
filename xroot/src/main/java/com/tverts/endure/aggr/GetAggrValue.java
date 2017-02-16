@@ -40,6 +40,11 @@ public class GetAggrValue extends GetObjectBase
 {
 	/* Get Aggregated Value */
 
+	public AggrValue getAggrValue(Long pk)
+	{
+		return get(AggrValue.class, pk);
+	}
+
 	/**
 	 * Finds the aggregated value of the given type and
 	 * the owner. Selector' primary key is optional.
@@ -150,11 +155,19 @@ from AggrCalc where (aggrValue = :av)
 	 * Returns primary keys of aggregated values having
 	 * pending requests.
 	 */
-	public List<Long> getAggrRequests()
+	public List<Long>        getAggrRequests()
 	{
 		final String Q =
-	"select distinct aggrValue.id from AggrRequest";
+"select distinct aggrValue.id from AggrRequest";
 
 		return list(Long.class, Q);
+	}
+
+	public List<AggrRequest> getAggrRequests(long aggrValue)
+	{
+		final String Q =
+"from AggrRequest where (aggrValue.id = :av) order by id";
+
+		return list(AggrRequest.class, Q, "av", aggrValue);
 	}
 }

@@ -26,6 +26,7 @@ import static com.tverts.spring.SpringPoint.bean;
 /* com.tverts: endure (aggregation) */
 
 import com.tverts.endure.aggr.AggrRequest;
+import com.tverts.endure.aggr.AggrValue;
 import com.tverts.endure.aggr.GetAggrValue;
 
 /* com.tverts: support */
@@ -126,7 +127,7 @@ public class AggrService extends ServiceBase
 	 * Saves the request and makes notification.
 	 * Does this in separate transaction.
 	 */
-	protected void   accept(AggrRequest request)
+	protected void     accept(AggrRequest request)
 	{
 		EX.assertn(request);
 		EX.assertn(request.getAggrValue());
@@ -145,7 +146,7 @@ public class AggrService extends ServiceBase
 	 * Saves the aggregation request given to the database
 	 * for further background execution by the service.
 	 */
-	protected void   save(AggrRequest request)
+	protected void     save(AggrRequest request)
 	{
 		EX.assertn(request.getAggrValue());
 		EX.assertn(request.getAggrTask());
@@ -160,7 +161,7 @@ public class AggrService extends ServiceBase
 		TxPoint.txSession().save(request);
 	}
 
-	protected void   schedule()
+	protected void     schedule()
 	{
 		self(new AggrEvent().setEventDelay(scanPeriod));
 	}
@@ -169,16 +170,17 @@ public class AggrService extends ServiceBase
 	 * Finds all requests in the database and creates
 	 * service events for each of them
 	 */
-	protected void   findAllAndSchedule()
+	protected void     findAllAndSchedule()
 	{
 		//~: find values of all pending requests
-		List<Long> reqs = bean(GetAggrValue.class).
+		List<Long> vals = bean(GetAggrValue.class).
 		  getAggrRequests();
 
-		LU.D(getLog(), " found [", reqs.size(), "] pending values");
+		//if(!vals.isEmpty())
+			LU.D(getLog(), "found [", vals.size(), "] pending values");
 
 		//c: create event for each value
-		reqs.forEach(this::aggregateValue);
+		vals.forEach(this::aggregateValue);
 
 		//~: schedule own invocation
 		schedule();
@@ -188,7 +190,7 @@ public class AggrService extends ServiceBase
 	 * Tries to execute the given value now, or
 	 * schedules the event for the nearest future.
 	 */
-	protected void   aggregateValue(Long aggrValue)
+	protected void     aggregateValue(Long aggrValue)
 	{
 		//~: obtain a lock for this value
 		ValueLock lock = lock(aggrValue);
@@ -200,16 +202,18 @@ public class AggrService extends ServiceBase
 		//~: try obtain status (1 -> 2)
 		if(lock.status.compareAndSet(1, 2)) try
 		{
-			doAggregateTx(aggrValue);
+			//!: invoke aggregation in separated tx
+			bean(TxBean.class).setNew().execute(
+			  () -> doAggregateTx(aggrValue));
 		}
 		finally
 		{
 			//!: free the lock (2 -> 0)
-			//lock.status.compareAndSet(2, 0);
+			lock.status.compareAndSet(2, 0);
 		}
 	}
 
-	protected boolean notifyValue(Long aggrValue, ValueLock lock)
+	protected boolean  notifyValue(Long aggrValue, ValueLock lock)
 	{
 		//~: obtain a lock for this value
 		if(lock == null)
@@ -223,18 +227,47 @@ public class AggrService extends ServiceBase
 		self(new AggrEvent().setAggrValue(aggrValue).
 		  setEventDelay(notifyDelay));
 
-		LU.D(getLog(), " planning for [", aggrValue, "]");
+		//LU.D(getLog(), "planning [", aggrValue, "]");
 		return true;
 	}
 
-	protected void   doAggregateTx(Long aggrValue)
+	/**
+	 * Does actual aggregation. Collects all the requests
+	 * for the value into a single job and runs it.
+	 * Invoked with value-exclusive lock.
+	 */
+	protected void     doAggregateTx(Long aggrValue)
 	{
-		//~: select all the requests for this value
+		GetAggrValue get = bean(GetAggrValue.class);
 
-		LU.D(getLog(), "aggregating [", aggrValue, "]");
+		//~: get the value
+		AggrValue av = get.getAggrValue(aggrValue);
+
+		if(av == null) //?: {value does not exist}
+		{
+			LU.W(getLog(), "value is not found [", aggrValue, "]!");
+			return;
+		}
+
+		//~: select all the requests for this value
+		List<AggrRequest> reqs = get.getAggrRequests(aggrValue);
+
+		//?: {found nothing}
+		if(reqs.isEmpty())
+		{
+			LU.D(getLog(), "found nothing for [", aggrValue, "]");
+			return;
+		}
+
+		LU.D(getLog(), "aggregating [", reqs.size(), "] requests for [",
+		  aggrValue, "] of ", av.getAggrType());
+
+		//~: remove the requests
+		for(AggrRequest r : reqs)
+			TxPoint.txSession().remove(r);
 	}
 
-	protected String getLog()
+	protected String   getLog()
 	{
 		return this.getClass().getName();
 	}
