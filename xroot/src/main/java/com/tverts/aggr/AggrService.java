@@ -100,6 +100,14 @@ public class AggrService extends ServiceBase
 		INSTANCE.accept(request);
 	}
 
+	/**
+	 * Returns the number of pending aggregation requests.
+	 */
+	public static int  size()
+	{
+		return bean(GetAggrValue.class).countAggrRequests();
+	}
+
 	public void        service(Event e)
 	{
 		//?: {system is ready}
@@ -261,13 +269,26 @@ public class AggrService extends ServiceBase
 			return;
 		}
 
-		LU.D(getLog(), "aggregating [", reqs.size(), "] requests for [",
-		  aggrValue, "] of ", av.getAggrType());
+		//~: invoke the requests
+		doAggregate(av, reqs);
 
 		//~: remove the requests
 		for(AggrRequest r : reqs)
 			TxPoint.txSession().remove(r);
 	}
+
+	protected void     doAggregate(AggrValue av, List<AggrRequest> reqs)
+	{
+		LU.D(getLog(), "aggregating [", reqs.size(), "] requests for [",
+		  av.getPrimaryKey(), "] of ", av.getAggrType());
+
+		//TODO aggregate requests in a bunch
+
+		//c: for each individual request
+		for(AggrRequest r : reqs)
+			aggregator.aggregate(AggrJob.create(r));
+	}
+
 
 	protected String   getLog()
 	{

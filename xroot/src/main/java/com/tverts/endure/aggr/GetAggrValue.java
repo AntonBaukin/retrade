@@ -163,6 +163,15 @@ from AggrCalc where (aggrValue = :av)
 		return list(Long.class, Q);
 	}
 
+	public int               countAggrRequests()
+	{
+		final String Q =
+"select count(id) from AggrRequest";
+
+		return object(Number.class, Q).intValue();
+	}
+
+
 	public List<AggrRequest> getAggrRequests(long aggrValue)
 	{
 		final String Q =

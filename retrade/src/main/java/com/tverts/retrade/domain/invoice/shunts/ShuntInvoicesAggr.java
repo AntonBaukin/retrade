@@ -68,7 +68,9 @@ import com.tverts.support.misc.Pair;
  * the goods of the fixed Invoices. Every aggregation
  * is checked with alternate (plain) implementation.
  *
- * TODO test calculations on the volumess
+ * Calculations on volumes periods are tested by
+ * ShuntInvoicesBills.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -83,6 +85,8 @@ public class ShuntInvoicesAggr extends ShuntPlain
 	@SuppressWarnings("unchecked")
 	public void testGoodAggrVolumeItems()
 	{
+		//!: wait for asynchronous aggregation
+		awaitAggregation();
 
 /*
 

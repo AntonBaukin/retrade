@@ -180,6 +180,8 @@ where (i.domain = :domain) and
 	@SuppressWarnings("unchecked")
 	public void testContractorsDebts()
 	{
+		//!: wait for asynchronous aggregation
+		awaitAggregation();
 
 /*
 
@@ -225,7 +227,6 @@ select ib.id from InvoiceBill ib where
 			addToSummary(summary, ib);
 
 			//~: add to monthly summary
-
 			Integer ym = getYearMonth(ib);
 			Map<Long, Pair<BigDecimal, BigDecimal>> ms = monthly.get(ym);
 			if(ms == null) monthly.put(ym, ms =

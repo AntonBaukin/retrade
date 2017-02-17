@@ -1,6 +1,6 @@
 package com.tverts.shunts;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.Serializable;
 
@@ -17,6 +17,10 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import static com.tverts.system.tx.TxPoint.txSession;
 
+/* com.tverts: aggregation */
+
+import com.tverts.aggr.AggrService;
+
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.core.Domain;
@@ -24,6 +28,7 @@ import com.tverts.endure.core.GetDomain;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.LU;
 
 
@@ -48,9 +53,9 @@ public abstract class ShuntPlain
 		{
 			return (ShuntPlain)super.clone();
 		}
-		catch( CloneNotSupportedException e)
+		catch(CloneNotSupportedException e)
 		{
-			throw new RuntimeException(e);
+			throw EX.wrap(e);
 		}
 	}
 
@@ -59,13 +64,10 @@ public abstract class ShuntPlain
 
 	protected SelfShuntCtx ctx()
 	{
-		SelfShuntCtx ctx = SelfShuntPoint.getInstance().context();
-
-		//?: {there is no context}
-		if(ctx == null) throw new IllegalStateException(
-		  "Self-Shunt Context is not assigned to the shunting thread!");
-
-		return ctx;
+		return EX.assertn(
+		  SelfShuntPoint.getInstance().context(),
+		  "Self-Shunt Context is not assigned to the shunting thread!"
+		);
 	}
 
 	protected Domain       domain()
@@ -75,24 +77,18 @@ public abstract class ShuntPlain
 			return domain;
 
 		//?: {there is no domain key}
-		if(ctx().getDomain() == null)
-			throw new IllegalStateException(String.format(
-			  "Self-Shunt Context with UID [%s] has no Domain key defined!",
-			  ctx().getUID()
-			));
+		EX.assertn(ctx().getDomain(), "Self-Shunt Context with UID [",
+		  ctx().getUID(), "] has no Domain key defined!");
 
 		//~: load the domain
 		Domain domain = bean(GetDomain.class).
 		  getDomain(ctx().getDomain());
 
 		//?: {not found it}
-		if(domain == null)
-			throw new IllegalStateException(String.format(
-			  "Self-Shunt Context with UID [%s] refers Domain key [%d]" +
-			  " that is not found!", ctx().getUID(), ctx().getDomain()
-			));
-
-		return domain;
+		return EX.assertn(domain, "Self-Shunt Context with UID [",
+		  ctx().getUID(), "] refers Domain key [",
+		  ctx().getDomain(), "] that is not found!"
+		);
 	}
 
 	private Domain domain;
@@ -116,21 +112,57 @@ public abstract class ShuntPlain
 		return session().createQuery(hql);
 	}
 
-	@SuppressWarnings("unchecked")
 	protected <O> O   get(Class<O> c1ass, Serializable key)
 	{
-		return (O)session().get(c1ass, key);
+		return session().get(c1ass, key);
 	}
 
-	@SuppressWarnings("unchecked")
 	protected <O> O   load(Class<O> c1ass, Serializable key)
 	{
-		return (O)session().load(c1ass, key);
+		return session().load(c1ass, key);
+	}
+
+
+	/* protected: shunt supporting methods */
+
+	/**
+	 * Waits for the asynchronous aggregation to complete.
+	 */
+	protected void awaitAggregation()
+	{
+		while(true)
+		{
+			int size = AggrService.size();
+
+			if(size != 0)
+			{
+				LU.D(getLog(), "waiting for asynchronous aggregation ",
+				  "having [", size, "] entries");
+
+				try
+				{
+					Thread.sleep(10000L);
+				}
+				catch(Throwable e)
+				{
+					throw EX.wrap(e);
+				}
+			}
+			else
+			{
+				LU.D(getLog(), "asynchronous aggregation completed!");
+				break;
+			}
+		}
 	}
 
 
 	/* protected: logging */
 
+	/**
+	 * Returns log withing shunts packages as if this
+	 * class were placed in there.
+	 */
 	protected String getLog()
 	{
 		return (log != null)?(log):
