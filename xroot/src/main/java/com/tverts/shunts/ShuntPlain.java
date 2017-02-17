@@ -130,6 +130,8 @@ public abstract class ShuntPlain
 	 */
 	protected void awaitAggregation()
 	{
+		final long ts = System.currentTimeMillis();
+
 		while(true)
 		{
 			int size = AggrService.size();
@@ -150,7 +152,8 @@ public abstract class ShuntPlain
 			}
 			else
 			{
-				LU.D(getLog(), "asynchronous aggregation completed!");
+				LU.D(getLog(), "asynchronous aggregation completed",
+				  ", waited ", LU.td(ts));
 				break;
 			}
 		}

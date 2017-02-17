@@ -117,8 +117,7 @@ public class AggrService extends ServiceBase
 			startTime = System.currentTimeMillis();
 
 			//!: schedule the first scan
-			schedule();
-			return;
+			findAllAndSchedule();
 		}
 
 		//?: {not our event}
@@ -153,7 +152,7 @@ public class AggrService extends ServiceBase
 			save(request);
 
 			//~: notify about the new request
-			notifyValue(request.getAggrValue().getPrimaryKey(), null);
+			notifyValue(request.getAggrValue().getPrimaryKey());
 		});
 	}
 
@@ -176,17 +175,15 @@ public class AggrService extends ServiceBase
 		TxPoint.txSession().save(request);
 	}
 
-	protected void     schedule()
-	{
-		self(new AggrEvent().setEventDelay(scanPeriod));
-	}
-
 	/**
 	 * Finds all requests in the database and creates
 	 * service events for each of them
 	 */
 	protected void     findAllAndSchedule()
 	{
+		//~: schedule own invocation
+		self(new AggrEvent().setEventDelay(scanPeriod));
+
 		//~: find values of all pending requests
 		List<Long> vals = bean(GetAggrValue.class).
 		  getAggrRequests();
@@ -201,10 +198,7 @@ public class AggrService extends ServiceBase
 		}
 
 		//c: create event for each value
-		vals.forEach(this::aggregateValue);
-
-		//~: schedule own invocation
-		schedule();
+		vals.forEach(this::notifyValue);
 	}
 
 	/**
@@ -240,6 +234,11 @@ public class AggrService extends ServiceBase
 	 * Used for the logging.
 	 */
 	protected volatile boolean aggregated;
+
+	protected void     notifyValue(Long aggrValue)
+	{
+		this.notifyValue(aggrValue, null);
+	}
 
 	protected boolean  notifyValue(Long aggrValue, ValueLock lock)
 	{

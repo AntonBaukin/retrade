@@ -94,7 +94,7 @@ public class OrdererDefault extends OrdererBase
 		return insertStep;
 	}
 
-	private int insertStep = 256;
+	private int insertStep = 1024;
 
 	public void   setInsertStep(int step)
 	{
