@@ -35,9 +35,6 @@
       fileName = '${sys:catalina.base}/logs/retrade_shunts.log'>
 
       <PatternLayout pattern = '%-5p %d{HH:mm:ss.SSS} %c{1}: %m%n'/>
-      <filters>
-        <ThresholdFilter level = 'INFO'/>
-      </filters>
     </File>
 
     <File name = 'genesis' append = 'false' bufferSize = '1024'

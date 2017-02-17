@@ -106,8 +106,20 @@ public abstract class AggrTaskBase implements AggrTask
 		this.orderPath = orderPath;
 	}
 
+	public Map<String, Object> getParams()
+	{
+		return params;
+	}
 
-	/* public: AggrTaskBase interface (parameters) */
+	private Map<String, Object> params;
+
+	public void setParams(Map<String, Object> params)
+	{
+		this.params = params;
+	}
+
+
+	/* Aggregation Task (parameters) */
 
 	public void    param(String name, Object value)
 	{
@@ -123,8 +135,6 @@ public abstract class AggrTaskBase implements AggrTask
 		else if(params != null)
 			params.remove(name);
 	}
-
-	private Map<String, Object> params;
 
 	public Object  param(String name)
 	{

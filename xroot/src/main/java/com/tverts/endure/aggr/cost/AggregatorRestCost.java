@@ -29,6 +29,8 @@ import com.tverts.support.EX;
  * Does aggregation for {@link AggrTaskRestCostCreate} and
  * {@link AggrTaskRestCostDelete} tasks.
  *
+ * TODO support cost aggregation for jobs with multiple requests
+ *
  * @author anton.baukin@gmail.com
  */
 public class AggregatorRestCost extends AggregatorHelper

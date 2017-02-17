@@ -39,6 +39,8 @@ import com.tverts.support.EX;
  * expected volume to be equal to the real-world one stored
  * in the aggregated attributes.
  *
+ * TODO support volume aggregation for jobs with multiple requests
+ *
  *
  * @author anton.baukin@gmail.com
  */

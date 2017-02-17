@@ -114,6 +114,9 @@ public class AggrService extends ServiceBase
 		if(e instanceof SystemReady)
 		{
 			LU.I(getLog(), "starting periodic scan for the requests");
+			startTime = System.currentTimeMillis();
+
+			//!: schedule the first scan
 			schedule();
 			return;
 		}
@@ -129,6 +132,8 @@ public class AggrService extends ServiceBase
 		else
 			aggregateValue(((AggrEvent)e).getAggrValue());
 	}
+
+	protected volatile long startTime;
 
 
 	/* public: aggregation request post routines */
@@ -186,8 +191,14 @@ public class AggrService extends ServiceBase
 		List<Long> vals = bean(GetAggrValue.class).
 		  getAggrRequests();
 
-		if(!vals.isEmpty())
+		if(!vals.isEmpty()) //?: {need to log}
 			LU.D(getLog(), "found [", vals.size(), "] pending values");
+		//?: {was reported the overall timing}
+		else if(aggregated)
+		{
+			aggregated = false;
+			LU.I(getLog(), "completed aggregation in ", LU.td(startTime));
+		}
 
 		//c: create event for each value
 		vals.forEach(this::aggregateValue);
@@ -212,6 +223,8 @@ public class AggrService extends ServiceBase
 		//~: try obtain status (1 -> 2)
 		if(lock.status.compareAndSet(1, 2)) try
 		{
+			aggregated = true;
+
 			//!: invoke aggregation in separated tx
 			bean(TxBean.class).setNew().execute(
 			  () -> doAggregateTx(aggrValue));
@@ -222,6 +235,11 @@ public class AggrService extends ServiceBase
 			lock.status.compareAndSet(2, 0);
 		}
 	}
+
+	/**
+	 * Used for the logging.
+	 */
+	protected volatile boolean aggregated;
 
 	protected boolean  notifyValue(Long aggrValue, ValueLock lock)
 	{
@@ -288,7 +306,6 @@ public class AggrService extends ServiceBase
 		for(AggrRequest r : reqs)
 			aggregator.aggregate(AggrJob.create(r));
 	}
-
 
 	protected String   getLog()
 	{
