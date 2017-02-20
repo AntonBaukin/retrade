@@ -699,7 +699,7 @@ order by i.orderIndex
 		  setParameter("stateType",        Invoices.typeInvoiceStateFixed()).
 		  list();
 
-		LU.I(getLog(), " found ", ids.size(),
+		LU.I(getLog(), "found ", ids.size(),
 		  " Invoices affecting goods rest costs... ");
 
 		//>: select the invoices...

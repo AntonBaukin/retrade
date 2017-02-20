@@ -6,7 +6,12 @@
 
 <Context>
 
-  <Loader className = 'org.apache.catalina.loader.VirtualWebappLoader'
-    searchVirtualFirst = 'true' virtualClasspath = '${catalina.base}/webapps/auth/META-INF/'/>
+  <Resources className = 'org.apache.catalina.webresources.StandardRoot'>
 
+    <PreResources className = 'org.apache.catalina.webresources.DirResourceSet'
+      base = '${catalina.base}/webapps/auth/META-INF'
+      webAppMount = '/WEB-INF/classes'
+      internalPath = '/' readOnly = 'true'/>
+
+  </Resources>
 </Context>
