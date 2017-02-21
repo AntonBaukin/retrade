@@ -134,7 +134,7 @@ public abstract class ShuntPlain
 
 		while(true)
 		{
-			int size = AggrService.size();
+			int size = AggrService.await();
 
 			if(size != 0)
 			{

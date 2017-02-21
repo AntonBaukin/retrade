@@ -5,11 +5,11 @@ package com.tverts.aggr;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 /* com.tverts: hibery */
 
-import com.tverts.genesis.GenesisDone;
 import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: system (services, tx) */
@@ -102,10 +102,17 @@ public class AggrService extends ServiceBase
 
 	/**
 	 * Returns the number of pending aggregation requests.
+	 * Inserts request for the aggregation.
 	 */
-	public static int  size()
+	public static int  await()
 	{
-		return bean(GetAggrValue.class).countAggrRequests();
+		int n = bean(GetAggrValue.class).countAggrRequests();
+
+		//?: {has requests} scan
+		if(n != 0)
+			INSTANCE.scheduleScan(true);
+
+		return n;
 	}
 
 	public void        service(Event e)
@@ -182,7 +189,7 @@ public class AggrService extends ServiceBase
 	protected void     findAllAndSchedule()
 	{
 		//~: schedule own invocation
-		self(new AggrEvent().setEventDelay(scanPeriod));
+		scheduleScan(false);
 
 		//~: find values of all pending requests
 		List<Long> vals = bean(GetAggrValue.class).
@@ -201,21 +208,28 @@ public class AggrService extends ServiceBase
 		vals.forEach(this::notifyValue);
 	}
 
+	protected void     scheduleScan(boolean now)
+	{
+		AggrEvent e = new AggrEvent();
+		if(!now) e.setEventDelay(scanPeriod);
+
+		bean(TxBean.class).setNew().execute(() -> self(e));
+	}
+
 	/**
 	 * Tries to execute the given value now, or
 	 * schedules the event for the nearest future.
 	 */
-	protected void     aggregateValue(Long aggrValue)
+	protected boolean  aggregateValue(Long aggrValue)
 	{
 		//~: obtain a lock for this value
 		ValueLock lock = lock(aggrValue);
 
-		//?: {just notified the value}
-		if(notifyValue(aggrValue, lock))
-			return;
+		//?: {the lock is held}
+		if(!lock.busy.compareAndSet(false, true))
+			return false;
 
-		//~: try obtain status (1 -> 2)
-		if(lock.status.compareAndSet(1, 2)) try
+		try
 		{
 			aggregated = true;
 
@@ -225,9 +239,11 @@ public class AggrService extends ServiceBase
 		}
 		finally
 		{
-			//!: free the lock (2 -> 0)
-			lock.status.compareAndSet(2, 0);
+			//!: release the lock
+			lock.busy.set(false);
 		}
+
+		return true;
 	}
 
 	/**
@@ -235,26 +251,29 @@ public class AggrService extends ServiceBase
 	 */
 	protected volatile boolean aggregated;
 
-	protected void     notifyValue(Long aggrValue)
+	protected boolean  notifyValue(Long aggrValue)
 	{
-		this.notifyValue(aggrValue, null);
-	}
+		ValueLock lock = lock(aggrValue);
 
-	protected boolean  notifyValue(Long aggrValue, ValueLock lock)
-	{
-		//~: obtain a lock for this value
-		if(lock == null)
-			lock = lock(aggrValue);
-
-		//?: {failed obtain status (0 -> 1)}
-		if(!lock.status.compareAndSet(0, 1))
+		//?: {the lock is currently busy}
+		if(lock.busy.get())
 			return false;
 
-		//~: send event to itself
+		//~: swap notification time
+		final long ts = System.currentTimeMillis();
+		final long nt = lock.ntime.getAndSet(ts);
+
+		//?: {there was recent notification}
+		if(nt + scanPeriod - 100 > ts)
+		{
+			lock.ntime.compareAndSet(ts, nt);
+			return false;
+		}
+
+		//~: send notification
 		self(new AggrEvent().setAggrValue(aggrValue).
 		  setEventDelay(notifyDelay));
 
-		//LU.D(getLog(), "planning [", aggrValue, "]");
 		return true;
 	}
 
@@ -330,14 +349,19 @@ public class AggrService extends ServiceBase
 		public final Long aggrValue;
 
 		/**
-		 * Status values are:
-		 *
-		 *  0  the lock is not held (free);
-		 *  1  event is already added to the queue;
-		 *  2  aggregating on the given value.
+		 * Flag indicating that the value is locked
+		 * for the executed aggregation.
 		 */
-		public final AtomicInteger status =
-		  new AtomicInteger();
+		public final AtomicBoolean busy =
+		  new AtomicBoolean();
+
+		/**
+		 * Absolute time of the previous notification.
+		 * Pending values that are not busy are repeatedly
+		 * notified vith the scan interval.
+		 */
+		public final AtomicLong ntime =
+		  new AtomicLong();
 	}
 
 	protected ValueLock lock(Long aggrValue)
