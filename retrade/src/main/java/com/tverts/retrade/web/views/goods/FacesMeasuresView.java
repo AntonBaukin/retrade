@@ -220,6 +220,11 @@ public class FacesMeasuresView extends ModelView
 		return codeExists;
 	}
 
+	public boolean isCreate()
+	{
+		return false;
+	}
+
 
 	/* protected: actions support */
 

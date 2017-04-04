@@ -45,8 +45,7 @@ ${v.checkModelRequestedWithRedirect}
 
   <f:facet name = "toolbar">
 
-    <!-- [close window button] -->
-
+    <!-- [close window] -->
     <x:component coid = "${z:vid(v, 'close')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Закрыть', handler : function()
@@ -66,7 +65,6 @@ ${v.checkModelRequestedWithRedirect}
 
 
     <!-- [add measure] -->
-
     <x:action-button coid = "${z:vid(v, 'add')}"
       action = "#{v.gotoCreateMeasureUnit}" modelView = "#{v}">
 
@@ -111,8 +109,6 @@ ${v.checkModelRequestedWithRedirect}
   //~: go to edit measure on double click row
   extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').on('itemdblclick', function(grid, rec)
   {
-    if('false' == "${v.isSecure('edit: goods')}") return;
-
     extjsf.handler("${z:vid(v, 'edit-measure')}", '${extDom}')({
       params: { entity: rec.getId() }
     })

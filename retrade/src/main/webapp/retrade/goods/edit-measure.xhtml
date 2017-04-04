@@ -7,7 +7,7 @@
 
 <c:set var = "v" scope = "request" value = "${facesMeasuresView}"/>
 
-${v.forceSecure('edit: goods')}
+${v.forceSecure('view: goods')}
 ${v.checkModelRequested}
 
 <ui:decorate template = '/resources/.view-modes/body.xhtml'
@@ -47,34 +47,50 @@ ${v.checkModelRequested}
 
   <f:facet name = "toolbar">
 
-    <!-- [cancel edit button] -->
-
-    <x:action-button coid = "${z:vid(v, 'cancel')}"
+    <!-- [goto back (same as cancel)] -->
+    <x:action-button coid = "${z:vid(v, 'back')}"
       action = "#{v.gotoCancelEdit}" modelView = "#{v}">
 
       <f:facet name = "extjs-props">
-        cls: 'ux-btn-red', text: 'Отмена'
+        text: 'Назад'
       </f:facet>
     </x:action-button>
 
 
-   <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+    <!-- [cancel edit button] -->
+    <x:action-button coid = "${z:vid(v, 'cancel')}"
+      action = "#{v.gotoCancelEdit}" modelView = "#{v}">
+
+      <f:facet name = "extjs-props">
+        cls: 'ux-btn-red', text: 'Отмена', hidden: true
+      </f:facet>
+    </x:action-button>
+
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, border: false,
+        bodyCls: 'retrade-toolbar-inline-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [submit button] -->
+    <x:component coid = "${z:vid(v, 'submit')}">
      <f:facet name = "extjs-props">
-       xtype: 'panel', flex: 1, border: false,
-       bodyCls: 'retrade-toolbar-inline-panel'
+       xtype:'button', text: 'Сохранить',
+       cls: 'ux-btn-green', hidden: true
      </f:facet>
-   </x:component>
+    </x:component>
 
 
-   <!-- [submit button] -->
-
-   <x:component coid = "${z:vid(v, 'submit')}">
-    <f:facet name = "extjs-props">
-      xtype:'button', text: 'Сохранить',
-      cls: 'ux-btn-green'
-    </f:facet>
-   </x:component>
-
+    <!-- [start edit] -->
+    <x:component coid = "${z:vid(v, 'edit')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Изменить',
+        disabled: ${not v.isSecure('edit: goods')}
+      </f:facet>
+    </x:component>
   </f:facet>
 
   <!-- toolbar] -->
@@ -96,8 +112,8 @@ ${v.checkModelRequested}
       value = "#{v.measureView.code}">
 
       <f:facet name = "extjs-props">
-        cellCls: 'retrade-form-value-cell retrade-width-50pc',
-        width: '50%', allowBlank: false, validator: function()
+        cellCls: 'retrade-form-value-cell retrade-width-50pc', width: '50%',
+        extjsfReadWrite: true, allowBlank: false, validator: function()
         {
           return extjsf.bind("${z:vid(v, 'code')}", '${extDom}').validityStatus || true
         }
@@ -116,7 +132,7 @@ ${v.checkModelRequested}
       value = "#{v.measureView.name}">
 
       <f:facet name = "extjs-props">
-        allowBlank: false, width: '100%',
+        allowBlank: false, width: '100%', extjsfReadWrite: true,
         cellCls: 'retrade-form-value-cell retrade-width-100pc'
       </f:facet>
 
@@ -155,7 +171,8 @@ ${v.checkModelRequested}
 
         <f:facet name = "extjs-props">
           flex: 1, maskRe: retrade.rinteger,
-          cls: 'retrade-info-title-label'
+          cls: 'retrade-info-title-label',
+          extjsfReadWrite: true
         </f:facet>
       </x:text-field>
 
@@ -165,7 +182,7 @@ ${v.checkModelRequested}
         value = "#{v.measureView.classUnit}">
 
         <f:facet name = "extjs-props">
-          flex: 1, cls: 'retrade-info-title-label',
+          flex: 1, cls: 'retrade-info-title-label', extjsfReadWrite: true,
           maskRe: retrade.#{(v.measureView.fractional)?('rdecimal'):('rinteger')},
           validator: ZeT.fbind(retrade.#{(v.measureView.fractional)?('vvolume'):('vivolume')}, retrade, { blank: false })
         </f:facet>
@@ -185,7 +202,7 @@ ${v.checkModelRequested}
         value = "#{v.measureView.fractional}">
 
         <f:facet name = "extjs-props">
-          margin: extjsf.pts(0, 0, 0, 6)
+          margin: extjsf.pts(0, 0, 0, 6), extjsfReadWrite: true
         </f:facet>
 
         <f:facet name = "label-props">
@@ -257,6 +274,11 @@ ${v.checkModelRequested}
 
   function(form, code, name, codecheck, submit, cancel, fractional, cc, cu, okei, grid)
   {
+    //~: default read-only for existing
+    form.when(function(){
+      extjsf.u.toggleReadWrite(form, "#{v.create}" == 'false')
+    })
+
     //~: validate code on change
     code.on('change', function(f, v)
     {
@@ -278,7 +300,6 @@ ${v.checkModelRequested}
       })
     })
 
-
     //~: submit the form
     extjsf.handler(submit, function()
     {
@@ -288,7 +309,6 @@ ${v.checkModelRequested}
         extjsf.handler(cancel)()
       }})
     })
-
 
     //<: filter the class codes grid
 
