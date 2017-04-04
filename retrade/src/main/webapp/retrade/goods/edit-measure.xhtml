@@ -298,7 +298,7 @@ ${v.checkModelRequested}
     function xValue(x)
     {
       x = x.toLocaleLowerCase()
-      return Lo.replace(x, /[^a-zа-я]+/, '')
+      return x.replace(/[^a-zа-я]+/, '')
     }
 
     function xModel(m, p)
