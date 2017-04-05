@@ -78,7 +78,7 @@ ${v.checkModelRequested}
     <!-- [submit button] -->
     <x:component coid = "${z:vid(v, 'submit')}">
      <f:facet name = "extjs-props">
-       xtype:'button', text: 'Сохранить',
+       xtype: 'button', text: 'Сохранить',
        cls: 'ux-btn-green', hidden: true
      </f:facet>
     </x:component>
@@ -271,13 +271,32 @@ ${v.checkModelRequested}
     extjsf.bind("${z:vid(v, 'class-unit')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'okei')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'grid')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'edit')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'back')}", '${extDom}'),
 
-  function(form, code, name, codecheck, submit, cancel, fractional, cc, cu, okei, grid)
+  function(form, code, name, codecheck, submit, cancel, fractional, cc, cu, okei, grid, edit, back)
   {
-    //~: default read-only for existing
-    form.when(function(){
-      extjsf.u.toggleReadWrite(form, "#{v.create}" == 'false')
-    })
+    var editing = ("#{v.create}" == 'true')
+
+    //~: set edit mode
+    function setEditMode(ed)
+    {
+      if(ZeT.isb(ed)) editing = ed
+      extjsf.u.toggleReadWrite(form, !editing)
+
+      edit.visible(!editing)
+      back.visible(!editing)
+
+      submit.visible(editing)
+      cancel.visible(editing)
+      if(editing) setOkeiFilters()
+    }
+
+    //~: set initial edit mode
+    form.when(setEditMode)
+
+    //~: start editing
+    extjsf.handler(edit, ZeT.fbindu(setEditMode, 0, true))
 
     //~: validate code on change
     code.on('change', function(f, v)
@@ -304,8 +323,8 @@ ${v.checkModelRequested}
     extjsf.handler(submit, function()
     {
       if(!form.co().isValid()) return
-      form.submit({ command: 'submit', success: function()
-      {
+      form.submit({ command: 'submit', success: function(){
+        ZeT.log('Successfully saved!')
         extjsf.handler(cancel)()
       }})
     })
@@ -386,14 +405,17 @@ ${v.checkModelRequested}
       setFilters(filterByName, 2, s)
     }
 
-    cc.on('focus',  doFilterByClassCode)
-    cc.on('change', doFilterByClassCode)
+    function setOkeiFilters()
+    {
+      cc.on('focus',  doFilterByClassCode)
+      cc.on('change', doFilterByClassCode)
 
-    code.on('focus',  doFilterByCode)
-    code.on('change', doFilterByCode)
+      code.on('focus',  doFilterByCode)
+      code.on('change', doFilterByCode)
 
-    name.on('focus',  doFilterByName)
-    name.on('change', doFilterByName)
+      name.on('focus',  doFilterByName)
+      name.on('change', doFilterByName)
+    }
 
     //>: filter the class codes grid
 
@@ -478,15 +500,21 @@ ${v.checkModelRequested}
    xmlns:ui = 'http://java.sun.com/jsf/facelets'>
 
   <ui:define name = 'validation'>
-    <validation success = "#{v.formValid}">
 
-      <ui:fragment rendered = "#{v.codeExists}">
-        <field target = "${z:vid(v, 'code')}">
-          <error>Указанный код уже используется в другой единице измерения!</error>
-        </field>
-      </ui:fragment>
+    <ui:fragment rendered = "#{v.formValid}">
+      <validation success = "true"/>
+    </ui:fragment>
 
-    </validation>
+    <ui:fragment rendered = "#{not v.formValid}">
+      <validation success = "false">
+
+        <ui:fragment rendered = "#{v.codeExists}">
+          <field target = "${z:vid(v, 'code')}">
+            <error>Указанный код уже используется в другой единице измерения!</error>
+          </field>
+        </ui:fragment>
+      </validation>
+    </ui:fragment>
   </ui:define>
 </ui:decorate>
 </ui:component>

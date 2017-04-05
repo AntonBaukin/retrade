@@ -206,11 +206,11 @@ public class FacesMeasuresView extends ModelView
 		);
 	}
 
-	private boolean formValid;
+	private Boolean formValid;
 
 	public boolean isFormValid()
 	{
-		return formValid;
+		return !Boolean.FALSE.equals(formValid);
 	}
 
 	private boolean codeExists;
@@ -222,7 +222,7 @@ public class FacesMeasuresView extends ModelView
 
 	public boolean isCreate()
 	{
-		return false;
+		return (getMeasureView().getObjectKey() == null);
 	}
 
 
