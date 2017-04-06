@@ -183,14 +183,11 @@ ${v.checkModelRequested}
 
         <f:facet name = "extjs-props">
           flex: 1, cls: 'retrade-info-title-label', extjsfReadWrite: true,
-          maskRe: retrade.#{(v.measureView.fractional)?('rdecimal'):('rinteger')},
-          validator: function(v)
+          maskRe: retrade.rdecimal, validator: function(v)
           {
-            var cc = extjsf.bind("${z:vid(v, 'class-code')}", '${extDom}')
-            if(ZeT.ises(cc.value())) return ZeT.ises(v)?(true):'Поле не должно иметь значения, если не указан код ОКЕИ!'
-
-            var ii = extjsf.bind("${z:vid(v, 'integer')}", '${extDom}')
-            return ii.value()?(retrade.vivolume(v)):(retrade.vvolume(v))
+            if(ZeT.ises(extjsf.bind("${z:vid(v, 'class-code')}", '${extDom}').value()))
+              return ZeT.ises(v)?(true):'Поле не должно иметь значения, если не указан код ОКЕИ!'
+            return retrade.vvolume(v)
           }
         </f:facet>
 
@@ -426,6 +423,7 @@ ${v.checkModelRequested}
     //~: assign fields by the grid
     grid.on('select', function(g, m)
     {
+      if(!editing) return false
       code.value(m.get('na'))
       name.value(m.get('n'))
       cc.value(m.get('c'))
@@ -434,36 +432,7 @@ ${v.checkModelRequested}
     })
 
 
-    function coerceClassUnit()
-    {
-      if(!integer.value())
-      {
-        //?: {value is integer}
-        if(!ZeT.ises(cu.value()) && ZeT.isi(parseFloat(cu.value())))
-          cu.value(retrade.round2str(1, parseFloat(cu.value())))
-      }
-      else
-      {
-        //?: {value is integer}
-        if(!ZeT.ises(cu.value()) && ZeT.isi(parseFloat(cu.value())))
-          cu.value(retrade.round2str(0, parseFloat(cu.value())))
-      }
-    }
-
-    //~: toggle fractional checkbox
-    integer.on('change', function(f, v)
-    {
-      if(!v) //?: {is fractional}
-        cu.co().maskRe = retrade.rdecimal
-      else //~: is integer
-        cu.co().maskRe = retrade.rinteger
-
-      coerceClassUnit()
-      cu.co().validate()
-    })
-
-
-    //~: optimization: process class codes in the background
+    //~: opt: process class codes in the background
     okei.on('load', function(store)
     {
       var xind = 0, all = store.getRange()

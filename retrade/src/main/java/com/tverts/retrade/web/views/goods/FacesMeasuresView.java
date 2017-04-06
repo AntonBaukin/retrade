@@ -101,10 +101,9 @@ public class FacesMeasuresView extends ModelView
 
 	public String doCommitEdit()
 	{
-		if(SU.sXe(getMeasureView().getCode()))
-			throw EX.arg("Measure code must be defined!");
-		if(SU.sXe(getMeasureView().getName()))
-			throw EX.arg("Measure name must be defined!");
+		//?: {code | name are empty}
+		EX.asserts(getMeasureView().getCode());
+		EX.asserts(getMeasureView().getName());
 
 		//~: check the code exists
 		formValid = !checkCodeExists(getMeasureView().getCode());
@@ -159,11 +158,10 @@ public class FacesMeasuresView extends ModelView
 			EX.assertx(CMP.grZero(m.getClassUnit()));
 		}
 
-		//?: {is integer} set zero scale
-		if(m.getClassUnit() != null) if(!m.isFractional())
-			m.setClassUnit(m.getClassUnit().setScale(0));
-		//?: {fractional as integer} add '.0'
-		else if(m.getClassUnit().scale() <= 0)
+		//?: {fractional value is integer} add '.0'
+		if((m.getClassUnit() != null) && m.isFractional() &&
+		   (m.getClassUnit().scale() <= 0)
+		  )
 			m.setClassUnit(m.getClassUnit().setScale(1));
 
 		//!: update the ox-measure
