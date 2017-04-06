@@ -145,18 +145,26 @@ public class FacesMeasuresView extends ModelView
 
 		//~: class unit
 		m.setClassUnit(getMeasureView().getClassUnit());
-		if(m.getClassUnit() == null) if(m.isFractional())
-			m.setClassUnit(BigDecimal.ONE.setScale(1));
+
+		//?: {has no class code} clear the unit
+		if(SU.sXe(m.getClassCode()))
+			m.setClassUnit(null);
 		else
-			m.setClassUnit(BigDecimal.ONE.setScale(0));
-		EX.assertx(CMP.grZero(m.getClassUnit()));
+		{
+			if(m.getClassUnit() == null) if(m.isFractional())
+				m.setClassUnit(BigDecimal.ONE.setScale(1));
+			else
+				m.setClassUnit(BigDecimal.ONE);
+
+			EX.assertx(CMP.grZero(m.getClassUnit()));
+		}
 
 		//?: {is integer} set zero scale
-		if(!m.isFractional())
+		if(m.getClassUnit() != null) if(!m.isFractional())
 			m.setClassUnit(m.getClassUnit().setScale(0));
+		//?: {fractional as integer} add '.0'
 		else if(m.getClassUnit().scale() <= 0)
 			m.setClassUnit(m.getClassUnit().setScale(1));
-
 
 		//!: update the ox-measure
 		mu.updateOx();

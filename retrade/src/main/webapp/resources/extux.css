@@ -136,7 +136,7 @@ td.x-form-item-body.x-form-cb-wrap
 
 .x-form-readonly input, .x-form-readonly textarea
 {
-  opacity: 0.8;
+  background-color: #EEF6FB;
 }
 
 .x-field-date input.x-form-text-default,
@@ -153,6 +153,12 @@ td.x-form-item-body.x-form-cb-wrap
 div.x-table-form-item
 {
   margin-bottom: 0;
+}
+
+.x-form-readonly input.x-form-checkbox-default
+{
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAYAAAAehFoBAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAaBJREFUeNrs1ztLw1AUB/DTByJIpFO7xGLARWhHQYeCFJzExe8gDo5+DHHsV3AU1FFQsehWxYpDBlMQEpU0iEofRENshMjNo2pyT9DC+U/JHQ6/4dzHAaAkm5T7cXh0YmMUXKouptj/jd0WSt3aqvRZN8suVioVrqL1ej10fXulyFV38+Du6zs9ai1BYAITmMAEJjCBCUzg/5zsb96zvGHfsxQKTc00NY/I1GxZViItYFr28HM4bnRdh1tFQcdeqF3Yv3nCBTtYWZbBtm107M5lG/xl01jYaUlKBLs8m8MB+7FTopgItjozyQ/+K2wo+KdejIu1bH5sAOxgGo0GmKaJinUwW8f38Ny3uLABsKZp0Ov14KrZDKB52uCs9QJ65w1q548BdBRsAFwqlUAQBOj70Lw9uzZfgGJuDIzOuwcdFRsAZzIZKJfLHrSqqtwbbDybgvUFL/pUeY2MDd10frQyuMEwTgM/em9wg0XFDj3WWLQTrKOLRTuJiv32anbRbcOAQj6Pdou56OuHLsyJE7hTs4PGxLLoOFiamikh+RBgABfQMulhdxsrAAAAAElFTkSuQmCC);
+  background-color: transparent;
 }
 
 

@@ -1190,8 +1190,14 @@ ZeT.init('ReTrade.init', function()
 		return [
 
 		 {
-		   text: "Наименование", dataIndex: 'code', sortable: true,
-		   width: extjsf.ex(16)
+		   text: "Код", dataIndex: 'code', sortable: true,
+		   width: extjsf.ex(12)
+		 },
+
+		 {
+		   text: "Цл.", dataIndex: 'fractional', sortable: false,
+		   width: extjsf.ex(5), align: 'center',
+		   renderer: function(v){ return v?('нет'):('да')}
 		 },
 
 		 {

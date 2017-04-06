@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: api */
@@ -28,7 +29,7 @@ import com.tverts.endure.cats.CatItemView;
 @XmlType(name = "measure-unit-view")
 public class MeasureUnitView extends CatItemView
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20170406L;
 
 
 	/* Measure Unit View */
@@ -59,14 +60,25 @@ public class MeasureUnitView extends CatItemView
 
 	public boolean isFractional()
 	{
-		return fractional;
+		return !integer;
 	}
-
-	private boolean fractional = true;
 
 	public void setFractional(boolean fractional)
 	{
-		this.fractional = fractional;
+		this.integer = !fractional;
+	}
+
+	@XmlTransient
+	public boolean isInteger()
+	{
+		return integer;
+	}
+
+	private boolean integer;
+
+	public void setInteger(boolean integer)
+	{
+		this.integer = integer;
 	}
 
 
@@ -77,9 +89,9 @@ public class MeasureUnitView extends CatItemView
 		MeasureUnit mu = (MeasureUnit) ci;
 		Measure      m = mu.getOx();
 
-		classCode  = m.getClassCode();
-		classUnit  = m.getClassUnit();
-		fractional = m.isFractional();
+		classCode = m.getClassCode();
+		classUnit = m.getClassUnit();
+		integer   = !m.isFractional();
 
 		return (MeasureUnitView) super.init(ci);
 	}

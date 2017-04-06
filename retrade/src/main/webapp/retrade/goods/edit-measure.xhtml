@@ -184,22 +184,26 @@ ${v.checkModelRequested}
         <f:facet name = "extjs-props">
           flex: 1, cls: 'retrade-info-title-label', extjsfReadWrite: true,
           maskRe: retrade.#{(v.measureView.fractional)?('rdecimal'):('rinteger')},
-          validator: ZeT.fbind(retrade.#{(v.measureView.fractional)?('vvolume'):('vivolume')}, retrade, { blank: false })
+          validator: function(v)
+          {
+            var cc = extjsf.bind("${z:vid(v, 'class-code')}", '${extDom}')
+            if(ZeT.ises(cc.value())) return ZeT.ises(v)?(true):'Поле не должно иметь значения, если не указан код ОКЕИ!'
+
+            var ii = extjsf.bind("${z:vid(v, 'integer')}", '${extDom}')
+            return ii.value()?(retrade.vivolume(v)):(retrade.vvolume(v))
+          }
         </f:facet>
 
         <f:facet name = "label-props">
           text: 'коэфф.', cls: 'retrade-info-title-label',
           margin: extjsf.pts(0, 4, 0, 6)
         </f:facet>
-
-        <f:converter for = "valueInput"
-          converterId = "com.tverts:fmt:decimal"/>
       </x:text-field>
 
 
-      <!-- [is fractional] -->
-      <x:checkbox-field coid = "${z:vid(v, 'fractional')}"
-        value = "#{v.measureView.fractional}">
+      <!-- [is not fractional (integer)] -->
+      <x:checkbox-field coid = "${z:vid(v, 'integer')}"
+        value = "#{v.measureView.integer}">
 
         <f:facet name = "extjs-props">
           margin: extjsf.pts(0, 0, 0, 6), extjsfReadWrite: true
@@ -207,9 +211,9 @@ ${v.checkModelRequested}
 
         <f:facet name = "label-props">
           cls: 'retrade-info-title-label',
-          html: "&lt;span title = 'Десятичное значение позволяет задавать объём " +
-          "товара с точностью до тысячных долей. (Изменение значения не затронет " +
-          "существующие объёмы товаров.)'&gt;десятичное&lt;/span&gt;"
+          html: "&lt;span title = 'Не целое (десятичное) значение позволяет задавать " +
+          "объём товара с точностью до тысячных долей. Изменение значения не затронет " +
+          "существующие объёмы товаров и документы!'&gt;целое&lt;/span&gt;"
         </f:facet>
       </x:checkbox-field>
     </x:component>
@@ -218,7 +222,6 @@ ${v.checkModelRequested}
 
 
     <!-- [special: submit action] -->
-
     <h:commandButton id = "submit" value = "submit" style = "display: none;"
       action = "#{v.doCommitEdit}"/>
 
@@ -266,7 +269,7 @@ ${v.checkModelRequested}
     extjsf.handler("${z:vid(v, 'check-code-exists-script')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'submit')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'cancel')}", '${extDom}'),
-    extjsf.bind("${z:vid(v, 'fractional')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'integer')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'class-code')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'class-unit')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'okei')}", '${extDom}'),
@@ -274,7 +277,7 @@ ${v.checkModelRequested}
     extjsf.bind("${z:vid(v, 'edit')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'back')}", '${extDom}'),
 
-  function(form, code, name, codecheck, submit, cancel, fractional, cc, cu, okei, grid, edit, back)
+  function(form, code, name, codecheck, submit, cancel, integer, cc, cu, okei, grid, edit, back)
   {
     var editing = ("#{v.create}" == 'true')
 
@@ -427,17 +430,17 @@ ${v.checkModelRequested}
       name.value(m.get('n'))
       cc.value(m.get('c'))
       if(ZeT.ises(cu.value()))
-        cu.value(fractional.value()?('1.00'):('1'))
+        cu.value(integer.value()?('1'):('1.0'))
     })
 
 
     function coerceClassUnit()
     {
-      if(fractional.value())
+      if(!integer.value())
       {
         //?: {value is integer}
         if(!ZeT.ises(cu.value()) && ZeT.isi(parseFloat(cu.value())))
-          cu.value(retrade.round2str(2, parseFloat(cu.value())))
+          cu.value(retrade.round2str(1, parseFloat(cu.value())))
       }
       else
       {
@@ -447,20 +450,13 @@ ${v.checkModelRequested}
       }
     }
 
-
     //~: toggle fractional checkbox
-    fractional.on('change', function(f, v)
+    integer.on('change', function(f, v)
     {
-      if(v) //?: {is fractional}
-      {
-        cu.co().validator = ZeT.fbind(retrade.vvolume, retrade, { blank: false })
+      if(!v) //?: {is fractional}
         cu.co().maskRe = retrade.rdecimal
-      }
       else //~: is integer
-      {
-        cu.co().validator = ZeT.fbind(retrade.vivolume, retrade, { blank: false })
         cu.co().maskRe = retrade.rinteger
-      }
 
       coerceClassUnit()
       cu.co().validate()
