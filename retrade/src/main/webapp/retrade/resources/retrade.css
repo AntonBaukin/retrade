@@ -1250,15 +1250,25 @@ tr.retrade-good-attrs-edit-values-table-row:last-child td
   background-size: 34px 34px;
 }
 
-.retrade-attrs-button
+td.retrade-attrs-button
 {
-  position: absolute; left: 4pt; top: 2pt;
-  width: 40px; height: 30px; text-align: left;
+  width: 100%;
+}
+
+td.retrade-attrs-button > div
+{
+  display: inline-block;
+  float: right;
 }
 
 .retrade-good-measures-item .check-title
 {
   padding: 0 6pt 0 2pt;
+}
+
+.retrade-good-measures-item .check-title label
+{
+  white-space: nowrap;
 }
 
 .retrade-good-measures-item input.retarde-field-text-larger
